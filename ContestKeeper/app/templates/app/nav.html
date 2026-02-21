@@ -1,0 +1,31 @@
+{% load static %}
+<nav id="nav">
+    <div class="nav-container">
+        <a href="{% url 'home' %}" class="nav-logo">ContestKeeper</a>
+        <div class="nav-links">
+            <button data-url="{% url 'home' %}" class="nav-link" id="homeBtn">Home</button>
+            <button data-url="#" class="nav-link" id="dashboardBtn">Dashboard</button>
+            <button data-url="#" class="nav-link" id="profileBtn">Profile</button>
+            <button data-url="#" class="nav-link" id="settingsBtn">Settings</button>
+            <hr class="nav-auth-divider">
+            {% if user.is_authenticated %}
+                <span class="nav-user">{{ user.username }}</span>
+                <form method="post" action="{% url 'logout' %}" class="nav-logout-form">
+                    {% csrf_token %}
+                    <button type="submit" class="nav-link">Log out</button>
+                </form>
+            {% else %}
+                <a href="{% url 'register' %}" class="nav-link">Register</a>
+                <a href="{% url 'login' %}" class="nav-link">Log in</a>
+            {% endif %}
+        </div>
+        <script>
+            document.querySelectorAll('.nav-link[data-url]').forEach(button => {
+                button.addEventListener('click', function() {
+                    window.location.href = this.getAttribute('data-url');
+                });
+            });
+        </script>
+    </div>
+</nav>
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
