@@ -1,14 +1,22 @@
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ContestKeeper - Home</title>
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
 </head>
+
 <body>
     {% include 'app/nav.html' %}
-    <h1 id="h1">Welcome to ContestKeeper</h1>
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 id="h1">Home</h1>
+            <p class="role-badge">{{ user.get_role_display }}</p>
+        </header>
+    </main>
 </body>
+
 </html>

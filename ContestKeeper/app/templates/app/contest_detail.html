@@ -1,0 +1,145 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ contest.name }} - ContestKeeper</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <style>
+        .detail-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 2rem;
+            padding: 3rem;
+            backdrop-filter: blur(15px);
+            max-width: 900px;
+            margin: 0 auto;
+            color: #fff;
+        }
+
+        .detail-header {
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+            margin-bottom: 2.5rem;
+        }
+
+        .info-item h4 {
+            color: #64748b;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 0.5rem;
+        }
+
+        .info-item p {
+            font-size: 1.1rem;
+            font-weight: 500;
+        }
+
+        .description-box {
+            background: rgba(15, 23, 42, 0.4);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            margin-bottom: 2.5rem;
+            line-height: 1.7;
+            color: #cbd5e1;
+        }
+
+        .roles-section {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 2rem;
+        }
+
+        .user-list {
+            list-style: none;
+            padding: 0;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.6rem;
+        }
+
+        .user-tag {
+            background: rgba(99, 102, 241, 0.15);
+            color: #818cf8;
+            border: 1px solid rgba(99, 102, 241, 0.3);
+            padding: 0.3rem 0.8rem;
+            border-radius: 0.6rem;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'app/nav.html' %}
+    <main class="dashboard-container">
+        <div class="detail-card">
+            <div class="detail-header">
+                <h1 style="margin: 0; font-size: 2.5rem;">{{ contest.name }}</h1>
+                <span class="status-indicator" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Active</span>
+            </div>
+
+            <div class="info-grid">
+                <div class="info-item">
+                    <h4>Organizer</h4>
+                    <p>{{ contest.organizer.username }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>Timeline</h4>
+                    <p>{{ contest.start_date|date:"M d, Y" }} — {{ contest.end_date|date:"M d, Y" }}</p>
+                </div>
+            </div>
+
+            <h4>About this Contest</h4>
+            <div class="description-box">
+                {{ contest.description }}
+            </div>
+
+            <div class="roles-section">
+                <div>
+                    <h4>Jury Panel</h4>
+                    <div class="user-list">
+                        {% for judge in contest.jury.all %}
+                        <span class="user-tag">{{ judge.username }}</span>
+                        {% empty %}
+                        <span style="color: #64748b;">No jury assigned yet.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div>
+                    <h4>Participants</h4>
+                    <div class="user-list">
+                        {% for participant in contest.participants.all %}
+                        <span class="user-tag">{{ participant.username }}</span>
+                        {% empty %}
+                        <span style="color: #64748b;">No participants yet.</span>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <div class="contest-actions"
+                style="margin-top: 3rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 2rem;">
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary"
+                    style="text-decoration: none; text-align: center;">Back to Dashboard</a>
+                {% if user == contest.organizer or user.is_admin %}
+                <button class="btn btn-primary">Manage Contest</button>
+                {% endif %}
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

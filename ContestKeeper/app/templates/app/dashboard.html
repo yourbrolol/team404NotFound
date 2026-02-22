@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContestKeeper - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+</head>
+
+<body>
+    {% include 'app/nav.html' %}
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 id="h1">Dashboard</h1>
+            <p class="role-badge">{{ user.get_role_display }}</p>
+        </header>
+
+        <section class="contest-section">
+            <h2>
+                {% if user.is_admin %}
+                All Contests
+                {% elif user.is_organizer %}
+                My Organized Contests
+                {% elif user.is_jury %}
+                Contests to Judge
+                {% elif user.is_participant %}
+                My Contests
+                {% endif %}
+            </h2>
+
+            <div class="contest-grid">
+                {% for contest in contests %}
+                <div class="contest-card">
+                    <div class="contest-card-header">
+                        <h3>{{ contest.name }}</h3>
+                        <span class="status-indicator">Active</span>
+                    </div>
+                    <p class="contest-description">{{ contest.description }}</p>
+                    <div class="contest-details">
+                        <div class="detail-item">
+                            <span class="label">Starts:</span>
+                            <span class="value">{{ contest.start_date|date:"M d, Y" }}</span>
+                        </div>
+                        <div class="detail-item">
+                            <span class="label">Ends:</span>
+                            <span class="value">{{ contest.end_date|date:"M d, Y" }}</span>
+                        </div>
+                    </div>
+                    <div class="contest-actions">
+                        <a href="{% url 'contest_detail' contest.id %}" class="btn btn-primary"
+                            style="text-decoration: none; text-align: center;">View Details</a>
+                        {% if user.is_organizer or user.is_admin %}
+                        <button class="btn btn-secondary">Edit</button>
+                        {% endif %}
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-state">
+                    <p>No contests found.</p>
+                    {% if user.is_organizer %}
+                    <a href="{% url 'contest_create' %}" class="btn btn-primary"
+                        style="text-decoration: none; text-align: center;">Create New Contest</a>
+                    {% endif %}
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+    </main>
+</body>
+
+</html>

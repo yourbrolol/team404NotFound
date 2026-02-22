@@ -1,0 +1,84 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create New Contest - ContestKeeper</title>
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <style>
+        .form-card {
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 1.5rem;
+            padding: 2.5rem;
+            backdrop-filter: blur(10px);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 0.8rem;
+            padding: 0.8rem 1rem;
+            color: white;
+            font-family: inherit;
+            transition: border-color 0.3s;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #6366f1;
+        }
+
+        select.form-input[multiple] {
+            height: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'app/nav.html' %}
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 id="h1">Create New Contest</h1>
+        </header>
+
+        <div class="form-card">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                <div class="form-group">
+                    <label class="form-label">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p style="color: #ef4444; font-size: 0.8rem; margin-top: 0.4rem;">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <div class="contest-actions" style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary">Create Contest</button>
+                    <a href="{% url 'home' %}" class="btn btn-secondary"
+                        style="text-decoration: none; text-align: center;">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

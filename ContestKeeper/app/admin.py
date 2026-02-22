@@ -18,4 +18,14 @@ class UserAdmin(BaseUserAdmin):
     )
 
 
-admin.site.register(Contest)
+@admin.register(Contest)
+class ContestAdmin(admin.ModelAdmin):
+    list_display = ["name", "organizer", "start_date", "end_date"]
+    list_filter = ["start_date", "end_date"]
+    search_fields = ["name", "description"]
+    filter_horizontal = ["jury", "participants"]
+    fieldsets = (
+        (None, {"fields": ("name", "description")}),
+        ("Dates", {"fields": ("start_date", "end_date")}),
+        ("Roles", {"fields": ("organizer", "jury", "participants")}),
+    )
