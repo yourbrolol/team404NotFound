@@ -1,0 +1,76 @@
+body {
+    margin: 0;
+    background-image: url('../images/register.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    font-size: 1.15rem;
+}
+
+.auth-page,
+main.auth-page {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 37.5vw;
+    padding: 1rem;
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px); 
+    border: 2px solid rgba(255, 255, 255, 0.5);
+    border-radius: 5%;
+}
+
+#header {
+    display: flex;
+    justify-content: center;
+}
+
+.auth-form {
+    width: 90%;
+}
+
+.auth-form p {
+    margin-bottom: 0.75rem;
+}
+
+.auth-form label {
+    display: block;
+    margin-bottom: 0.25rem;
+}
+
+.auth-form input[type="text"],
+.auth-form input[type="email"],
+.auth-form input[type="password"] {
+    width: 100%;
+    padding: 0.5rem;
+    box-sizing: border-box;
+}
+
+.auth-error {
+    color: #c00;
+    margin-bottom: 1rem;
+}
+
+.auth-field-error {
+    display: block;
+    color: #c00;
+    font-size: 0.9rem;
+    margin-top: 0.25rem;
+}
+
+.auth-form button[type="submit"] {
+    margin-top: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+}
+
+.auth-footer {
+    margin-top: 1.5rem;
+    font-size: 0.95rem;
+}
