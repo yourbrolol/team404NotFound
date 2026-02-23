@@ -5,21 +5,19 @@ from django.views.generic import CreateView
 
 from .forms import UserRegistrationForm, ContestForm
 
-from .models import Contest
+from .models import Contest, Application
 
 def dashboard(request):
     if not request.user.is_authenticated:
         return redirect("register")
     
     user = request.user
-    if user.is_admin():
-        contests = Contest.objects.all()
-    elif user.is_organizer():
+    if user.is_organizer():
         contests = user.organized_contests.all()
     elif user.is_jury():
-        contests = user.judged_contests.all()
+        contests = user.judged_contests.exclude(status=Contest.Status.DRAFT)
     elif user.is_participant():
-        contests = user.participated_contests.all()
+        contests = user.participated_contests.exclude(status=Contest.Status.DRAFT)
     else:
         contests = Contest.objects.none()
 
@@ -33,7 +31,9 @@ def home(request):
 
 def contest_list(request):
     # Returns raw contests data as requested (placeholder for now)
-    contests = Contest.objects.all().values()
+    # Exclude drafts for everyone except maybe organizers? 
+    # For now, let's keep it simple: exclude drafts from the public list.
+    contests = Contest.objects.exclude(status=Contest.Status.DRAFT).values()
     from django.http import JsonResponse
     return JsonResponse(list(contests), safe=False)
 
@@ -51,9 +51,85 @@ def contest_create(request):
     
     return render(request, "app/contest_form.html", {"form": form})
 
+def contest_edit(request, pk):
+    contest = get_object_or_404(Contest, pk=pk)
+    if contest.organizer != request.user:
+        from django.http import HttpResponseForbidden
+        return HttpResponseForbidden("You are not the organizer of this contest.")
+    
+    if request.method == 'POST':
+        form = ContestForm(request.POST, instance=contest)
+        if form.is_valid():
+            form.save()
+            return redirect('contest_detail', pk=pk)
+    else:
+        form = ContestForm(instance=contest)
+    
+    return render(request, "app/contest_form.html", {"form": form, "is_edit": True})
+
 def contest_detail(request, pk):
     contest = get_object_or_404(Contest, pk=pk)
-    return render(request, "app/contest_detail.html", {"contest": contest})
+    
+    # Restriction: draft only accessible for the person who created it
+    if contest.status == Contest.Status.DRAFT and contest.organizer != request.user:
+        from django.http import Http404
+        raise Http404("Contest is in draft or you don't have access.")
+    
+    # Get applications for this contest
+    p_applications = contest.contest_apps.filter(application_type=Application.Type.PARTICIPANT, status=Application.Status.PENDING)
+    j_applications = contest.contest_apps.filter(application_type=Application.Type.JURY, status=Application.Status.PENDING)
+    
+    context = {
+        "contest": contest,
+        "participant_applications": p_applications,
+        "jury_applications": j_applications,
+        "has_pending_p_app": contest.contest_apps.filter(user=request.user, application_type=Application.Type.PARTICIPANT, status=Application.Status.PENDING).exists() if request.user.is_authenticated else False,
+        "has_pending_j_app": contest.contest_apps.filter(user=request.user, application_type=Application.Type.JURY, status=Application.Status.PENDING).exists() if request.user.is_authenticated else False,
+    }
+    return render(request, "app/contest_detail.html", context)
+
+def apply_to_contest(request, pk, app_type):
+    contest = get_object_or_404(Contest, pk=pk)
+    
+    # Cannot apply to draft contests
+    if contest.status == Contest.Status.DRAFT:
+        from django.http import HttpResponseForbidden
+        return HttpResponseForbidden("Cannot apply to a draft contest.")
+
+    role_type = Application.Type.PARTICIPANT if app_type == 'participant' else Application.Type.JURY
+    
+    # Check if application already exists
+    if not Application.objects.filter(user=request.user, contest=contest, application_type=role_type).exists():
+        Application.objects.create(
+            user=request.user,
+            contest=contest,
+            application_type=role_type
+        )
+    
+    return redirect('contest_detail', pk=pk)
+
+def approve_application(request, pk):
+    application = get_object_or_404(Application, pk=pk)
+    # Check if user is organizer of the contest
+    if request.user == application.contest.organizer:
+        application.status = Application.Status.APPROVED
+        application.save()
+        
+        # Add user to the contest
+        if application.application_type == Application.Type.PARTICIPANT:
+            application.contest.participants.add(application.user)
+        else:
+            application.contest.jurys.add(application.user)
+            
+    return redirect('contest_detail', pk=application.contest.pk)
+
+def reject_application(request, pk):
+    application = get_object_or_404(Application, pk=pk)
+    if request.user == application.contest.organizer:
+        application.status = Application.Status.REJECTED
+        application.save()
+        
+    return redirect('contest_detail', pk=application.contest.pk)
 
 class RegisterView(CreateView):
     form_class = UserRegistrationForm

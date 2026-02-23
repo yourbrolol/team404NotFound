@@ -11,12 +11,13 @@ class UserRegistrationForm(UserCreationForm):
 class ContestForm(forms.ModelForm):
     class Meta:
         model = Contest
-        fields = ['name', 'description', 'start_date', 'end_date', 'jury', 'participants']
+        fields = ['name', 'description', 'start_date', 'end_date', 'status', 'jurys', 'participants']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Enter contest name'}),
             'description': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'What is this contest about?'}),
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
-            'jury': forms.SelectMultiple(attrs={'class': 'form-input'}),
+            'status': forms.Select(attrs={'class': 'form-input'}),
+            'jurys': forms.SelectMultiple(attrs={'class': 'form-input'}),
             'participants': forms.SelectMultiple(attrs={'class': 'form-input'}),
         }

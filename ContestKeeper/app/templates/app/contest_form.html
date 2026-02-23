@@ -5,8 +5,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Create New Contest - ContestKeeper</title>
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+    <title>{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %} - ContestKeeper</title>
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
     <style>
         .form-card {
             background: rgba(255, 255, 255, 0.05);
@@ -56,7 +56,7 @@
     {% include 'app/nav.html' %}
     <main class="dashboard-container">
         <header class="dashboard-header">
-            <h1 id="h1">Create New Contest</h1>
+            <h1 id="h1">{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %}</h1>
         </header>
 
         <div class="form-card">
@@ -72,7 +72,7 @@
                 </div>
                 {% endfor %}
                 <div class="contest-actions" style="margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary">Create Contest</button>
+                    <button type="submit" class="btn btn-primary">{% if is_edit %}Save Changes{% else %}Create Contest{% endif %}</button>
                     <a href="{% url 'home' %}" class="btn btn-secondary"
                         style="text-decoration: none; text-align: center;">Cancel</a>
                 </div>

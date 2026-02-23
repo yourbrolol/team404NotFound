@@ -12,7 +12,7 @@ body {
 
 #h1 {
     display: flex;
-    justify-content: center;
+    margin: auto;
 }
 
 .dashboard-container {
@@ -82,9 +82,31 @@ body {
     font-size: 0.75rem;
     padding: 0.2rem 0.6rem;
     border-radius: 1rem;
+    border: 1px solid;
+}
+
+.status-active, .status-running {
     background: rgba(34, 197, 94, 0.2);
     color: #4ade80;
-    border: 1px solid rgba(34, 197, 94, 0.3);
+    border-color: rgba(34, 197, 94, 0.3);
+}
+
+.status-draft {
+    background: rgba(148, 163, 184, 0.2);
+    color: #94a3b8;
+    border-color: rgba(148, 163, 184, 0.3);
+}
+
+.status-registration {
+    background: rgba(99, 102, 241, 0.2);
+    color: #818cf8;
+    border-color: rgba(99, 102, 241, 0.3);
+}
+
+.status-finished {
+    background: rgba(239, 68, 68, 0.2);
+    color: #f87171;
+    border-color: rgba(239, 68, 68, 0.3);
 }
 
 .contest-description {

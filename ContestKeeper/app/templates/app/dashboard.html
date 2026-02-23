@@ -19,9 +19,7 @@
 
         <section class="contest-section">
             <h2>
-                {% if user.is_admin %}
-                All Contests
-                {% elif user.is_organizer %}
+                {% if user.is_organizer %}
                 My Organized Contests
                 {% elif user.is_jury %}
                 Contests to Judge
@@ -35,7 +33,7 @@
                 <div class="contest-card">
                     <div class="contest-card-header">
                         <h3>{{ contest.name }}</h3>
-                        <span class="status-indicator">Active</span>
+                        <span class="status-indicator status-{{ contest.status|lower }}">{{ contest.get_status_display }}</span>
                     </div>
                     <p class="contest-description">{{ contest.description }}</p>
                     <div class="contest-details">
@@ -51,14 +49,13 @@
                     <div class="contest-actions">
                         <a href="{% url 'contest_detail' contest.id %}" class="btn btn-primary"
                             style="text-decoration: none; text-align: center;">View Details</a>
-                        {% if user.is_organizer or user.is_admin %}
-                        <button class="btn btn-secondary">Edit</button>
+                        {% if user.is_organizer %}
+                        <a href="{% url 'contest_edit' contest.id %}" class="btn btn-secondary"
+                            style="text-decoration: none; text-align: center;">Edit</a>
                         {% endif %}
                     </div>
                 </div>
-                {% empty %}
                 <div class="empty-state">
-                    <p>No contests found.</p>
                     {% if user.is_organizer %}
                     <a href="{% url 'contest_create' %}" class="btn btn-primary"
                         style="text-decoration: none; text-align: center;">Create New Contest</a>
