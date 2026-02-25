@@ -6,19 +6,33 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ContestKeeper - Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
     {% include 'app/nav.html' %}
     <main class="dashboard-container">
         <header class="dashboard-header">
-            <h1 id="h1">Dashboard</h1>
-            <p class="role-badge">{{ user.get_role_display }}</p>
+            <div class="header-left">
+                <h1 id="h1">Dashboard</h1>
+                <span class="role-badge">{{ user.get_role_display }}</span>
+            </div>
+            {% if user.is_organizer %}
+            <div class="header-actions">
+                <a href="{% url 'contest_create' %}" class="btn btn-primary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
+                    New Contest
+                </a>
+            </div>
+            {% endif %}
         </header>
 
         <section class="contest-section">
-            <h2>
+            <h2 class="section-title">
                 {% if user.is_organizer %}
                 My Organized Contests
                 {% elif user.is_jury %}
@@ -38,27 +52,29 @@
                     <p class="contest-description">{{ contest.description }}</p>
                     <div class="contest-details">
                         <div class="detail-item">
-                            <span class="label">Starts:</span>
+                            <span class="label">Starts</span>
                             <span class="value">{{ contest.start_date|date:"M d, Y" }}</span>
                         </div>
                         <div class="detail-item">
-                            <span class="label">Ends:</span>
+                            <span class="label">Ends</span>
                             <span class="value">{{ contest.end_date|date:"M d, Y" }}</span>
                         </div>
                     </div>
                     <div class="contest-actions">
-                        <a href="{% url 'contest_detail' contest.id %}" class="btn btn-primary"
-                            style="text-decoration: none; text-align: center;">View Details</a>
+                        <a href="{% url 'contest_detail' contest.id %}" class="btn btn-secondary">Details</a>
                         {% if user.is_organizer %}
-                        <a href="{% url 'contest_edit' contest.id %}" class="btn btn-secondary"
-                            style="text-decoration: none; text-align: center;">Edit</a>
+                        <a href="{% url 'contest_edit' contest.id %}" class="btn btn-primary">Edit</a>
                         {% endif %}
                     </div>
                 </div>
+                {% empty %}
                 <div class="empty-state">
+                    <div class="empty-icon">
+                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                    </div>
+                    <p>No contests found in your list.</p>
                     {% if user.is_organizer %}
-                    <a href="{% url 'contest_create' %}" class="btn btn-primary"
-                        style="text-decoration: none; text-align: center;">Create New Contest</a>
+                    <a href="{% url 'contest_create' %}" class="btn btn-primary">Create Your First Contest</a>
                     {% endif %}
                 </div>
                 {% endfor %}

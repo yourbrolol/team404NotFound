@@ -30,9 +30,6 @@ def home(request):
     return render(request, "app/index.html")
 
 def contest_list(request):
-    # Returns raw contests data as requested (placeholder for now)
-    # Exclude drafts for everyone except maybe organizers? 
-    # For now, let's keep it simple: exclude drafts from the public list.
     contests = Contest.objects.exclude(status=Contest.Status.DRAFT).values()
     from django.http import JsonResponse
     return JsonResponse(list(contests), safe=False)
@@ -69,13 +66,11 @@ def contest_edit(request, pk):
 
 def contest_detail(request, pk):
     contest = get_object_or_404(Contest, pk=pk)
-    
-    # Restriction: draft only accessible for the person who created it
+
     if contest.status == Contest.Status.DRAFT and contest.organizer != request.user:
         from django.http import Http404
         raise Http404("Contest is in draft or you don't have access.")
-    
-    # Get applications for this contest
+
     p_applications = contest.contest_apps.filter(application_type=Application.Type.PARTICIPANT, status=Application.Status.PENDING)
     j_applications = contest.contest_apps.filter(application_type=Application.Type.JURY, status=Application.Status.PENDING)
     
@@ -90,15 +85,13 @@ def contest_detail(request, pk):
 
 def apply_to_contest(request, pk, app_type):
     contest = get_object_or_404(Contest, pk=pk)
-    
-    # Cannot apply to draft contests
+
     if contest.status == Contest.Status.DRAFT:
         from django.http import HttpResponseForbidden
         return HttpResponseForbidden("Cannot apply to a draft contest.")
 
     role_type = Application.Type.PARTICIPANT if app_type == 'participant' else Application.Type.JURY
-    
-    # Check if application already exists
+
     if not Application.objects.filter(user=request.user, contest=contest, application_type=role_type).exists():
         Application.objects.create(
             user=request.user,
@@ -110,12 +103,9 @@ def apply_to_contest(request, pk, app_type):
 
 def approve_application(request, pk):
     application = get_object_or_404(Application, pk=pk)
-    # Check if user is organizer of the contest
     if request.user == application.contest.organizer:
         application.status = Application.Status.APPROVED
         application.save()
-        
-        # Add user to the contest
         if application.application_type == Application.Type.PARTICIPANT:
             application.contest.participants.add(application.user)
         else:

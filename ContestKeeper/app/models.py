@@ -4,13 +4,14 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     first_name = None
     last_name = None
+    username = models.CharField(max_length=20, unique=True)
 
     class Role(models.TextChoices):
         ORGANIZER = "ORGANIZER", "Organizer"
         JURY = "JURY", "Jury"
         PARTICIPANT = "PARTICIPANT", "Participant"
 
-    role = models.CharField(max_length=20, choices=Role.choices, default=Role.PARTICIPANT)
+    role = models.CharField(choices=Role.choices, default=Role.PARTICIPANT)
 
     def __str__(self):
         return self.username
@@ -36,7 +37,7 @@ class Contest(models.Model):
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_contests", null=True, blank=True)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.DRAFT)
+    status = models.CharField(choices=Status.choices, default=Status.DRAFT)
     jurys = models.ManyToManyField(User, related_name="judged_contests", blank=True)
     participants = models.ManyToManyField(User, related_name="participated_contests", blank=True)
 
@@ -55,8 +56,8 @@ class Application(models.Model):
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submitted_apps")
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="contest_apps")
-    application_type = models.CharField(max_length=20, choices=Type.choices)
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.PENDING)
+    application_type = models.CharField(choices=Type.choices)
+    status = models.CharField(choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

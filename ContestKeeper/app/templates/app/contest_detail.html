@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ contest.name }} - ContestKeeper</title>
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <style>
         .detail-card {
             background: rgba(255, 255, 255, 0.05);
@@ -157,6 +157,13 @@
             opacity: 0.9;
             transform: scale(1.02);
         }
+
+        .status-indicator {
+            font-size: 0.9rem;
+            padding: 0.5rem 1rem;
+            border-radius: 1rem;
+            border: 1px solid;
+        }
     </style>
 </head>
 
@@ -166,7 +173,7 @@
         <div class="detail-card">
             <div class="detail-header">
                 <h1 style="margin: 0; font-size: 2.5rem;">{{ contest.name }}</h1>
-                <span class="status-indicator" style="padding: 0.5rem 1rem; font-size: 0.9rem;">Active</span>
+                <span class="status-indicator">Active</span>
             </div>
 
             <div class="info-grid">
