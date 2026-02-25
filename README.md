@@ -2,8 +2,8 @@
 
 # Requirements
 - Python 3.13.0 or later (check using python / python3 --version),
-- Django `version`,
-- Daphne `version`.
+- Django 6.0.2,
+- Daphne 4.2.1.
 
 # Installation & startup guide
 This part will thoroughly explain how to install the needed packages (if not installed yet), how to run and what often issues may occur.
