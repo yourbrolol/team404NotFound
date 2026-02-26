@@ -8,27 +8,7 @@
 # Installation & startup guide
 This part will thoroughly explain how to install the needed packages (if not installed yet), how to run and what often issues may occur.
 
-The required python / pip version and packages are already preinstalled in .venv, **however** they might be incompatible with your OS. (at the time of 25.02.2026) the .venv packages were downloaded on a machine using Windows 11 operating system, so python and most packages are in .exe format.
-
-To know if the preinstalled .venv is compatible with your os, locate to the project's root directory and type:
-
-On Windows 10 / 11:
-```pwsh
-.venv\Scripts\Activate.ps1 # or if using cmd instead of pwsh, type: .\venv\Scripts\activate.bat
-cd ContestKeeper # or whatever the main application is called
-python manage.py runserver # should raise no errors, **especially no ImportErrors**
-```
-
-On Linux / MacOS:
-```bash
-source .venv/bin/activate # use sudo prefix if needed
-cd ContestKeeper # or whatever the main application is called
-python manage.py runserver # should raise no errors, **especially no ImportErrors**
-```
-
-## If no errors are raised, proceed to the usage guide. Otherwise, continue this guide.
-
-Here will be shown exactly how to manually reinstall .venv step by step.
+Here will be shown exactly how to manually create .venv and install required packages step by step.
 
 ### First of all, head to the project root, and delete .venv:
 
@@ -71,7 +51,23 @@ sudo apt install python-pip # EXAMPLE python pip installation, your OS might use
 pip install django daphne # will also install all the required packages those two rely on
 ```
 
-## Now, once everything's set up, go back to the start of the guides and try running the app. If it does not run, try finding your issue here or in the internet:
+## Now, once everything's set up, go back to the start of the guides and try running the app:
+
+Pwsh:
+```pwsh
+.venv\Scripts\Activate.ps1 # or if using cmd instead of pwsh, type: .\venv\Scripts\activate.bat
+cd ContestKeeper # or whatever the main application is called
+python manage.py runserver # should raise no errors, **especially no ImportErrors**
+```
+
+Bash:
+```bash
+source .venv/bin/activate # use sudo prefix if needed
+cd ContestKeeper # or whatever the main application is called
+python manage.py runserver # should raise no errors, **especially no ImportErrors**
+```
+
+## If it does not run, try finding your issue here or on the Internet:
 
 ### Common issues:
 1. You might have installed python via python installer, and forgot to check "Add to PATH" flag or something similar. Can be resolved by either manually adding it to PATH (complex, wont be explained there) or by reinstalling the python and checking the flag, mentioned earlier.
