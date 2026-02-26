@@ -140,3 +140,60 @@
     height: 1px;
     background: var(--border);
 }
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Tablet  (≤ 900px)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 900px) {
+
+    .dashboard-container {
+        width: 100%;
+        padding: 1.25rem;
+    }
+
+    .section-title {
+        font-size: 1.5rem;
+        margin-bottom: 1.25rem;
+    }
+
+    .contest-card {
+        padding: 1.5rem;
+        gap: 1rem;
+    }
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Phone  (≤ 600px)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (max-width: 600px) {
+
+    .dashboard-container {
+        padding: 0.75rem;
+    }
+
+    .section-title {
+        font-size: 1.25rem;
+        margin-bottom: 1rem;
+    }
+
+    .contest-card h3 {
+        font-size: 1.15rem;
+    }
+
+    /* Stack the two action buttons vertically */
+    .contest-actions {
+        grid-template-columns: 1fr;
+        gap: 0.6rem;
+    }
+
+    .contest-details {
+        grid-template-columns: 1fr 1fr;   /* keep 2-col dates */
+        gap: 0.75rem;
+        padding-top: 0.75rem;
+    }
+
+    .empty-state {
+        padding: 3rem 1rem;
+        border-radius: 1rem;
+    }
+}

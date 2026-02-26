@@ -1,0 +1,16 @@
+.dashboard-container {
+    width: 98%;
+    margin: 0 auto;
+    padding: 0.5rem;
+}
+
+.glass-panel {
+    margin: auto;
+    max-width: 45vw;
+    padding: 1.5rem;
+}
+
+.dashboard-header {
+    display: flex;
+    align-items: center;
+}
