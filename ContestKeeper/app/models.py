@@ -26,6 +26,20 @@ class User(AbstractUser):
         return self.role == self.Role.PARTICIPANT
 
 class Contest(models.Model):
+    def save(self, *args, **kwargs):
+        from django.utils import timezone
+        now = timezone.now()
+        if self.is_draft:
+            self.status = self.Status.DRAFT
+        else:
+            if self.start_date and self.start_date <= now:
+                if self.end_date and self.end_date < now:
+                    self.status = self.Status.FINISHED
+                else:
+                    self.status = self.Status.RUNNING
+            else:
+                self.status = self.Status.REGISTRATION
+        super().save(*args, **kwargs)
     class Status(models.TextChoices):
         DRAFT = "DRAFT", "Draft"
         REGISTRATION = "REGISTRATION", "Registration"
@@ -38,6 +52,7 @@ class Contest(models.Model):
     end_date = models.DateTimeField()
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_contests", null=True, blank=True)
     status = models.CharField(choices=Status.choices, default=Status.DRAFT)
+    is_draft = models.BooleanField(default=True)
     jurys = models.ManyToManyField(User, related_name="judged_contests", blank=True)
     participants = models.ManyToManyField(User, related_name="participated_contests", blank=True)
 

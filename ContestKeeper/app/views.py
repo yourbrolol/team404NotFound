@@ -55,6 +55,9 @@ def contest_edit(request, pk):
         return HttpResponseForbidden("You are not the organizer of this contest.")
     
     if request.method == 'POST':
+        if 'delete' in request.POST:
+            contest.delete()
+            return redirect('home')
         form = ContestForm(request.POST, instance=contest)
         if form.is_valid():
             form.save()
