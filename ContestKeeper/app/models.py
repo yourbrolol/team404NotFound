@@ -75,6 +75,7 @@ class Team(models.Model):
 class Application(models.Model):
     class Type(models.TextChoices):
         JURY = "JURY", "Jury"
+        TEAM = "TEAM", "Team"
         PARTICIPANT = "PARTICIPANT", "Participant"
 
     class Status(models.TextChoices):
@@ -83,7 +84,8 @@ class Application(models.Model):
         REJECTED = "REJECTED", "Rejected"
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submitted_apps")
-    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="contest_apps")
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="contest_apps", null=True, blank=True)
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="team_apps", null=True, blank=True)
     application_type = models.CharField(choices=Type.choices)
     status = models.CharField(choices=Status.choices, default=Status.PENDING)
     created_at = models.DateTimeField(auto_now_add=True)
