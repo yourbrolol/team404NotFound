@@ -59,6 +59,19 @@ class Contest(models.Model):
     def __str__(self):
         return self.name
 
+class Team(models.Model):
+    class Status(models.TextChoices):
+        DRAFT = "DRAFT", "Draft"
+        ACTIVE = "ACTIVE", "Active"
+    
+    name = models.CharField(max_length=20)
+    description = models.TextField(max_length=200, blank=True)
+    status = models.CharField(choices=Status.choices, default=Status.DRAFT)
+    participants = models.ManyToManyField(User, related_name="participated_teams")
+    
+    def __str__(self):
+        return f"Team {self.name}."
+
 class Application(models.Model):
     class Type(models.TextChoices):
         JURY = "JURY", "Jury"
