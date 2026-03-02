@@ -36,6 +36,18 @@ Bash:
 python3 -m venv .venv # alternatively, try python instead of python3
 ```
 
+**Now, lets activate the venv:**
+
+Pwsh:
+```pwsh
+.venv\Scripts\Activate.ps1 # might be needed to activate certain policies beforehand
+```
+
+Bash:
+```bash
+source .venv/bin/activate # use sudo prefix if needed
+```
+
 ### Next, lets install the needed packages:
 
 **(Before proceeding, make sure there is a "(venv)" prefix before your command line)**
@@ -47,7 +59,6 @@ pip install django daphne # will also install all the required packages those tw
 
 Bash
 ```bash
-sudo apt install python-pip # EXAMPLE python pip installation, your OS might use another package manager 
 pip install django daphne # will also install all the required packages those two rely on
 ```
 
@@ -55,14 +66,12 @@ pip install django daphne # will also install all the required packages those tw
 
 Pwsh:
 ```pwsh
-.venv\Scripts\Activate.ps1 # or if using cmd instead of pwsh, type: .\venv\Scripts\activate.bat
 cd ContestKeeper # or whatever the main application is called
 python manage.py runserver # should raise no errors, **especially no ImportErrors**
 ```
 
 Bash:
 ```bash
-source .venv/bin/activate # use sudo prefix if needed
 cd ContestKeeper # or whatever the main application is called
 python manage.py runserver # should raise no errors, **especially no ImportErrors**
 ```
