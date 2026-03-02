@@ -124,6 +124,19 @@ def reject_application(request, pk):
         
     return redirect('contest_detail', pk=application.contest.pk)
 
+def contest_delete(request, pk):
+    contest = get_object_or_404(Contest, pk=pk)
+    
+    if contest.organizer != request.user:
+        from django.http import HttpResponseForbidden
+        return HttpResponseForbidden("You are not authorized to delete this contest.")
+        
+    if request.method == 'POST':
+        contest.delete()
+        return redirect('dashboard')
+        
+    return redirect('contest_detail', pk=pk)
+
 class RegisterView(CreateView):
     form_class = UserRegistrationForm
     template_name = "registration/register.html"
