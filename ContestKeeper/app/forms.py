@@ -22,13 +22,11 @@ class ContestForm(forms.ModelForm):
         return cleaned_data
     class Meta:
         model = Contest
-        fields = ['name', 'description', 'start_date', 'end_date', 'is_draft', 'jurys', 'participants']
+        fields = ['name', 'description', 'start_date', 'end_date', 'is_draft']
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Enter contest name'}),
             'description': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'What is this contest about?'}),
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
             'is_draft': forms.CheckboxInput(attrs={'class': 'form-input'}),
-            'jurys': forms.SelectMultiple(attrs={'class': 'form-input'}),
-            'participants': forms.SelectMultiple(attrs={'class': 'form-input'}),
         }

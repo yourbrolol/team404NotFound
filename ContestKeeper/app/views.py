@@ -57,7 +57,7 @@ def contest_edit(request, pk):
     if request.method == 'POST':
         if 'delete' in request.POST:
             contest.delete()
-            return redirect('home')
+            return redirect('dashboard')
         form = ContestForm(request.POST, instance=contest)
         if form.is_valid():
             form.save()
