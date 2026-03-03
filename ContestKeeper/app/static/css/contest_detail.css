@@ -1,6 +1,18 @@
+:root {
+    --white: #fff;
+    --black: 255, 255, 255;
+    --header: #64748b;
+    --tag: 99, 102, 241;
+    --tag-bg: #818cf8;
+    --green-bg: 34, 197, 94;
+    --green-text: #4ade80;
+    --red-bg: 239, 68, 68;
+    --red-text: #f87171;
+}
+
 .detail-card {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
+    background: var(--glass);
+    border: 1px solid var(--border);
     border-radius: 2rem;
     padding: 3rem;
     backdrop-filter: blur(15px);
@@ -11,7 +23,7 @@
 }
 
 .detail-header {
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    border-bottom: 1px solid var(--border);
     padding-bottom: 2rem;
     margin-bottom: 2rem;
     display: flex;
@@ -40,7 +52,7 @@
 }
 
 .description-box {
-    background: rgba(15, 23, 42, 0.4);
+    background: color-mix(in srgb, var(--bg-dark) 40%, transparent);
     border-radius: 1.5rem;
     padding: 2rem;
     margin-bottom: 2.5rem;
@@ -63,9 +75,9 @@
 }
 
 .user-tag {
-    background: rgba(99, 102, 241, 0.15);
-    color: #818cf8;
-    border: 1px solid rgba(99, 102, 241, 0.3);
+    background: rgba(var(--tag), 0.15);
+    color: var(--tag-bg);
+    border: 1px solid rgba(var(--tag), 0.3);
     padding: 0.3rem 0.8rem;
     border-radius: 0.6rem;
     font-size: 0.9rem;
@@ -76,13 +88,13 @@
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 2rem;
-    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    border-top: 1px solid rgba(var(--black), 0.1);
     padding-top: 2rem;
 }
 
 .application-card {
-    background: rgba(255, 255, 255, 0.03);
-    border: 1px solid rgba(255, 255, 255, 0.05);
+    background: rgba(var(--black), 0.03);
+    border: 1px solid rgba(var(--black), 0.05);
     border-radius: 1.2rem;
     padding: 1.2rem;
     display: flex;
@@ -93,7 +105,7 @@
 }
 
 .application-card:hover {
-    background: rgba(255, 255, 255, 0.06);
+    background: rgba(var(--black), 0.06);
     transform: translateY(-2px);
 }
 
@@ -103,7 +115,7 @@
 }
 
 .btn-sm {
-    padding: 0.4rem 0.8rem;
+    padding: 1.1rem 2.5rem;
     font-size: 0.8rem;
     border-radius: 0.6rem;
     cursor: pointer;
@@ -112,42 +124,25 @@
     text-decoration: none;
 }
 
-.btn-approve {
-    background: rgba(34, 197, 94, 0.2);
-    color: #4ade80;
-    border: 1px solid rgba(34, 197, 94, 0.3);
+.btn-sm.btn-tinted {
+    color: var(--btn-text);
+    background: rgba(var(--btn-color), 0.2);
+    border: 1px solid rgba(var(--btn-color), 0.3);
+}
+.btn-sm.btn-tinted:hover {
+    background: rgba(var(--btn-color), 0.35);
+    border-color: rgba(var(--btn-color), 0.5);
 }
 
-.btn-approve:hover {
-    background: rgba(34, 197, 94, 0.3);
-}
-
-.btn-reject {
-    background: rgba(239, 68, 68, 0.2);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.3);
-}
-
-.btn-reject:hover {
-    background: rgba(239, 68, 68, 0.3);
-}
-
-.btn-delete {
-    background: rgba(239, 68, 68, 0.1);
-    color: #f87171;
-    border: 1px solid rgba(239, 68, 68, 0.2);
-}
-
-.btn-delete:hover {
-    background: rgba(239, 68, 68, 0.3);
-    border-color: rgba(239, 68, 68, 0.5);
-}
+.btn-approve { --btn-color: var(--green-bg); --btn-text: var(--green-text); }
+.btn-reject  { --btn-color: var(--red-bg);   --btn-text: var(--red-text); }
+.btn-delete  { --btn-color: var(--red-bg);   --btn-text: var(--red-text); background: rgba(var(--red-bg), 0.1); }
 
 .btn-apply {
     display: inline-block;
     margin-top: 1rem;
-    background: linear-gradient(135deg, #6366f1, #a855f7);
-    color: white;
+    background: linear-gradient(135deg, var(--primary), var(--secondary));
+    color: var(--white);
     padding: 0.6rem 1.2rem;
     border-radius: 0.8rem;
     font-weight: 600;

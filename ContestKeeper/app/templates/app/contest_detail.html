@@ -120,7 +120,7 @@
                 <form action="{% url 'contest_delete' contest.pk %}" method="POST" style="display: inline;"
                     onsubmit="return confirm('Are you sure you want to delete this contest? This action cannot be undone.');">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-delete">Delete Contest</button>
+                    <button type="submit" class="btn-sm btn-tinted btn-delete">Delete Contest</button>
                 </form>
                 {% endif %}
             </div>

@@ -1,13 +1,5 @@
-.dashboard-container {
-    width: 98%;
-    margin: 0 auto;
-    padding: 0.5rem;
-}
-
 .contest-card {
     padding: 2rem;
-    display: flex;
-    flex-direction: column;
     gap: 1.5rem;
     height: 100%;
 }
