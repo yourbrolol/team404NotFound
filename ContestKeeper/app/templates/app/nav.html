@@ -19,7 +19,7 @@
         <div class="nav-links">
             <button data-url="{% url 'home' %}" class="nav-link" id="homeBtn">Home</button>
             <button data-url="{% url 'dashboard' %}" class="nav-link" id="dashboardBtn">Dashboard</button>
-            <button data-url="#" class="nav-link" id="profileBtn">Profile</button>
+            <button data-url="{% url 'profile' %}" class="nav-link" id="profileBtn">Profile</button>
             <button data-url="#" class="nav-link" id="settingsBtn">Settings</button>
             <hr class="nav-auth-divider">
             {% if user.is_authenticated %}

@@ -2,6 +2,7 @@ from django.contrib.auth import login
 from django.shortcuts import redirect, render, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import CreateView
+from django.http import HttpResponse
 
 from .forms import UserRegistrationForm, ContestForm
 
@@ -28,6 +29,10 @@ def home(request):
         return redirect("register")
 
     return render(request, "app/index.html")
+
+def profile(request):
+    if not request.user.is_authenticated: return redirect("register")
+    return render(request, "app/profile.html")
 
 def contest_list(request):
     contests = Contest.objects.exclude(status=Contest.Status.DRAFT).values()

@@ -4,13 +4,14 @@ from django.contrib.auth.models import AbstractUser
 class User(AbstractUser):
     first_name = None
     last_name = None
-    username = models.CharField(max_length=20, unique=True)
 
     class Role(models.TextChoices):
         ORGANIZER = "ORGANIZER", "Organizer"
         JURY = "JURY", "Jury"
         PARTICIPANT = "PARTICIPANT", "Participant"
 
+    username = models.CharField(max_length=20, unique=True)
+    bio = models.CharField(max_length=200, blank=True)
     role = models.CharField(choices=Role.choices, default=Role.PARTICIPANT)
 
     def __str__(self):
@@ -24,6 +25,19 @@ class User(AbstractUser):
 
     def is_participant(self):
         return self.role == self.Role.PARTICIPANT
+
+class Team(models.Model):
+    class Status(models.TextChoices):
+        DRAFT = "DRAFT", "Draft"
+        ACTIVE = "ACTIVE", "Active"
+    
+    name = models.CharField(max_length=20)
+    description = models.TextField(max_length=200, blank=True)
+    status = models.CharField(choices=Status.choices, default=Status.DRAFT)
+    participants = models.ManyToManyField(User, related_name="participated_teams")
+    
+    def __str__(self):
+        return f"Team {self.name}."
 
 class Contest(models.Model):
     def save(self, *args, **kwargs):
@@ -55,22 +69,10 @@ class Contest(models.Model):
     is_draft = models.BooleanField(default=True)
     jurys = models.ManyToManyField(User, related_name="judged_contests", blank=True)
     participants = models.ManyToManyField(User, related_name="participated_contests", blank=True)
+    teams = models.ManyToManyField(Team, related_name="teams_in_contests", blank=True)
 
     def __str__(self):
         return self.name
-
-class Team(models.Model):
-    class Status(models.TextChoices):
-        DRAFT = "DRAFT", "Draft"
-        ACTIVE = "ACTIVE", "Active"
-    
-    name = models.CharField(max_length=20)
-    description = models.TextField(max_length=200, blank=True)
-    status = models.CharField(choices=Status.choices, default=Status.DRAFT)
-    participants = models.ManyToManyField(User, related_name="participated_teams")
-    
-    def __str__(self):
-        return f"Team {self.name}."
 
 class Application(models.Model):
     class Type(models.TextChoices):
