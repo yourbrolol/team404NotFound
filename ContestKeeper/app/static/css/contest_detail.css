@@ -10,6 +10,7 @@
     --red-text: #f87171;
 }
 
+/* ── Card ── */
 .detail-card {
     background: var(--glass);
     border: 1px solid var(--border);
@@ -18,10 +19,11 @@
     backdrop-filter: blur(15px);
     width: min(900px, calc(100% - 2.5rem));
     margin: 1.5rem auto;
-    color: #fff;
+    color: var(--white);
     box-sizing: border-box;
 }
 
+/* ── Header ── */
 .detail-header {
     border-bottom: 1px solid var(--border);
     padding-bottom: 2rem;
@@ -31,6 +33,12 @@
     align-items: center;
 }
 
+.detail-title {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+/* ── Info grid ── */
 .info-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -39,7 +47,7 @@
 }
 
 .info-item h4 {
-    color: #64748b;
+    color: var(--header);
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -51,6 +59,7 @@
     font-weight: 500;
 }
 
+/* ── Description ── */
 .description-box {
     background: color-mix(in srgb, var(--bg-dark) 40%, transparent);
     border-radius: 1.5rem;
@@ -60,6 +69,7 @@
     color: #cbd5e1;
 }
 
+/* ── Roles section ── */
 .roles-section {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
@@ -83,6 +93,13 @@
     font-size: 0.9rem;
 }
 
+/* Muted label for empty states */
+.empty-label {
+    color: var(--header);
+    font-size: 0.9rem;
+}
+
+/* ── Applications section ── */
 .application-section {
     margin-top: 3rem;
     display: grid;
@@ -100,6 +117,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin-top: 0.8rem;
     margin-bottom: 0.8rem;
     transition: all 0.3s ease;
 }
@@ -114,30 +132,38 @@
     gap: 0.5rem;
 }
 
+/* ── Small tinted buttons (approve / reject / delete) ── */
 .btn-sm {
-    padding: 1.1rem 2.5rem;
-    font-size: 0.8rem;
+    padding: 0.6rem 1.2rem;
+    font-size: 0.9rem;
     border-radius: 0.6rem;
     cursor: pointer;
     border: none;
     transition: 0.2s;
     text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
-.btn-sm.btn-tinted {
+/* .btn-tinted works as a modifier on any base: .btn or .btn-sm */
+.btn-tinted {
     color: var(--btn-text);
     background: rgba(var(--btn-color), 0.2);
     border: 1px solid rgba(var(--btn-color), 0.3);
 }
-.btn-sm.btn-tinted:hover {
+
+.btn-tinted:hover {
     background: rgba(var(--btn-color), 0.35);
     border-color: rgba(var(--btn-color), 0.5);
 }
 
+/* Per-button color tokens */
 .btn-approve { --btn-color: var(--green-bg); --btn-text: var(--green-text); }
 .btn-reject  { --btn-color: var(--red-bg);   --btn-text: var(--red-text); }
 .btn-delete  { --btn-color: var(--red-bg);   --btn-text: var(--red-text); background: rgba(var(--red-bg), 0.1); }
 
+/* ── Apply button ── */
 .btn-apply {
     display: inline-block;
     margin-top: 1rem;
@@ -147,7 +173,11 @@
     border-radius: 0.8rem;
     font-weight: 600;
     text-decoration: none;
+    border: none;
+    cursor: pointer;
     transition: 0.3s;
+    font-family: inherit;
+    font-size: 1rem;
 }
 
 .btn-apply:hover {
@@ -155,6 +185,43 @@
     transform: scale(1.02);
 }
 
+.btn-apply--pending {
+    opacity: 0.6;
+    cursor: default;
+}
+
+.btn-apply--pending:hover {
+    opacity: 0.6;
+    transform: none;
+}
+
+/* ── Contest actions bar ── */
+.contest-actions {
+    margin-top: 1.15rem;
+    border-top: 1px solid rgba(var(--black), 0.1);
+    padding-top: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+
+.contest-actions .btn {
+    text-decoration: none;
+    text-align: center;
+}
+
+.delete-form {
+    display: inline-flex;
+    align-items: center;
+}
+
+.delete-form .btn {
+    padding: 0.9rem 2.35rem;
+    font-weight: 600;
+}
+
+/* ── Status indicator ── */
 .status-indicator {
     font-size: 0.9rem;
     padding: 0.5rem 1rem;
@@ -163,9 +230,9 @@
     white-space: nowrap;
 }
 
-/* ── Responsive breakpoints ── */
-
-/* Tablet — up to 900px */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Tablet  (≤ 900px)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 900px) {
     .detail-card {
         padding: 2rem;
@@ -173,12 +240,14 @@
         margin: 0 1rem;
     }
 
-    .detail-header h1 {
-        font-size: 1.8rem !important;
+    .detail-title {
+        font-size: 1.8rem;
     }
 }
 
-/* Small tablet / large phone — up to 700px */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Small tablet  (≤ 700px)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 700px) {
     .detail-card {
         padding: 1.5rem;
@@ -192,21 +261,18 @@
         gap: 0.75rem;
     }
 
-    .detail-header h1 {
-        font-size: 1.5rem !important;
+    .detail-title {
+        font-size: 1.5rem;
+    }
+
+    .info-grid,
+    .roles-section,
+    .application-section {
+        grid-template-columns: 1fr;
     }
 
     .info-grid {
-        grid-template-columns: 1fr;
         gap: 1.25rem;
-    }
-
-    .roles-section {
-        grid-template-columns: 1fr;
-    }
-
-    .application-section {
-        grid-template-columns: 1fr;
     }
 
     .description-box {
@@ -215,7 +281,9 @@
     }
 }
 
-/* Phone — up to 480px */
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   Phone  (≤ 480px)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 480px) {
     .detail-card {
         padding: 1.1rem;
@@ -223,8 +291,8 @@
         margin: 0 0.25rem;
     }
 
-    .detail-header h1 {
-        font-size: 1.25rem !important;
+    .detail-title {
+        font-size: 1.25rem;
     }
 
     .btn-apply {
@@ -238,5 +306,15 @@
 
     .btn-sm {
         text-align: center;
+    }
+
+    .contest-actions {
+        flex-direction: column;
+    }
+
+    .contest-actions .btn,
+    .delete-form,
+    .delete-form .btn-sm {
+        width: 100%;
     }
 }

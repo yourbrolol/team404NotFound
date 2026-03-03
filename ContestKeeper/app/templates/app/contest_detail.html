@@ -15,7 +15,7 @@
     <main class="dashboard-container">
         <div class="detail-card">
             <div class="detail-header">
-                <h1 style="margin: 0; font-size: 2.5rem;">{{ contest.name }}</h1>
+                <h1 class="detail-title">{{ contest.name }}</h1>
                 <span class="status-indicator">Active</span>
             </div>
 
@@ -42,13 +42,12 @@
                         {% for judge in contest.jurys.all %}
                         <span class="user-tag">{{ judge.username }}</span>
                         {% empty %}
-                        <span style="color: #64748b;">No jury assigned yet.</span>
+                        <span class="empty-label">No jury assigned yet.</span>
                         {% endfor %}
                     </div>
                     {% if user.is_authenticated and user != contest.organizer and user not in contest.jurys.all %}
                     {% if has_pending_j_app %}
-                    <button class="btn-apply" style="opacity: 0.6; cursor: default;" disabled>Jury Application
-                        Pending</button>
+                    <button class="btn-apply btn-apply--pending" disabled>Jury Application Pending</button>
                     {% else %}
                     <a href="{% url 'apply_to_contest' contest.pk 'jury' %}" class="btn-apply">Apply as Jury</a>
                     {% endif %}
@@ -60,16 +59,14 @@
                         {% for participant in contest.participants.all %}
                         <span class="user-tag">{{ participant.username }}</span>
                         {% empty %}
-                        <span style="color: #64748b;">No participants yet.</span>
+                        <span class="empty-label">No participants yet.</span>
                         {% endfor %}
                     </div>
                     {% if user.is_authenticated and user != contest.organizer and user not in contest.participants.all %}
                         {% if has_pending_p_app %}
-                        <button class="btn-apply" style="opacity: 0.6; cursor: default;" disabled>Participation
-                            Pending</button>
+                        <button class="btn-apply btn-apply--pending" disabled>Participation Pending</button>
                         {% else %}
-                        <a href="{% url 'apply_to_contest' contest.pk 'participant' %}" class="btn-apply">Apply to
-                            Participate</a>
+                        <a href="{% url 'apply_to_contest' contest.pk 'participant' %}" class="btn-apply">Apply to Participate</a>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -83,12 +80,12 @@
                     <div class="application-card">
                         <span>{{ app.user.username }}</span>
                         <div class="action-btns">
-                            <a href="{% url 'approve_application' app.pk %}" class="btn-sm btn-approve">Approve</a>
-                            <a href="{% url 'reject_application' app.pk %}" class="btn-sm btn-reject">Reject</a>
+                            <a href="{% url 'approve_application' app.pk %}" class="btn-sm btn-tinted btn-approve">Approve</a>
+                            <a href="{% url 'reject_application' app.pk %}" class="btn-sm btn-tinted btn-reject">Reject</a>
                         </div>
                     </div>
                     {% empty %}
-                    <p style="color: #64748b; font-size: 0.9rem;">No jury applications.</p>
+                    <p class="empty-label">No jury applications.</p>
                     {% endfor %}
                 </div>
                 <div>
@@ -97,30 +94,27 @@
                     <div class="application-card">
                         <span>{{ app.user.username }}</span>
                         <div class="action-btns">
-                            <a href="{% url 'approve_application' app.pk %}" class="btn-sm btn-approve">Approve</a>
-                            <a href="{% url 'reject_application' app.pk %}" class="btn-sm btn-reject">Reject</a>
+                            <a href="{% url 'approve_application' app.pk %}" class="btn-sm btn-tinted btn-approve">Approve</a>
+                            <a href="{% url 'reject_application' app.pk %}" class="btn-sm btn-tinted btn-reject">Reject</a>
                         </div>
                     </div>
                     {% empty %}
-                    <p style="color: #64748b; font-size: 0.9rem;">No participant applications.</p>
+                    <p class="empty-label">No participant applications.</p>
                     {% endfor %}
                 </div>
             </div>
             {% endif %}
 
-            <div class="contest-actions"
-                style="margin-top: 3rem; border-top: 1px solid rgba(255, 255, 255, 0.1); padding-top: 2rem;">
-                <a href="{% url 'dashboard' %}" class="btn btn-secondary"
-                    style="text-decoration: none; text-align: center;">Back to Dashboard</a>
+            <div class="contest-actions">
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
                 {% if user == contest.organizer or user.is_staff %}
-                <a href="{% url 'contest_edit' contest.pk %}" class="btn btn-primary"
-                    style="text-decoration: none; text-align: center;">Manage Contest</a>
+                <a href="{% url 'contest_edit' contest.pk %}" class="btn btn-primary">Manage Contest</a>
                 {% endif %}
                 {% if user == contest.organizer %}
-                <form action="{% url 'contest_delete' contest.pk %}" method="POST" style="display: inline;"
+                <form class="delete-form" action="{% url 'contest_delete' contest.pk %}" method="POST"
                     onsubmit="return confirm('Are you sure you want to delete this contest? This action cannot be undone.');">
                     {% csrf_token %}
-                    <button type="submit" class="btn-sm btn-tinted btn-delete">Delete Contest</button>
+                    <button type="submit" class="btn btn-tinted btn-delete">Delete Contest</button>
                 </form>
                 {% endif %}
             </div>
