@@ -72,6 +72,10 @@ def contest_edit(request, pk):
     
     return render(request, "app/contest_form.html", {"form": form, "is_edit": True})
 
+def view_teams(request, pk):
+    if not request.user.is_authenticated: redirect("register")
+    return HttpResponse("aaaaaaa")
+
 def contest_detail(request, pk):
     contest = get_object_or_404(Contest, pk=pk)
 
