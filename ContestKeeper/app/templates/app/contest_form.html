@@ -11,6 +11,35 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        /* Исправление центровки для группы с чекбоксом */
+        .form-group.checkbox-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            /* Прижимаем к левому краю */
+            gap: 12px;
+            margin: 1.5rem 0;
+        }
+
+        /* Убираем лишние отступы у самой галки */
+        .form-group.checkbox-row input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            cursor: pointer;
+        }
+
+        /* Сбрасываем стандартные стили лейбла для чекбокса */
+        .form-group.checkbox-row .form-label {
+            margin: 0;
+            cursor: pointer;
+            order: 2;
+            /* Текст будет после галки */
+        }
+    </style>
 </head>
 
 <body>
@@ -24,6 +53,17 @@
             <form method="post">
                 {% csrf_token %}
                 {% for field in form %}
+                {% if field.field.widget.input_type == 'checkbox' %}
+                {# Специальный вывод для галочки #}
+                <div class="form-group checkbox-row">
+                    {{ field }}
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% if field.errors %}
+                    <p class="field-error">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% else %}
+                {# Обычный вывод для всех остальных полей #}
                 <div class="form-group">
                     <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
                     {{ field }}
@@ -31,11 +71,14 @@
                     <p class="field-error">{{ field.errors.0 }}</p>
                     {% endif %}
                 </div>
+                {% endif %}
                 {% endfor %}
+
                 <div class="contest-actions" style="margin-top: 2rem;">
-                    <button type="submit" class="btn btn-primary">{% if is_edit %}Save Changes{% else %}Create Contest{% endif %}</button>
+                    <button type="submit" class="btn btn-primary">
+                        {% if is_edit %}Save Changes{% else %}Create Contest{% endif %}
+                    </button>
                     <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
-                </div>
                 </div>
             </form>
         </div>
