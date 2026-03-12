@@ -30,11 +30,8 @@ class OrganizerRequiredMixin(RedirectToRegisterMixin):
 
 # General views
 
-class HomeView(View):
-    def get(self, request):
-        if not request.user.is_authenticated:
-            return redirect("register")
-        return render(request, "app/index.html")
+class HomeView(RedirectToRegisterMixin, TemplateView):
+    template_name = "app/index.html"
 
 class DashboardView(RedirectToRegisterMixin, TemplateView):
     template_name = "app/dashboard.html"
@@ -101,7 +98,6 @@ class ContestDetailView(DetailView):
             **kwargs,
         )
 
-
 class ContestCreateView(RedirectToRegisterMixin, CreateView):
     model = Contest
     form_class = ContestForm
@@ -110,7 +106,6 @@ class ContestCreateView(RedirectToRegisterMixin, CreateView):
     def form_valid(self, form):
         form.instance.organizer = self.request.user
         return super().form_valid(form)
-
 
 class ContestEditView(OrganizerRequiredMixin, UpdateView):
     model = Contest
@@ -159,6 +154,7 @@ class RejectApplicationView(ApplicationActionView):
     new_status = Application.Status.REJECTED
 
 class ApplyToContestView(RedirectToRegisterMixin, View):
+    http_method_names = ["post"]
     def post(self, request, pk, app_type):
         contest = get_object_or_404(Contest, pk=pk)
         if contest.status == Contest.Status.DRAFT:
