@@ -1,4 +1,3 @@
-from unicodedata import name
 from . import views
 from django.urls import path
 
@@ -11,6 +10,7 @@ urlpatterns = [
     path("contests/new/", views.contest_create, name="contest_create"),
     path("contests/<int:pk>/", views.contest_detail, name="contest_detail"),
     path("contests/<int:pk>/teams", views.view_teams, name="contest_teams"),
+    path("contests/<int:pk>/teams/int:ck", views.team_detail, name="team_detail"),
     path("contests/<int:pk>/edit/", views.contest_edit, name="contest_edit"),
     path("contests/<int:pk>/delete/", views.contest_delete, name="contest_delete"),
     path("contests/<int:pk>/apply/<str:app_type>/", views.apply_to_contest, name="apply_to_contest"),
