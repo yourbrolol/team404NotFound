@@ -1,162 +1,191 @@
 from django.contrib.auth import login
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
-from django.shortcuts import redirect, render, get_object_or_404
+from django.shortcuts import redirect, get_object_or_404, render
 from django.urls import reverse_lazy
-from django.views.generic import CreateView
+from django.views import View
+from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView, DeleteView
 
 from .forms import UserRegistrationForm, ContestForm
 from .models import Contest, Application
 
+# Mixins
+
+class RedirectToRegisterMixin(LoginRequiredMixin):
+    """Redirect unauthenticated users to the register page."""
+    login_url = "register"
+    raise_exception = False
+
+class OrganizerRequiredMixin(RedirectToRegisterMixin):
+    """Allow access only to the organizer of the contest identified by <pk>."""
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        # If LoginRequiredMixin already redirected, respect that.
+        if not request.user.is_authenticated:
+            return response
+        contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        if contest.organizer != request.user:
+            return HttpResponseForbidden("You are not the organizer of this contest.")
+        return response
+
 # General views
 
-def home(request):
-    if not request.user.is_authenticated:
-        return redirect("register")
-    return render(request, "app/index.html")
+class HomeView(View):
+    def get(self, request):
+        if not request.user.is_authenticated:
+            return redirect("register")
+        return render(request, "app/index.html")
 
-@login_required(login_url="register")
-def dashboard(request):
-    user = request.user
-    if user.is_organizer():
-        contests = user.organized_contests.all()
-    elif user.is_jury():
-        contests = user.judged_contests.exclude(status=Contest.Status.DRAFT)
-    elif user.is_participant():
-        contests = user.participated_contests.exclude(status=Contest.Status.DRAFT)
-    else:
-        contests = Contest.objects.none()
-    return render(request, "app/dashboard.html", {"contests": contests})
+class DashboardView(RedirectToRegisterMixin, TemplateView):
+    template_name = "app/dashboard.html"
+    def get_context_data(self, **kwargs):
+        user = self.request.user
+        if user.is_organizer():
+            contests = user.organized_contests.all()
+        elif user.is_jury():
+            contests = user.judged_contests.exclude(status=Contest.Status.DRAFT)
+        elif user.is_participant():
+            contests = user.participated_contests.exclude(status=Contest.Status.DRAFT)
+        else:
+            contests = Contest.objects.none()
+        return super().get_context_data(contests=contests, **kwargs)
 
-@login_required(login_url="register")
-def profile(request):
-    return render(request, "app/profile.html")
+class ProfileView(RedirectToRegisterMixin, TemplateView):
+    template_name = "app/profile.html"
 
 # Contest views
 
-def contest_list(request):
+class ContestListView(ListView):
     """Returns a JSON list of all non-draft contests."""
-    contests = Contest.objects.exclude(status=Contest.Status.DRAFT).values()
-    return JsonResponse(list(contests), safe=False)
+    model = Contest
+    def get_queryset(self):
+        return Contest.objects.exclude(status=Contest.Status.DRAFT).values()
+    def render_to_response(self, context, **response_kwargs):
+        return JsonResponse(list(self.get_queryset()), safe=False)
 
-def contest_detail(request, pk):
-    contest = get_object_or_404(Contest, pk=pk)
-    if contest.status == Contest.Status.DRAFT and contest.organizer != request.user:
-        raise Http404("Contest is in draft or you don't have access.")
-    is_authenticated = request.user.is_authenticated
-    p_applications = contest.contest_apps.filter(
-        application_type=Application.Type.PARTICIPANT,
-        status=Application.Status.PENDING,
-    )
-    j_applications = contest.contest_apps.filter(
-        application_type=Application.Type.JURY,
-        status=Application.Status.PENDING,
-    )
-    context = {
-        "contest": contest,
-        "participant_applications": p_applications,
-        "jury_applications": j_applications,
-        "has_pending_p_app": contest.contest_apps.filter(
-            user=request.user,
+class ContestDetailView(DetailView):
+    model = Contest
+    template_name = "app/contest_detail.html"
+    context_object_name = "contest"
+    def get_object(self, queryset=None):
+        contest = super().get_object(queryset)
+        if contest.status == Contest.Status.DRAFT and contest.organizer != self.request.user:
+            raise Http404("Contest is in draft or you don't have access.")
+        return contest
+    def get_context_data(self, **kwargs):
+        contest = self.object
+        user = self.request.user
+        is_authenticated = user.is_authenticated
+
+        p_applications = contest.contest_apps.filter(
             application_type=Application.Type.PARTICIPANT,
             status=Application.Status.PENDING,
-        ).exists() if is_authenticated else False,
-        "has_pending_j_app": contest.contest_apps.filter(
-            user=request.user,
+        )
+        j_applications = contest.contest_apps.filter(
             application_type=Application.Type.JURY,
             status=Application.Status.PENDING,
-        ).exists() if is_authenticated else False,
-    }
-    return render(request, "app/contest_detail.html", context)
+        )
+        return super().get_context_data(
+            participant_applications=p_applications,
+            jury_applications=j_applications,
+            has_pending_p_app=contest.contest_apps.filter(
+                user=user,
+                application_type=Application.Type.PARTICIPANT,
+                status=Application.Status.PENDING,
+            ).exists() if is_authenticated else False,
+            has_pending_j_app=contest.contest_apps.filter(
+                user=user,
+                application_type=Application.Type.JURY,
+                status=Application.Status.PENDING,
+            ).exists() if is_authenticated else False,
+            **kwargs,
+        )
 
-@login_required(login_url="register")
-def contest_create(request):
-    if request.method == "POST":
-        form = ContestForm(request.POST)
-        if form.is_valid():
-            contest = form.save(commit=False)
-            contest.organizer = request.user
-            contest.save()
-            form.save_m2m()
-            return redirect("home")
-    else:
-        form = ContestForm()
-    return render(request, "app/contest_form.html", {"form": form})
 
-@login_required(login_url="register")
-def contest_edit(request, pk):
-    contest = get_object_or_404(Contest, pk=pk)
-    if contest.organizer != request.user:
-        return HttpResponseForbidden("You are not the organizer of this contest.")
-    if request.method == "POST":
-        form = ContestForm(request.POST, instance=contest)
-        if form.is_valid():
-            form.save()
-            return redirect("contest_detail", pk=pk)
-    else:
-        form = ContestForm(instance=contest)
-    return render(request, "app/contest_form.html", {"form": form, "is_edit": True})
+class ContestCreateView(RedirectToRegisterMixin, CreateView):
+    model = Contest
+    form_class = ContestForm
+    template_name = "app/contest_form.html"
+    success_url = reverse_lazy("home")
+    def form_valid(self, form):
+        form.instance.organizer = self.request.user
+        return super().form_valid(form)
 
-@login_required(login_url="register")
-def contest_delete(request, pk):
-    contest = get_object_or_404(Contest, pk=pk)
-    if contest.organizer != request.user:
-        return HttpResponseForbidden("You are not authorized to delete this contest.")
-    if request.method == "POST":
-        contest.delete()
-        return redirect("dashboard")
-    return redirect("contest_detail", pk=pk)
+
+class ContestEditView(OrganizerRequiredMixin, UpdateView):
+    model = Contest
+    form_class = ContestForm
+    template_name = "app/contest_form.html"
+    def get_success_url(self):
+        return reverse_lazy("contest_detail", kwargs={"pk": self.object.pk})
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(is_edit=True, **kwargs)
+
+class ContestDeleteView(OrganizerRequiredMixin, DeleteView):
+    model = Contest
+    success_url = reverse_lazy("dashboard")
+    def get(self, request, *args, **kwargs):
+        # No confirmation template — redirect back if accessed via GET.
+        return redirect("contest_detail", pk=kwargs["pk"])
 
 # Application views
 
-@login_required(login_url="register")
-def apply_to_contest(request, pk, app_type):
-    contest = get_object_or_404(Contest, pk=pk)
-    if contest.status == Contest.Status.DRAFT:
-        return HttpResponseForbidden("Cannot apply to a draft contest.")
-    role_type = (
-        Application.Type.PARTICIPANT
-        if app_type == "participant"
-        else Application.Type.JURY
-    )
-    Application.objects.get_or_create(
-        user=request.user,
-        contest=contest,
-        application_type=role_type,
-    )
-    return redirect("contest_detail", pk=pk)
+class ApplicationActionView(RedirectToRegisterMixin, View):
+    """
+    Base class for approve/reject actions.
+    Subclasses set `new_status` and optionally override `on_approved`.
+    """
+    new_status = None
+    def post(self, request, pk):
+        application = get_object_or_404(Application, pk=pk)
+        if request.user == application.contest.organizer:
+            application.status = self.new_status
+            application.save()
+            self.on_status_set(application)
+        return redirect("contest_detail", pk=application.contest.pk)
+    def on_status_set(self, application):
+        """Hook called after status is saved. Override in subclasses."""
+        pass
 
-@login_required(login_url="register")
-def approve_application(request, pk):
-    application = get_object_or_404(Application, pk=pk)
-    if request.user == application.contest.organizer:
-        application.status = Application.Status.APPROVED
-        application.save()
+class ApproveApplicationView(ApplicationActionView):
+    new_status = Application.Status.APPROVED
+    def on_status_set(self, application):
         if application.application_type == Application.Type.PARTICIPANT:
             application.contest.participants.add(application.user)
         else:
             application.contest.jurys.add(application.user)
-    return redirect("contest_detail", pk=application.contest.pk)
 
-@login_required(login_url="register")
-def reject_application(request, pk):
-    application = get_object_or_404(Application, pk=pk)
-    if request.user == application.contest.organizer:
-        application.status = Application.Status.REJECTED
-        application.save()
-    return redirect("contest_detail", pk=application.contest.pk)
+class RejectApplicationView(ApplicationActionView):
+    new_status = Application.Status.REJECTED
 
-# Team views
+class ApplyToContestView(RedirectToRegisterMixin, View):
+    def post(self, request, pk, app_type):
+        contest = get_object_or_404(Contest, pk=pk)
+        if contest.status == Contest.Status.DRAFT:
+            return HttpResponseForbidden("Cannot apply to a draft contest.")
+        role_type = (
+            Application.Type.PARTICIPANT
+            if app_type == "participant"
+            else Application.Type.JURY
+        )
+        Application.objects.get_or_create(
+            user=request.user,
+            contest=contest,
+            application_type=role_type,
+        )
+        return redirect("contest_detail", pk=pk)
 
-@login_required(login_url="register")
-def view_teams(request, pk):
+# Team views  (stubs – to be implemented)
+
+class ViewTeamsView(RedirectToRegisterMixin, View):
     # TODO: implement team listing for contest <pk>
-    return HttpResponse("Team listing not yet implemented.")
+    def get(self, request, pk):
+        return HttpResponse("Team listing not yet implemented.")
 
-@login_required(login_url="register")
-def team_detail(request, pk, ck):
+class TeamDetailView(RedirectToRegisterMixin, View):
     # TODO: implement team detail for team <ck> within contest <pk>
-    return HttpResponse(f"Team {ck} in contest {pk} – not yet implemented.")
+    def get(self, request, pk, ck):
+        return HttpResponse(f"Team {ck} in contest {pk} – not yet implemented.")
 
 # Auth views
 
