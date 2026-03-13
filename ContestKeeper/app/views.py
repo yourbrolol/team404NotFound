@@ -176,12 +176,13 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
 class ViewTeamsView(RedirectToRegisterMixin, View):
     # TODO: implement team listing for contest <pk>
     def get(self, request, pk):
-        return HttpResponse("Team listing not yet implemented.")
+        contest = get_object_or_404(Contest, pk=pk)
+        return render(request, "app/teams.html", {"contest": contest, "teams": contest.teams.all()})
 
 class TeamDetailView(RedirectToRegisterMixin, View):
     # TODO: implement team detail for team <ck> within contest <pk>
     def get(self, request, pk, ck):
-        return HttpResponse(f"Team {ck} in contest {pk} – not yet implemented.")
+        return render(request, "app/team.html", {"contest": contest, "team": contest.teams.get(ck)})
 
 # Auth views
 

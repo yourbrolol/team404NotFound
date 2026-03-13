@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ team.name }} – {{ contest.name }}</title>
+</head>
+<body>
+    <h1>{{ team.name }}</h1>
+    <p><strong>Contest:</strong> {{ contest.name }}</p>
+
+    <h2>Members</h2>
+    {% if team.members.all %}
+        <ul>
+            {% for member in team.members.all %}
+                <li>{{ member.username }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No members yet.</p>
+    {% endif %}
+
+    <a href="{% url 'teams' pk=contest.pk %}">Back to Teams</a>
+</body>
+</html>
