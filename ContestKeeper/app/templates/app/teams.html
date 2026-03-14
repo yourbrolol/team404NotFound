@@ -1,24 +1,43 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Teams – {{ contest.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
 </head>
+
+
 <body>
-    <h1>Teams for "{{ contest.name }}"</h1>
+    {% include "app/nav.html" %}
 
-    {% if teams %}
-        <ul>
-            {% for team in teams %}
-                <li>
-                    <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}">{{ team.name }}</a>
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 id="h1">Teams for "{{ contest.name }}"</h1>
+        </header>
+
+
+        <div class="glass-panel">
+            {% if teams %}
+            <ul style="list-style: none; padding: 0;">
+                {% for team in teams %}
+                <li style="margin-bottom: 1rem;">
+                    <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="btn btn-secondary"
+                        style="width: 100%; justify-content: flex-start;">{{ team.name }}</a>
                 </li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No teams yet.</p>
-    {% endif %}
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p style="color: var(--text-muted);">No teams yet.</p>
+            {% endif %}
 
-    <a href="{% url 'contest_detail' pk=contest.pk %}">Back to Contest</a>
+            <div style="margin-top: 2rem;">
+                <a href="{% url 'contest_detail' pk=contest.pk %}" class="btn btn-secondary">Back to Contest</a>
+            </div>
+        </div>
+    </main>
 </body>
+
 </html>
