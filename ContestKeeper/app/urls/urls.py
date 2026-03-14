@@ -7,5 +7,6 @@ urlpatterns = [
     path("register/", views.RegisterView.as_view(), name="register"),
     path("profile/", views.ProfileView.as_view(), name="profile"),
     path("contests/", include("app.urls.contest_urls")),
-    path("applications/", include("app.urls.application_urls"))
+    path("applications/", include("app.urls.application_urls")),
+    path('contests/<int:pk>/teams/', views.ViewTeamsView.as_view(), name='teams'),
 ]
