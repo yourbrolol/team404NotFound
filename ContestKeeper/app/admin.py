@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Contest, User, Application
+from .models import Contest, User, Application, Team
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -17,6 +17,11 @@ class UserAdmin(BaseUserAdmin):
         ("Permissions", {"fields": ("role", "is_active", "is_staff", "is_superuser")})
     )
 
+@admin.register(Team)
+class TeamAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+    search_fields = ["name"]
+
 @admin.register(Contest)
 class ContestAdmin(admin.ModelAdmin):
     list_display = ["name", "organizer", "status", "start_date", "end_date"]
@@ -26,7 +31,7 @@ class ContestAdmin(admin.ModelAdmin):
     fieldsets = (
         (None, {"fields": ("name", "description", "status")}),
         ("Dates", {"fields": ("start_date", "end_date")}),
-        ("Roles", {"fields": ("organizer", "jurys", "participants")})
+        ("Roles", {"fields": ("organizer", "jurys", "participants", "teams")})
     )
 
 @admin.register(Application)
