@@ -38,7 +38,9 @@ body {
 }
 
 /* Typography */
-h1, h2, h3 {
+h1,
+h2,
+h3 {
     color: var(--text-main);
     letter-spacing: -0.025em;
 }
@@ -53,7 +55,8 @@ h1, h2, h3 {
 }
 
 /* Components */
-.glass-panel, .contest-card {
+.glass-panel,
+.contest-card {
     display: flex;
     background: var(--bg-card);
     backdrop-filter: blur(12px);
@@ -68,7 +71,8 @@ h1, h2, h3 {
     flex-direction: column;
 }
 
-.glass-panel:hover, .contest-card:hover {
+.glass-panel:hover,
+.contest-card:hover {
     transform: translateY(-4px);
     border-color: rgba(99, 102, 241, 0.4);
     background: rgba(30, 41, 59, 0.9);
@@ -87,7 +91,8 @@ h1, h2, h3 {
     text-decoration: none;
     transition: all 0.2s ease;
     cursor: pointer;
-    border: 1px solid transparent; /* Match the box model of tinted buttons */
+    border: 1px solid transparent;
+    /* Match the box model of tinted buttons */
     gap: 0.5rem;
 }
 
@@ -172,12 +177,12 @@ h1, h2, h3 {
     font-weight: 600;
 }
 
-.form-input, 
-input[type="text"], 
-input[type="email"], 
-input[type="password"], 
+.form-input,
+input[type="text"],
+input[type="email"],
+input[type="password"],
 input[type="datetime-local"],
-textarea, 
+textarea,
 select {
     width: 100%;
     background: rgba(15, 23, 42, 0.6);
@@ -222,8 +227,10 @@ select:focus {
         gap: 1.25rem;
     }
 
-    .glass-panel, .contest-card {
-        min-width: 0;          /* allow shrinking inside grid */
+    .glass-panel,
+    .contest-card {
+        min-width: 0;
+        /* allow shrinking inside grid */
         min-height: 0;
         padding: 1.5rem;
     }
@@ -255,11 +262,13 @@ select:focus {
     }
 
     .contest-grid {
-        grid-template-columns: 1fr;   /* single column */
+        grid-template-columns: 1fr;
+        /* single column */
         gap: 1rem;
     }
 
-    .glass-panel, .contest-card {
+    .glass-panel,
+    .contest-card {
         padding: 1.25rem;
         border-radius: 1rem;
     }
@@ -284,4 +293,74 @@ select:focus {
         font-size: 0.7rem;
         padding: 0.4rem 1rem;
     }
+}
+
+:root {
+    --nav-bg: rgba(15, 15, 20, 0.8);
+    /* Полупрозрачный темный */
+    --accent: #7d5fff;
+    /* Фиолетовый акцент */
+    --text: #ffffff;
+}
+
+.navbar {
+    background: var(--nav-bg);
+    backdrop-filter: blur(10px);
+    /* Эффект матового стекла */
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    padding: 0.8rem 2rem;
+}
+
+.nav-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.nav-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--text);
+    text-decoration: none;
+    letter-spacing: 1px;
+}
+
+.nav-logo span {
+    color: var(--accent);
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+}
+
+.nav-links a {
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: 0.3s;
+}
+
+.nav-links a:hover {
+    color: var(--accent);
+}
+
+.nav-btn {
+    background: var(--accent);
+    color: white !important;
+    padding: 0.5rem 1.2rem;
+    border-radius: 8px;
+    font-weight: 500;
+}
+
+.nav-btn:hover {
+    filter: brightness(1.2);
+    box-shadow: 0 0 15px rgba(125, 95, 255, 0.4);
 }
