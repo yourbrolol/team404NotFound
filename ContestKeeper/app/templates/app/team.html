@@ -1,24 +1,45 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ team.name }} – {{ contest.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
 </head>
+
 <body>
-    <h1>{{ team.name }}</h1>
-    <p><strong>Contest:</strong> {{ contest.name }}</p>
+    {% include "app/nav.html" %}
 
-    <h2>Members</h2>
-    {% if team.members.all %}
-        <ul>
-            {% for member in team.members.all %}
-                <li>{{ member.username }}</li>
-            {% endfor %}
-        </ul>
-    {% else %}
-        <p>No members yet.</p>
-    {% endif %}
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 id="h1">{{ team.name }}</h1>
+        </header>
 
-    <a href="{% url 'teams' pk=contest.pk %}">Back to Teams</a>
+        <div class="glass-panel">
+            <p style="margin-bottom: 2rem;"><strong>Contest:</strong> {{ contest.name }}</p>
+
+            <h2 style="margin-bottom: 1.5rem;">Members</h2>
+            {% if team.members.all %}
+            <ul style="list-style: none; padding: 0;">
+                {% for member in team.members.all %}
+                <li
+                    style="margin-bottom: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
+                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary);"></div>
+                    {{ member.username }}
+                </li>
+                {% endfor %}
+            </ul>
+            {% else %}
+            <p style="color: var(--text-muted);">No members yet.</p>
+            {% endif %}
+
+            <div style="margin-top: 3rem;">
+                <a href="{% url 'teams' pk=contest.pk %}" class="btn btn-secondary">Back to Teams</a>
+            </div>
+        </div>
+    </main>
 </body>
+
 </html>
