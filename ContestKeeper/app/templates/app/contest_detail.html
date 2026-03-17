@@ -54,19 +54,22 @@
                     {% endif %}
                 </div>
                 <div>
-                    <h4>Participants</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h4 style="margin: 0;">Teams</h4>
+                        <a href="{% url 'teams' contest.pk %}" class="btn-sm btn-secondary">View Teams</a>
+                    </div>
                     <div class="user-list">
                         {% for participant in contest.participants.all %}
                         <span class="user-tag">{{ participant.username }}</span>
                         {% empty %}
-                        <span class="empty-label">No participants yet.</span>
+                        <span class="empty-label">No teams yet.</span>
                         {% endfor %}
                     </div>
                     {% if user.is_authenticated and user != contest.organizer and user not in contest.participants.all %}
                         {% if has_pending_p_app %}
-                        <button class="btn-apply btn-apply--pending" disabled>Participation Pending</button>
+                        <button class="btn-apply btn-apply--pending" disabled>Team Application Pending</button>
                         {% else %}
-                        <a href="{% url 'apply_to_contest' contest.pk 'participant' %}" class="btn-apply">Apply to Participate</a>
+                        <a href="{% url 'apply_to_contest' contest.pk 'participant' %}" class="btn-apply">Apply as Team</a>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -89,7 +92,7 @@
                     {% endfor %}
                 </div>
                 <div>
-                    <h4>Participation Applications</h4>
+                    <h4>Teams applications</h4>
                     {% for app in participant_applications %}
                     <div class="application-card">
                         <span>{{ app.user.username }}</span>
@@ -99,7 +102,7 @@
                         </div>
                     </div>
                     {% empty %}
-                    <p class="empty-label">No participant applications.</p>
+                    <p class="empty-label">No teams applications.</p>
                     {% endfor %}
                 </div>
             </div>
