@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ team.name }} – {{ contest.name }}</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/team.css' %}">
 </head>
 
 <body>
@@ -14,29 +15,54 @@
 
     <main class="dashboard-container">
         <header class="dashboard-header">
-            <h1 id="h1">{{ team.name }}</h1>
+            <h1 id="h1" class="animate-fade-in">{{ team.name }}</h1>
         </header>
 
-        <div class="glass-panel">
-            <p style="margin-bottom: 2rem;"><strong>Contest:</strong> {{ contest.name }}</p>
+        <div class="glass-panel animate-fade-in delay-1">
+            <div class="team-detail-info">
+                <span class="info-label">Contest</span>
+                <span class="info-value">{{ contest.name }}</span>
+            </div>
 
-            <h2 style="margin-bottom: 1.5rem;">Members</h2>
-            {% if team.members.all %}
-            <ul style="list-style: none; padding: 0;">
-                {% for member in team.members.all %}
-                <li
-                    style="margin-bottom: 0.75rem; color: var(--text-muted); display: flex; align-items: center; gap: 0.5rem;">
-                    <div style="width: 8px; height: 8px; border-radius: 50%; background: var(--primary);"></div>
-                    {{ member.username }}
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <p style="color: var(--text-muted);">No members yet.</p>
-            {% endif %}
+            <div class="members-section">
+                <h2>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                        <circle cx="9" cy="7" r="4"></circle>
+                        <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                        <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+                    </svg>
+                    Members
+                </h2>
 
-            <div style="margin-top: 3rem;">
-                <a href="{% url 'teams' pk=contest.pk %}" class="btn btn-secondary">Back to Teams</a>
+                {% if team.members.all %}
+                <ul class="members-grid">
+                    {% for member in team.members.all %}
+                    <li class="member-item">
+                        <div class="member-avatar">
+                            {{ member.username|slice:":1"|upper }}
+                        </div>
+                        <span class="member-name">{{ member.username }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <p>No members joined this team yet.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="actions-footer">
+                <a href="{% url 'teams' pk=contest.pk %}" class="btn btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Teams
+                </a>
             </div>
         </div>
     </main>

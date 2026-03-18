@@ -182,7 +182,9 @@ class ViewTeamsView(RedirectToRegisterMixin, View):
 class TeamDetailView(RedirectToRegisterMixin, View):
     # TODO: implement team detail for team <ck> within contest <pk>
     def get(self, request, pk, ck):
-        return render(request, "app/team.html", {"contest": contest, "team": contest.teams.get(ck)})
+        contest = get_object_or_404(Contest, pk=pk)
+        team = get_object_or_404(contest.teams, pk=ck)
+        return render(request, "app/team.html", {"contest": contest, "team": team})
 
 # Auth views
 
