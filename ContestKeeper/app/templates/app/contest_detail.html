@@ -21,61 +21,55 @@
 
             <div class="info-grid">
                 <div class="info-item">
-                    <h4>Організатор</h4>
+                    <h4>Organizer</h4>
                     <p>{{ contest.organizer.username }}</p>
                 </div>
                 <div class="info-item">
-                    <h4>Терміни</h4>
+                    <h4>Timeline</h4>
                     <p>{{ contest.start_date|date:"M d, Y" }} — {{ contest.end_date|date:"M d, Y" }}</p>
                 </div>
             </div>
 
-            <h4>Про контест</h4>
+            <h4>About this Contest</h4>
             <div class="description-box">
                 {{ contest.description }}
             </div>
 
             <div class="roles-section">
                 <div>
-                    <h4>Панель журі</h4>
+                    <h4>Jury Panel</h4>
                     <div class="user-list">
                         {% for judge in contest.jurys.all %}
                         <span class="user-tag">{{ judge.username }}</span>
                         {% empty %}
-                        <span class="empty-label">Журі ще не призначено.</span>
+                        <span class="empty-label">No jury assigned yet.</span>
                         {% endfor %}
                     </div>
                     {% if user.is_authenticated and user != contest.organizer and user not in contest.jurys.all %}
                     {% if has_pending_j_app %}
-                    <button class="btn-apply btn-apply--pending" disabled>Заявка в журі на розгляді</button>
+                    <button class="btn-apply btn-apply--pending" disabled>Jury Application Pending</button>
                     {% else %}
-                    <form action="{% url 'apply_to_contest' contest.pk 'jury' %}" method="POST" style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-apply">Подати заявку в журі</button>
-                    </form>
+                    <a href="{% url 'apply_to_contest' contest.pk 'jury' %}" class="btn-apply">Apply as Jury</a>
                     {% endif %}
                     {% endif %}
                 </div>
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                        <h4 style="margin: 0;">Команди</h4>
-                        <a href="{% url 'teams' contest.pk %}" class="btn-sm btn-secondary">Всі команди</a>
+                        <h4 style="margin: 0;">Teams</h4>
+                        <a href="{% url 'teams' contest.pk %}" class="btn-sm btn-secondary">View Teams</a>
                     </div>
                     <div class="user-list">
                         {% for participant in contest.participants.all %}
                         <span class="user-tag">{{ participant.username }}</span>
                         {% empty %}
-                        <span class="empty-label">Команди поки не сформовані.</span>
+                        <span class="empty-label">No teams yet.</span>
                         {% endfor %}
                     </div>
                     {% if user.is_authenticated and user != contest.organizer and user not in contest.participants.all %}
                         {% if has_pending_p_app %}
-                        <button class="btn-apply btn-apply--pending" disabled>Заявка команди на розгляді</button>
+                        <button class="btn-apply btn-apply--pending" disabled>Team Application Pending</button>
                         {% else %}
-                        <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="POST" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-apply">Подати заявку команди</button>
-                        </form>
+                        <a href="{% url 'apply_to_contest' contest.pk 'participant' %}" class="btn-apply">Apply as Team</a>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -84,58 +78,46 @@
             {% if user == contest.organizer %}
             <div class="application-section">
                 <div>
-                    <h4>Заявки в журі</h4>
+                    <h4>Jury Applications</h4>
                     {% for app in jury_applications %}
                     <div class="application-card">
                         <span>{{ app.user.username }}</span>
                         <div class="action-btns">
-                            <form action="{% url 'approve_application' app.pk %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-approve">Схвалити</button>
-                            </form>
-                            <form action="{% url 'reject_application' app.pk %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-reject">Відхилити</button>
-                            </form>
+                            <form method="POST" action="{% url 'approve_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-approve">Approve</button></form>
+                            <form method="POST" action="{% url 'reject_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-reject">Reject</button></form>
                         </div>
                     </div>
                     {% empty %}
-                    <p class="empty-label">Немає заявок у журі.</p>
+                    <p class="empty-label">No jury applications.</p>
                     {% endfor %}
                 </div>
                 <div>
-                    <h4>Заявки команд</h4>
-                    {% for app in participant_applications %}
+                    <h4>Teams applications</h4>
+                    {% for app in team_applications %}
                     <div class="application-card">
-                        <span>{{ app.user.username }}</span>
+                        <span>{{ app.team.name }}</span>
                         <div class="action-btns">
-                            <form action="{% url 'approve_application' app.pk %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-approve">Схвалити</button>
-                            </form>
-                            <form action="{% url 'reject_application' app.pk %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-reject">Відхилити</button>
-                            </form>
+                            <form method="POST" action="{% url 'approve_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-approve">Approve</button></form>
+                            <form method="POST" action="{% url 'reject_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-reject">Reject</button></form>
                         </div>
                     </div>
                     {% empty %}
-                    <p class="empty-label">Немає заявок від команд.</p>
+                    <p class="empty-label">No teams applications.</p>
                     {% endfor %}
                 </div>
             </div>
             {% endif %}
 
             <div class="contest-actions">
-                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Назад до панелі керування</a>
+                <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
                 {% if user == contest.organizer or user.is_staff %}
-                <a href="{% url 'contest_edit' contest.pk %}" class="btn btn-primary">Керувати контестом</a>
+                <a href="{% url 'contest_edit' contest.pk %}" class="btn btn-primary">Manage Contest</a>
                 {% endif %}
                 {% if user == contest.organizer %}
                 <form class="delete-form" action="{% url 'contest_delete' contest.pk %}" method="POST"
-                    onsubmit="return confirm('Ви впевнені, що хочете видалити цей контест? Цю дію неможливо буде скасувати.');">
+                    onsubmit="return confirm('Are you sure you want to delete this contest? This action cannot be undone.');">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-tinted btn-delete">Видалити контест</button>
+                    <button type="submit" class="btn btn-tinted btn-delete">Delete Contest</button>
                 </form>
                 {% endif %}
             </div>

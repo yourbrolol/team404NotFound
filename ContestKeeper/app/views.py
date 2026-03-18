@@ -74,8 +74,8 @@ class ContestDetailView(DetailView):
         user = self.request.user
         is_authenticated = user.is_authenticated
 
-        p_applications = contest.contest_apps.filter(
-            application_type=Application.Type.PARTICIPANT,
+        t_applications = contest.contest_apps.filter(
+            application_type=Application.Type.TEAM,
             status=Application.Status.PENDING,
         )
         j_applications = contest.contest_apps.filter(
@@ -83,11 +83,11 @@ class ContestDetailView(DetailView):
             status=Application.Status.PENDING,
         )
         return super().get_context_data(
-            participant_applications=p_applications,
+            team_applications=t_applications,
             jury_applications=j_applications,
             has_pending_p_app=contest.contest_apps.filter(
                 user=user,
-                application_type=Application.Type.PARTICIPANT,
+                application_type=Application.Type.TEAM,
                 status=Application.Status.PENDING,
             ).exists() if is_authenticated else False,
             has_pending_j_app=contest.contest_apps.filter(
@@ -145,9 +145,10 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
 class ApproveApplicationView(ApplicationActionView):
     new_status = Application.Status.APPROVED
     def on_status_set(self, application):
-        if application.application_type == Application.Type.PARTICIPANT:
-            application.contest.participants.add(application.user)
-        else:
+        if application.application_type == Application.Type.TEAM:
+            if application.team:
+                application.contest.teams.add(application.team)
+        elif application.application_type == Application.Type.JURY:
             application.contest.jurys.add(application.user)
 
 class RejectApplicationView(ApplicationActionView):
@@ -174,13 +175,11 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
 # Team views  (stubs – to be implemented)
 
 class ViewTeamsView(RedirectToRegisterMixin, View):
-    # TODO: implement team listing for contest <pk>
     def get(self, request, pk):
         contest = get_object_or_404(Contest, pk=pk)
         return render(request, "app/teams.html", {"contest": contest, "teams": contest.teams.all()})
 
 class TeamDetailView(RedirectToRegisterMixin, View):
-    # TODO: implement team detail for team <ck> within contest <pk>
     def get(self, request, pk, ck):
         contest = get_object_or_404(Contest, pk=pk)
         team = get_object_or_404(contest.teams, pk=ck)
