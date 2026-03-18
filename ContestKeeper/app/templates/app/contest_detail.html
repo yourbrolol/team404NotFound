@@ -83,8 +83,8 @@
                     <div class="application-card">
                         <span>{{ app.user.username }}</span>
                         <div class="action-btns">
-                            <a href="{% url 'approve_application' app.pk %}" class="btn-sm btn-tinted btn-approve">Approve</a>
-                            <a href="{% url 'reject_application' app.pk %}" class="btn-sm btn-tinted btn-reject">Reject</a>
+                            <form method="POST" action="{% url 'approve_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-approve">Approve</button></form>
+                            <form method="POST" action="{% url 'reject_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-reject">Reject</button></form>
                         </div>
                     </div>
                     {% empty %}
@@ -93,12 +93,12 @@
                 </div>
                 <div>
                     <h4>Teams applications</h4>
-                    {% for app in participant_applications %}
+                    {% for app in team_applications %}
                     <div class="application-card">
-                        <span>{{ app.user.username }}</span>
+                        <span>{{ app.team.name }}</span>
                         <div class="action-btns">
-                            <a href="{% url 'approve_application' app.pk %}" class="btn-sm btn-tinted btn-approve">Approve</a>
-                            <a href="{% url 'reject_application' app.pk %}" class="btn-sm btn-tinted btn-reject">Reject</a>
+                            <form method="POST" action="{% url 'approve_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-approve">Approve</button></form>
+                            <form method="POST" action="{% url 'reject_application' app.pk %}" style="display:inline;">{% csrf_token %}<button type="submit" class="btn-sm btn-tinted btn-reject">Reject</button></form>
                         </div>
                     </div>
                     {% empty %}

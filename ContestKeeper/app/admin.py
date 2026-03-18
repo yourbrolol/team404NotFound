@@ -41,6 +41,6 @@ class ApplicationAdmin(admin.ModelAdmin):
     search_fields = ["user__username", "contest__name"]
     readonly_fields = ["created_at"]
     fieldsets = (
-        (None, {"fields": ("user", "contest", "application_type", "status")}),
+        (None, {"fields": ("user", "team", "contest", "application_type", "status")}),
         ("Dates", {"fields": ["created_at"]})
     )
