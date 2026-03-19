@@ -105,9 +105,9 @@
                 </div>
                 <div>
                     <h4>Заявки команд</h4>
-                    {% for app in participant_applications %}
+                    {% for app in team_applications %}
                     <div class="application-card">
-                        <span>{{ app.user.username }}</span>
+                        <span>{{ app.team.name }}</span>
                         <div class="action-btns">
                             <form action="{% url 'approve_application' app.pk %}" method="POST" style="display: inline;">
                                 {% csrf_token %}
