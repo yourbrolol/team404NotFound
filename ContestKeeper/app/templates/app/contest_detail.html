@@ -49,7 +49,8 @@
                     {% if has_pending_j_app %}
                     <button class="btn-apply btn-apply--pending" disabled>Заявка в журі на розгляді</button>
                     {% else %}
-                    <form action="{% url 'apply_to_contest' contest.pk 'jury' %}" method="POST" style="display: inline;">
+                    <form action="{% url 'apply_to_contest' contest.pk 'jury' %}" method="POST"
+                        style="display: inline;">
                         {% csrf_token %}
                         <button type="submit" class="btn-apply">Подати заявку в журі</button>
                     </form>
@@ -57,7 +58,8 @@
                     {% endif %}
                 </div>
                 <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                         <h4 style="margin: 0;">Команди</h4>
                         <a href="{% url 'teams' contest.pk %}" class="btn-sm btn-secondary">Всі команди</a>
                     </div>
@@ -65,18 +67,20 @@
                         {% for participant in contest.participants.all %}
                         <span class="user-tag">{{ participant.username }}</span>
                         {% empty %}
-                        <span class="empty-label">Команди поки не сформовані.</span>
+                        <span class="empty-label">Реєстрація триває... Очікуємо на перші команди!</span>
                         {% endfor %}
                     </div>
-                    {% if user.is_authenticated and user != contest.organizer and user not in contest.participants.all %}
-                        {% if has_pending_p_app %}
-                        <button class="btn-apply btn-apply--pending" disabled>Заявка команди на розгляді</button>
-                        {% else %}
-                        <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="POST" style="display: inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-apply">Подати заявку команди</button>
-                        </form>
-                        {% endif %}
+                    {% if user.is_authenticated and user != contest.organizer and user not in contest.participants.all
+                    %}
+                    {% if has_pending_p_app %}
+                    <button class="btn-apply btn-apply--pending" disabled>Заявка команди на розгляді</button>
+                    {% else %}
+                    <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="POST"
+                        style="display: inline;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-apply">Подати заявку команди</button>
+                    </form>
+                    {% endif %}
                     {% endif %}
                 </div>
             </div>
@@ -89,7 +93,8 @@
                     <div class="application-card">
                         <span>{{ app.user.username }}</span>
                         <div class="action-btns">
-                            <form action="{% url 'approve_application' app.pk %}" method="POST" style="display: inline;">
+                            <form action="{% url 'approve_application' app.pk %}" method="POST"
+                                style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn-sm btn-tinted btn-approve">Схвалити</button>
                             </form>
@@ -109,7 +114,8 @@
                     <div class="application-card">
                         <span>{{ app.team.name }}</span>
                         <div class="action-btns">
-                            <form action="{% url 'approve_application' app.pk %}" method="POST" style="display: inline;">
+                            <form action="{% url 'approve_application' app.pk %}" method="POST"
+                                style="display: inline;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn-sm btn-tinted btn-approve">Схвалити</button>
                             </form>
