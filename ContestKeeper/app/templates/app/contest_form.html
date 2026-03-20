@@ -13,31 +13,31 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
     <style>
-        /* Исправление центровки для группы с чекбоксом */
+        /* Fix centering for checkbox group */
         .form-group.checkbox-row {
             display: flex;
             flex-direction: row;
             align-items: center;
             justify-content: flex-start;
-            /* Прижимаем к левому краю */
+            /* Align to the left */
             gap: 12px;
             margin: 1.5rem 0;
         }
-
-        /* Убираем лишние отступы у самой галки */
+ 
+        /* Remove extra margins from the checkbox itself */
         .form-group.checkbox-row input[type="checkbox"] {
             width: 20px;
             height: 20px;
             margin: 0;
             cursor: pointer;
         }
-
-        /* Сбрасываем стандартные стили лейбла для чекбокса */
+ 
+        /* Reset standard label styles for checkbox */
         .form-group.checkbox-row .form-label {
             margin: 0;
             cursor: pointer;
             order: 2;
-            /* Текст будет после галки */
+            /* Text follows the checkbox */
         }
     </style>
 </head>
