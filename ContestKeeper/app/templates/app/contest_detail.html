@@ -8,6 +8,9 @@
     <title>{{ contest.name }} - ContestKeeper</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/contest_detail.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 </head>
 
 <body>
@@ -60,6 +63,7 @@
                 <div>
 <<<<<<< HEAD
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+<<<<<<< HEAD
                         <h4 style="margin: 0;">Participants</h4>
                         <a href="{% url 'teams' contest.pk %}" class="btn-sm btn-secondary">All Teams</a>
 =======
@@ -68,6 +72,10 @@
                         <h4 style="margin: 0;">Команди</h4>
                         <a href="{% url 'teams' contest.pk %}" class="btn-sm btn-secondary">Всі команди</a>
 >>>>>>> 6c8e2bd (teams)
+=======
+                        <h4 style="margin: 0;">Teams</h4>
+                        <a href="{% url 'contest_teams' contest.pk %}" class="btn-sm btn-secondary">All Teams</a>
+>>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
                     </div>
                     <div class="user-list">
                         {% for participant in contest.participants.all %}

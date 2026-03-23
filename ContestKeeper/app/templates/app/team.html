@@ -7,6 +7,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{{ team.name }} – {{ contest.name }}</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
+<<<<<<< HEAD
+=======
+    <link rel="stylesheet" href="{% static 'css/team.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+>>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
 </head>
 
 <body>
@@ -35,8 +42,38 @@
             <p style="color: var(--text-muted);">No members yet.</p>
             {% endif %}
 
+<<<<<<< HEAD
             <div style="margin-top: 3rem;">
                 <a href="{% url 'teams' pk=contest.pk %}" class="btn btn-secondary">Back to Teams</a>
+=======
+                {% if team.members.all %}
+                <ul class="members-grid">
+                    {% for member in team.members.all %}
+                    <li class="member-item">
+                        <div class="member-avatar">
+                            {{ member.username|slice:":1"|upper }}
+                        </div>
+                        <span class="member-name">{{ member.username }}</span>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <p>No members joined this team yet.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="actions-footer">
+                <a href="{% url 'contest_teams' pk=contest.pk %}" class="btn btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Teams
+                </a>
+>>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
             </div>
         </div>
     </main>
