@@ -38,7 +38,10 @@
 
             <div class="roles-section">
                 <div>
-                    <h4>Jury Panel</h4>
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h4 style="margin: 0;">Jury Panel</h4>
+                        <a href="#" class="btn-sm btn-secondary">View</a>
+                    </div>
                     <div class="user-list">
                         {% for judge in contest.jurys.all %}
                         <span class="user-tag">{{ judge.username }}</span>
@@ -46,17 +49,6 @@
                         <span class="empty-label">No jury assigned yet.</span>
                         {% endfor %}
                     </div>
-                    {% if user.is_authenticated and user != contest.organizer and user not in contest.jurys.all %}
-                    {% if has_pending_j_app %}
-                    <button class="btn-apply btn-apply--pending" disabled>Jury application pending</button>
-                    {% else %}
-                    <form action="{% url 'apply_to_contest' contest.pk 'jury' %}" method="POST"
-                        style="display: inline;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-apply">Apply for jury</button>
-                    </form>
-                    {% endif %}
-                    {% endif %}
                 </div>
                 <div>
 <<<<<<< HEAD
@@ -72,8 +64,12 @@
 >>>>>>> 6c8e2bd (teams)
 =======
                         <h4 style="margin: 0;">Teams</h4>
+<<<<<<< HEAD
                         <a href="{% url 'contest_teams' contest.pk %}" class="btn-sm btn-secondary">All Teams</a>
 >>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
+=======
+                        <a href="{% url 'contest_teams' contest.pk %}" class="btn-sm btn-secondary">View</a>
+>>>>>>> 978e8db (test changes in contest_detail.html - unfinished.)
                     </div>
                     <div class="user-list">
                         {% for participant in contest.participants.all %}
@@ -83,6 +79,7 @@
                         <span class="empty-label">No teams formed yet.</span>
                         {% endfor %}
                     </div>
+<<<<<<< HEAD
                     {% if user.is_authenticated and user != contest.organizer and user not in contest.participants.all %}
                         {% if has_pending_p_app %}
                         <button class="btn-apply btn-apply--pending" disabled>Team application pending</button>
@@ -187,6 +184,11 @@
                 </div>
             </div>
             {% endif %}
+=======
+                </div>
+            </div>
+
+>>>>>>> 978e8db (test changes in contest_detail.html - unfinished.)
 
             <div class="contest-actions">
                 <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
