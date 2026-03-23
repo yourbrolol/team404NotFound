@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, UpdateView, DeleteView
 
-from .forms import UserRegistrationForm, ContestForm
+from .forms import UserRegistrationForm, ContestForm, UserSettingsForm
 from .models import Contest, Application
 
 # Mixins
@@ -50,6 +50,24 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
 class ProfileView(RedirectToRegisterMixin, TemplateView):
     template_name = "app/profile.html"
 
+class SettingsView(RedirectToRegisterMixin, View):
+    def get(self, request):
+        form = UserSettingsForm(instance=request.user)
+        return render(request, "app/settings.html", {
+            "form": form,
+            "saved": request.GET.get("saved") == "1",
+        })
+
+    def post(self, request):
+        form = UserSettingsForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("/settings/?saved=1")
+        return render(request, "app/settings.html", {
+            "form": form,
+            "saved": False,
+        })
+
 # Contest views
 
 class ContestListView(ListView):
@@ -82,9 +100,14 @@ class ContestDetailView(DetailView):
             application_type=Application.Type.JURY,
             status=Application.Status.PENDING,
         )
+        p_applications = contest.contest_apps.filter(
+            application_type=Application.Type.PARTICIPANT,
+            status=Application.Status.PENDING,
+        )
         return super().get_context_data(
             team_applications=t_applications,
             jury_applications=j_applications,
+            participant_applications=p_applications,
             has_pending_p_app=contest.contest_apps.filter(
                 user=user,
                 application_type=Application.Type.TEAM,
@@ -150,6 +173,8 @@ class ApproveApplicationView(ApplicationActionView):
                 application.contest.teams.add(application.team)
         elif application.application_type == Application.Type.JURY:
             application.contest.jurys.add(application.user)
+        elif application.application_type == Application.Type.PARTICIPANT:
+            application.contest.participants.add(application.user)
 
 class RejectApplicationView(ApplicationActionView):
     new_status = Application.Status.REJECTED
@@ -160,11 +185,12 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
         contest = get_object_or_404(Contest, pk=pk)
         if contest.status == Contest.Status.DRAFT:
             return HttpResponseForbidden("Cannot apply to a draft contest.")
-        role_type = (
-            Application.Type.PARTICIPANT
-            if app_type == "participant"
-            else Application.Type.JURY
-        )
+        if app_type == "participant":
+            role_type = Application.Type.PARTICIPANT
+        elif app_type == "jury":
+            role_type = Application.Type.JURY
+        else:
+            return HttpResponseForbidden("Invalid application type.")
         Application.objects.get_or_create(
             user=request.user,
             contest=contest,
