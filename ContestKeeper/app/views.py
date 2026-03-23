@@ -35,7 +35,7 @@ def _make_template_view(template_name):
 
 # ── General views ─────────────────────────────────────────────────────────────
 
-HomeView    = _make_template_view("app/index.html")
+HomeView = _make_template_view("app/index.html")
 ProfileView = _make_template_view("app/profile.html")
 
 class DashboardView(RedirectToRegisterMixin, TemplateView):
