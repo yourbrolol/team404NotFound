@@ -11,11 +11,15 @@
 =======
     <link rel="stylesheet" href="{% static 'css/team.css' %}">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 >>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
 =======
+=======
+    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
+>>>>>>> 505408c (finalized changes in teams.html - remodeled view.)
     <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
 >>>>>>> b0dbed1 (changes in most html files: localize the font into /fonts/origin.css.)
 </head>
@@ -28,7 +32,14 @@
             <h1 id="h1">Teams for "{{ contest.name }}"</h1>
         </header>
 
+        <div class="tabs-header animate-fade-in delay-1">
+            <button class="tab-btn active" onclick="switchTab(event, 'teams')">Teams</button>
+            {% if user == contest.organizer %}
+            <button class="tab-btn" onclick="switchTab(event, 'apps')">Applications</button>
+            {% endif %}
+        </div>
 
+<<<<<<< HEAD
         <div class="glass-panel">
             {% if teams %}
             <ul style="list-style: none; padding: 0;">
@@ -41,6 +52,36 @@
             </ul>
             {% else %}
             <p style="color: var(--text-muted);">No teams yet.</p>
+=======
+        <div class="glass-panel animate-fade-in delay-1">
+            <div id="teams-panel" class="tab-panel active">
+                {% if teams %}
+                <ul class="teams-list">
+                    {% for team in teams %}
+                    <li>
+                        <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="team-card-link">
+                            <div class="team-card">
+                                <span class="team-name">{{ team.name }}</span>
+                                <span class="team-arrow">→</span>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <p>No teams registered for this contest yet.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if user == contest.organizer %}
+            <div id="apps-panel" class="tab-panel">
+                <div class="empty-state">
+                    <p>Team applications will appear here.</p>
+                </div>
+            </div>
+>>>>>>> 505408c (finalized changes in teams.html - remodeled view.)
             {% endif %}
 
             <div style="margin-top: 2rem;">
@@ -48,6 +89,8 @@
             </div>
         </div>
     </main>
+
+    <script src="{% static 'js/teams.js' %}"></script>
 </body>
 
 </html>
