@@ -8,6 +8,7 @@
     <title>Teams – {{ contest.name }}</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/team.css' %}">
+    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
     <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
 </head>
 
@@ -19,24 +20,40 @@
             <h1 id="h1" class="animate-fade-in">Teams for "{{ contest.name }}"</h1>
         </header>
 
+        <div class="tabs-header animate-fade-in delay-1">
+            <button class="tab-btn active" onclick="switchTab(event, 'teams')">Teams</button>
+            {% if user == contest.organizer %}
+            <button class="tab-btn" onclick="switchTab(event, 'apps')">Applications</button>
+            {% endif %}
+        </div>
 
         <div class="glass-panel animate-fade-in delay-1">
-            {% if teams %}
-            <ul class="teams-list">
-                {% for team in teams %}
-                <li>
-                    <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="team-card-link">
-                        <div class="team-card">
-                            <span class="team-name">{{ team.name }}</span>
-                            <span class="team-arrow">→</span>
-                        </div>
-                    </a>
-                </li>
-                {% endfor %}
-            </ul>
-            {% else %}
-            <div class="empty-state">
-                <p>No teams registered for this contest yet.</p>
+            <div id="teams-panel" class="tab-panel active">
+                {% if teams %}
+                <ul class="teams-list">
+                    {% for team in teams %}
+                    <li>
+                        <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="team-card-link">
+                            <div class="team-card">
+                                <span class="team-name">{{ team.name }}</span>
+                                <span class="team-arrow">→</span>
+                            </div>
+                        </a>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <p>No teams registered for this contest yet.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if user == contest.organizer %}
+            <div id="apps-panel" class="tab-panel">
+                <div class="empty-state">
+                    <p>Team applications will appear here.</p>
+                </div>
             </div>
             {% endif %}
 
@@ -52,6 +69,8 @@
             </div>
         </div>
     </main>
+
+    <script src="{% static 'js/teams.js' %}"></script>
 </body>
 
 </html>
