@@ -238,6 +238,15 @@ class ViewTeamsView(RedirectToRegisterMixin, ListView):
     def get_context_data(self, **kwargs):
         return super().get_context_data(contest=self.contest, **kwargs)
 
+class ViewJurysView(RedirectToRegisterMixin, ListView):
+    template_name = "app/jurys.html"
+    context_object_name = "jurys"
+    def get_queryset(self):
+        self.contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
+        return self.contest.jurys.all()
+    def get_context_data(self, **kwargs):
+        return super().get_context_data(contest=self.contest, **kwargs)
+
 class TeamDetailView(RedirectToRegisterMixin, DetailView):
     template_name = "app/team.html"
     context_object_name = "team"

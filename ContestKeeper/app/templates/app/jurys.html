@@ -1,0 +1,73 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jurys – {{ contest.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/team.css' %}">
+    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
+    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    {% include "app/nav.html" %}
+
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 id="h1" class="animate-fade-in">Jury Panel for "{{ contest.name }}"</h1>
+        </header>
+
+        <div class="tabs-header animate-fade-in delay-1">
+            <button class="tab-btn active" onclick="switchTab(event, 'jurys')">Jury Panel</button>
+            {% if user == contest.organizer %}
+            <button class="tab-btn" onclick="switchTab(event, 'apps')">Applications</button>
+            {% endif %}
+        </div>
+
+        <div class="glass-panel animate-fade-in delay-1">
+            <div id="jurys-panel" class="tab-panel active">
+                {% if jurys %}
+                <ul class="teams-list">
+                    {% for jury in jurys %}
+                    <li>
+                        <div class="team-card">
+                            <span class="team-name">{{ jury.username }}</span>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <p>No jurys assigned to this contest yet.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            {% if user == contest.organizer %}
+            <div id="apps-panel" class="tab-panel">
+                <div class="empty-state">
+                    <p>Jury applications will appear here.</p>
+                </div>
+            </div>
+            {% endif %}
+
+            <div class="actions-footer">
+                <a href="{% url 'contest_detail' pk=contest.pk %}" class="btn btn-secondary">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+                        stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                    Back to Contest
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="{% static 'js/teams.js' %}"></script>
+</body>
+
+</html>

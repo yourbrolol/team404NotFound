@@ -40,7 +40,7 @@
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                         <h4 style="margin: 0;">Jury Panel</h4>
-                        <a href="#" class="btn-sm btn-secondary">View</a>
+                        <a href="{% url 'contest_jurys' contest.pk %}" class="btn-sm btn-secondary">View</a>
                     </div>
                     <div class="user-list">
                         {% for judge in contest.jurys.all %}
