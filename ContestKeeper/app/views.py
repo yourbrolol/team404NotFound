@@ -53,6 +53,9 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
         return super().get_context_data(contests=contests, **kwargs)
 
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> 74eaaca (resolve merge conflicts of merge conflicts.)
 class ProfileView(RedirectToRegisterMixin, TemplateView):
     template_name = "app/profile.html"
 
@@ -74,8 +77,11 @@ class SettingsView(RedirectToRegisterMixin, View):
             "saved": False,
         })
 
+<<<<<<< HEAD
 # Contest views
 =======
+=======
+>>>>>>> 74eaaca (resolve merge conflicts of merge conflicts.)
 # ── Contest views ─────────────────────────────────────────────────────────────
 >>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
 
