@@ -2,12 +2,22 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-from .models import Contest
+from .models import Contest, User
 
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
         fields = ("username", "email")
+
+class UserSettingsForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("username", "email", "bio")
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-input", "placeholder": "Your username"}),
+            "email": forms.EmailInput(attrs={"class": "form-input", "placeholder": "Your email address"}),
+            "bio": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": "Tell us about yourself..."}),
+        }
 
 class ContestForm(forms.ModelForm):
     def clean(self):
