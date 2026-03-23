@@ -86,8 +86,11 @@
             {% if user == contest.organizer %}
             <div class="application-section">
                 <div>
-                    <h4>Jury Applications</h4>
-                    {% for app in jury_applications %}
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h4 style="margin: 0;">Jury Applications</h4>
+                        <a href="#" class="btn-sm btn-secondary">All Jury Applications</a>
+                    </div>
+                    <!-- {% for app in jury_applications %}
                     <div class="application-card">
                         <span>{{ app.user.username }}</span>
                         <div class="action-btns">
@@ -104,11 +107,15 @@
                     </div>
                     {% empty %}
                     <p class="empty-label">No jury applications.</p>
-                    {% endfor %}
+                    {% endfor %} -->
+                    <p class="empty-label">There are ... jurys.</p>
                 </div>
                 <div>
-                    <h4>Team Applications</h4>
-                    {% for app in team_applications %}
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <h4 style="margin: 0;">Team Applications</h4>
+                        <a href="#" class="btn-sm btn-secondary">All Team Applications</a>
+                    </div>
+                    <!-- {% for app in team_applications %}
                     <div class="application-card">
                         <span>{{ app.team.name }}</span>
                         <div class="action-btns">
@@ -125,7 +132,8 @@
                     </div>
                     {% empty %}
                     <p class="empty-label">No team applications.</p>
-                    {% endfor %}
+                    {% endfor %} -->
+                    <p class="empty-label">The are ... team applications.</p>
                 </div>
             </div>
             {% endif %}
