@@ -106,6 +106,8 @@ class ContestDetailView(DetailView):
         contest = self.object
         user = self.request.user
         is_authenticated = user.is_authenticated
+        user_team = None
+        if is_authenticated: user_team = contest.teams.filter(participants=user).first()
         t_applications = contest.contest_apps.filter(
             application_type=Application.Type.TEAM,
             status=Application.Status.PENDING,
@@ -119,6 +121,7 @@ class ContestDetailView(DetailView):
             status=Application.Status.PENDING,
         )
         return super().get_context_data(
+            user_team=user_team,
             team_applications=t_applications,
             jury_applications=j_applications,
             participant_applications=p_applications,
