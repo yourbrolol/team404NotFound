@@ -50,6 +50,13 @@ h1, h2, h3 {
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-bottom: -0.5rem;
+}
+
+.header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
 }
 
 /* Components */
