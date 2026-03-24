@@ -1,3 +1,7 @@
+.dashboard-header {
+    margin-bottom: 1.25rem;
+}
+
 /* ─── Settings Layout ─────────────────────────────────── */
 .settings-layout {
     display: flex;

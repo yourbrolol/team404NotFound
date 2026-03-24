@@ -42,96 +42,16 @@
                         <h4 style="margin: 0;">Jury Panel</h4>
                         <a href="{% url 'contest_jurys' contest.pk %}" class="btn-sm btn-secondary">View</a>
                     </div>
-                    <div class="user-list">
-                        {% for judge in contest.jurys.all %}
-                        <span class="user-tag">{{ judge.username }}</span>
-                        {% empty %}
-                        <span class="empty-label">No jury assigned yet.</span>
-                        {% endfor %}
-                    </div>
+                    <span class="empty-label">View jurys...</span>
                 </div>
                 <div>
                     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                         <h4 style="margin: 0;">Teams</h4>
                         <a href="{% url 'contest_teams' contest.pk %}" class="btn-sm btn-secondary">View</a>
                     </div>
-                    <div class="user-list">
-                        {% for participant in contest.participants.all %}
-                        <span class="user-tag">{{ participant.username }}</span>
-                        {% empty %}
-                        <span class="empty-label">No teams formed yet.</span>
-                        {% endfor %}
-                    </div>
+                    <span class="empty-label">View teams...</span>
                 </div>
             </div>
-
-            {% if user == contest.organizer %}
-            <div class="application-section">
-                <div>
-                    <h4>Jury Applications</h4>
-                    {% for app in jury_applications %}
-                    <div class="application-card">
-                        <span>{{ app.user.username }}</span>
-                        <div class="action-btns">
-                            <form action="{% url 'approve_application' app.pk %}" method="POST"
-                                style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-approve">Approve</button>
-                            </form>
-                            <form action="{% url 'reject_application' app.pk %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-reject">Reject</button>
-                            </form>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <p class="empty-label">No jury applications.</p>
-                    {% endfor %}
-                </div>
-                <div>
-                    <h4>Team Applications</h4>
-                    {% for app in team_applications %}
-                    <div class="application-card">
-                        <span>{{ app.team.name }}</span>
-                        <div class="action-btns">
-                            <form action="{% url 'approve_application' app.pk %}" method="POST"
-                                style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-approve">Approve</button>
-                            </form>
-                            <form action="{% url 'reject_application' app.pk %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-reject">Reject</button>
-                            </form>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <p class="empty-label">No team applications.</p>
-                    {% endfor %}
-                </div>
-                <div>
-                    <h4>Individual Participant Applications</h4>
-                    {% for app in participant_applications %}
-                    <div class="application-card">
-                        <span>{{ app.user.username }}</span>
-                        <div class="action-btns">
-                            <form action="{% url 'approve_application' app.pk %}" method="POST"
-                                style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-approve">Approve</button>
-                            </form>
-                            <form action="{% url 'reject_application' app.pk %}" method="POST" style="display: inline;">
-                                {% csrf_token %}
-                                <button type="submit" class="btn-sm btn-tinted btn-reject">Reject</button>
-                            </form>
-                        </div>
-                    </div>
-                    {% empty %}
-                    <p class="empty-label">No individual applications.</p>
-                    {% endfor %}
-                </div>
-            </div>
-            {% endif %}
 
             <div class="contest-actions">
                 <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
