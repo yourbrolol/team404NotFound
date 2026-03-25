@@ -54,11 +54,14 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 74eaaca (resolve merge conflicts of merge conflicts.)
 class ProfileView(RedirectToRegisterMixin, TemplateView):
     template_name = "app/profile.html"
 
+=======
+>>>>>>> c4ab6f3 (small changes.)
 class SettingsView(RedirectToRegisterMixin, View):
     def get(self, request):
         form = UserSettingsForm(instance=request.user)
