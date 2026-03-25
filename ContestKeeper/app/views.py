@@ -52,9 +52,6 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
             contests = Contest.objects.none()
         return super().get_context_data(contests=contests, **kwargs)
 
-class ProfileView(RedirectToRegisterMixin, TemplateView):
-    template_name = "app/profile.html"
-
 class SettingsView(RedirectToRegisterMixin, View):
     def get(self, request):
         form = UserSettingsForm(instance=request.user)
