@@ -91,7 +91,7 @@ There are test accounts for each role:
 - admin (Admin): secret321,
 - organizer (Organizer): secret321,
 - jury (Jury): secret321,
-- user (Participant): secret321,
+- user (Participant): secret321.
 
 ## Test contests
 

@@ -37,29 +37,32 @@
             </div>
 
             {% if user.is_authenticated and user.is_participant %}
-            <div class="registration-block" style="margin-bottom: 2rem; background: var(--bg-secondary); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+            <div class="registration-block"
+                style="margin-bottom: 2rem; background: var(--glass); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
                 {% if user_team %}
-                    <h4 style="margin-top: 0; color: var(--success-color, #28a745);">You registered already!</h4>
-                    <p style="margin-bottom: 0;">- Your team is {{ user_team.name }}.</p>
+                <h4 style="margin-top: 0; color: var(--success-color, #28a745);">You registered already!</h4>
+                <p style="margin-bottom: 0;">- Your team is {{ user_team.name }}.</p>
                 {% else %}
-                    <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
-                    </form>
+                <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">Register</button>
+                </form>
                 {% endif %}
             </div>
             {% endif %}
 
             <div class="roles-section">
                 <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                         <h4 style="margin: 0;">Jury Panel</h4>
                         <a href="{% url 'contest_jurys' contest.pk %}" class="btn-sm btn-secondary">View</a>
                     </div>
                     <span class="empty-label">View jurys...</span>
                 </div>
                 <div>
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                    <div
+                        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
                         <h4 style="margin: 0;">Teams</h4>
                         <a href="{% url 'contest_teams' contest.pk %}" class="btn-sm btn-secondary">View</a>
                     </div>

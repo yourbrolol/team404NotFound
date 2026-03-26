@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, DeleteView
 
 from .forms import UserRegistrationForm, ContestForm, UserSettingsForm
-from .models import Contest, Application
+from .models import Contest, Application, User
 
 # ── Mixins ────────────────────────────────────────────────────────────────────
 
@@ -35,7 +35,12 @@ def _make_template_view(template_name):
 
 # ── General views ─────────────────────────────────────────────────────────────
 
-HomeView = _make_template_view("app/index.html")
+class HomeView(RedirectToRegisterMixin, TemplateView):
+    template_name = "app/index.html"
+    def get_context_data(self, **kwargs):
+        contests = Contest.objects.exclude(status=Contest.Status.DRAFT)
+        return super().get_context_data(contests=contests, **kwargs)
+
 ProfileView = _make_template_view("app/profile.html")
 
 class DashboardView(RedirectToRegisterMixin, TemplateView):
