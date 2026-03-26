@@ -81,3 +81,20 @@ python manage.py runserver # should raise no errors, **especially no ImportError
 ### Common issues:
 1. You might have installed python via python installer, and forgot to check "Add to PATH" flag or something similar. Can be resolved by either manually adding it to PATH (complex, wont be explained there) or by reinstalling the python and checking the flag, mentioned earlier.
 2. Your Python might be outdated. Django and daphne support a variety of versions, but there may be certain compatability issues. In that case, please proceed to reinstall the needed python / package version.
+
+# Manual
+
+## Test accounts
+
+There are test accounts for each role:
+
+- admin (Admin): secret321,
+- organizer (Organizer): secret321,
+- jury (Jury): secret321,
+- user (Participant): secret321.
+
+## Test contests
+
+There is a test contest:
+
+- Test Contest.

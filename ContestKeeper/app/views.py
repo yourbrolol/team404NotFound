@@ -7,7 +7,7 @@ from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, DeleteView
 
 from .forms import UserRegistrationForm, ContestForm, UserSettingsForm
-from .models import Contest, Application
+from .models import Contest, Application, User
 
 # ── Mixins ────────────────────────────────────────────────────────────────────
 
@@ -35,7 +35,12 @@ def _make_template_view(template_name):
 
 # ── General views ─────────────────────────────────────────────────────────────
 
-HomeView = _make_template_view("app/index.html")
+class HomeView(RedirectToRegisterMixin, TemplateView):
+    template_name = "app/index.html"
+    def get_context_data(self, **kwargs):
+        contests = Contest.objects.exclude(status=Contest.Status.DRAFT)
+        return super().get_context_data(contests=contests, **kwargs)
+
 ProfileView = _make_template_view("app/profile.html")
 
 class DashboardView(RedirectToRegisterMixin, TemplateView):
@@ -51,9 +56,6 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
         else:
             contests = Contest.objects.none()
         return super().get_context_data(contests=contests, **kwargs)
-
-class ProfileView(RedirectToRegisterMixin, TemplateView):
-    template_name = "app/profile.html"
 
 class SettingsView(RedirectToRegisterMixin, View):
     def get(self, request):
@@ -173,20 +175,37 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
     """Approve or reject an application; `action` kwarg comes from the URL."""
     def post(self, request, pk, action):
         application = get_object_or_404(Application, pk=pk)
-        if request.user == application.contest.organizer:
+        
+        is_organizer = application.contest and request.user == application.contest.organizer
+        is_captain = application.team and request.user == application.team.captain
+        
+        if is_organizer or is_captain:
             if action == "approve":
                 application.status = Application.Status.APPROVED
                 application.save()
-                if application.application_type == Application.Type.TEAM:
-                    if application.team:
-                        application.contest.teams.add(application.team)
-                elif application.application_type == Application.Type.JURY:
-                    application.contest.jurys.add(application.user)
-                elif application.application_type == Application.Type.PARTICIPANT:
-                    application.contest.participants.add(application.user)
+                
+                if is_captain and not is_organizer:
+                    application.team.participants.add(application.user)
+                elif is_organizer:
+                    if application.application_type == Application.Type.TEAM:
+                        if application.team:
+                            application.contest.teams.add(application.team)
+                    elif application.application_type == Application.Type.JURY:
+                        application.contest.jurys.add(application.user)
+                    elif application.application_type == Application.Type.PARTICIPANT:
+                        # Could be a participant applying to a team or to the contest itself
+                        if application.team:
+                            application.team.participants.add(application.user)
+                        else:
+                            application.contest.participants.add(application.user)
+                            
             elif action == "reject":
                 application.status = Application.Status.REJECTED
                 application.save()
+                
+            if is_captain and not is_organizer:
+                return redirect("team_detail", pk=application.contest.pk, ck=application.team.pk)
+                
         return redirect("contest_detail", pk=application.contest.pk)
 
 
@@ -236,7 +255,40 @@ class TeamDetailView(RedirectToRegisterMixin, DetailView):
         self.contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
         return get_object_or_404(self.contest.teams, pk=self.kwargs["ck"])
     def get_context_data(self, **kwargs):
-        return super().get_context_data(contest=self.contest, **kwargs)
+        team = self.get_object()
+        team_apps = team.team_apps.filter(status=Application.Status.PENDING)
+        return super().get_context_data(contest=self.contest, team_applications=team_apps, **kwargs)
+
+class TeamActionMixin(RedirectToRegisterMixin):
+    def dispatch(self, request, *args, **kwargs):
+        response = super().dispatch(request, *args, **kwargs)
+        if not request.user.is_authenticated:
+            return response
+        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        self.team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
+        if request.user != self.team.captain:
+            return HttpResponseForbidden("You are not the captain of this team.")
+        self.target_user = get_object_or_404(User, pk=kwargs["user_id"])
+        return response
+
+class TeamKickView(TeamActionMixin, View):
+    def post(self, request, *args, **kwargs):
+        if self.target_user in self.team.participants.all():
+            self.team.participants.remove(self.target_user)
+        return redirect("team_detail", pk=self.contest.pk, ck=self.team.pk)
+
+class TeamBlockView(TeamActionMixin, View):
+    def post(self, request, *args, **kwargs):
+        if self.target_user in self.team.participants.all():
+            self.team.participants.remove(self.target_user)
+        self.team.blacklisted_members.add(self.target_user)
+        self.team.team_apps.filter(user=self.target_user, status=Application.Status.PENDING).update(status=Application.Status.REJECTED)
+        return redirect("team_detail", pk=self.contest.pk, ck=self.team.pk)
+
+class TeamUnblockView(TeamActionMixin, View):
+    def post(self, request, *args, **kwargs):
+        self.team.blacklisted_members.remove(self.target_user)
+        return redirect("team_detail", pk=self.contest.pk, ck=self.team.pk)
 
 class TeamApplicationsView(RedirectToRegisterMixin, ListView):
     template_name = "app/teams_applications.html"
