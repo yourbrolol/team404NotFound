@@ -25,4 +25,7 @@ urlpatterns = [
     path("contests/", include("app.urls.contest_urls")),
     path("applications/", include("app.urls.application_urls")),
 ]
+<<<<<<< HEAD
 >>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
+=======
+>>>>>>> a38cf63 (Update)

@@ -1,3 +1,10 @@
+<<<<<<< HEAD
+=======
+.dashboard-header {
+    margin-bottom: 1.25rem;
+}
+
+>>>>>>> a38cf63 (Update)
 /* ─── Settings Layout ─────────────────────────────────── */
 .settings-layout {
     display: flex;
@@ -205,7 +212,11 @@
         width: 100%;
     }
 <<<<<<< HEAD
+<<<<<<< HEAD
 }
 =======
 }
 >>>>>>> 74eaaca (resolve merge conflicts of merge conflicts.)
+=======
+}
+>>>>>>> a38cf63 (Update)

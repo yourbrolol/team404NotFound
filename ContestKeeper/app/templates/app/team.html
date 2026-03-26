@@ -11,6 +11,7 @@
 =======
     <link rel="stylesheet" href="{% static 'css/team.css' %}">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -18,6 +19,9 @@
 =======
     <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
 >>>>>>> b0dbed1 (changes in most html files: localize the font into /fonts/origin.css.)
+=======
+    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
+>>>>>>> a38cf63 (Update)
 </head>
 
 <body>
@@ -43,7 +47,10 @@
                 <span class="info-value">{{ team.captain.username }}</span>
             </div>
             {% endif %}
+<<<<<<< HEAD
 >>>>>>> d7451ac (add team captain and blacklist; remade db; update README.md.)
+=======
+>>>>>>> a38cf63 (Update)
 
             <h2 style="margin-bottom: 1.5rem;">Members</h2>
             {% if team.members.all %}
@@ -62,6 +69,7 @@
 
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
             <div style="margin-top: 3rem;">
                 <a href="{% url 'teams' pk=contest.pk %}" class="btn btn-secondary">Back to Teams</a>
 =======
@@ -69,6 +77,9 @@
 =======
                 {% if team.participants.all %}
 >>>>>>> d7451ac (add team captain and blacklist; remade db; update README.md.)
+=======
+                {% if team.participants.all %}
+>>>>>>> a38cf63 (Update)
                 <ul class="members-grid">
                     {% for member in team.participants.all %}
                     <li class="member-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 8px;">

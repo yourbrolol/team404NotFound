@@ -28,6 +28,7 @@ class OrganizerRequiredMixin(RedirectToRegisterMixin):
         return response
 
 # ── Utility ───────────────────────────────────────────────────────────────────
+<<<<<<< HEAD
 
 def _make_template_view(template_name):
     """Factory: returns a login-required TemplateView for the given template."""
@@ -36,6 +37,20 @@ def _make_template_view(template_name):
 # ── General views ─────────────────────────────────────────────────────────────
 
 HomeView = _make_template_view("app/index.html")
+=======
+
+def _make_template_view(template_name):
+    """Factory: returns a login-required TemplateView for the given template."""
+    return type("TemplateView", (RedirectToRegisterMixin, TemplateView), {"template_name": template_name})
+
+# ── General views ─────────────────────────────────────────────────────────────
+
+class HomeView(RedirectToRegisterMixin, TemplateView):
+    template_name = "app/index.html"
+    def get_context_data(self, **kwargs):
+        contests = Contest.objects.exclude(status=Contest.Status.DRAFT)
+        return super().get_context_data(contests=contests, **kwargs)
+>>>>>>> a38cf63 (Update)
 ProfileView = _make_template_view("app/profile.html")
 
 class DashboardView(RedirectToRegisterMixin, TemplateView):
@@ -55,6 +70,7 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
 >>>>>>> 74eaaca (resolve merge conflicts of merge conflicts.)
 class ProfileView(RedirectToRegisterMixin, TemplateView):
@@ -70,6 +86,16 @@ class SettingsView(RedirectToRegisterMixin, View):
             "saved": request.GET.get("saved") == "1",
         })
 
+=======
+class SettingsView(RedirectToRegisterMixin, View):
+    def get(self, request):
+        form = UserSettingsForm(instance=request.user)
+        return render(request, "app/settings.html", {
+            "form": form,
+            "saved": request.GET.get("saved") == "1",
+        })
+
+>>>>>>> a38cf63 (Update)
     def post(self, request):
         form = UserSettingsForm(request.POST, instance=request.user)
         if form.is_valid():
@@ -81,12 +107,16 @@ class SettingsView(RedirectToRegisterMixin, View):
         })
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 # Contest views
 =======
 =======
 >>>>>>> 74eaaca (resolve merge conflicts of merge conflicts.)
 # ── Contest views ─────────────────────────────────────────────────────────────
 >>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
+=======
+# ── Contest views ─────────────────────────────────────────────────────────────
+>>>>>>> a38cf63 (Update)
 
 class ContestListView(ListView):
     """Returns a JSON list of all non-draft contests."""
@@ -195,12 +225,15 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
                 application.status = Application.Status.APPROVED
                 application.save()
 <<<<<<< HEAD
+<<<<<<< HEAD
                 if application.application_type == Application.Type.TEAM:
                     if application.team:
                         application.contest.teams.add(application.team)
                 elif application.application_type == Application.Type.JURY:
                     application.contest.jurys.add(application.user)
 =======
+=======
+>>>>>>> a38cf63 (Update)
                 
                 if is_captain and not is_organizer:
                     application.team.participants.add(application.user)
@@ -217,7 +250,10 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
                         else:
                             application.contest.participants.add(application.user)
                             
+<<<<<<< HEAD
 >>>>>>> d7451ac (add team captain and blacklist; remade db; update README.md.)
+=======
+>>>>>>> a38cf63 (Update)
             elif action == "reject":
                 application.status = Application.Status.REJECTED
                 application.save()
@@ -226,6 +262,7 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
                 return redirect("team_detail", pk=application.contest.pk, ck=application.team.pk)
                 
         return redirect("contest_detail", pk=application.contest.pk)
+<<<<<<< HEAD
 <<<<<<< HEAD
     def on_status_set(self, application):
         """Hook called after status is saved. Override in subclasses."""
@@ -246,6 +283,9 @@ class RejectApplicationView(ApplicationActionView):
     new_status = Application.Status.REJECTED
 =======
 >>>>>>> 2dcf23c (changes in views.py and url routing; fixed the font in certain html files.)
+=======
+
+>>>>>>> a38cf63 (Update)
 
 class ApplyToContestView(RedirectToRegisterMixin, View):
     http_method_names = ["post"]

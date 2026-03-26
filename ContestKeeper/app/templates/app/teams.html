@@ -12,6 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/team.css' %}">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -22,6 +23,10 @@
 >>>>>>> 505408c (finalized changes in teams.html - remodeled view.)
     <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
 >>>>>>> b0dbed1 (changes in most html files: localize the font into /fonts/origin.css.)
+=======
+    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
+    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
+>>>>>>> a38cf63 (Update)
 </head>
 
 <body>
@@ -40,6 +45,7 @@
         </div>
 
 <<<<<<< HEAD
+<<<<<<< HEAD
         <div class="glass-panel">
             {% if teams %}
             <ul style="list-style: none; padding: 0;">
@@ -53,6 +59,8 @@
             {% else %}
             <p style="color: var(--text-muted);">No teams yet.</p>
 =======
+=======
+>>>>>>> a38cf63 (Update)
         <div class="glass-panel animate-fade-in delay-1">
             <div id="teams-panel" class="tab-panel active">
                 {% if teams %}
@@ -73,6 +81,16 @@
                     <p>No teams registered for this contest yet.</p>
                 </div>
                 {% endif %}
+<<<<<<< HEAD
+=======
+            </div>
+
+            {% if user == contest.organizer %}
+            <div id="apps-panel" class="tab-panel">
+                <div class="empty-state">
+                    <p>Team applications will appear here.</p>
+                </div>
+>>>>>>> a38cf63 (Update)
             </div>
 
             {% if user == contest.organizer %}
