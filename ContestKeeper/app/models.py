@@ -35,6 +35,8 @@ class Team(models.Model):
     description = models.TextField(max_length=200, blank=True)
     status = models.CharField(choices=Status.choices, default=Status.DRAFT)
     participants = models.ManyToManyField(User, related_name="participated_teams")
+    captain = models.ForeignKey(User, on_delete=models.CASCADE, related_name="captained_teams", null=True, blank=True)
+    blacklisted_members = models.ManyToManyField(User, related_name="blacklisted_from_teams", blank=True)
     
     def __str__(self):
         return f"Team {self.name}."

@@ -8,6 +8,7 @@
     <title>{{ team.name }} – {{ contest.name }}</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/team.css' %}">
+    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
 </head>
 
 <body>
@@ -23,6 +24,12 @@
                 <span class="info-label">Contest</span>
                 <span class="info-value">{{ contest.name }}</span>
             </div>
+            {% if team.captain %}
+            <div class="team-detail-info">
+                <span class="info-label">Captain</span>
+                <span class="info-value">{{ team.captain.username }}</span>
+            </div>
+            {% endif %}
 
             <div class="members-section">
                 <h2>
@@ -36,14 +43,28 @@
                     Members
                 </h2>
 
-                {% if team.members.all %}
+                {% if team.participants.all %}
                 <ul class="members-grid">
-                    {% for member in team.members.all %}
-                    <li class="member-item">
-                        <div class="member-avatar">
-                            {{ member.username|slice:":1"|upper }}
+                    {% for member in team.participants.all %}
+                    <li class="member-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 8px;">
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <div class="member-avatar">
+                                {{ member.username|slice:":1"|upper }}
+                            </div>
+                            <span class="member-name">{{ member.username }}</span>
                         </div>
-                        <span class="member-name">{{ member.username }}</span>
+                        {% if request.user == team.captain and request.user != member %}
+                        <div style="display: flex; gap: 10px;">
+                            <form method="POST" action="{% url 'team_kick' pk=contest.pk ck=team.pk user_id=member.pk %}">
+                               {% csrf_token %}
+                               <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem;">Kick</button>
+                            </form>
+                            <form method="POST" action="{% url 'team_block' pk=contest.pk ck=team.pk user_id=member.pk %}">
+                               {% csrf_token %}
+                               <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem; background: #e74c3c; color: white;">Block</button>
+                            </form>
+                        </div>
+                        {% endif %}
                     </li>
                     {% endfor %}
                 </ul>
@@ -54,14 +75,72 @@
                 {% endif %}
             </div>
 
+            {% if request.user == team.captain %}
+            <!-- Blacklisted Members Section -->
+            <div class="members-section" style="margin-top: 2rem;">
+                <h2>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"></line></svg>
+                    Blacklisted Members
+                </h2>
+                {% if team.blacklisted_members.all %}
+                <ul class="members-grid">
+                    {% for b_member in team.blacklisted_members.all %}
+                    <li class="member-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 8px;">
+                        <span class="member-name" style="color: #e74c3c;">{{ b_member.username }}</span>
+                        <form method="POST" action="{% url 'team_unblock' pk=contest.pk ck=team.pk user_id=b_member.pk %}">
+                           {% csrf_token %}
+                           <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem;">Unblock</button>
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <p>No blacklisted members.</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <!-- Team Applications Section -->
+            <div class="members-section" style="margin-top: 2rem;">
+                <h2>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="16" y1="13" x2="8" y2="13"></line><line x1="16" y1="17" x2="8" y2="17"></line><polyline points="10 9 9 9 8 9"></polyline></svg>
+                    Pending Applications
+                </h2>
+                {% if team_applications %}
+                <ul class="members-grid">
+                    {% for app in team_applications %}
+                    <li class="member-item" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 8px;">
+                        <span class="member-name">{{ app.user.username }}</span>
+                        <div style="display: flex; gap: 10px;">
+                            <form method="POST" action="{% url 'approve_application' pk=app.pk %}">
+                               {% csrf_token %}
+                               <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem; background: #2ecc71; color: white;">Approve</button>
+                            </form>
+                            <form method="POST" action="{% url 'reject_application' pk=app.pk %}">
+                               {% csrf_token %}
+                               <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem; background: #e74c3c; color: white;">Reject</button>
+                            </form>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
+                <div class="empty-state">
+                    <p>No pending applications.</p>
+                </div>
+                {% endif %}
+            </div>
+            {% endif %}
+
             <div class="actions-footer">
-                <a href="{% url 'teams' pk=contest.pk %}" class="btn btn-secondary">
+                <a href="{% url 'contest_detail' pk=contest.pk %}" class="btn btn-secondary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
                         stroke-linecap="round" stroke-linejoin="round">
                         <line x1="19" y1="12" x2="5" y2="12"></line>
                         <polyline points="12 19 5 12 12 5"></polyline>
                     </svg>
-                    Back to Teams
+                    Back to Contest
                 </a>
             </div>
         </div>

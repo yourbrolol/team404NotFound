@@ -5,10 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ContestKeeper - Profile</title>
+    <title>ContestKeeper - Settings</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/settings.css' %}">
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
 </head>
 
@@ -17,7 +16,7 @@
     <main class="dashboard-container">
         <header class="dashboard-header">
             <div class="header-left">
-                <h1 id="h1">Profile</h1>
+                <h1 id="h1">Settings</h1>
                 <span class="role-badge">{{ user.get_role_display }}</span>
             </div>
         </header>
@@ -29,7 +28,8 @@
         </div>
         {% endif %}
 
-        <div class="settings-layout">
+        <form method="post" class="settings-layout" novalidate>
+            {% csrf_token %}
 
             <!-- Account Section -->
             <section class="settings-card">
@@ -39,7 +39,7 @@
                     </div>
                     <div>
                         <h2 class="settings-card__title">Account</h2>
-                        <p class="settings-card__subtitle">Your personal information</p>
+                        <p class="settings-card__subtitle">Update your personal information</p>
                     </div>
                 </div>
 
@@ -55,18 +55,33 @@
 
                 <div class="settings-fields">
                     <div class="form-group">
-                        <label class="form-label">Username</label>
-                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.username }}</div>
+                        <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}
+                            {% for error in form.username.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.email|default:"—" }}</div>
+                        <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}
+                            {% for error in form.email.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Bio</label>
-                        <div class="form-input" style="cursor:default; user-select:text; min-height:72px; white-space:pre-wrap;">{{ user.bio|default:"—" }}</div>
+                        <label class="form-label" for="{{ form.bio.id_for_label }}">Bio</label>
+                        {{ form.bio }}
+                        {% if form.bio.errors %}
+                            {% for error in form.bio.errors %}
+                                <p class="field-error">{{ error }}</p>
+                            {% endfor %}
+                        {% endif %}
                     </div>
                 </div>
             </section>
@@ -101,14 +116,15 @@
                 </div>
             </section>
 
-            <!-- Edit button -->
+            <!-- Save Button -->
             <div class="settings-actions">
-                <a href="{% url 'settings' %}" class="btn btn-primary settings-save-btn">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-                    Edit in Settings
-                </a>
+                <button type="submit" class="btn btn-primary settings-save-btn">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+                    Save Changes
+                </button>
+                <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
             </div>
-        </div>
+        </form>
     </main>
 
     <script>

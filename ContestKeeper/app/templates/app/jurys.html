@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teams – {{ contest.name }}</title>
+    <title>Jurys – {{ contest.name }}</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/team.css' %}">
     <link rel="stylesheet" href="{% static 'css/teams.css' %}">
@@ -17,34 +17,31 @@
 
     <main class="dashboard-container">
         <header class="dashboard-header">
-            <h1 id="h1" class="animate-fade-in">Teams for "{{ contest.name }}"</h1>
+            <h1 id="h1" class="animate-fade-in">Jury Panel for "{{ contest.name }}"</h1>
         </header>
 
         <div class="tabs-header animate-fade-in delay-1">
-            <button class="tab-btn active" onclick="switchTab(event, 'teams')">Teams</button>
+            <button class="tab-btn active" onclick="switchTab(event, 'jurys')">Jury Panel</button>
             {% if user == contest.organizer %}
             <button class="tab-btn" onclick="switchTab(event, 'apps')">Applications</button>
             {% endif %}
         </div>
 
         <div class="glass-panel animate-fade-in delay-1">
-            <div id="teams-panel" class="tab-panel active">
-                {% if teams %}
+            <div id="jurys-panel" class="tab-panel active">
+                {% if jurys %}
                 <ul class="teams-list">
-                    {% for team in teams %}
+                    {% for jury in jurys %}
                     <li>
-                        <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="team-card-link">
-                            <div class="team-card">
-                                <span class="team-name">{{ team.name }}</span>
-                                <span class="team-arrow">→</span>
-                            </div>
-                        </a>
+                        <div class="team-card">
+                            <span class="team-name">{{ jury.username }}</span>
+                        </div>
                     </li>
                     {% endfor %}
                 </ul>
                 {% else %}
                 <div class="empty-state">
-                    <p>No teams registered for this contest yet.</p>
+                    <p>No jurys assigned to this contest yet.</p>
                 </div>
                 {% endif %}
             </div>
@@ -52,7 +49,7 @@
             {% if user == contest.organizer %}
             <div id="apps-panel" class="tab-panel">
                 <div class="empty-state">
-                    <p>Team applications will appear here.</p>
+                    <p>Jury applications will appear here.</p>
                 </div>
             </div>
             {% endif %}
