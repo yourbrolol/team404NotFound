@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, DeleteView
 
-from .forms import UserRegistrationForm, ContestForm, UserSettingsForm
+from .forms import UserRegistrationForm, ContestForm, UserSettingsForm, ProfileBioForm
 from .models import Contest, Application, User
 
 # ── Mixins ────────────────────────────────────────────────────────────────────
@@ -41,7 +41,23 @@ class HomeView(RedirectToRegisterMixin, TemplateView):
         contests = Contest.objects.exclude(status=Contest.Status.DRAFT)
         return super().get_context_data(contests=contests, **kwargs)
 
-ProfileView = _make_template_view("app/profile.html")
+class ProfileView(RedirectToRegisterMixin, View):
+    def get(self, request):
+        form = ProfileBioForm(instance=request.user)
+        return render(request, "app/profile.html", {
+            "form": form,
+            "saved": request.GET.get("saved") == "1",
+        })
+
+    def post(self, request):
+        form = ProfileBioForm(request.POST, instance=request.user)
+        if form.is_valid():
+            form.save()
+            return redirect("/profile/?saved=1")
+        return render(request, "app/profile.html", {
+            "form": form,
+            "saved": False,
+        })
 
 class DashboardView(RedirectToRegisterMixin, TemplateView):
     template_name = "app/dashboard.html"

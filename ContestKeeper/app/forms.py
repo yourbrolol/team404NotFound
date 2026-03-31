@@ -9,6 +9,14 @@ class UserRegistrationForm(UserCreationForm):
         model = get_user_model()
         fields = ("username", "email")
 
+class ProfileBioForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ("bio",)
+        widgets = {
+            "bio": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": "Tell us about yourself..."}),
+        }
+
 class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = User
