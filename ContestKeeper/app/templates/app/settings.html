@@ -84,6 +84,7 @@
                     <div class="form-group">
                         <label class="form-label" for="{{ form.bio.id_for_label }}">Bio</label>
                         {{ form.bio }}
+                        <div id="bioCounter" style="margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.75;"></div>
                         {% if form.bio.errors %}
                         {% for error in form.bio.errors %}
                         <p class="field-error">{{ error }}</p>
@@ -152,6 +153,67 @@
                 alert.style.transform = 'translateY(-8px)';
                 setTimeout(() => alert.remove(), 400);
             }, 4000);
+        }
+
+        const form = document.querySelector('.settings-layout');
+        const usernameInput = document.getElementById('{{ form.username.id_for_label }}');
+        const bioInput = document.getElementById('{{ form.bio.id_for_label }}');
+        const avatarCircle = document.querySelector('.settings-avatar__circle');
+        const avatarName = document.querySelector('.settings-avatar__name');
+        const saveButton = document.querySelector('.settings-save-btn');
+        const bioCounter = document.getElementById('bioCounter');
+
+        if (usernameInput && avatarCircle && avatarName) {
+            const updateProfilePreview = () => {
+                const username = usernameInput.value.trim();
+                avatarCircle.textContent = (username.slice(0, 2) || '?').toUpperCase();
+                avatarName.textContent = username || 'Unnamed user';
+            };
+
+            updateProfilePreview();
+            usernameInput.addEventListener('input', updateProfilePreview);
+        }
+
+        if (bioInput && bioCounter) {
+            const maxLength = Number(bioInput.getAttribute('maxlength')) || null;
+
+            const updateBioCounter = () => {
+                const currentLength = bioInput.value.length;
+                bioCounter.textContent = maxLength
+                    ? `${currentLength}/${maxLength} characters`
+                    : `${currentLength} characters`;
+            };
+
+            updateBioCounter();
+            bioInput.addEventListener('input', updateBioCounter);
+        }
+
+        if (form && saveButton) {
+            const fields = Array.from(form.querySelectorAll('input, textarea, select'))
+                .filter((field) => field.type !== 'hidden' && field.type !== 'submit');
+            const initialState = fields.map((field) => field.value);
+
+            const hasChanges = () => fields.some((field, index) => field.value !== initialState[index]);
+
+            const updateSaveState = () => {
+                const dirty = hasChanges();
+                saveButton.disabled = !dirty;
+                saveButton.style.opacity = dirty ? '1' : '0.65';
+                saveButton.style.cursor = dirty ? 'pointer' : 'not-allowed';
+            };
+
+            updateSaveState();
+            fields.forEach((field) => field.addEventListener('input', updateSaveState));
+
+            window.addEventListener('beforeunload', (event) => {
+                if (!hasChanges()) return;
+                event.preventDefault();
+                event.returnValue = '';
+            });
+
+            form.addEventListener('submit', () => {
+                saveButton.disabled = false;
+            });
         }
     </script>
 </body>
