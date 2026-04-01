@@ -3,6 +3,7 @@ body {
     background-repeat: no-repeat;
     background-size: cover;
     font-size: 1.15rem;
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 }
 
 .auth-page,
@@ -12,17 +13,43 @@ main.auth-page {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 37.5vw;
-    padding: 1rem;
+    padding: 2.5rem 1.5rem;
     background-color: rgba(255, 255, 255, 0.3);
     box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(5px);
     -webkit-backdrop-filter: blur(5px);
     border: 2px solid rgba(255, 255, 255, 0.5);
     border-radius: 5%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+}
+
+.auth-form {
+    width: 85%;
+}
+
+#header {
+    margin: 0.5rem 0;
 }
 
 .auth-form p {
+    margin-bottom: 1.25rem;
+    text-align: left;
+}
+
+.auth-form label {
+    display: inline-block;
     margin-bottom: 0.75rem;
+}
+
+.auth-form input {
+    width: 100%;
+    padding: 0.75rem;
+    box-sizing: border-box;
+    font-family: inherit;
+    font-size: 1rem;
 }
 
 .auth-field-error {
@@ -33,8 +60,11 @@ main.auth-page {
 }
 
 .auth-form button[type="submit"] {
-    margin-top: 0.5rem;
-    padding: 0.5rem 1rem;
+    margin-top: 1rem;
+    padding: 0.75rem 1rem;
+    width: 100%;
+    font-family: inherit;
+    font-size: 1.1rem;
     cursor: pointer;
 }
 
