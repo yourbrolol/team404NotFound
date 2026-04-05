@@ -1,0 +1,136 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ contest.name }} - Admin Leaderboard Dashboard</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+</head>
+<body>
+    {% include 'app/nav.html' %}
+    <main class="dashboard-container">
+        <div class="detail-card" style="width:100%;">
+            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 class="detail-title">{{ contest.name }} Evaluation Dashboard</h1>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Admin controls and leaderboard preview.</p>
+                </div>
+                <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">View Public Leaderboard</a>
+            </div>
+
+            <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">
+                <div class="info-item">
+                    <h4>Evaluation status</h4>
+                    <p>{{ phase.get_status_display }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>Trigger type</h4>
+                    <p>{{ phase.get_trigger_type_display }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>All scores complete</h4>
+                    <p>{{ phase.all_scores_complete|yesno:"Yes,No" }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>Participant breakdown</h4>
+                    <p>{{ phase.show_jury_breakdown_to_participants|yesno:"Visible,Hidden" }}</p>
+                </div>
+                <div class="info-item">
+                    <h4>Completed at</h4>
+                    <p>{{ phase.completed_at|date:"M d, Y H:i"|default:'Not completed yet' }}</p>
+                </div>
+            </div>
+
+            <section style="margin-top: 1.5rem;">
+                <h4>Score submission progress</h4>
+                <div style="background: var(--border); border-radius: 999px; overflow: hidden; height: 16px; margin-bottom: 0.5rem;">
+                    <div style="width: {{ progress_percent }}%; background: var(--primary-color); height: 100%;"></div>
+                </div>
+                <p>{{ submitted }} of {{ expected }} expected jury scores submitted.</p>
+            </section>
+
+            <section style="margin-top: 1.5rem;">
+                <h4>Missing scores</h4>
+                {% if missing_scores %}
+                    <table class="table" style="width:100%; margin-top:0.75rem;">
+                        <thead>
+                            <tr>
+                                <th>Team</th>
+                                <th>Criterion</th>
+                                <th>Jury member</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for missing in missing_scores %}
+                            <tr>
+                                <td>{{ missing.team_name }}</td>
+                                <td>{{ missing.criterion_name }}</td>
+                                <td>{{ missing.jury_username }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No missing scores detected.</p>
+                {% endif %}
+            </section>
+
+            <section style="margin-top: 1.5rem;">
+                <div style="display:flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+                    <form method="post" action="{% url 'admin_finish_evaluation' contest.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-primary">Finish Evaluation</button>
+                    </form>
+                    <form method="post" action="{% url 'admin_recalculate_leaderboard' contest.pk %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-secondary">Recalculate Leaderboard</button>
+                    </form>
+                    <form method="post" action="{% url 'admin_toggle_jury_breakdown' contest.pk %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="action" value="{% if phase.show_jury_breakdown_to_participants %}hide{% else %}show{% endif %}">
+                        <button type="submit" class="btn btn-tinted">{% if phase.show_jury_breakdown_to_participants %}Hide{% else %}Show{% endif %} jury breakdown to participants</button>
+                    </form>
+                    <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=json" class="btn btn-secondary">Export JSON</a>
+                    <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=csv" class="btn btn-secondary">Export CSV</a>
+                </div>
+            </section>
+
+            <section style="margin-top: 1.5rem;">
+                <h4>Current leaderboard preview</h4>
+                {% if entries %}
+                    <table class="table" style="width:100%; margin-top:0.75rem;">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Team</th>
+                                <th>Total score</th>
+                                {% for criterion in criteria %}
+                                    <th>{{ criterion.name }}</th>
+                                {% endfor %}
+                                <th>Complete</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in entries %}
+                            <tr>
+                                <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
+                                <td>{{ item.entry.team.name }}</td>
+                                <td>{{ item.entry.total_score }}</td>
+                                {% for score in item.category_values %}
+                                    <td>{{ score }}</td>
+                                {% endfor %}
+                                <td>{{ item.entry.computation_complete|yesno:"Yes,No" }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No leaderboard entries available yet.</p>
+                {% endif %}
+            </section>
+        </div>
+    </main>
+</body>
+</html>

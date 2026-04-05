@@ -1,0 +1,70 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ contest.name }} - Rounds</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+</head>
+<body>
+    {% include 'app/nav.html' %}
+    <main class="dashboard-container">
+        <div class="detail-card" style="width:100%;">
+            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 class="detail-title">{{ contest.name }} - Rounds</h1>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Manage contest rounds and evaluations.</p>
+                </div>
+                <a href="{% url 'round_create' contest.pk %}" class="btn btn-primary">New Round</a>
+            </div>
+
+            {% if rounds %}
+                <div style="margin-top: 1.5rem;">
+                    {% for round in rounds %}
+                        <div style="padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; background: var(--surface);">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                                <div>
+                                    <h3 style="margin: 0;">Round {{ round.order }}: {{ round.title }}</h3>
+                                    <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">
+                                        Status: <strong>{{ round.get_status_display }}</strong>
+                                        | Deadline: {{ round.deadline|date:"M d, Y H:i" }}
+                                    </p>
+                                </div>
+                            </div>
+
+                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">{{ round.description|truncatewords:20 }}</p>
+
+                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+                                {% if round.status == 'DRAFT' %}
+                                    <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem;">Edit</a>
+                                    <form action="{% url 'round_activate' contest.pk round.id %}" method="POST" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-primary" style="font-size: 0.85rem;">Activate</button>
+                                    </form>
+                                {% elif round.status == 'ACTIVE' %}
+                                    <form action="{% url 'round_extend_deadline' contest.pk round.id %}" method="POST" style="display: inline;">
+                                        {% csrf_token %}
+                                        <input type="datetime-local" name="new_deadline" required style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem;">
+                                        <button type="submit" class="btn btn-secondary" style="font-size: 0.85rem;">Extend Deadline</button>
+                                    </form>
+                                    <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem;">Close Submissions</button>
+                                    </form>
+                                {% endif %}
+                                <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="font-size: 0.85rem;">Back</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                    <p>No rounds created yet. <a href="{% url 'round_create' contest.pk %}">Create the first round</a></p>
+                </div>
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

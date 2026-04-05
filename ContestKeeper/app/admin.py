@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Contest, User, Application, Team
+from .models import Contest, User, Application, Team, ScoringCriterion, JuryScore, ContestEvaluationPhase, LeaderboardEntry, Round
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -44,3 +44,52 @@ class ApplicationAdmin(admin.ModelAdmin):
         (None, {"fields": ("user", "team", "contest", "application_type", "status")}),
         ("Dates", {"fields": ["created_at"]})
     )
+
+@admin.register(ScoringCriterion)
+class ScoringCriterionAdmin(admin.ModelAdmin):
+    list_display = ["name", "contest", "aggregation_type", "order"]
+    list_filter = ["contest", "aggregation_type"]
+    search_fields = ["name", "contest__name"]
+
+@admin.register(JuryScore)
+class JuryScoreAdmin(admin.ModelAdmin):
+    list_display = ["contest", "team", "criterion", "jury_member", "score"]
+    list_filter = ["contest", "criterion", "jury_member"]
+    search_fields = ["team__name", "jury_member__username"]
+
+@admin.register(ContestEvaluationPhase)
+class ContestEvaluationPhaseAdmin(admin.ModelAdmin):
+    list_display = ["contest", "status", "trigger_type", "all_scores_complete", "show_jury_breakdown_to_participants", "completed_at"]
+    list_filter = ["status", "trigger_type", "all_scores_complete", "show_jury_breakdown_to_participants"]
+    search_fields = ["contest__name"]
+
+@admin.register(LeaderboardEntry)
+class LeaderboardEntryAdmin(admin.ModelAdmin):
+    list_display = ["contest", "team", "rank", "total_score", "computation_complete"]
+    list_filter = ["contest", "computation_complete", "is_tied"]
+    search_fields = ["team__name", "contest__name"]
+    readonly_fields = ["category_scores", "jury_breakdown", "missing_scores"]
+
+@admin.register(Round)
+class RoundAdmin(admin.ModelAdmin):
+    list_display = ["title", "contest", "status", "order", "deadline"]
+    list_filter = ["status", "contest", "created_at"]
+    search_fields = ["title", "description", "contest__name"]
+    readonly_fields = ["status", "created_at"]
+    fieldsets = (
+        (None, {"fields": ("title", "description", "tech_requirements", "contest", "order")}),
+        ("Status", {"fields": ("status",)}),
+        ("Timeline", {"fields": ("start_time", "deadline", "created_at")}),
+        ("Checklist & Materials", {"fields": ("must_have", "materials")})
+    )
+    
+    def get_readonly_fields(self, request, obj=None):
+        """Make status read-only unless in DRAFT, and make created_at always read-only"""
+        readonly = list(self.readonly_fields)
+        if obj and obj.status != 'DRAFT':
+            readonly.append('title')
+            readonly.append('description')
+            readonly.append('tech_requirements')
+            readonly.append('start_time')
+            readonly.append('must_have')
+        return readonly

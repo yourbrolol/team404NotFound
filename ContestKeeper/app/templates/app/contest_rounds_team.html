@@ -1,0 +1,240 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rounds - {{ contest.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <style>
+        .rounds-container {
+            display: grid;
+            gap: 1.5rem;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+        .round-section {
+            margin-bottom: 2rem;
+        }
+        .round-section h2 {
+            color: var(--text-primary);
+            font-size: 1.3rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.5rem;
+        }
+        .round-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: box-shadow 0.2s;
+        }
+        .round-card:hover {
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .round-card.active {
+            border-left: 4px solid #28a745;
+            background: #f8fff9;
+        }
+        .round-card.closed {
+            border-left: 4px solid #ffc107;
+            background: #fffbf0;
+        }
+        .round-card.evaluated {
+            border-left: 4px solid #6c757d;
+            background: #f8f9fa;
+        }
+        .round-info {
+            flex: 1;
+        }
+        .round-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 0.5rem;
+        }
+        .round-meta {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            flex-wrap: wrap;
+        }
+        .round-actions {
+            display: flex;
+            gap: 0.75rem;
+            margin-left: 1rem;
+        }
+        .status-badge {
+            display: inline-block;
+            padding: 0.35rem 0.75rem;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .status-active {
+            background: #d4edda;
+            color: #155724;
+        }
+        .status-closed {
+            background: #fff3cd;
+            color: #856404;
+        }
+        .status-evaluated {
+            background: #e2e3e5;
+            color: #383d41;
+        }
+        .countdown {
+            font-weight: 600;
+            color: #28a745;
+        }
+        .countdown-danger {
+            color: #dc3545;
+            font-weight: 600;
+        }
+        .empty-message {
+            text-align: center;
+            padding: 2rem;
+            color: var(--text-muted);
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    {% include 'app/nav.html' %}
+    <main class="dashboard-container">
+        <h1 style="text-align: center; margin-bottom: 2rem;">Contest Rounds</h1>
+
+        {% if active_rounds %}
+            <div class="round-section">
+                <h2>🚀 Active Rounds</h2>
+                <div class="rounds-container">
+                    {% for round in active_rounds %}
+                        <div class="round-card active">
+                            <div class="round-info">
+                                <div class="round-title">{{ round.title }}</div>
+                                <div class="round-meta">
+                                    <span><strong>Deadline:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
+                                    <span>
+                                        {% with total_seconds=round.time_remaining %}
+                                            {% if total_seconds > 0 %}
+                                                <strong class="countdown">⏱ Time Left:</strong>
+                                                <span id="countdown-{{ round.id }}" data-deadline="{{ round.deadline|date:'c' }}">
+                                                    Loading...
+                                                </span>
+                                            {% else %}
+                                                <strong class="countdown-danger">⏱ CLOSED</strong>
+                                            {% endif %}
+                                        {% endwith %}
+                                    </span>
+                                </div>
+                            </div>
+                            <div class="round-actions">
+                                <span class="status-badge status-active">ACTIVE</span>
+                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-primary">View Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if closed_rounds %}
+            <div class="round-section">
+                <h2>🚪 Submission Closed</h2>
+                <div class="rounds-container">
+                    {% for round in closed_rounds %}
+                        <div class="round-card closed">
+                            <div class="round-info">
+                                <div class="round-title">{{ round.title }}</div>
+                                <div class="round-meta">
+                                    <span><strong>Closed:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
+                                </div>
+                            </div>
+                            <div class="round-actions">
+                                <span class="status-badge status-closed">CLOSED</span>
+                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">View Details</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if evaluated_rounds %}
+            <div class="round-section">
+                <h2>✅ Evaluated</h2>
+                <div class="rounds-container">
+                    {% for round in evaluated_rounds %}
+                        <div class="round-card evaluated">
+                            <div class="round-info">
+                                <div class="round-title">{{ round.title }}</div>
+                                <div class="round-meta">
+                                    <span><strong>Evaluated:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
+                                </div>
+                            </div>
+                            <div class="round-actions">
+                                <span class="status-badge status-evaluated">EVALUATED</span>
+                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">View Results</a>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        {% endif %}
+
+        {% if not active_rounds and not closed_rounds and not evaluated_rounds %}
+            <div class="empty-message">
+                <p>No rounds yet. Check back soon!</p>
+            </div>
+        {% endif %}
+    </main>
+
+    <script>
+        // Update countdowns every second
+        function updateCountdowns() {
+            document.querySelectorAll('[id^="countdown-"]').forEach(el => {
+                const deadline = new Date(el.dataset.deadline);
+                const now = new Date();
+                const remainingMs = deadline - now;
+
+                if (remainingMs <= 0) {
+                    el.textContent = 'Closed';
+                    el.className = 'countdown-danger';
+                    return;
+                }
+
+                const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((remainingMs / (1000 * 60 * 60)) % 24);
+                const minutes = Math.floor((remainingMs / (1000 * 60)) % 60);
+                const seconds = Math.floor((remainingMs / 1000) % 60);
+
+                if (days > 0) {
+                    el.textContent = `${days}d ${hours}h`;
+                } else if (hours > 0) {
+                    el.textContent = `${hours}h ${minutes}m`;
+                } else if (minutes > 0) {
+                    el.textContent = `${minutes}m ${seconds}s`;
+                } else {
+                    el.textContent = `${seconds}s`;
+                    el.className = 'countdown-danger';
+                }
+
+                // Change class if less than 1 hour
+                if (remainingMs < 3600000) {
+                    el.className = 'countdown-danger';
+                }
+            });
+        }
+
+        updateCountdowns();
+        setInterval(updateCountdowns, 1000);
+    </script>
+</body>
+</html>
