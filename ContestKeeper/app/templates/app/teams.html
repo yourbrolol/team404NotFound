@@ -5,7 +5,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teams – {{ contest.name }}</title>
+    <title>Teams - {{ contest.name }}</title>
     <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/team.css' %}">
     <link rel="stylesheet" href="{% static 'css/teams.css' %}">
@@ -21,22 +21,51 @@
         </header>
 
         <div class="tabs-header animate-fade-in delay-1">
-            <button class="tab-btn active" onclick="switchTab(event, 'teams')">Teams</button>
+            <button class="tab-btn active" data-tab-id="teams" onclick="switchTab(event, 'teams')">Teams</button>
             {% if user == contest.organizer %}
-            <button class="tab-btn" onclick="switchTab(event, 'apps')">Applications</button>
+            <button class="tab-btn" data-tab-id="apps" onclick="switchTab(event, 'apps')">Applications</button>
             {% endif %}
         </div>
 
         <div class="glass-panel animate-fade-in delay-1">
             <div id="teams-panel" class="tab-panel active">
+                <div class="teams-toolbar">
+                    <div class="teams-search">
+                        <input type="search" id="teamSearchInput" class="form-input"
+                            placeholder="Search teams by name" aria-label="Search teams">
+                    </div>
+                    <div class="teams-toolbar__actions">
+                        <select id="teamSortSelect" class="form-input teams-sort" aria-label="Sort teams">
+                            <option value="name-asc">Name A-Z</option>
+                            <option value="name-desc">Name Z-A</option>
+                            <option value="members-desc">Most members</option>
+                            <option value="members-asc">Fewest members</option>
+                        </select>
+                        <button type="button" id="clearTeamSearchBtn" class="btn btn-secondary btn-sm">Clear</button>
+                    </div>
+                    <div class="teams-summary" id="teamsSummary" aria-live="polite"></div>
+                </div>
+                <div class="teams-feedback" id="teamsFeedback" aria-live="polite"></div>
+                <div class="empty-state" id="filteredTeamsEmpty" hidden>
+                    <p id="filteredTeamsEmptyText">No teams match your search.</p>
+                </div>
                 {% if teams %}
-                <ul class="teams-list">
+                <ul class="teams-list" id="teamsList">
                     {% for team in teams %}
-                    <li>
+                    <li class="team-list-item" data-team-name="{{ team.name|lower }}" data-members="{{ team.participants.all|length }}">
                         <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="team-card-link">
                             <div class="team-card">
-                                <span class="team-name">{{ team.name }}</span>
-                                <span class="team-arrow">→</span>
+                                <div class="team-card__content">
+                                    <span class="team-name" data-team-name-label>{{ team.name }}</span>
+                                    <span class="team-meta">{{ team.participants.all|length }} member{{ team.participants.all|length|pluralize }}</span>
+                                </div>
+                                <div class="team-card__actions">
+                                    <button type="button" class="btn-sm btn-secondary copy-team-btn"
+                                        data-team-name-copy="{{ team.name }}" aria-label="Copy team name {{ team.name }}">
+                                        Copy
+                                    </button>
+                                    <span class="team-arrow">→</span>
+                                </div>
                             </div>
                         </a>
                     </li>
@@ -51,6 +80,7 @@
 
             {% if user == contest.organizer %}
             <div id="apps-panel" class="tab-panel">
+                <div class="teams-summary teams-summary--soft">Organizer tools tab. The active tab is remembered on this device.</div>
                 <div class="empty-state">
                     <p>Team applications will appear here.</p>
                 </div>

@@ -206,8 +206,77 @@
     align-items: stretch;
   }
 
-  .settings-actions .btn {
-    justify-content: center;
+.settings-actions .btn {
+  justify-content: center;
+  width: 100%;
+  }
+}
+
+.inline-value-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.inline-value-row .form-input {
+  flex: 1;
+}
+
+.settings-helper {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+}
+
+.settings-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.settings-toolbar__group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.settings-copy-btn,
+.section-toggle-btn {
+  min-height: 40px;
+}
+
+.section-toggle-btn[aria-expanded="false"] svg {
+  transform: rotate(-90deg);
+}
+
+.section-toggle-btn svg {
+  transition: transform 0.2s ease;
+}
+
+.collapsible-content[hidden] {
+  display: none !important;
+}
+
+.copy-feedback {
+  min-height: 1rem;
+  color: #4ade80;
+}
+
+@media (max-width: 600px) {
+  .inline-value-row {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .settings-copy-btn,
+  .section-toggle-btn {
     width: 100%;
+    justify-content: center;
+  }
+
+  .settings-toolbar {
+    align-items: stretch;
   }
 }

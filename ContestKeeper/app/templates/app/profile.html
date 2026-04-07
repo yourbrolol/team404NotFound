@@ -66,20 +66,29 @@
                 <div class="settings-fields">
                     <div class="form-group">
                         <label class="form-label">Username</label>
-                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.username }}</div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="form-label">Email</label>
-                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.email|default:"-" }}
+                        <div class="inline-value-row">
+                            <div class="form-input" id="profileUsernameValue" style="cursor:default; user-select:text;">{{ user.username }}</div>
+                            <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileUsernameValue">Copy</button>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <form method="post">
+                        <label class="form-label">Email</label>
+                        <div class="inline-value-row">
+                            <div class="form-input" id="profileEmailValue" style="cursor:default; user-select:text;">{{ user.email|default:"-" }}</div>
+                            <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileEmailValue">Copy</button>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <form method="post" id="profileBioForm">
                             {% csrf_token %}
                             <label class="form-label" for="{{ form.bio.id_for_label }}">Bio</label>
                             {{ form.bio }}
+                            <div class="settings-toolbar" style="margin-top: 0.5rem;">
+                                <span class="settings-helper" id="profileBioCounter"></span>
+                                <span class="settings-helper copy-feedback" id="profileCopyFeedback" aria-live="polite"></span>
+                            </div>
                             {% if form.bio.errors %}
                             {% for error in form.bio.errors %}
                             <p class="field-error">{{ error }}</p>
@@ -107,9 +116,17 @@
                         <h2 class="settings-card__title">Account Info</h2>
                         <p class="settings-card__subtitle">Your account details (read-only)</p>
                     </div>
+                    <button type="button" class="btn btn-secondary section-toggle-btn" data-toggle-target="profileInfoPanel"
+                        aria-expanded="true" style="margin-left: auto;">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <polyline points="6 9 12 15 18 9"></polyline>
+                        </svg>
+                        Collapse
+                    </button>
                 </div>
 
-                <div class="settings-info-grid">
+                <div class="settings-info-grid collapsible-content" id="profileInfoPanel">
                     <div class="settings-info-item">
                         <span class="settings-info-item__label">Role</span>
                         <span class="settings-info-item__value">
@@ -128,7 +145,11 @@
             </section>
 
             <!-- Edit button -->
-            <div class="settings-actions" style="justify-content: center;">
+            <div class="settings-actions settings-toolbar" style="justify-content: space-between;">
+                <div class="settings-toolbar__group">
+                    <button type="button" class="btn btn-secondary" id="scrollToBioBtn">Jump to Bio</button>
+                    <button type="button" class="btn btn-secondary" id="copyProfileSummaryBtn">Copy Summary</button>
+                </div>
                 <a href="{% url 'settings' %}" class="btn btn-primary settings-save-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
                         stroke-linecap="round" stroke-linejoin="round">
@@ -150,6 +171,92 @@
                 alert.style.transform = 'translateY(-8px)';
                 setTimeout(() => alert.remove(), 400);
             }, 4000);
+        }
+
+        const bioInput = document.getElementById('{{ form.bio.id_for_label }}');
+        const bioCounter = document.getElementById('profileBioCounter');
+        const copyFeedback = document.getElementById('profileCopyFeedback');
+        const copyButtons = document.querySelectorAll('[data-copy-target]');
+        const toggles = document.querySelectorAll('[data-toggle-target]');
+        const scrollToBioBtn = document.getElementById('scrollToBioBtn');
+        const copyProfileSummaryBtn = document.getElementById('copyProfileSummaryBtn');
+
+        const setFeedback = (message) => {
+            if (!copyFeedback) return;
+            copyFeedback.textContent = message;
+            window.clearTimeout(setFeedback.timeoutId);
+            setFeedback.timeoutId = window.setTimeout(() => {
+                copyFeedback.textContent = '';
+            }, 2200);
+        };
+
+        if (bioInput && bioCounter) {
+            const maxLength = Number(bioInput.getAttribute('maxlength')) || null;
+
+            const updateBioMeta = () => {
+                bioInput.style.height = 'auto';
+                bioInput.style.height = `${bioInput.scrollHeight}px`;
+                const current = bioInput.value.length;
+                bioCounter.textContent = maxLength ? `${current}/${maxLength} characters` : `${current} characters`;
+            };
+
+            updateBioMeta();
+            bioInput.addEventListener('input', updateBioMeta);
+        }
+
+        copyButtons.forEach((button) => {
+            button.addEventListener('click', async () => {
+                const target = document.getElementById(button.dataset.copyTarget);
+                if (!target) return;
+                const value = target.textContent.trim();
+                if (!value || value === '-') {
+                    setFeedback('Nothing to copy yet.');
+                    return;
+                }
+
+                try {
+                    await navigator.clipboard.writeText(value);
+                    setFeedback(`Copied: ${value}`);
+                } catch (error) {
+                    setFeedback('Clipboard access was blocked.');
+                }
+            });
+        });
+
+        toggles.forEach((button) => {
+            button.addEventListener('click', () => {
+                const panel = document.getElementById(button.dataset.toggleTarget);
+                if (!panel) return;
+                const expanded = button.getAttribute('aria-expanded') === 'true';
+                button.setAttribute('aria-expanded', String(!expanded));
+                panel.hidden = expanded;
+                button.lastChild.textContent = expanded ? ' Expand' : ' Collapse';
+            });
+        });
+
+        if (scrollToBioBtn && bioInput) {
+            scrollToBioBtn.addEventListener('click', () => {
+                bioInput.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                bioInput.focus();
+            });
+        }
+
+        if (copyProfileSummaryBtn) {
+            copyProfileSummaryBtn.addEventListener('click', async () => {
+                const summary = [
+                    `Username: {{ user.username|escapejs }}`,
+                    `Email: {{ user.email|default:"-"|escapejs }}`,
+                    `Role: {{ user.get_role_display|escapejs }}`,
+                    `Member since: {{ user.date_joined|date:"M d, Y"|escapejs }}`
+                ].join('\n');
+
+                try {
+                    await navigator.clipboard.writeText(summary);
+                    setFeedback('Profile summary copied.');
+                } catch (error) {
+                    setFeedback('Clipboard access was blocked.');
+                }
+            });
         }
     </script>
 </body>

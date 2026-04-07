@@ -1,5 +1,9 @@
-from django.db import models
+from decimal import Decimal
+
 from django.contrib.auth.models import AbstractUser
+from django.core.exceptions import ValidationError
+from django.core.validators import MinValueValidator
+from django.db import models
 
 class User(AbstractUser):
     first_name = None
@@ -107,32 +111,73 @@ class ScoringCriterion(models.Model):
         AVERAGE = "AVERAGE", "Average"
 
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="scoring_criteria")
-    name = models.CharField(max_length=50)
-    max_score = models.FloatField(default=100)
-    weight = models.FloatField(default=1.0)
-    aggregation_type = models.CharField(max_length=7, choices=AggregationType.choices, default=AggregationType.SUM)
+    name = models.CharField(max_length=100)
+    max_score = models.PositiveIntegerField(
+        default=100,
+        validators=[MinValueValidator(1)],
+    )
+    weight = models.DecimalField(
+        max_digits=6,
+        decimal_places=2,
+        default=Decimal("1.00"),
+        validators=[MinValueValidator(Decimal("0.01"))],
+    )
+    aggregation_type = models.CharField(
+        max_length=10,
+        choices=AggregationType.choices,
+        default=AggregationType.AVERAGE,
+    )
     order = models.PositiveIntegerField(default=0)
 
     class Meta:
-        ordering = ["contest", "order", "name"]
+        ordering = ["order", "id"]
         unique_together = ("contest", "name")
 
     def __str__(self):
-        return f"{self.contest.name} - {self.name}"
+        return f"{self.contest.name}: {self.name}"
 
 
 class JuryScore(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="jury_scores")
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="jury_scores")
-    jury_member = models.ForeignKey(User, on_delete=models.CASCADE, related_name="scores_given")
-    criterion = models.ForeignKey(ScoringCriterion, on_delete=models.CASCADE, related_name="scores")
-    score = models.FloatField(default=0)
+    jury_member = models.ForeignKey(User, on_delete=models.CASCADE, related_name="jury_scores_given")
+    criterion = models.ForeignKey(ScoringCriterion, on_delete=models.CASCADE, related_name="jury_scores")
+    score = models.DecimalField(
+        max_digits=7,
+        decimal_places=2,
+        validators=[MinValueValidator(Decimal("0.00"))],
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
         unique_together = ("contest", "team", "jury_member", "criterion")
+        ordering = ["contest_id", "team_id", "criterion__order", "jury_member_id"]
+
+    def clean(self):
+        errors = {}
+
+        if self.criterion_id and self.contest_id and self.criterion.contest_id != self.contest_id:
+            errors["criterion"] = "Criterion must belong to the same contest."
+
+        if self.team_id and self.contest_id and not self.contest.teams.filter(pk=self.team_id).exists():
+            errors["team"] = "Team must belong to the selected contest."
+
+        if self.jury_member_id and self.contest_id and not self.contest.jurys.filter(pk=self.jury_member_id).exists():
+            errors["jury_member"] = "Jury member must be assigned to the selected contest."
+
+        if self.criterion_id and self.score is not None and self.score > Decimal(str(self.criterion.max_score)):
+            errors["score"] = f"Score cannot exceed the criterion maximum of {self.criterion.max_score}."
+
+        if errors:
+            raise ValidationError(errors)
+
+    def save(self, *args, **kwargs):
+        self.full_clean()
+        return super().save(*args, **kwargs)
 
     def __str__(self):
-        return f"{self.contest.name} / {self.team.name} / {self.criterion.name} by {self.jury_member.username}"
+        return f"{self.jury_member.username} -> {self.team.name} ({self.criterion.name})"
 
 
 class ContestEvaluationPhase(models.Model):
@@ -146,33 +191,34 @@ class ContestEvaluationPhase(models.Model):
         MANUAL = "MANUAL", "Manual"
 
     contest = models.OneToOneField(Contest, on_delete=models.CASCADE, related_name="evaluation_phase")
-    status = models.CharField(max_length=12, choices=Status.choices, default=Status.NOT_STARTED)
-    trigger_type = models.CharField(max_length=6, choices=TriggerType.choices, default=TriggerType.AUTO)
+    status = models.CharField(max_length=20, choices=Status.choices, default=Status.NOT_STARTED)
+    trigger_type = models.CharField(max_length=10, choices=TriggerType.choices, default=TriggerType.AUTO)
     all_scores_complete = models.BooleanField(default=False)
     show_jury_breakdown_to_participants = models.BooleanField(default=False)
     completed_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"{self.contest.name} evaluation phase"
+        return f"Evaluation phase for {self.contest.name}"
 
 
 class LeaderboardEntry(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="leaderboard_entries")
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="leaderboard_entries")
-    rank = models.PositiveIntegerField(default=0)
-    total_score = models.FloatField(default=0)
+    rank = models.PositiveIntegerField()
+    total_score = models.DecimalField(max_digits=10, decimal_places=2, default=Decimal("0.00"))
     is_tied = models.BooleanField(default=False)
     category_scores = models.JSONField(default=dict, blank=True)
     jury_breakdown = models.JSONField(default=dict, blank=True)
     missing_scores = models.JSONField(default=list, blank=True)
     computation_complete = models.BooleanField(default=False)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
+        ordering = ["rank", "-total_score", "team__name"]
         unique_together = ("contest", "team")
-        ordering = ["contest", "rank", "team__name"]
 
     def __str__(self):
-        return f"{self.contest.name} - {self.team.name}"
+        return f"{self.contest.name} #{self.rank} - {self.team.name}"
 
     @property
     def rank_display(self):
@@ -208,17 +254,19 @@ class Round(models.Model):
 
     def is_active(self):
         from django.utils import timezone
+
         now = timezone.now()
         return self.status == self.Status.ACTIVE and self.start_time <= now
 
     def is_open(self):
-        """Check if the round is open for submissions (ACTIVE status, deadline not passed)"""
         from django.utils import timezone
+
         now = timezone.now()
         return self.status == self.Status.ACTIVE and self.start_time <= now and self.deadline > now
 
     def time_remaining(self):
         from django.utils import timezone
+
         now = timezone.now()
         if self.deadline <= now:
             return None

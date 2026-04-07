@@ -1,7 +1,17 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
 
-from .models import Contest, User, Application, Team, ScoringCriterion, JuryScore, ContestEvaluationPhase, LeaderboardEntry, Round
+from .models import (
+    Application,
+    Contest,
+    ContestEvaluationPhase,
+    JuryScore,
+    LeaderboardEntry,
+    Round,
+    ScoringCriterion,
+    Team,
+    User,
+)
 
 @admin.register(User)
 class UserAdmin(BaseUserAdmin):
@@ -27,7 +37,7 @@ class ContestAdmin(admin.ModelAdmin):
     list_display = ["name", "organizer", "status", "start_date", "end_date"]
     list_filter = ["status", "start_date", "end_date"]
     search_fields = ["name", "description"]
-    filter_horizontal = ["jurys", "participants"]
+    filter_horizontal = ["jurys", "participants", "teams"]
     fieldsets = (
         (None, {"fields": ("name", "description", "status")}),
         ("Dates", {"fields": ("start_date", "end_date")}),
@@ -47,15 +57,17 @@ class ApplicationAdmin(admin.ModelAdmin):
 
 @admin.register(ScoringCriterion)
 class ScoringCriterionAdmin(admin.ModelAdmin):
-    list_display = ["name", "contest", "aggregation_type", "order"]
+    list_display = ["name", "contest", "max_score", "weight", "aggregation_type", "order"]
     list_filter = ["contest", "aggregation_type"]
     search_fields = ["name", "contest__name"]
+    ordering = ["contest", "order", "id"]
 
 @admin.register(JuryScore)
 class JuryScoreAdmin(admin.ModelAdmin):
-    list_display = ["contest", "team", "criterion", "jury_member", "score"]
+    list_display = ["contest", "team", "criterion", "jury_member", "score", "updated_at"]
     list_filter = ["contest", "criterion", "jury_member"]
-    search_fields = ["team__name", "jury_member__username"]
+    search_fields = ["team__name", "jury_member__username", "criterion__name", "contest__name"]
+    readonly_fields = ["created_at", "updated_at"]
 
 @admin.register(ContestEvaluationPhase)
 class ContestEvaluationPhaseAdmin(admin.ModelAdmin):
@@ -65,10 +77,10 @@ class ContestEvaluationPhaseAdmin(admin.ModelAdmin):
 
 @admin.register(LeaderboardEntry)
 class LeaderboardEntryAdmin(admin.ModelAdmin):
-    list_display = ["contest", "team", "rank", "total_score", "computation_complete"]
-    list_filter = ["contest", "computation_complete", "is_tied"]
-    search_fields = ["team__name", "contest__name"]
-    readonly_fields = ["category_scores", "jury_breakdown", "missing_scores"]
+    list_display = ["contest", "team", "rank", "total_score", "is_tied", "computation_complete", "updated_at"]
+    list_filter = ["contest", "is_tied", "computation_complete"]
+    search_fields = ["contest__name", "team__name"]
+    readonly_fields = ["updated_at", "category_scores", "jury_breakdown", "missing_scores"]
 
 @admin.register(Round)
 class RoundAdmin(admin.ModelAdmin):
@@ -80,16 +92,11 @@ class RoundAdmin(admin.ModelAdmin):
         (None, {"fields": ("title", "description", "tech_requirements", "contest", "order")}),
         ("Status", {"fields": ("status",)}),
         ("Timeline", {"fields": ("start_time", "deadline", "created_at")}),
-        ("Checklist & Materials", {"fields": ("must_have", "materials")})
+        ("Checklist & Materials", {"fields": ("must_have", "materials")}),
     )
-    
+
     def get_readonly_fields(self, request, obj=None):
-        """Make status read-only unless in DRAFT, and make created_at always read-only"""
         readonly = list(self.readonly_fields)
-        if obj and obj.status != 'DRAFT':
-            readonly.append('title')
-            readonly.append('description')
-            readonly.append('tech_requirements')
-            readonly.append('start_time')
-            readonly.append('must_have')
+        if obj and obj.status != "DRAFT":
+            readonly.extend(["title", "description", "tech_requirements", "start_time", "must_have"])
         return readonly

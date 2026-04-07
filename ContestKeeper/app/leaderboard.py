@@ -1,29 +1,35 @@
+import csv
+import io
 import logging
+from collections import defaultdict
+from decimal import Decimal, ROUND_HALF_UP
+
 from django.db import transaction
 from django.utils import timezone
-from .models import (
-    Contest,
-    ScoringCriterion,
-    JuryScore,
-    ContestEvaluationPhase,
-    LeaderboardEntry,
-)
+
+from .models import ContestEvaluationPhase, JuryScore, LeaderboardEntry, ScoringCriterion
+
 
 logger = logging.getLogger(__name__)
+TWOPLACES = Decimal("0.01")
+
+
+def _quantize(value):
+    return Decimal(value).quantize(TWOPLACES, rounding=ROUND_HALF_UP)
 
 
 class LeaderboardComputer:
     @classmethod
     def _build_leaderboard(cls, contest):
-        jury_members = list(contest.jurys.all())
-        teams = list(contest.teams.all())
-        criteria = list(contest.scoring_criteria.all().order_by("order"))
-        score_map = {}
-        raw_scores = JuryScore.objects.filter(contest=contest).select_related(
-            "team", "jury_member", "criterion"
-        )
+        jury_members = list(contest.jurys.order_by("id"))
+        teams = list(contest.teams.order_by("name", "id"))
+        criteria = list(contest.scoring_criteria.order_by("order", "id"))
+        raw_scores = JuryScore.objects.filter(contest=contest).select_related("team", "jury_member", "criterion")
 
+        grouped_scores = defaultdict(list)
+        score_map = {}
         for jury_score in raw_scores:
+            grouped_scores[(jury_score.team_id, jury_score.criterion_id)].append(jury_score.score)
             score_map[(jury_score.team_id, jury_score.criterion_id, jury_score.jury_member_id)] = jury_score
 
         entries = []
@@ -33,42 +39,47 @@ class LeaderboardComputer:
             category_scores = {}
             jury_breakdown = {}
             team_missing = []
-            total_score = 0.0
+            total_score = Decimal("0.00")
 
             for criterion in criteria:
-                criterion_scores = []
+                criterion_scores = grouped_scores[(team.id, criterion.id)]
                 breakdown_rows = []
 
                 for jury in jury_members:
                     jury_score = score_map.get((team.id, criterion.id, jury.id))
                     if jury_score is None:
-                        team_missing.append({
+                        missing_row = {
                             "jury_id": jury.id,
                             "jury_username": jury.username,
                             "team_id": team.id,
                             "team_name": team.name,
                             "criterion_id": criterion.id,
                             "criterion_name": criterion.name,
-                        })
-                        score_value = None
+                        }
+                        team_missing.append(missing_row)
+                        breakdown_rows.append(
+                            {"jury_id": jury.id, "jury_username": jury.username, "score": None}
+                        )
                     else:
-                        score_value = jury_score.score
-                        criterion_scores.append(score_value)
+                        breakdown_rows.append(
+                            {
+                                "jury_id": jury.id,
+                                "jury_username": jury.username,
+                                "score": float(jury_score.score),
+                            }
+                        )
 
-                    breakdown_rows.append({
-                        "jury_id": jury.id,
-                        "jury_username": jury.username,
-                        "score": score_value,
-                    })
-
-                if criterion.aggregation_type == ScoringCriterion.AggregationType.AVERAGE:
-                    category_value = sum(criterion_scores) / len(criterion_scores) if criterion_scores else 0.0
+                if criterion_scores:
+                    aggregate = sum(criterion_scores)
+                    if criterion.aggregation_type == ScoringCriterion.AggregationType.AVERAGE:
+                        aggregate = aggregate / Decimal(len(criterion_scores))
+                    weighted_value = _quantize(aggregate * criterion.weight)
                 else:
-                    category_value = sum(criterion_scores)
+                    weighted_value = Decimal("0.00")
 
-                category_scores[criterion.name] = category_value
+                category_scores[criterion.name] = float(weighted_value)
                 jury_breakdown[criterion.name] = breakdown_rows
-                total_score += category_value
+                total_score += weighted_value
 
             overall_missing.extend(team_missing)
             entries.append(
@@ -77,27 +88,24 @@ class LeaderboardComputer:
                     "category_scores": category_scores,
                     "jury_breakdown": jury_breakdown,
                     "missing_scores": team_missing,
-                    "computation_complete": len(team_missing) == 0,
-                    "total_score": total_score,
+                    "computation_complete": len(team_missing) == 0 and bool(criteria) and bool(jury_members),
+                    "total_score": _quantize(total_score),
                 }
             )
 
-        sorted_entries = sorted(entries, key=lambda item: item["total_score"], reverse=True)
+        entries.sort(key=lambda item: (-item["total_score"], item["team"].name.lower(), item["team"].id))
+
         last_score = None
         rank = 0
-        index = 0
-
-        for item in sorted_entries:
-            index += 1
+        for index, item in enumerate(entries, start=1):
             if last_score is None or item["total_score"] != last_score:
                 rank = index
             item["rank"] = rank
             last_score = item["total_score"]
 
-        score_groups = {}
-        for item in sorted_entries:
-            score_groups.setdefault(item["total_score"], []).append(item)
-
+        score_groups = defaultdict(list)
+        for item in entries:
+            score_groups[item["total_score"]].append(item)
         for group in score_groups.values():
             tied = len(group) > 1
             for item in group:
@@ -105,8 +113,8 @@ class LeaderboardComputer:
 
         return {
             "criteria": criteria,
-            "entries": sorted_entries,
-            "all_scores_complete": len(overall_missing) == 0,
+            "entries": entries,
+            "all_scores_complete": len(overall_missing) == 0 and bool(entries) and bool(criteria) and bool(jury_members),
             "overall_missing": overall_missing,
             "teams_count": len(teams),
         }
@@ -133,8 +141,10 @@ class LeaderboardComputer:
             phase.status = ContestEvaluationPhase.Status.COMPLETED
             if phase.completed_at is None:
                 phase.completed_at = timezone.now()
-        else:
+        elif JuryScore.objects.filter(contest=contest).exists():
             phase.status = ContestEvaluationPhase.Status.IN_PROGRESS
+        else:
+            phase.status = ContestEvaluationPhase.Status.NOT_STARTED
 
         with transaction.atomic():
             phase.save()
@@ -201,31 +211,81 @@ class LeaderboardComputer:
     @classmethod
     def export_data(cls, contest, user_is_admin=False):
         entries = LeaderboardEntry.objects.filter(contest=contest).select_related("team").order_by("rank", "team__name")
+        if not entries.exists():
+            payload = cls._build_leaderboard(contest)
+            cls.save_leaderboard(contest, payload, preserve_completed_at=True)
+            entries = LeaderboardEntry.objects.filter(contest=contest).select_related("team").order_by("rank", "team__name")
         data = []
         for entry in entries:
             item = {
                 "rank": entry.rank,
                 "team": entry.team.name,
-                "total_score": entry.total_score,
+                "total_score": float(entry.total_score),
                 "category_scores": entry.category_scores,
                 "computation_complete": entry.computation_complete,
             }
             if user_is_admin:
                 item["jury_breakdown"] = entry.jury_breakdown
                 item["missing_scores"] = entry.missing_scores
+                item["is_tied"] = entry.is_tied
             data.append(item)
         return data
 
     @classmethod
     def export_csv(cls, contest):
-        criteria = list(contest.scoring_criteria.order_by("order"))
+        criteria = list(contest.scoring_criteria.order_by("order", "id"))
         entries = LeaderboardEntry.objects.filter(contest=contest).select_related("team").order_by("rank", "team__name")
+        if not entries.exists():
+            payload = cls._build_leaderboard(contest)
+            cls.save_leaderboard(contest, payload, preserve_completed_at=True)
+            entries = LeaderboardEntry.objects.filter(contest=contest).select_related("team").order_by("rank", "team__name")
         header = ["rank", "team", "total_score"] + [criterion.name for criterion in criteria] + ["computation_complete"]
         rows = []
         for entry in entries:
-            row = [entry.rank, entry.team.name, entry.total_score]
+            row = [entry.rank, entry.team.name, float(entry.total_score)]
             for criterion in criteria:
                 row.append(entry.category_scores.get(criterion.name, ""))
             row.append(entry.computation_complete)
             rows.append(row)
         return header, rows
+
+
+def _missing_scores_as_dict(contest):
+    missing = {}
+    for row in LeaderboardComputer.get_missing_scores(contest):
+        missing.setdefault(row["team_name"], {}).setdefault(row["criterion_name"], []).append(row["jury_username"])
+    return missing
+
+
+def get_missing_scores(contest):
+    return _missing_scores_as_dict(contest)
+
+
+def save_leaderboard(contest):
+    payload = LeaderboardComputer._build_leaderboard(contest)
+    LeaderboardComputer.save_leaderboard(contest, payload)
+    return list(LeaderboardEntry.objects.filter(contest=contest).select_related("team").order_by("rank", "team__name"))
+
+
+def compute_leaderboard(contest, persist=False):
+    if persist:
+        save_leaderboard(contest)
+    return LeaderboardComputer._build_leaderboard(contest)["entries"]
+
+
+def is_ready_for_auto_activation(contest):
+    return LeaderboardComputer.is_ready_for_auto_activation(contest)
+
+
+def export_data(contest):
+    return LeaderboardComputer.export_data(contest, user_is_admin=True)
+
+
+def export_csv(contest):
+    header, rows = LeaderboardComputer.export_csv(contest)
+    buffer = io.StringIO()
+    writer = csv.writer(buffer)
+    writer.writerow(header)
+    for row in rows:
+        writer.writerow(row)
+    return buffer.getvalue()
