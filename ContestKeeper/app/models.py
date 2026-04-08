@@ -270,7 +270,6 @@ class Round(models.Model):
         return self.deadline - now
 
 
-
 class Submission(models.Model):
     round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="submissions")
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="submissions")
