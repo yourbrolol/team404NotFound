@@ -9,6 +9,7 @@ from .models import (
     LeaderboardEntry,
     Round,
     ScoringCriterion,
+    Submission,
     Team,
     User,
 )
@@ -18,7 +19,7 @@ class UserAdmin(BaseUserAdmin):
     list_display = ["username", "email", "role", "is_staff"]
     list_filter = ["role", "is_staff", "is_superuser", "is_active"]
     fieldsets = (
-        (None, {"fields": ("username", "email", "password")}),
+        (None, {"fields": ("username", "email", "first_name", "last_name", "password")}),
         ("Permissions", {"fields": ("role", "is_active", "is_staff", "is_superuser")}),
         ("Important dates", {"fields": ("last_login", "date_joined")})
     )
@@ -100,3 +101,10 @@ class RoundAdmin(admin.ModelAdmin):
         if obj and obj.status != "DRAFT":
             readonly.extend(["title", "description", "tech_requirements", "start_time", "must_have"])
         return readonly
+
+@admin.register(Submission)
+class SubmissionAdmin(admin.ModelAdmin):
+    list_display = ["team", "round", "submitted_at", "updated_at"]
+    list_filter = ["round__contest", "round"]
+    search_fields = ["team__name", "round__title"]
+    readonly_fields = ["submitted_at", "updated_at"]

@@ -121,10 +121,33 @@ body {
     transform: translateX(4px);
 }
 
-.nav-link.active {
     color: white;
     background: var(--primary);
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.notification-btn {
+    position: relative;
+    padding-right: 2rem;
+}
+
+.notification-badge {
+    position: absolute;
+    top: 50%;
+    right: 1.25rem;
+    transform: translateY(-50%);
+    background: #ef4444;
+    color: white;
+    font-size: 0.7rem;
+    font-weight: 700;
+    min-width: 18px;
+    height: 18px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0 4px;
+    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
 }
 
 .nav-auth-divider {

@@ -23,9 +23,16 @@
     margin-top: 1rem;
 }
 
+.home-section-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
 .section-title {
     font-size: 2rem;
-    margin-bottom: 2rem;
+    margin-bottom: 0;
     display: flex;
     align-items: center;
     gap: 1rem;
@@ -36,6 +43,85 @@
     flex-grow: 1;
     height: 1px;
     background: var(--border);
+}
+
+.filter-bar {
+    display: flex;
+    gap: 0.6rem;
+    flex-wrap: wrap;
+}
+
+.filter-btn {
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    border: 1px solid var(--border);
+    background: var(--glass);
+    color: var(--text-muted);
+    text-decoration: none;
+    font-size: 0.9rem;
+    transition: 0.2s ease;
+}
+
+.filter-btn.active,
+.filter-btn:hover {
+    color: #fff;
+    background: var(--primary);
+    border-color: var(--primary);
+}
+
+.quick-access {
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+}
+
+.quick-access__header {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: flex-start;
+    margin-bottom: 1.25rem;
+}
+
+.quick-access__eyebrow {
+    margin: 0 0 0.35rem;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    font-size: 0.75rem;
+}
+
+.quick-access__header h2 {
+    margin: 0;
+    font-size: 1.6rem;
+}
+
+.quick-access__grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.quick-access__item {
+    padding: 1rem;
+    border-radius: 1rem;
+    background: rgba(15, 23, 42, 0.4);
+    border: 1px solid var(--border);
+}
+
+.quick-access__item .label {
+    display: block;
+    margin-bottom: 0.4rem;
+    color: var(--text-muted);
+    font-size: 0.78rem;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+}
+
+.quick-access__actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
 }
 
 /* ── Contest cards (shared with dashboard styles) ─────────── */
@@ -172,6 +258,10 @@
         margin-bottom: 1.25rem;
     }
 
+    .quick-access__grid {
+        grid-template-columns: 1fr;
+    }
+
     .contest-card {
         padding: 1.5rem;
         gap: 1rem;
@@ -195,6 +285,16 @@
     .section-title {
         font-size: 1.25rem;
         margin-bottom: 1rem;
+    }
+
+    .quick-access {
+        padding: 1.25rem;
+    }
+
+    .quick-access__header,
+    .quick-access__actions {
+        flex-direction: column;
+        align-items: flex-start;
     }
 
     .contest-card h3 {

@@ -1,4 +1,31 @@
-**__pycache__/
+# Python
+__pycache__/
 *.pyc
+*.pyo
+*.pyd
+.Python
+env/
 .venv/
+vh/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Django
+db.sqlite3
+db.sqlite3-journal
+local_settings.py
+staticfiles/
+media/
+
+# Environment
+.env
+
+# IDEs
+.idea/
+.vscode/
 .cursor/
+*.swp
+*.swo
+
+# Project specific
+ContestKeeper/db.sqlite3

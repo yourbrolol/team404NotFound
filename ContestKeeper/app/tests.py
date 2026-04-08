@@ -14,6 +14,7 @@ from .models import (
     LeaderboardEntry,
     Round,
     ScoringCriterion,
+    Submission,
     Team,
     User,
 )
@@ -674,3 +675,489 @@ class LeaderboardHelperFunctionsTest(TestCase):
 
         self.assertIn("rank,team,total_score", csv_data)
         self.assertIn("Alpha", csv_data)
+
+
+class SubmissionModelTest(TestCase):
+    def setUp(self):
+        self.organizer = User.objects.create_user(
+            username='sub_org', password='password', role=User.Role.ORGANIZER
+        )
+        self.participant = User.objects.create_user(
+            username='sub_parti', password='password', role=User.Role.PARTICIPANT
+        )
+        self.contest = Contest.objects.create(
+            name='Sub Contest',
+            description='Contest for submission tests',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timedelta(days=30),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        self.team = Team.objects.create(
+            name='Sub Team', captain=self.participant, status=Team.Status.ACTIVE
+        )
+        self.team.participants.add(self.participant)
+        self.contest.teams.add(self.team)
+
+        self.round = Round.objects.create(
+            contest=self.contest,
+            title='Round 1',
+            description='First round',
+            tech_requirements='Python 3.13',
+            must_have=['API', 'Tests'],
+            start_time=timezone.now() - timedelta(days=1),
+            deadline=timezone.now() + timedelta(days=3),
+            status=Round.Status.ACTIVE,
+            created_by=self.organizer,
+            order=1,
+        )
+
+    def test_create_submission_with_valid_data(self):
+        """Test that a submission can be created with all required fields."""
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc123',
+            live_demo_url='https://example.com/demo',
+            description='Implemented API endpoints and database schema.',
+        )
+        self.assertEqual(sub.round, self.round)
+        self.assertEqual(sub.team, self.team)
+        self.assertEqual(sub.github_url, 'https://github.com/example/repo')
+        self.assertEqual(sub.video_url, 'https://youtube.com/watch?v=abc123')
+        self.assertEqual(sub.live_demo_url, 'https://example.com/demo')
+        self.assertIsNotNone(sub.submitted_at)
+        self.assertIsNotNone(sub.updated_at)
+        self.assertEqual(str(sub), f'{self.team.name} — {self.round.title}')
+
+    def test_unique_together_round_team(self):
+        """Test that a team cannot submit twice to the same round."""
+        Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo1',
+            video_url='https://youtube.com/watch?v=first',
+        )
+        with self.assertRaises(Exception):
+            Submission.objects.create(
+                round=self.round,
+                team=self.team,
+                github_url='https://github.com/example/repo2',
+                video_url='https://youtube.com/watch?v=second',
+            )
+
+    def test_is_editable_true_when_round_open(self):
+        """Submission is editable when round is ACTIVE and before deadline."""
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        # Round is ACTIVE with start_time in the past and deadline in the future
+        self.assertTrue(sub.is_editable)
+
+    def test_is_editable_false_when_round_closed(self):
+        """Submission is not editable when round status is SUBMISSION_CLOSED."""
+        self.round.status = Round.Status.SUBMISSION_CLOSED
+        self.round.save()
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        self.assertFalse(sub.is_editable)
+
+    def test_is_editable_false_when_deadline_passed(self):
+        """Submission is not editable when the deadline has passed (even if still ACTIVE)."""
+        self.round.deadline = timezone.now() - timedelta(hours=1)
+        self.round.save()
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        self.assertFalse(sub.is_editable)
+
+    def test_cascade_delete_round(self):
+        """Deleting a Round cascades to its Submissions."""
+        Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        self.assertEqual(Submission.objects.count(), 1)
+        self.round.delete()
+        self.assertEqual(Submission.objects.count(), 0)
+
+    def test_cascade_delete_team(self):
+        """Deleting a Team cascades to its Submissions."""
+        Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        self.assertEqual(Submission.objects.count(), 1)
+        self.team.delete()
+        self.assertEqual(Submission.objects.count(), 0)
+
+    def test_optional_fields_can_be_blank(self):
+        """live_demo_url and description are optional."""
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        self.assertEqual(sub.live_demo_url, '')
+        self.assertEqual(sub.description, '')
+
+
+class BugfixRegressionTest(TestCase):
+    """TASK-01: Regression tests proving each critical bug is fixed."""
+
+    def setUp(self):
+        self.organizer = User.objects.create_user(
+            username='bugfix_org', password='password', role=User.Role.ORGANIZER
+        )
+        self.other_user = User.objects.create_user(
+            username='bugfix_other', password='password', role=User.Role.PARTICIPANT
+        )
+        self.captain = User.objects.create_user(
+            username='bugfix_cap', password='password', role=User.Role.PARTICIPANT
+        )
+        self.member = User.objects.create_user(
+            username='bugfix_member', password='password', role=User.Role.PARTICIPANT
+        )
+        self.contest = Contest.objects.create(
+            name='Bugfix Contest',
+            description='Contest for bugfix tests',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timedelta(days=30),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        self.team = Team.objects.create(
+            name='Bugfix Team', captain=self.captain, status=Team.Status.ACTIVE
+        )
+        self.team.participants.add(self.captain, self.member)
+        self.contest.teams.add(self.team)
+        self.client = Client()
+
+    # ── Bug 1: OrganizerRequiredMixin — permission checked BEFORE view runs ──
+
+    def test_non_organizer_cannot_delete_contest(self):
+        """Non-organizer gets 403 and contest is NOT deleted (Bug 1)."""
+        self.client.force_login(self.other_user)
+        url = reverse('contest_delete', kwargs={'pk': self.contest.pk})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
+        # Contest must still exist
+        self.assertTrue(Contest.objects.filter(pk=self.contest.pk).exists())
+
+    def test_organizer_can_delete_own_contest(self):
+        """Organizer can delete their own contest (sanity check for Bug 1 fix)."""
+        self.client.force_login(self.organizer)
+        url = reverse('contest_delete', kwargs={'pk': self.contest.pk})
+        response = self.client.post(url)
+        self.assertIn(response.status_code, [200, 302])
+        self.assertFalse(Contest.objects.filter(pk=self.contest.pk).exists())
+
+    def test_unauthenticated_user_redirected_from_organizer_view(self):
+        """Unauthenticated user is redirected, not shown the view (Bug 1)."""
+        url = reverse('contest_delete', kwargs={'pk': self.contest.pk})
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertIn('register', response.url)
+
+    # ── Bug 2: TeamActionMixin — kick/block/unblock actually work ──
+
+    def test_team_kick_removes_member(self):
+        """Captain can kick a member and the member is actually removed (Bug 2)."""
+        self.client.force_login(self.captain)
+        url = reverse('team_kick', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+            'user_id': self.member.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.team.refresh_from_db()
+        self.assertNotIn(self.member, self.team.participants.all())
+
+    def test_team_block_removes_and_blacklists_member(self):
+        """Captain can block a member: removes from participants, adds to blacklist,
+        rejects pending applications (Bug 2)."""
+        # Create a pending application for the member
+        Application.objects.create(
+            user=self.member,
+            team=self.team,
+            contest=self.contest,
+            application_type=Application.Type.PARTICIPANT,
+            status=Application.Status.PENDING,
+        )
+        self.client.force_login(self.captain)
+        url = reverse('team_block', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+            'user_id': self.member.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.team.refresh_from_db()
+        self.assertNotIn(self.member, self.team.participants.all())
+        self.assertIn(self.member, self.team.blacklisted_members.all())
+        # Pending application should be rejected
+        app = Application.objects.get(user=self.member, team=self.team)
+        self.assertEqual(app.status, Application.Status.REJECTED)
+
+    def test_team_unblock_removes_from_blacklist(self):
+        """Captain can unblock a member (Bug 2)."""
+        self.team.blacklisted_members.add(self.member)
+        self.client.force_login(self.captain)
+        url = reverse('team_unblock', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+            'user_id': self.member.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.team.refresh_from_db()
+        self.assertNotIn(self.member, self.team.blacklisted_members.all())
+
+    def test_non_captain_cannot_kick(self):
+        """Non-captain gets 403 when trying to kick (Bug 2 permission check)."""
+        self.client.force_login(self.other_user)
+        url = reverse('team_kick', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+            'user_id': self.member.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
+        # Member should still be in team
+        self.assertIn(self.member, self.team.participants.all())
+
+    # ── Bug 4: TeamDetailView — returns 200 with correct context ──
+
+    def test_team_detail_returns_200(self):
+        """TeamDetailView renders without crashing (Bug 4: no double get_object)."""
+        self.client.force_login(self.captain)
+        url = reverse('team_detail', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+        })
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.context['team'], self.team)
+        self.assertEqual(response.context['contest'], self.contest)
+
+    # ── Bug 5: Contest detail shows dynamic status ──
+
+    def test_contest_detail_shows_dynamic_status(self):
+        """Contest detail page shows current status, not hardcoded 'Active' (Bug 5)."""
+        self.client.force_login(self.organizer)
+        url = reverse('contest_detail', kwargs={'pk': self.contest.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        # Should NOT contain the hardcoded 'Active' without a class
+        self.assertNotIn('<span class="status-indicator">Active</span>', content)
+        # Should contain the dynamic status display
+        status_display = self.contest.get_status_display()
+        self.assertIn(status_display, content)
+from decimal import Decimal
+
+from django.core.exceptions import ValidationError
+from django.test import TestCase, Client
+from django.urls import reverse
+class HomeViewTaskTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.organizer = User.objects.create_user(username="home_org", password="password", role=User.Role.ORGANIZER)
+        self.participant = User.objects.create_user(username="home_participant", password="password", role=User.Role.PARTICIPANT)
+        now = timezone.now()
+
+        self.registration_contest = Contest.objects.create(
+            name="Reg Cup",
+            description="Registration contest",
+            start_date=now + timedelta(days=2),
+            end_date=now + timedelta(days=4),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        self.running_contest = Contest.objects.create(
+            name="Run Cup",
+            description="Running contest",
+            start_date=now - timedelta(days=1),
+            end_date=now + timedelta(days=2),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        self.finished_contest = Contest.objects.create(
+            name="Done Cup",
+            description="Finished contest",
+            start_date=now - timedelta(days=5),
+            end_date=now - timedelta(days=1),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        self.draft_contest = Contest.objects.create(
+            name="Draft Cup",
+            description="Draft contest",
+            start_date=now + timedelta(days=5),
+            end_date=now + timedelta(days=6),
+            organizer=self.organizer,
+            is_draft=True,
+        )
+
+    def test_home_shows_all_non_draft_contests(self):
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Reg Cup")
+        self.assertContains(response, "Run Cup")
+        self.assertContains(response, "Done Cup")
+        self.assertNotContains(response, "Draft Cup")
+
+    def test_home_status_filter_limits_contests(self):
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"), {"status": Contest.Status.REGISTRATION})
+
+        self.assertContains(response, "Reg Cup")
+        self.assertNotContains(response, "Run Cup")
+        self.assertNotContains(response, "Done Cup")
+
+    def test_home_invalid_status_filter_falls_back_to_all(self):
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"), {"status": "NOT_A_REAL_STATUS"})
+
+        self.assertContains(response, "Reg Cup")
+        self.assertContains(response, "Run Cup")
+        self.assertContains(response, "Done Cup")
+
+    def test_home_quick_access_appears_for_participant_with_active_contest(self):
+        team = Team.objects.create(name="Rocket", captain=self.participant, status=Team.Status.ACTIVE)
+        team.participants.add(self.participant)
+        self.running_contest.teams.add(team)
+        Round.objects.create(
+            contest=self.running_contest,
+            title="Speed Round",
+            description="Round description",
+            tech_requirements="Python",
+            must_have=["API"],
+            start_time=timezone.now() - timedelta(hours=2),
+            deadline=timezone.now() + timedelta(hours=5),
+            status=Round.Status.ACTIVE,
+            order=1,
+            created_by=self.organizer,
+        )
+
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"))
+
+        self.assertContains(response, "Your current contest")
+        self.assertContains(response, "Rocket")
+        self.assertContains(response, "Speed Round")
+        self.assertContains(response, "Open Current Round")
+
+    def test_home_quick_access_hidden_when_participant_has_no_team(self):
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"))
+
+        self.assertNotContains(response, "Your current contest")
+
+
+class ProfileViewTaskTest(TestCase):
+    def setUp(self):
+        self.client = Client()
+        self.organizer = User.objects.create_user(username="profile_org", password="password", role=User.Role.ORGANIZER)
+        self.jury = User.objects.create_user(username="profile_jury", password="password", role=User.Role.JURY)
+        self.participant = User.objects.create_user(username="profile_participant", password="password", role=User.Role.PARTICIPANT)
+        self.member = User.objects.create_user(username="profile_member", password="password", role=User.Role.PARTICIPANT)
+        now = timezone.now()
+
+        self.contest = Contest.objects.create(
+            name="Profile Contest",
+            description="Contest for profile tests",
+            start_date=now - timedelta(days=1),
+            end_date=now + timedelta(days=1),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        self.team = Team.objects.create(name="Winners", captain=self.participant, status=Team.Status.ACTIVE)
+        self.team.participants.add(self.participant, self.member)
+        self.contest.teams.add(self.team)
+        self.contest.jurys.add(self.jury)
+
+        self.criterion = ScoringCriterion.objects.create(
+            contest=self.contest,
+            name="Backend",
+            max_score=100,
+            weight=Decimal("1.00"),
+            aggregation_type=ScoringCriterion.AggregationType.AVERAGE,
+            order=1,
+        )
+
+    def test_profile_for_participant_shows_teams_and_leaderboard_history(self):
+        LeaderboardEntry.objects.create(
+            contest=self.contest,
+            team=self.team,
+            rank=1,
+            total_score=Decimal("95.00"),
+            is_tied=False,
+            category_scores={"Backend": "95.00"},
+        )
+
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("profile"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "My Teams")
+        self.assertContains(response, "Winners")
+        self.assertContains(response, "Captain")
+        self.assertContains(response, "Leaderboard History")
+        self.assertContains(response, "95.00")
+
+    def test_profile_for_jury_shows_pending_and_completed_reviews(self):
+        JuryScore.objects.create(
+            contest=self.contest,
+            team=self.team,
+            jury_member=self.jury,
+            criterion=self.criterion,
+            score=Decimal("88.00"),
+        )
+        second_team = Team.objects.create(name="Challengers", captain=self.member, status=Team.Status.ACTIVE)
+        second_team.participants.add(self.member)
+        self.contest.teams.add(second_team)
+
+        self.client.force_login(self.jury)
+        response = self.client.get(reverse("profile"))
+
+        self.assertContains(response, "Pending Reviews")
+        self.assertContains(response, "Challengers")
+        self.assertContains(response, "Completed Reviews")
+        self.assertContains(response, "88.00")
+
+    def test_profile_for_organizer_shows_managed_contests(self):
+        self.client.force_login(self.organizer)
+        response = self.client.get(reverse("profile"))
+
+        self.assertContains(response, "My Contests")
+        self.assertContains(response, "Profile Contest")
+        self.assertContains(response, "Running")
+
+    def test_profile_empty_states_render_for_user_without_related_data(self):
+        empty_participant = User.objects.create_user(username="lonely_user", password="password", role=User.Role.PARTICIPANT)
+
+        self.client.force_login(empty_participant)
+        response = self.client.get(reverse("profile"))
+
+        self.assertContains(response, "You are not part of any teams yet.")
+        self.assertContains(response, "No leaderboard results available yet.")

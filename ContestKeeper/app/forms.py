@@ -7,7 +7,7 @@ from .models import Contest, User
 class UserRegistrationForm(UserCreationForm):
     class Meta:
         model = get_user_model()
-        fields = ("username", "email")
+        fields = ("username", "email", "first_name", "last_name")
 
 class ProfileBioForm(forms.ModelForm):
     class Meta:
@@ -20,10 +20,12 @@ class ProfileBioForm(forms.ModelForm):
 class UserSettingsForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ("username", "email", "bio")
+        fields = ("username", "email", "first_name", "last_name", "bio")
         widgets = {
             "username": forms.TextInput(attrs={"class": "form-input", "placeholder": "Your username"}),
             "email": forms.EmailInput(attrs={"class": "form-input", "placeholder": "Your email address"}),
+            "first_name": forms.TextInput(attrs={"class": "form-input", "placeholder": "Your first name"}),
+            "last_name": forms.TextInput(attrs={"class": "form-input", "placeholder": "Your last name"}),
             "bio": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": "Tell us about yourself..."}),
         }
 

@@ -6,9 +6,6 @@ from django.core.validators import MinValueValidator
 from django.db import models
 
 class User(AbstractUser):
-    first_name = None
-    last_name = None
-
     class Role(models.TextChoices):
         ORGANIZER = "ORGANIZER", "Organizer"
         JURY = "JURY", "Jury"
@@ -271,3 +268,51 @@ class Round(models.Model):
         if self.deadline <= now:
             return None
         return self.deadline - now
+
+
+
+class Submission(models.Model):
+    round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="submissions")
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="submissions")
+    github_url = models.URLField(help_text="Link to GitHub repository")
+    video_url = models.URLField(help_text="Link to video demo (YouTube, Drive, etc.)")
+    live_demo_url = models.URLField(blank=True, help_text="Link to live demo (optional)")
+    description = models.TextField(max_length=2000, blank=True, help_text="Short description: what was done, how to run")
+    submitted_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        unique_together = ('round', 'team')  # one submission per team per round
+
+    def __str__(self):
+        return f"{self.team.name} — {self.round.title}"
+
+    @property
+    def is_editable(self):
+        """A submission is editable while the round is still open for submissions."""
+        return self.round.is_open()
+
+
+class Notification(models.Model):
+    class Type(models.TextChoices):
+        REGISTRATION_OPEN = "REGISTRATION_OPEN", "Registration Open"
+        ROUND_STARTED = "ROUND_STARTED", "Round Started"
+        DEADLINE_APPROACHING = "DEADLINE_APPROACHING", "Deadline Approaching"
+        SUBMISSIONS_CLOSED = "SUBMISSIONS_CLOSED", "Submissions Closed"
+        EVALUATION_COMPLETE = "EVALUATION_COMPLETE", "Evaluation Complete"
+        APPLICATION_UPDATE = "APPLICATION_UPDATE", "Application Update"
+        ANNOUNCEMENT = "ANNOUNCEMENT", "Announcement"
+
+    recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
+    notification_type = models.CharField(choices=Type.choices, max_length=30)
+    title = models.CharField(max_length=200)
+    message = models.TextField()
+    link = models.CharField(max_length=500, blank=True, help_text="URL to navigate to when clicked")
+    is_read = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def __str__(self):
+        return f"{self.recipient.username}: {self.title}"

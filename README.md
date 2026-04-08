@@ -1,100 +1,57 @@
-# team404NotFound
+# team404NotFound — ContestKeeper
 
-# Requirements
-- Python 3.13.0 or later (check using python / python3 --version),
-- Django 6.0.2,
-- Daphne 4.2.1.
+ContestKeeper is a web platform for organizing programming tournaments with team registration, task rounds, submissions, jury evaluation, and leaderboards.
 
-# Installation & startup guide
-This part will thoroughly explain how to install the needed packages (if not installed yet), how to run and what often issues may occur.
+## Tech Stack
+- **Framework:** Django 6.0.4
+- **Language:** Python 3.13.5
+- **Database:** SQLite
+- **Server:** Daphne (ASGI)
+- **Frontend:** Vanilla HTML/CSS/JS (Dark Theme)
 
-Here will be shown exactly how to manually create .venv and install required packages step by step.
+## Installation & Startup
 
-### First of all, head to the project root, and delete .venv:
+1. **Clone the repository and enter the project root:**
+   ```bash
+   cd team404NotFound
+   ```
 
-Using powershell:
-```pwsh
-del /s /q .venv # or whatever it is named as
-```
+2. **Create a virtual environment:**
+   ```bash
+   python3 -m venv .venv
+   source .venv/bin/activate
+   ```
 
-Using bash:
-```bash
-rm -rf .venv # use sudo if needed
-```
+3. **Install dependencies:**
+   ```bash
+   pip install -r ContestKeeper/requirements.txt
+   ```
 
-### Second of all, lets create a new .venv (requires Python installed, and pip logged in Path):
+4. **Set up environment variables:**
+   Copy `.env.example` to `.env` and adjust settings.
+   ```bash
+   cp ContestKeeper/.env.example ContestKeeper/.env
+   ```
 
-**You can install python by visiting [Python's official page](https://www.python.org/downloads/ "Download Python") or via your package manager**
+5. **Run migrations:**
+   ```bash
+   cd ContestKeeper
+   python manage.py makemigrations
+   python manage.py migrate
+   ```
 
-Pwsh:
-```pwsh
-python -m venv .venv # change .venv to whatever name you want, but recommended to leave it as it is
-```
+6. **Start the server:**
+   ```bash
+   python manage.py runserver
+   ```
 
-Bash:
-```bash
-python3 -m venv .venv # alternatively, try python instead of python3
-```
+## User Roles
+- **Organizer:** Creates contests, manages rounds, and assigns jury members.
+- **Jury:** Evaluates team submissions based on criteria.
+- **Participant:** Joins teams and submits solutions to rounds.
 
-**Now, lets activate the venv:**
-
-Pwsh:
-```pwsh
-.venv\Scripts\Activate.ps1 # might be needed to activate certain policies beforehand
-```
-
-Bash:
-```bash
-source .venv/bin/activate # use sudo prefix if needed
-```
-
-### Next, lets install the needed packages:
-
-**(Before proceeding, make sure there is a "(venv)" prefix before your command line)**
-
-Pwsh:
-```pwsh
-pip install django daphne # will also install all the required packages those two rely on
-```
-
-Bash
-```bash
-pip install django daphne # will also install all the required packages those two rely on
-```
-
-## Now, once everything's set up, go back to the start of the guides and try running the app:
-
-Pwsh:
-```pwsh
-cd ContestKeeper # or whatever the main application is called
-python manage.py runserver # should raise no errors, **especially no ImportErrors**
-```
-
-Bash:
-```bash
-cd ContestKeeper # or whatever the main application is called
-python manage.py runserver # should raise no errors, **especially no ImportErrors**
-```
-
-## If it does not run, try finding your issue here or on the Internet:
-
-### Common issues:
-1. You might have installed python via python installer, and forgot to check "Add to PATH" flag or something similar. Can be resolved by either manually adding it to PATH (complex, wont be explained there) or by reinstalling the python and checking the flag, mentioned earlier.
-2. Your Python might be outdated. Django and daphne support a variety of versions, but there may be certain compatability issues. In that case, please proceed to reinstall the needed python / package version.
-
-# Manual
-
-## Test accounts
-
-There are test accounts for each role:
-
-- admin (Admin): secret321,
-- organizer (Organizer): secret321,
-- jury (Jury): secret321,
-- user (Participant): secret321.
-
-## Test contests
-
-There is a test contest:
-
-- Test Contest.
+## Project Structure
+- `ContestKeeper/`: Main Django project directory.
+- `app/`: Primary application logic including models, views, and templates.
+- `app/static/`: CSS and JS assets.
+- `app/templates/`: HTML templates for all views.
