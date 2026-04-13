@@ -55,10 +55,10 @@ body {
 }
 
 #nav {
-    background: rgba(15, 23, 42, 0.95);
+    background: var(--bg-dark);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    color: white;
+    color: var(--text-main);
     padding: 0;
     margin: 0;
     width: 280px;
@@ -116,8 +116,8 @@ body {
 }
 
 .nav-link:hover {
-    color: white;
-    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-main);
+    background: var(--glass-hover);
     transform: translateX(4px);
 }
 
@@ -207,7 +207,7 @@ body {
         left: 0;
         right: 0;
         height: 60px;
-        background: rgba(15, 23, 42, 0.97);
+        background: var(--bg-dark);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-bottom: 1px solid var(--border);

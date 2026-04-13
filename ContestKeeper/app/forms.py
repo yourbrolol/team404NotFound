@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-from .models import Contest, User
+from .models import Contest, User, Announcement, ScheduleEvent
 
 class UserRegistrationForm(UserCreationForm):
     class Meta:
@@ -49,4 +49,30 @@ class ContestForm(forms.ModelForm):
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
             'is_draft': forms.CheckboxInput(attrs={'class': 'form-input'}),
+        }
+
+
+class AnnouncementForm(forms.ModelForm):
+    notify_participants = forms.BooleanField(required=False, initial=True, help_text="Send notification to all participants")
+
+    class Meta:
+        model = Announcement
+        fields = ["title", "content", "is_pinned"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-input", "placeholder": "Announcement title"}),
+            "content": forms.Textarea(attrs={"class": "form-input", "rows": 5, "placeholder": "Announcement content..."}),
+            "is_pinned": forms.CheckboxInput(),
+        }
+
+
+class ScheduleEventForm(forms.ModelForm):
+    class Meta:
+        model = ScheduleEvent
+        fields = ["title", "description", "start_time", "end_time", "event_type"]
+        widgets = {
+            "title": forms.TextInput(attrs={"class": "form-input", "placeholder": "Event title"}),
+            "description": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": "Short description"}),
+            "start_time": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-input"}),
+            "end_time": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-input"}),
+            "event_type": forms.Select(attrs={"class": "form-input"}),
         }

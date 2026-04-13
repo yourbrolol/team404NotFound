@@ -94,6 +94,7 @@
                     </form>
                     <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=json" class="btn btn-secondary">Export JSON</a>
                     <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=csv" class="btn btn-secondary">Export CSV</a>
+                    <a href="{% url 'export_evaluations_csv' contest.pk %}" class="btn btn-secondary">Export Evaluations</a>
                 </div>
             </section>
 

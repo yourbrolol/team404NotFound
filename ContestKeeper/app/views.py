@@ -1,5 +1,6 @@
 import csv
 
+from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponse, HttpResponseForbidden, JsonResponse, Http404
@@ -8,7 +9,10 @@ from django.urls import reverse, reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, DetailView, ListView, CreateView, DeleteView
 
-from .forms import UserRegistrationForm, ContestForm, UserSettingsForm, ProfileBioForm
+from .forms import (
+    UserRegistrationForm, ContestForm, UserSettingsForm, ProfileBioForm,
+    AnnouncementForm, ScheduleEventForm
+)
 from .leaderboard import LeaderboardComputer
 from .models import (
     Application,
@@ -21,8 +25,10 @@ from .models import (
     Team,
     User,
     Notification,
+    Announcement,
+    ScheduleEvent,
 )
-from .services import notify_user, notify_contest_participants, notify_contest_jury
+from .services import notify_user, notify_contest_participants, notify_contest_jury, generate_schedule_from_rounds
 
 # ── Mixins ────────────────────────────────────────────────────────────────────
 
@@ -31,12 +37,22 @@ class RedirectToRegisterMixin(LoginRequiredMixin):
     login_url = "register"
     raise_exception = False
 
-class OrganizerRequiredMixin(RedirectToRegisterMixin):
+class ContestContextMixin:
+    def dispatch(self, request, *args, **kwargs):
+        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        return super().dispatch(request, *args, **kwargs)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contest"] = self.contest
+        return context
+
+class OrganizerRequiredMixin(RedirectToRegisterMixin, ContestContextMixin):
     """Allow access only to the organizer of the contest identified by <pk>."""
     def dispatch(self, request, *args, **kwargs):
+        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         if not request.user.is_authenticated:
             return self.handle_no_permission()
-        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         if self.contest.organizer != request.user:
             return HttpResponseForbidden("You are not the organizer of this contest.")
         return super().dispatch(request, *args, **kwargs)
@@ -409,6 +425,130 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
         )
         return redirect("contest_detail", pk=pk)
 
+# ── Announcement views ────────────────────────────────────────────────────────
+
+class AnnouncementListView(LoginRequiredMixin, ContestContextMixin, ListView):
+    model = Announcement
+    template_name = "app/announcements.html"
+    context_object_name = "announcements"
+
+    def get_queryset(self):
+        return Announcement.objects.filter(contest=self.contest)
+
+class AnnouncementCreateView(OrganizerRequiredMixin, CreateView):
+    model = Announcement
+    form_class = AnnouncementForm
+    template_name = "app/announcement_form.html"
+
+    def form_valid(self, form):
+        form.instance.contest = self.contest
+        form.instance.author = self.request.user
+        response = super().form_valid(form)
+        
+        if form.cleaned_data.get("notify_participants"):
+            notify_contest_participants(
+                self.contest,
+                Notification.Type.ANNOUNCEMENT,
+                f"New announcement: {form.instance.title}",
+                form.instance.content[:200] + "...",
+                link=reverse("announcement_list", kwargs={"pk": self.contest.pk})
+            )
+        messages.success(self.request, "Announcement published successfully.")
+        return response
+
+    def get_success_url(self):
+        return reverse("announcement_list", kwargs={"pk": self.contest.pk})
+
+class AnnouncementDeleteView(OrganizerRequiredMixin, DeleteView):
+    model = Announcement
+    template_name = "app/announcement_confirm_delete.html"
+
+    def get_success_url(self):
+        return reverse("announcement_list", kwargs={"pk": self.contest.pk})
+
+# ── Analytics views ──────────────────────────────────────────────────────────
+
+class OrganizerAnalyticsView(OrganizerRequiredMixin, TemplateView):
+    template_name = "app/analytics.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        contest = self.contest
+        
+        # 1. Jury Progress
+        jury_members = contest.jurys.all()
+        teams_count = contest.teams.count()
+        criteria_count = contest.scoring_criteria.count()
+        expected_per_jury = teams_count * criteria_count
+        
+        jury_stats = []
+        for jury in jury_members:
+            actual = JuryScore.objects.filter(contest=contest, jury_member=jury).count()
+            percent = (actual / expected_per_jury * 100) if expected_per_jury > 0 else 0
+            jury_stats.append({
+                "username": jury.username,
+                "actual": actual,
+                "expected": expected_per_jury,
+                "percent": round(percent, 1)
+            })
+        
+        # 2. Score Distribution (Histogram)
+        # Using 10 buckets
+        entries = LeaderboardEntry.objects.filter(contest=contest)
+        distribution = [0] * 10
+        max_possible = sum(c.max_score * c.weight for c in contest.scoring_criteria.all())
+        
+        for entry in entries:
+            score = float(entry.total_score)
+            if max_possible > 0:
+                bucket = min(int((score / float(max_possible)) * 10), 9)
+                distribution[bucket] += 1
+        
+        max_count = max(distribution) if distribution else 0
+        
+        context.update({
+            "jury_stats": jury_stats,
+            "distribution": distribution,
+            "max_count": max_count,
+            "max_possible": float(max_possible),
+            "teams_count": teams_count,
+            "entries_count": entries.count(),
+        })
+        return context
+
+class ScheduleView(LoginRequiredMixin, ContestContextMixin, ListView):
+    model = ScheduleEvent
+    template_name = "app/schedule.html"
+    context_object_name = "events"
+
+    def get_queryset(self):
+        return ScheduleEvent.objects.filter(contest=self.contest)
+
+class ScheduleEventCreateView(OrganizerRequiredMixin, CreateView):
+    model = ScheduleEvent
+    form_class = ScheduleEventForm
+    template_name = "app/schedule_event_form.html"
+
+    def form_valid(self, form):
+        form.instance.contest = self.contest
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse("schedule", kwargs={"pk": self.contest.pk})
+
+class ScheduleEventDeleteView(OrganizerRequiredMixin, DeleteView):
+    model = ScheduleEvent
+    template_name = "app/schedule_event_confirm_delete.html"
+
+    def get_success_url(self):
+        return reverse("schedule", kwargs={"pk": self.contest.pk})
+
+class RegenerateScheduleView(OrganizerRequiredMixin, View):
+    def post(self, request, *args, **kwargs):
+        count = generate_schedule_from_rounds(self.contest)
+        messages.success(request, f"Schedule regenerated from {count} round events.")
+        return redirect("schedule", pk=self.contest.pk)
+
 # ── Team views ────────────────────────────────────────────────────────────────
 
 class ViewTeamsView(RedirectToRegisterMixin, ListView):
@@ -755,6 +895,28 @@ class AdminExportLeaderboardView(AdminPermissionMixin, View):
 
         data = LeaderboardComputer.export_data(self.contest, user_is_admin=True)
         return JsonResponse(data, safe=False)
+
+class ExportEvaluationsCSVView(AdminPermissionMixin, View):
+    def get(self, request, *args, **kwargs):
+        header, rows = LeaderboardComputer.export_evaluations_csv(self.contest)
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = f"attachment; filename=contest_{self.contest.pk}_evaluations.csv"
+        writer = csv.writer(response)
+        writer.writerow(header)
+        for row in rows:
+            writer.writerow(row)
+        return response
+
+class ExportTeamsCSVView(AdminPermissionMixin, View):
+    def get(self, request, *args, **kwargs):
+        header, rows = LeaderboardComputer.export_teams_csv(self.contest)
+        response = HttpResponse(content_type="text/csv")
+        response["Content-Disposition"] = f"attachment; filename=contest_{self.contest.pk}_teams.csv"
+        writer = csv.writer(response)
+        writer.writerow(header)
+        for row in rows:
+            writer.writerow(row)
+        return response
 
 # ── Round Management views ────────────────────────────────────────────────────
 

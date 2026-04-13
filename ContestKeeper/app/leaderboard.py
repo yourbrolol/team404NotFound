@@ -249,6 +249,44 @@ class LeaderboardComputer:
             rows.append(row)
         return header, rows
 
+    @classmethod
+    def export_evaluations_csv(cls, contest):
+        criteria = list(contest.scoring_criteria.order_by("order", "id"))
+        scores = JuryScore.objects.filter(contest=contest).select_related("team", "jury_member", "criterion").order_by("team__name", "jury_member__username", "criterion__order")
+        
+        header = ["team", "jury_member", "criterion", "score", "weight", "max_score", "created_at"]
+        rows = []
+        for s in scores:
+            rows.append([
+                s.team.name,
+                s.jury_member.username,
+                s.criterion.name,
+                float(s.score),
+                float(s.criterion.weight),
+                s.criterion.max_score,
+                s.created_at.strftime("%Y-%m-%d %H:%M:%S") if s.created_at else ""
+            ])
+        return header, rows
+
+    @classmethod
+    def export_teams_csv(cls, contest):
+        teams = contest.teams.all().prefetch_related("participants").select_related("captain")
+        
+        header = ["team_name", "status", "captain", "participants", "organization", "contact_telegram", "contact_discord"]
+        rows = []
+        for t in teams:
+            participants = "; ".join([p.username for p in t.participants.all()])
+            rows.append([
+                t.name,
+                t.status,
+                t.captain.username if t.captain else "",
+                participants,
+                t.organization if hasattr(t, "organization") else "",
+                t.contact_telegram if hasattr(t, "contact_telegram") else "",
+                t.contact_discord if hasattr(t, "contact_discord") else "",
+            ])
+        return header, rows
+
 
 def _missing_scores_as_dict(contest):
     missing = {}

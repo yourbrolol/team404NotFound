@@ -1,0 +1,122 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Schedule - {{ contest.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .timeline {
+        position: relative;
+        max-width: 800px;
+        margin: 2rem auto;
+        padding-left: 2rem;
+    }
+    .timeline::before {
+        content: '';
+        position: absolute;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        background: var(--border);
+    }
+    .timeline-item {
+        position: relative;
+        margin-bottom: 3rem;
+    }
+    .timeline-dot {
+        position: absolute;
+        left: -2rem;
+        top: 0.25rem;
+        width: 1rem;
+        height: 1rem;
+        border-radius: 50%;
+        background: var(--primary);
+        border: 4px solid var(--bg-dark);
+        transform: translateX(-50%);
+        z-index: 1;
+    }
+    .timeline-dot.ROUND { background: var(--primary); }
+    .timeline-dot.DEADLINE { background: #ef4444; }
+    .timeline-dot.WORKSHOP { background: var(--secondary); }
+    
+    .timeline-date {
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--primary);
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+    }
+    .timeline-content {
+        background: var(--bg-card);
+        border: 1px solid var(--border);
+        border-radius: 1rem;
+        padding: 1.5rem;
+        box-shadow: var(--shadow-lg);
+    }
+    .timeline-title {
+        font-size: 1.25rem;
+        font-weight: 700;
+        margin-bottom: 0.5rem;
+    }
+    .timeline-description {
+        font-size: 0.95rem;
+        color: var(--text-muted);
+        line-height: 1.5;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="dashboard-header">
+    <div class="header-left">
+        <h1 id="h1">Schedule</h1>
+        <p style="color: var(--text-muted);">Key events and deadlines for "{{ contest.name }}".</p>
+    </div>
+    {% if user == contest.organizer %}
+    <div style="display: flex; gap: 1rem;">
+        <form action="{% url 'schedule_regenerate' contest.pk %}" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-secondary">Regenerate from Rounds</button>
+        </form>
+        <a href="{% url 'schedule_event_create' contest.pk %}" class="btn btn-primary">Add Event</a>
+    </div>
+    {% endif %}
+</header>
+
+<div class="timeline">
+    {% for event in events %}
+    <div class="timeline-item">
+        <div class="timeline-dot {{ event.event_type }}"></div>
+        <div class="timeline-date">
+            {{ event.start_time|date:"M d, Y - H:i" }}
+            {% if event.end_time %}
+               to {{ event.end_time|date:"H:i" }}
+            {% endif %}
+        </div>
+        <div class="timeline-content">
+            <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <h3 class="timeline-title">{{ event.title }}</h3>
+                {% if user == contest.organizer %}
+                <form action="{% url 'schedule_event_delete' contest.pk event.pk %}" method="get">
+                    <button type="submit" class="btn btn-sm btn-secondary" style="color: #ef4444; border:none; background:transparent;">Delete</button>
+                </form>
+                {% endif %}
+            </div>
+            {% if event.description %}
+            <p class="timeline-description">{{ event.description|linebreaksbr }}</p>
+            {% endif %}
+        </div>
+    </div>
+    {% empty %}
+    <div class="empty-state">
+        <p>No events scheduled yet.</p>
+    </div>
+    {% endfor %}
+</div>
+
+<div class="actions-footer" style="margin-top: 2rem;">
+    <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">Back to Contest</a>
+</div>
+{% endblock %}

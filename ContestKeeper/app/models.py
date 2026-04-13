@@ -315,3 +315,40 @@ class Notification(models.Model):
 
     def __str__(self):
         return f"{self.recipient.username}: {self.title}"
+
+
+class Announcement(models.Model):
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="announcements")
+    title = models.CharField(max_length=200)
+    content = models.TextField()
+    is_pinned = models.BooleanField(default=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authored_announcements")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ["-is_pinned", "-created_at"]
+
+    def __str__(self):
+        return self.title
+
+
+class ScheduleEvent(models.Model):
+    class EventType(models.TextChoices):
+        ROUND = "ROUND", "Round"
+        DEADLINE = "DEADLINE", "Deadline"
+        WORKSHOP = "WORKSHOP", "Workshop"
+        OTHER = "OTHER", "Other"
+
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="schedule_events")
+    title = models.CharField(max_length=200)
+    description = models.TextField(blank=True)
+    start_time = models.DateTimeField()
+    end_time = models.DateTimeField(null=True, blank=True)
+    event_type = models.CharField(max_length=20, choices=EventType.choices, default=EventType.ROUND)
+    order = models.PositiveIntegerField(default=0)
+
+    class Meta:
+        ordering = ["start_time", "order"]
+
+    def __str__(self):
+        return f"{self.contest.name}: {self.title}"

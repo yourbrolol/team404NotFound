@@ -1,0 +1,133 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Organizer Analytics - {{ contest.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    .histogram-container {
+        display: flex;
+        align-items: flex-end;
+        gap: 0.5rem;
+        height: 200px;
+        padding-bottom: 2rem;
+        position: relative;
+        border-bottom: 1px solid var(--border);
+    }
+    .hist-bar {
+        flex: 1;
+        background: linear-gradient(to top, var(--primary), var(--secondary));
+        border-top-left-radius: 4px;
+        border-top-right-radius: 4px;
+        position: relative;
+        min-height: 1px;
+        transition: transform 0.3s ease;
+    }
+    .hist-bar:hover {
+        transform: scaleY(1.05);
+        filter: brightness(1.2);
+    }
+    .hist-label {
+        position: absolute;
+        bottom: -1.75rem;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 0.7rem;
+        color: var(--text-muted);
+        white-space: nowrap;
+    }
+    .hist-tooltip {
+        position: absolute;
+        top: -1.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        background: var(--bg-dark);
+        color: white;
+        padding: 0.2rem 0.4rem;
+        border-radius: 4px;
+        font-size: 0.75rem;
+        opacity: 0;
+        transition: opacity 0.2s;
+        pointer-events: none;
+    }
+    .hist-bar:hover .hist-tooltip {
+        opacity: 1;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<header class="dashboard-header">
+    <div class="header-left">
+        <h1 id="h1">Analytics</h1>
+        <p style="color: var(--text-muted);">Visual insights for "{{ contest.name }}".</p>
+    </div>
+</header>
+
+<div class="analytics-grid" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); gap: 2rem;">
+    <!-- Score Distribution Histogram -->
+    <div class="glass-panel" style="min-height: auto; padding: 2rem;">
+        <h3 style="margin-bottom: 0.5rem;">Score Distribution</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2.5rem;">Number of teams in each score decile (Max possible: {{ max_possible|floatformat:1 }}).</p>
+        
+        <div class="histogram-container">
+            {% for count in distribution %}
+            {% with bar_height=0 %}
+            {% if max_count > 0 %}
+                {% widthratio count max_count 100 as bar_height %}
+            {% endif %}
+            <div class="hist-bar" style="height: {{ bar_height }}%;">
+                <div class="hist-tooltip">{{ count }} teams</div>
+                <div class="hist-label">{{ forloop.counter0 }}0%</div>
+            </div>
+            {% endwith %}
+            {% endfor %}
+        </div>
+        
+        <div style="margin-top: 3rem; display: flex; justify-content: space-around; font-size: 0.9rem;">
+            <div style="text-align: center;">
+                <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.25rem;">Total Teams</div>
+                <div style="font-weight: 700; font-size: 1.25rem;">{{ teams_count }}</div>
+            </div>
+            <div style="text-align: center;">
+                <div style="color: var(--text-muted); font-size: 0.8rem; margin-bottom: 0.25rem;">Evaluated</div>
+                <div style="font-weight: 700; font-size: 1.25rem; color: var(--primary);">{{ entries_count }}</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Jury Progress Chart -->
+    <div class="glass-panel" style="min-height: auto; padding: 2rem;">
+        <h3 style="margin-bottom: 0.5rem;">Jury Progress</h3>
+        <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 2.5rem;">Completion rate for each jury member based on assigned teams and criteria.</p>
+        
+        <div style="display: flex; flex-direction: column; gap: 1.75rem;">
+            {% for jury in jury_stats %}
+            <div class="jury-progress-item">
+                <div style="display: flex; justify-content: space-between; margin-bottom: 0.6rem; font-size: 0.95rem;">
+                    <span style="font-weight: 600;">{{ jury.username }}</span>
+                    <span style="color: var(--text-muted);">{{ jury.actual }} / {{ jury.expected }} <span style="color: var(--primary); font-weight: 700; margin-left: 0.5rem;">{{ jury.percent }}%</span></span>
+                </div>
+                <div style="height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; box-shadow: inset 0 1px 2px rgba(0,0,0,0.2);">
+                    <div style="width: {{ jury.percent }}%; height: 100%; background: linear-gradient(to right, var(--primary), var(--secondary)); border-radius: 999px; transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);"></div>
+                </div>
+            </div>
+            {% empty %}
+            <div class="empty-state">
+                <p>No jury members assigned yet.</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<div class="actions-footer" style="margin-top: 3rem; display: flex; justify-content: center;">
+    <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.5rem;">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>
+        Back to Contest Detail
+    </a>
+</div>
+{% endblock %}

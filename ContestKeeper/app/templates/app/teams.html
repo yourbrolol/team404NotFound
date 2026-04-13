@@ -42,6 +42,9 @@
                             <option value="members-asc">Fewest members</option>
                         </select>
                         <button type="button" id="clearTeamSearchBtn" class="btn btn-secondary btn-sm">Clear</button>
+                        {% if user == contest.organizer %}
+                        <a href="{% url 'export_teams_csv' contest.pk %}" class="btn btn-secondary btn-sm">Export Teams</a>
+                        {% endif %}
                     </div>
                     <div class="teams-summary" id="teamsSummary" aria-live="polite"></div>
                 </div>

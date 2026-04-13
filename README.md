@@ -45,10 +45,12 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    python manage.py runserver
    ```
 
-## User Roles
-- **Organizer:** Creates contests, manages rounds, and assigns jury members.
-- **Jury:** Evaluates team submissions based on criteria.
-- **Participant:** Joins teams and submits solutions to rounds.
+## User Roles & Credentials
+All default accounts use the password: `password`
+
+- **Organizer:** `organizer` — Creates contests, manages rounds, and assigns jury members.
+- **Jury:** `jury` — Evaluates team submissions based on criteria.
+- **Participant:** `user`, `admin` — Joins teams and submits solutions to rounds.
 
 ## Project Structure
 - `ContestKeeper/`: Main Django project directory.
