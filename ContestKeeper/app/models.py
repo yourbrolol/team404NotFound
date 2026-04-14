@@ -4,12 +4,13 @@ from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
 from django.core.validators import MinValueValidator
 from django.db import models
+from django.utils.translation import gettext_lazy as _
 
 class User(AbstractUser):
     class Role(models.TextChoices):
-        ORGANIZER = "ORGANIZER", "Organizer"
-        JURY = "JURY", "Jury"
-        PARTICIPANT = "PARTICIPANT", "Participant"
+        ORGANIZER = "ORGANIZER", _("Organizer")
+        JURY = "JURY", _("Jury")
+        PARTICIPANT = "PARTICIPANT", _("Participant")
 
     username = models.CharField(max_length=20, unique=True)
     bio = models.CharField(max_length=200, blank=True)
@@ -27,10 +28,9 @@ class User(AbstractUser):
     def is_participant(self):
         return self.role == self.Role.PARTICIPANT
 
-class Team(models.Model):
     class Status(models.TextChoices):
-        DRAFT = "DRAFT", "Draft"
-        ACTIVE = "ACTIVE", "Active"
+        DRAFT = "DRAFT", _("Draft")
+        ACTIVE = "ACTIVE", _("Active")
     
     name = models.CharField(max_length=20)
     description = models.TextField(max_length=200, blank=True)
@@ -58,10 +58,10 @@ class Contest(models.Model):
                 self.status = self.Status.REGISTRATION
         super().save(*args, **kwargs)
     class Status(models.TextChoices):
-        DRAFT = "DRAFT", "Draft"
-        REGISTRATION = "REGISTRATION", "Registration"
-        RUNNING = "RUNNING", "Running"
-        FINISHED = "FINISHED", "Finished"
+        DRAFT = "DRAFT", _("Draft")
+        REGISTRATION = "REGISTRATION", _("Registration")
+        RUNNING = "RUNNING", _("Running")
+        FINISHED = "FINISHED", _("Finished")
 
     name = models.CharField(max_length=20)
     description = models.TextField(max_length=200)
@@ -79,14 +79,14 @@ class Contest(models.Model):
 
 class Application(models.Model):
     class Type(models.TextChoices):
-        JURY = "JURY", "Jury"
-        TEAM = "TEAM", "Team"
-        PARTICIPANT = "PARTICIPANT", "Participant"
+        JURY = "JURY", _("Jury")
+        TEAM = "TEAM", _("Team")
+        PARTICIPANT = "PARTICIPANT", _("Participant")
 
     class Status(models.TextChoices):
-        PENDING = "PENDING", "Pending"
-        APPROVED = "APPROVED", "Approved"
-        REJECTED = "REJECTED", "Rejected"
+        PENDING = "PENDING", _("Pending")
+        APPROVED = "APPROVED", _("Approved")
+        REJECTED = "REJECTED", _("Rejected")
 
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="submitted_apps")
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="contest_apps", null=True, blank=True)
@@ -104,8 +104,8 @@ class Application(models.Model):
 
 class ScoringCriterion(models.Model):
     class AggregationType(models.TextChoices):
-        SUM = "SUM", "Sum"
-        AVERAGE = "AVERAGE", "Average"
+        SUM = "SUM", _("Sum")
+        AVERAGE = "AVERAGE", _("Average")
 
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="scoring_criteria")
     name = models.CharField(max_length=100)
@@ -179,13 +179,13 @@ class JuryScore(models.Model):
 
 class ContestEvaluationPhase(models.Model):
     class Status(models.TextChoices):
-        NOT_STARTED = "NOT_STARTED", "Not started"
-        IN_PROGRESS = "IN_PROGRESS", "In progress"
-        COMPLETED = "COMPLETED", "Completed"
+        NOT_STARTED = "NOT_STARTED", _("Not started")
+        IN_PROGRESS = "IN_PROGRESS", _("In progress")
+        COMPLETED = "COMPLETED", _("Completed")
 
     class TriggerType(models.TextChoices):
-        AUTO = "AUTO", "Automatic"
-        MANUAL = "MANUAL", "Manual"
+        AUTO = "AUTO", _("Automatic")
+        MANUAL = "MANUAL", _("Manual")
 
     contest = models.OneToOneField(Contest, on_delete=models.CASCADE, related_name="evaluation_phase")
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.NOT_STARTED)
@@ -224,10 +224,10 @@ class LeaderboardEntry(models.Model):
 
 class Round(models.Model):
     class Status(models.TextChoices):
-        DRAFT = "DRAFT", "Draft"
-        ACTIVE = "ACTIVE", "Active"
-        SUBMISSION_CLOSED = "SUBMISSION_CLOSED", "Submission Closed"
-        EVALUATED = "EVALUATED", "Evaluated"
+        DRAFT = "DRAFT", _("Draft")
+        ACTIVE = "ACTIVE", _("Active")
+        SUBMISSION_CLOSED = "SUBMISSION_CLOSED", _("Submission Closed")
+        EVALUATED = "EVALUATED", _("Evaluated")
 
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="rounds")
     title = models.CharField(max_length=200)
@@ -294,13 +294,13 @@ class Submission(models.Model):
 
 class Notification(models.Model):
     class Type(models.TextChoices):
-        REGISTRATION_OPEN = "REGISTRATION_OPEN", "Registration Open"
-        ROUND_STARTED = "ROUND_STARTED", "Round Started"
-        DEADLINE_APPROACHING = "DEADLINE_APPROACHING", "Deadline Approaching"
-        SUBMISSIONS_CLOSED = "SUBMISSIONS_CLOSED", "Submissions Closed"
-        EVALUATION_COMPLETE = "EVALUATION_COMPLETE", "Evaluation Complete"
-        APPLICATION_UPDATE = "APPLICATION_UPDATE", "Application Update"
-        ANNOUNCEMENT = "ANNOUNCEMENT", "Announcement"
+        REGISTRATION_OPEN = "REGISTRATION_OPEN", _("Registration Open")
+        ROUND_STARTED = "ROUND_STARTED", _("Round Started")
+        DEADLINE_APPROACHING = "DEADLINE_APPROACHING", _("Deadline Approaching")
+        SUBMISSIONS_CLOSED = "SUBMISSIONS_CLOSED", _("Submissions Closed")
+        EVALUATION_COMPLETE = "EVALUATION_COMPLETE", _("Evaluation Complete")
+        APPLICATION_UPDATE = "APPLICATION_UPDATE", _("Application Update")
+        ANNOUNCEMENT = "ANNOUNCEMENT", _("Announcement")
 
     recipient = models.ForeignKey(User, on_delete=models.CASCADE, related_name="notifications")
     notification_type = models.CharField(choices=Type.choices, max_length=30)
@@ -334,10 +334,10 @@ class Announcement(models.Model):
 
 class ScheduleEvent(models.Model):
     class EventType(models.TextChoices):
-        ROUND = "ROUND", "Round"
-        DEADLINE = "DEADLINE", "Deadline"
-        WORKSHOP = "WORKSHOP", "Workshop"
-        OTHER = "OTHER", "Other"
+        ROUND = "ROUND", _("Round")
+        DEADLINE = "DEADLINE", _("Deadline")
+        WORKSHOP = "WORKSHOP", _("Workshop")
+        OTHER = "OTHER", _("Other")
 
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="schedule_events")
     title = models.CharField(max_length=200)
