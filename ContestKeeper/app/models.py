@@ -28,6 +28,7 @@ class User(AbstractUser):
     def is_participant(self):
         return self.role == self.Role.PARTICIPANT
 
+class Team(models.Model):
     class Status(models.TextChoices):
         DRAFT = "DRAFT", _("Draft")
         ACTIVE = "ACTIVE", _("Active")
