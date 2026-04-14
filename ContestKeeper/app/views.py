@@ -474,29 +474,68 @@ class OrganizerAnalyticsView(OrganizerRequiredMixin, TemplateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         contest = self.contest
-        
-        # 1. Jury Progress
-        jury_members = contest.jurys.all()
+        from .models import Round, Submission, JuryScore, LeaderboardEntry
+        from django.db.models import Avg
+
+        # 1. Summary Numbers
         teams_count = contest.teams.count()
-        criteria_count = contest.scoring_criteria.count()
+        jury_members = contest.jurys.all()
+        jury_count = jury_members.count()
+        submissions_count = Submission.objects.filter(round__contest=contest).count()
+        leaderboard_entries_count = LeaderboardEntry.objects.filter(contest=contest).count()
+
+        # 2. Submission rate per round
+        rounds = contest.rounds.all().order_by('order')
+        submission_stats = []
+        max_bar_width = 300
+        bar_height = 24
+        bar_gap = 8
+
+        for i, r in enumerate(rounds):
+            submitted = r.submissions.count()
+            pct = round(submitted / teams_count * 100, 1) if teams_count else 0
+            submission_stats.append({
+                'name': r.title,
+                'submitted': submitted,
+                'total': teams_count,
+                'pct': pct,
+                'bar_y': i * (bar_height + bar_gap),
+                'bar_width': int(pct * (max_bar_width / 100)),
+            })
+
+        # 3. Average scores radar/bar chart (per criterion)
+        criteria = contest.scoring_criteria.all().order_by('order')
+        score_stats = []
+        for i, c in enumerate(criteria):
+            avg_score = JuryScore.objects.filter(contest=contest, criterion=c).aggregate(avg=Avg('score'))['avg'] or 0
+            pct = round(float(avg_score) / float(c.max_score) * 100, 1) if c.max_score else 0
+            score_stats.append({
+                'name': c.name,
+                'avg': round(float(avg_score), 1),
+                'max': c.max_score,
+                'pct': pct,
+                'bar_y': i * (bar_height + bar_gap),
+                'bar_width': int(pct * (max_bar_width / 100)),
+            })
+
+        # 4. Jury progress
+        criteria_count = criteria.count()
         expected_per_jury = teams_count * criteria_count
-        
         jury_stats = []
         for jury in jury_members:
             actual = JuryScore.objects.filter(contest=contest, jury_member=jury).count()
-            percent = (actual / expected_per_jury * 100) if expected_per_jury > 0 else 0
+            pct = round(actual / expected_per_jury * 100, 1) if expected_per_jury > 0 else 0
             jury_stats.append({
                 "username": jury.username,
                 "actual": actual,
                 "expected": expected_per_jury,
-                "percent": round(percent, 1)
+                "percent": pct,
             })
-        
-        # 2. Score Distribution (Histogram)
-        # Using 10 buckets
+
+        # 5. Score Distribution (existing)
         entries = LeaderboardEntry.objects.filter(contest=contest)
         distribution = [0] * 10
-        max_possible = sum(c.max_score * c.weight for c in contest.scoring_criteria.all())
+        max_possible = sum(c.max_score * c.weight for c in criteria)
         
         for entry in entries:
             score = float(entry.total_score)
@@ -505,13 +544,20 @@ class OrganizerAnalyticsView(OrganizerRequiredMixin, TemplateView):
                 distribution[bucket] += 1
         
         max_count = max(distribution) if distribution else 0
-        
+
         context.update({
+            "total_teams": teams_count,
+            "total_jury": jury_count,
+            "total_submissions": submissions_count,
+            "total_evaluations": JuryScore.objects.filter(contest=contest).count(),
+            "submission_stats": submission_stats,
+            "submission_svg_height": len(submission_stats) * (bar_height + bar_gap),
+            "score_stats": score_stats,
+            "score_svg_height": len(score_stats) * (bar_height + bar_gap),
             "jury_stats": jury_stats,
             "distribution": distribution,
             "max_count": max_count,
             "max_possible": float(max_possible),
-            "teams_count": teams_count,
             "entries_count": entries.count(),
         })
         return context
