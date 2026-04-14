@@ -376,6 +376,9 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
                 elif is_organizer:
                     if application.application_type == Application.Type.TEAM:
                         if application.team:
+                            if application.contest.max_teams and application.contest.teams.count() >= application.contest.max_teams:
+                                messages.error(request, f"Cannot approve: Contest '{application.contest.name}' has reached its maximum of {application.contest.max_teams} teams.")
+                                return redirect("contest_detail", pk=application.contest.pk)
                             application.contest.teams.add(application.team)
                     elif application.application_type == Application.Type.JURY:
                         application.contest.jurys.add(application.user)
@@ -412,6 +415,15 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
         contest = get_object_or_404(Contest, pk=pk)
         if contest.status == Contest.Status.DRAFT:
             return HttpResponseForbidden("Cannot apply to a draft contest.")
+            
+        from django.utils import timezone
+        now = timezone.now()
+        if contest.registration_start and now < contest.registration_start:
+            messages.error(request, "Registration for this contest has not started yet.")
+            return redirect("contest_detail", pk=pk)
+        if contest.registration_end and now >= contest.registration_end:
+            messages.error(request, "Registration for this contest has already closed.")
+            return redirect("contest_detail", pk=pk)
         if app_type == "participant":
             role_type = Application.Type.PARTICIPANT
         elif app_type == "jury":

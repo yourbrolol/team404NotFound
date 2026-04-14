@@ -50,24 +50,33 @@ class Contest(models.Model):
         if self.is_draft:
             self.status = self.Status.DRAFT
         else:
-            if self.start_date and self.start_date <= now:
-                if self.end_date and self.end_date < now:
+            if self.start_date and now >= self.start_date:
+                if self.end_date and now >= self.end_date:
                     self.status = self.Status.FINISHED
                 else:
                     self.status = self.Status.RUNNING
+            elif self.registration_start and self.registration_end and \
+                 self.registration_start <= now < self.registration_end:
+                self.status = self.Status.REGISTRATION
             else:
+                # Default to registration if not yet started and not draft
                 self.status = self.Status.REGISTRATION
         super().save(*args, **kwargs)
+
     class Status(models.TextChoices):
         DRAFT = "DRAFT", _("Draft")
         REGISTRATION = "REGISTRATION", _("Registration")
         RUNNING = "RUNNING", _("Running")
         FINISHED = "FINISHED", _("Finished")
 
-    name = models.CharField(max_length=20)
-    description = models.TextField(max_length=200)
+    name = models.CharField(max_length=100)
+    description = models.TextField(max_length=500)
+    registration_start = models.DateTimeField(null=True, blank=True)
+    registration_end = models.DateTimeField(null=True, blank=True)
     start_date = models.DateTimeField()
     end_date = models.DateTimeField()
+    max_teams = models.PositiveIntegerField(null=True, blank=True)
+    format = models.CharField(max_length=50, blank=True, help_text="e.g. Online, Onsite, Hybrid")
     organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_contests", null=True, blank=True)
     status = models.CharField(choices=Status.choices, default=Status.DRAFT)
     is_draft = models.BooleanField(default=True)

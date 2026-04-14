@@ -32,22 +32,37 @@ class UserSettingsForm(forms.ModelForm):
 class ContestForm(forms.ModelForm):
     def clean(self):
         cleaned_data = super().clean()
+        reg_start = cleaned_data.get('registration_start')
+        reg_end = cleaned_data.get('registration_end')
         start_date = cleaned_data.get('start_date')
         end_date = cleaned_data.get('end_date')
-        now = timezone.now()
-        if start_date and start_date < now:
-            self.add_error('start_date', 'Start date cannot be in the past.')
+        
+        if reg_start and reg_end and reg_end < reg_start:
+            self.add_error('registration_end', 'Registration end cannot be before registration start.')
+        
+        if reg_end and start_date and start_date < reg_end:
+            self.add_error('start_date', 'Contest start date cannot be before registration end.')
+            
         if start_date and end_date and end_date < start_date:
-            self.add_error('end_date', 'End date cannot be before start date.')
+            self.add_error('end_date', 'Contest end date cannot be before start date.')
+            
         return cleaned_data
+
     class Meta:
         model = Contest
-        fields = ['name', 'description', 'start_date', 'end_date', 'is_draft']
+        fields = [
+            'name', 'description', 'registration_start', 'registration_end', 
+            'start_date', 'end_date', 'max_teams', 'format', 'is_draft'
+        ]
         widgets = {
             'name': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Enter contest name'}),
             'description': forms.Textarea(attrs={'class': 'form-input', 'rows': 3, 'placeholder': 'What is this contest about?'}),
+            'registration_start': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
+            'registration_end': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
             'start_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
             'end_date': forms.DateTimeInput(attrs={'type': 'datetime-local', 'class': 'form-input'}),
+            'max_teams': forms.NumberInput(attrs={'class': 'form-input', 'placeholder': 'No limit if empty'}),
+            'format': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Online, Onsite, Hybrid...'}),
             'is_draft': forms.CheckboxInput(attrs={'class': 'form-input'}),
         }
 
