@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-from .models import Contest, User, Announcement, ScheduleEvent
+from .models import Contest, User, Announcement, ScheduleEvent, Submission
 
 class UserRegistrationForm(UserCreationForm):
     class Meta:
@@ -90,4 +90,16 @@ class ScheduleEventForm(forms.ModelForm):
             "start_time": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-input"}),
             "end_time": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-input"}),
             "event_type": forms.Select(attrs={"class": "form-input"}),
+        }
+
+
+class SubmissionForm(forms.ModelForm):
+    class Meta:
+        model = Submission
+        fields = ["github_url", "video_url", "live_demo_url", "description"]
+        widgets = {
+            "github_url": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://github.com/..."}),
+            "video_url": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://youtube.com/..."}),
+            "live_demo_url": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://... (optional)"}),
+            "description": forms.Textarea(attrs={"class": "form-input", "rows": 4, "placeholder": "What was done, how to run..."}),
         }

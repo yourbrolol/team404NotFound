@@ -45,4 +45,9 @@ urlpatterns = [
     path("<int:pk>/rounds/<int:round_id>/extend/",     views.RoundExtendDeadlineView.as_view(), name="round_extend_deadline"),
     path("<int:pk>/rounds/team/",               views.ContestRoundsTeamView.as_view(), name="contest_rounds_team"),
     path("<int:pk>/rounds/<int:round_id>/team/", views.RoundDetailTeamView.as_view(), name="round_detail_team"),
+    
+    # Submissions
+    path("<int:pk>/rounds/<int:round_id>/submit/", views.SubmissionCreateEditView.as_view(), name="submission_create"),
+    path("<int:pk>/rounds/<int:round_id>/submissions/", views.RoundSubmissionsListView.as_view(), name="round_submissions"),
+    path("<int:pk>/rounds/<int:round_id>/submissions/<int:sub_pk>/", views.SubmissionDetailView.as_view(), name="submission_detail"),
 ]

@@ -1161,3 +1161,136 @@ class ProfileViewTaskTest(TestCase):
 
         self.assertContains(response, "You are not part of any teams yet.")
         self.assertContains(response, "No leaderboard results available yet.")
+
+
+class SubmissionUITest(TestCase):
+    def setUp(self):
+        self.organizer = User.objects.create_user(username='sub_org', password='password', role=User.Role.ORGANIZER)
+        self.participant = User.objects.create_user(username='sub_parti', password='password', role=User.Role.PARTICIPANT)
+        self.jury = User.objects.create_user(username='sub_jury', password='password', role=User.Role.JURY)
+        self.other_participant = User.objects.create_user(username='sub_other', password='password', role=User.Role.PARTICIPANT)
+        
+        self.contest = Contest.objects.create(
+            name='Submission Test Contest',
+            description='Test description',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timedelta(days=30),
+            organizer=self.organizer,
+            is_draft=False
+        )
+        self.team = Team.objects.create(name='Sub Team', captain=self.participant, status=Team.Status.ACTIVE)
+        self.team.participants.add(self.participant)
+        self.contest.teams.add(self.team)
+        self.contest.jurys.add(self.jury)
+        
+        self.round = Round.objects.create(
+            contest=self.contest,
+            title='Test Round',
+            description='Test desc',
+            tech_requirements='Python',
+            must_have=['Item 1'],
+            start_time=timezone.now() - timedelta(hours=1),
+            deadline=timezone.now() + timedelta(hours=2),
+            status=Round.Status.ACTIVE,
+            created_by=self.organizer,
+            order=1
+        )
+        self.client = Client()
+
+    def test_submission_form_access_denied_for_non_team_members(self):
+        self.client.force_login(self.other_participant)
+        url = reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': self.round.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_submission_creation_success(self):
+        self.client.force_login(self.participant)
+        url = reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': self.round.pk})
+        data = {
+            'github_url': 'https://github.com/team/repo',
+            'video_url': 'https://youtube.com/watch?v=123',
+            'live_demo_url': 'https://demo.example.com',
+            'description': 'Our amazing project implementation.'
+        }
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+        
+        submission = Submission.objects.get(round=self.round, team=self.team)
+        self.assertEqual(submission.github_url, data['github_url'])
+        self.assertEqual(submission.team, self.team)
+
+    def test_submission_edit_success(self):
+        submission = Submission.objects.create(
+            round=self.round, team=self.team,
+            github_url='https://github.com/old/repo',
+            video_url='https://youtube.com/old'
+        )
+        self.client.force_login(self.participant)
+        url = reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': self.round.pk})
+        data = {
+            'github_url': 'https://github.com/new/repo',
+            'video_url': 'https://youtube.com/new',
+            'description': 'Updated description'
+        }
+        response = self.client.post(url, data)
+        self.assertEqual(response.status_code, 302)
+        
+        submission.refresh_from_db()
+        self.assertEqual(submission.github_url, 'https://github.com/new/repo')
+
+    def test_submission_creation_denied_after_deadline(self):
+        self.round.deadline = timezone.now() - timedelta(minutes=1)
+        self.round.save()
+        
+        self.client.force_login(self.participant)
+        url = reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': self.round.pk})
+        response = self.client.post(url, {'github_url': 'https://github.com/...', 'video_url': '...'})
+        self.assertEqual(response.status_code, 403)
+
+    def test_submission_detail_visibility(self):
+        submission = Submission.objects.create(
+            round=self.round, team=self.team,
+            github_url='https://github.com/test/repo',
+            video_url='https://youtube.com/test'
+        )
+        url = reverse('submission_detail', kwargs={
+            'pk': self.contest.pk, 'round_id': self.round.pk, 'sub_pk': submission.pk
+        })
+        
+        # Team member can see
+        self.client.force_login(self.participant)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Organizer can see
+        self.client.force_login(self.organizer)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Jury can see
+        self.client.force_login(self.jury)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Other participant cannot see
+        self.client.force_login(self.other_participant)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 404)
+
+    def test_round_submissions_list_permissions(self):
+        url = reverse('round_submissions', kwargs={'pk': self.contest.pk, 'round_id': self.round.pk})
+        
+        # Participant denied
+        self.client.force_login(self.participant)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 403)
+        
+        # Organizer allowed
+        self.client.force_login(self.organizer)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        
+        # Jury allowed
+        self.client.force_login(self.jury)
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)

@@ -233,43 +233,44 @@
             {% endif %}
         </div>
 
-        <div class="content-grid">
             <div class="card">
-                <h2>📋 Description</h2>
-                <p class="description-text">{{ round.description }}</p>
-            </div>
-
-            <div class="card">
-                <h2>🛠️ Tech Requirements</h2>
-                <p class="description-text">{{ round.tech_requirements }}</p>
-            </div>
-
-            <div class="card">
-                <h2>✅ Must Have Checklist</h2>
-                {% if round.must_have %}
-                    <ul class="checklist">
-                        {% for item in round.must_have %}
-                            <li>{{ item }}</li>
-                        {% endfor %}
-                    </ul>
+                <h2>🚀 Your Submission</h2>
+                {% if not user_team %}
+                    <p class="description-text" style="color: var(--text-muted); font-style: italic;">
+                        You are not part of a team in this contest. You must be in a team to submit work.
+                    </p>
                 {% else %}
-                    <p class="empty-materials">No checklist items defined</p>
-                {% endif %}
-            </div>
-
-            <div class="card">
-                <h2>📚 Materials & Resources</h2>
-                {% if round.materials %}
-                    <ul class="materials-list">
-                        {% for material in round.materials %}
-                            <li>
-                                <span>{{ material.label }}</span>
-                                <a href="{{ material.url }}" target="_blank" rel="noopener noreferrer" class="material-link">View →</a>
-                            </li>
-                        {% endfor %}
-                    </ul>
-                {% else %}
-                    <p class="empty-materials">No materials provided</p>
+                    {% if user_submission %}
+                        <div style="margin-bottom: 1rem;">
+                            <div class="meta-label">Status</div>
+                            <div class="meta-value" style="color: #28a745;">✅ Submitted</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <a href="{{ user_submission.github_url }}" target="_blank" class="material-link" style="background: #24292e;">GitHub Repository ↗</a>
+                            <a href="{{ user_submission.video_url }}" target="_blank" class="material-link" style="background: #ff0000;">Video Presentation ↗</a>
+                            {% if user_submission.live_demo_url %}
+                                <a href="{{ user_submission.live_demo_url }}" target="_blank" class="material-link" style="background: #28a745;">Live Demo ↗</a>
+                            {% endif %}
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="{% url 'submission_detail' round.contest.pk round.pk user_submission.pk %}" class="material-link" style="background: var(--secondary); flex: 1; text-align: center;">View Full Details</a>
+                            {% if is_open %}
+                                <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="background: #6c757d; flex: 1; text-align: center;">Edit Submission</a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div style="margin-bottom: 1.5rem;">
+                            <div class="meta-label">Status</div>
+                            <div class="meta-value" style="color: #dc3545;">❌ Not Submitted</div>
+                        </div>
+                        {% if is_open %}
+                            <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="width: 100%; text-align: center; padding: 1rem; font-size: 1.1rem; font-weight: bold;">Submit Your Work Now →</a>
+                        {% else %}
+                            <p class="description-text" style="color: var(--text-muted); font-style: italic;">
+                                Submissions are closed for this round.
+                            </p>
+                        {% endif %}
+                    {% endif %}
                 {% endif %}
             </div>
         </div>

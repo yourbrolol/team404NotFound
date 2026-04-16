@@ -1,0 +1,51 @@
+{% extends 'app/base.html' %}
+{% block title %}Submissions - {{ round.title }}{% endblock %}
+
+{% block content %}
+<div class="dashboard-header">
+    <div class="header-left">
+        <h1 id="h1">Submissions</h1>
+        <p style="color: var(--text-muted);">{{ round.title }} — {{ submissions.count }} total</p>
+    </div>
+    <div style="display: flex; gap: 1rem;">
+        <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary">Back to Rounds</a>
+    </div>
+</div>
+
+<div class="glass-panel" style="padding: 0; overflow: hidden; min-height: unset;">
+    <table style="width: 100%; border-collapse: collapse; text-align: left;">
+        <thead>
+            <tr style="border-bottom: 1px solid var(--border); background: var(--glass);">
+                <th style="padding: 1.25rem 2rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em;">Team</th>
+                <th style="padding: 1.25rem 2rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em;">Submitted At</th>
+                <th style="padding: 1.25rem 2rem; color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.8rem; letter-spacing: 0.05em; text-align: right;">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for submission in submissions %}
+            <tr style="border-bottom: 1px solid var(--border); transition: background 0.2s;" onmouseover="this.style.background='var(--glass)'" onmouseout="this.style.background='transparent'">
+                <td style="padding: 1.25rem 2rem;">
+                    <div style="font-weight: 600; font-size: 1.1rem;">{{ submission.team.name }}</div>
+                    {% if submission.live_demo_url %}
+                    <span style="font-size: 0.75rem; color: #10b981;">● Live Demo Available</span>
+                    {% endif %}
+                </td>
+                <td style="padding: 1.25rem 2rem; color: var(--text-muted);">
+                    {{ submission.submitted_at|date:"M d, H:i" }}
+                </td>
+                <td style="padding: 1.25rem 2rem; text-align: right;">
+                    <a href="{% url 'submission_detail' contest.pk round.pk submission.pk %}" class="btn btn-secondary" style="padding: 0.5rem 1rem; font-size: 0.85rem;">View Details</a>
+                </td>
+            </tr>
+            {% empty %}
+            <tr>
+                <td colspan="3" style="padding: 4rem; text-align: center; color: var(--text-muted);">
+                    <div style="font-size: 3rem; margin-bottom: 1rem;">📭</div>
+                    No submissions yet for this round.
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

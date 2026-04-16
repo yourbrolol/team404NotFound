@@ -1,0 +1,43 @@
+{% extends 'app/base.html' %}
+{% block title %}Submission Details - {{ submission.team.name }}{% endblock %}
+
+{% block content %}
+<div class="glass-panel" style="max-width: 800px; margin: 2rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2rem;">
+        <div class="header-left">
+            <h1 id="h1">{{ submission.team.name }}</h1>
+            <p style="color: var(--text-muted);">Submission for {{ round.title }}</p>
+        </div>
+        {% if user in submission.team.participants.all and round.is_open %}
+        <a href="{% url 'submission_create' contest.pk round.pk %}" class="btn btn-primary">Edit Submission</a>
+        {% endif %}
+    </div>
+
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+        <div class="glass-panel" style="padding: 1.5rem; min-height: unset; min-width: unset;">
+            <span class="form-label">GitHub Repository</span>
+            <a href="{{ submission.github_url }}" target="_blank" rel="noopener noreferrer" style="color: var(--primary); font-weight: 600; text-decoration: none;">View on GitHub ↗</a>
+        </div>
+        <div class="glass-panel" style="padding: 1.5rem; min-height: unset; min-width: unset;">
+            <span class="form-label">Presentation Video</span>
+            <a href="{{ submission.video_url }}" target="_blank" rel="noopener noreferrer" style="color: var(--secondary); font-weight: 600; text-decoration: none;">Watch Video ↗</a>
+        </div>
+        {% if submission.live_demo_url %}
+        <div class="glass-panel" style="padding: 1.5rem; min-height: unset; min-width: unset;">
+            <span class="form-label">Live Demo</span>
+            <a href="{{ submission.live_demo_url }}" target="_blank" rel="noopener noreferrer" style="color: #10b981; font-weight: 600; text-decoration: none;">Launch Demo ↗</a>
+        </div>
+        {% endif %}
+    </div>
+
+    <div class="glass-panel" style="padding: 2rem; min-height: unset; min-width: unset; background: var(--input-bg);">
+        <h3 style="margin-bottom: 1rem;">Description</h3>
+        <div style="white-space: pre-wrap; color: var(--text-main); line-height: 1.8;">{{ submission.description }}</div>
+    </div>
+
+    <div style="margin-top: 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <p style="color: var(--text-muted); font-size: 0.85rem;">Submitted on {{ submission.submitted_at|date:"F j, Y, P" }}</p>
+        <a href="{% url 'round_detail_team' contest.pk round.pk %}" class="btn btn-secondary">← Back to Round</a>
+    </div>
+</div>
+{% endblock %}

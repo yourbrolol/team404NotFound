@@ -1,0 +1,58 @@
+{% extends 'app/base.html' %}
+{% block title %}{% if is_edit %}Edit{% else %}Create{% endif %} Submission - {{ round.title }}{% endblock %}
+
+{% block content %}
+<div class="form-card">
+    <h1 id="h1">{% if is_edit %}Edit Submission{% else %}Submit Work{% endif %}</h1>
+    <p style="margin: 0.5rem 0 2rem; color: var(--text-muted);">{{ round.title }} — {{ contest.name }}</p>
+
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="field-error" style="margin-bottom: 1rem;">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.github_url.id_for_label }}">GitHub Repository URL *</label>
+            {{ form.github_url }}
+            {% if form.github_url.errors %}
+                <p class="field-error">{{ form.github_url.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.video_url.id_for_label }}">Video Presentation URL *</label>
+            {{ form.video_url }}
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">YouTube, Loom, or similar</p>
+            {% if form.video_url.errors %}
+                <p class="field-error">{{ form.video_url.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.live_demo_url.id_for_label }}">Live Demo URL (Optional)</label>
+            {{ form.live_demo_url }}
+            {% if form.live_demo_url.errors %}
+                <p class="field-error">{{ form.live_demo_url.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.description.id_for_label }}">Implementation Details *</label>
+            {{ form.description }}
+            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.4rem;">Briefly describe what your team built and how to test it.</p>
+            {% if form.description.errors %}
+                <p class="field-error">{{ form.description.errors.0 }}</p>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-primary">Save Submission</button>
+            <a href="{% url 'round_detail_team' contest.pk round.pk %}" class="btn btn-secondary">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}
