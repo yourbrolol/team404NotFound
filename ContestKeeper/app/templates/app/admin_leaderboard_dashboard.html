@@ -17,7 +17,10 @@
                     <h1 class="detail-title">{{ contest.name }} Evaluation Dashboard</h1>
                     <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Admin controls and leaderboard preview.</p>
                 </div>
-                <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">View Public Leaderboard</a>
+                <div style="display:flex; gap: 0.5rem;">
+                    <a href="{% url 'criterion_create' contest.pk %}" class="btn btn-tinted">Add Scoring Criterion</a>
+                    <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">View Public Leaderboard</a>
+                </div>
             </div>
 
             <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">
@@ -108,7 +111,13 @@
                                 <th>Team</th>
                                 <th>Total score</th>
                                 {% for criterion in criteria %}
-                                    <th>{{ criterion.name }}</th>
+                                    <th>
+                                        {{ criterion.name }}
+                                        <div style="font-size: 0.7rem; font-weight: normal; margin-top: 0.25rem;">
+                                            <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" style="color: var(--primary-color);">Edit</a> |
+                                            <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" style="color: #e53e3e;">Del</a>
+                                        </div>
+                                    </th>
                                 {% endfor %}
                                 <th>Complete</th>
                             </tr>

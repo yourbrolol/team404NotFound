@@ -1,9 +1,12 @@
 import csv
 
 from django.http import HttpResponse, JsonResponse
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import TemplateView
+from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
+
+from ..forms import ScoringCriterionForm
 
 from ..leaderboard import LeaderboardComputer
 from ..models import ContestEvaluationPhase, JuryScore, LeaderboardEntry, ScoringCriterion
@@ -296,3 +299,54 @@ class ExportTeamsCSVView(AdminPermissionMixin, View):
         for row in rows:
             writer.writerow(row)
         return response
+
+
+class CriterionCreateView(AdminPermissionMixin, CreateView):
+    model = ScoringCriterion
+    form_class = ScoringCriterionForm
+    template_name = "app/criterion_form.html"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contest"] = self.contest
+        context["title"] = "Create Scoring Criterion"
+        return context
+
+    def form_valid(self, form):
+        form.instance.contest = self.contest
+        return super().form_valid(form)
+
+    def get_success_url(self):
+        return reverse_lazy("admin_leaderboard_dashboard", kwargs={"pk": self.contest.pk})
+
+
+class CriterionUpdateView(AdminPermissionMixin, UpdateView):
+    model = ScoringCriterion
+    form_class = ScoringCriterionForm
+    template_name = "app/criterion_form.html"
+    pk_url_kwarg = "criterion_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contest"] = self.contest
+        context["title"] = f"Edit Criterion: {self.object.name}"
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("admin_leaderboard_dashboard", kwargs={"pk": self.contest.pk})
+
+
+class CriterionDeleteView(AdminPermissionMixin, DeleteView):
+    model = ScoringCriterion
+    template_name = "app/announcement_confirm_delete.html"  # Reusing generic confirm delete
+    pk_url_kwarg = "criterion_id"
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contest"] = self.contest
+        context["object_name"] = f"Scoring Criterion: {self.object.name}"
+        context["cancel_url"] = reverse_lazy("admin_leaderboard_dashboard", kwargs={"pk": self.contest.pk})
+        return context
+
+    def get_success_url(self):
+        return reverse_lazy("admin_leaderboard_dashboard", kwargs={"pk": self.contest.pk})

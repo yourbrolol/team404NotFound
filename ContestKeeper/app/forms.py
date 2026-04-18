@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-from .models import Contest, User, Announcement, ScheduleEvent, Submission, Team
+from .models import Contest, User, Announcement, ScheduleEvent, Submission, Team, ScoringCriterion
 
 class UserRegistrationForm(UserCreationForm):
     class Meta:
@@ -115,4 +115,16 @@ class TeamForm(forms.ModelForm):
             "telegram_link": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://t.me/yourteam"}),
             "discord_link": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://discord.gg/yourteam"}),
             "website_link": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://yourteam.com"}),
+        }
+
+class ScoringCriterionForm(forms.ModelForm):
+    class Meta:
+        model = ScoringCriterion
+        fields = ["name", "max_score", "weight", "aggregation_type", "order"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-input", "placeholder": "e.g. Design, Technical quality..."}),
+            "max_score": forms.NumberInput(attrs={"class": "form-input"}),
+            "weight": forms.NumberInput(attrs={"class": "form-input", "step": "0.1"}),
+            "aggregation_type": forms.Select(attrs={"class": "form-input"}),
+            "order": forms.NumberInput(attrs={"class": "form-input"}),
         }
