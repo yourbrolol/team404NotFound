@@ -1,8 +1,8 @@
 /* ── Home welcome panel ────────────────────────────────────── */
 .home-welcome {
     margin: 0 auto 3rem;
-    max-width: 45vw;
-    padding: 4rem;
+    width: min(800px, 90%);
+    padding: clamp(2rem, 8vw, 4rem);
     text-align: center;
 }
 
@@ -97,7 +97,7 @@
 
 .quick-access__grid {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 1rem;
     margin-bottom: 1.25rem;
 }
@@ -259,7 +259,7 @@
     }
 
     .quick-access__grid {
-        grid-template-columns: 1fr;
+        grid-template-columns: repeat(2, 1fr);
     }
 
     .contest-card {

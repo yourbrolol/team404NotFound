@@ -1,5 +1,12 @@
 body {
     padding-left: 280px;
+    transition: padding-left 0.3s ease;
+}
+
+@media (max-width: 1200px) {
+    body {
+        padding-left: 240px;
+    }
 }
 
 /* ── Mobile top bar ── */
@@ -69,6 +76,13 @@ body {
     border-right: 1px solid var(--border);
     z-index: 1000;
     overflow-y: auto;
+    transition: width 0.3s ease;
+}
+
+@media (max-width: 1200px) {
+    #nav {
+        width: 240px;
+    }
 }
 
 .nav-container {
@@ -100,7 +114,7 @@ body {
 .nav-link {
     color: var(--text-muted);
     text-decoration: none;
-    padding: 0.875rem 1.25rem;
+    padding: clamp(0.75rem, 2vh, 1rem) 1.25rem;
     border-radius: 0.75rem;
     transition: all 0.2s ease;
     font-size: 0.95rem;
@@ -113,6 +127,7 @@ body {
     cursor: pointer;
     width: 100%;
     font-family: inherit;
+    min-height: 44px; /* Accessible tap target */
 }
 
 .nav-link:hover {
@@ -186,7 +201,8 @@ body {
         transform: translateX(-100%);
         transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         z-index: 1000;
-        width: 260px;
+        width: 280px;
+        will-change: transform;
     }
 
     #nav.nav-open {

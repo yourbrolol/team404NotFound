@@ -15,9 +15,9 @@
     background: var(--glass);
     border: 1px solid var(--border);
     border-radius: 2rem;
-    padding: 3rem;
+    padding: clamp(1.25rem, 5vw, 3rem);
     backdrop-filter: blur(15px);
-    width: min(900px, calc(100% - 2.5rem));
+    width: min(1000px, 98%);
     margin: 1.5rem auto;
     color: var(--white);
     box-sizing: border-box;
@@ -246,9 +246,9 @@
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Small tablet  (≤ 700px)
+   Small tablet / Large phone (≤ 768px)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@media (max-width: 700px) {
+@media (max-width: 768px) {
     .detail-card {
         padding: 1.5rem;
         border-radius: 1.2rem;
@@ -314,7 +314,8 @@
 
     .contest-actions .btn,
     .delete-form,
-    .delete-form .btn-sm {
+    .delete-form .btn-sm,
+    .btn-apply {
         width: 100%;
     }
 }

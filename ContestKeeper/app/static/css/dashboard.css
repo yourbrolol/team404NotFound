@@ -149,7 +149,7 @@
     }
 
     .contest-card {
-        padding: 1.5rem;
+        padding: clamp(1rem, 3vw, 1.5rem);
         gap: 1rem;
     }
 }
@@ -176,6 +176,10 @@
     .contest-actions {
         grid-template-columns: 1fr;
         gap: 0.6rem;
+    }
+
+    .contest-actions .btn {
+        padding: 0.75rem 1rem;
     }
 
     .contest-details {

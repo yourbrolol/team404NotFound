@@ -7,7 +7,8 @@
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
-  max-width: 720px;
+  width: 100%;
+  max-width: 800px;
 }
 
 /* ─── Settings Card ───────────────────────────────────── */
@@ -138,11 +139,12 @@
 }
 
 .settings-info-item__value {
-  font-size: 0.9rem;
+  font-size: clamp(0.85rem, 3vw, 0.95rem);
   color: var(--text-main);
   font-weight: 600;
   display: flex;
   align-items: center;
+  word-break: break-all;
 }
 
 /* ─── Actions ─────────────────────────────────────────── */
@@ -195,10 +197,16 @@
     border-radius: 1rem;
   }
 
+  .settings-avatar {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
   .settings-avatar__circle {
-    width: 50px;
-    height: 50px;
-    font-size: 1.15rem;
+    width: 60px;
+    height: 60px;
+    font-size: 1.25rem;
   }
 
   .settings-actions {
