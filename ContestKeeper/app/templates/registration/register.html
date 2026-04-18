@@ -1,70 +1,102 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Register – ContestKeeper</title>
+    <title>Join the Competition – ContestKeeper</title>
     <link rel="stylesheet" href="{% static 'fonts/origin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
 </head>
+<body class="auth-body">
+    <div class="auth-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
-<body>
-    <main class="auth-page">
-        <h1 id="header">Register</h1>
-        {% if form.errors %}
-        <p class="auth-error">Please correct the errors below.</p>
-        {% endif %}
-        <form method="post" action="{% url 'register' %}" class="auth-form">
-            {% csrf_token %}
-            <p>
-                <label for="id_username">Username</label><br>
-                <input type="text" name="username" id="id_username" value="{{ form.username.value|default:'' }}"
-                    maxlength="150" required autofocus>
-                {% if form.username.errors %}
-                <span class="auth-field-error">{{ form.username.errors.0 }}</span>
-                {% endif %}
+    <main class="auth-card">
+        <!-- Left Column: Branding -->
+        <section class="auth-info">
+            <div class="auth-logo">ContestKeeper</div>
+            <h2>Elevate Your Coding Journey.</h2>
+            <p>Join a community of top developers, compete in high-stakes tournaments, and showcase your skills to the world.</p>
+        </section>
+
+        <!-- Right Column: Form -->
+        <section class="auth-form-container">
+            <h1>Create Account</h1>
+            
+            {% if form.errors and not form.non_field_errors %}
+            <div class="auth-error-msg">
+                Please correct the details below to continue.
+            </div>
+            {% endif %}
+
+            {% if form.non_field_errors %}
+            <div class="auth-error-msg">
+                {% for error in form.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'register' %}" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="auth-form-grid">
+                    <div class="form-group">
+                        <label for="id_username" class="form-label">Username</label>
+                        <input type="text" name="username" id="id_username" class="auth-input" 
+                               placeholder="e.g. coder_pro" value="{{ form.username.value|default:'' }}" 
+                               maxlength="150" required autofocus>
+                        {% if form.username.errors %}<span class="field-error">{{ form.username.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_email" class="form-label">Email Address</label>
+                        <input type="email" name="email" id="id_email" class="auth-input" 
+                               placeholder="you@example.com" value="{{ form.email.value|default:'' }}" required>
+                        {% if form.email.errors %}<span class="field-error">{{ form.email.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="auth-form-grid">
+                    <div class="form-group">
+                        <label for="id_first_name" class="form-label">First Name</label>
+                        <input type="text" name="first_name" id="id_first_name" class="auth-input" 
+                               placeholder="John" value="{{ form.first_name.value|default:'' }}" required>
+                        {% if form.first_name.errors %}<span class="field-error">{{ form.first_name.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_last_name" class="form-label">Last Name</label>
+                        <input type="text" name="last_name" id="id_last_name" class="auth-input" 
+                               placeholder="Doe" value="{{ form.last_name.value|default:'' }}" required>
+                        {% if form.last_name.errors %}<span class="field-error">{{ form.last_name.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="auth-form-grid">
+                    <div class="form-group">
+                        <label for="id_password1" class="form-label">Password</label>
+                        <input type="password" name="password1" id="id_password1" class="auth-input" 
+                               placeholder="••••••••" required>
+                        {% if form.password1.errors %}<span class="field-error">{{ form.password1.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="id_password2" class="form-label">Repeat Password</label>
+                        <input type="password" name="password2" id="id_password2" class="auth-input" 
+                               placeholder="••••••••" required>
+                        {% if form.password2.errors %}<span class="field-error">{{ form.password2.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <button type="submit" class="btn-auth">Register Now</button>
+            </form>
+
+            <p class="auth-footer">
+                Already have an account? <a href="{% url 'login' %}">Log in here</a>
             </p>
-            <p>
-                <label for="id_email">Email</label><br>
-                <input type="email" name="email" id="id_email" value="{{ form.email.value|default:'' }}" required>
-                {% if form.email.errors %}
-                <span class="auth-field-error">{{ form.email.errors.0 }}</span>
-                {% endif %}
-            </p>
-            <p>
-                <label for="id_first_name">First Name</label><br>
-                <input type="text" name="first_name" id="id_first_name" value="{{ form.first_name.value|default:'' }}" required>
-                {% if form.first_name.errors %}
-                <span class="auth-field-error">{{ form.first_name.errors.0 }}</span>
-                {% endif %}
-            </p>
-            <p>
-                <label for="id_last_name">Last Name</label><br>
-                <input type="text" name="last_name" id="id_last_name" value="{{ form.last_name.value|default:'' }}" required>
-                {% if form.last_name.errors %}
-                <span class="auth-field-error">{{ form.last_name.errors.0 }}</span>
-                {% endif %}
-            </p>
-            <p>
-                <label for="id_password1">Password</label><br>
-                <input type="password" name="password1" id="id_password1" required>
-                {% if form.password1.errors %}
-                <span class="auth-field-error">{{ form.password1.errors.0 }}</span>
-                {% endif %}
-            </p>
-            <p>
-                <label for="id_password2">Password (again)</label><br>
-                <input type="password" name="password2" id="id_password2" required>
-                {% if form.password2.errors %}
-                <span class="auth-field-error">{{ form.password2.errors.0 }}</span>
-                {% endif %}
-            </p>
-            <button type="submit">Register</button>
-        </form>
-        <p class="auth-footer">Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+        </section>
     </main>
 </body>
-
 </html>

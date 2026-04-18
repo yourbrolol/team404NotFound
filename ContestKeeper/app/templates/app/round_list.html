@@ -26,7 +26,11 @@
                         <div style="padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; background: var(--surface);">
                             <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
                                 <div>
-                                    <h3 style="margin: 0;">Round {{ round.order }}: {{ round.title }}</h3>
+                                    <h3 style="margin: 0;">
+                                        <a href="{% url 'round_detail' contest.pk round.id %}" style="text-decoration: none; color: inherit;">
+                                            Round {{ round.order }}: {{ round.title }}
+                                        </a>
+                                    </h3>
                                     <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">
                                         Status: <strong>{{ round.get_status_display }}</strong>
                                         | Deadline: {{ round.deadline|date:"M d, Y H:i" }}

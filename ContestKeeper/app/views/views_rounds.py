@@ -7,11 +7,11 @@ from django.urls import reverse
 from django.utils import timezone
 from django.utils.dateparse import parse_datetime
 from django.views import View
-from django.views.generic import CreateView, ListView, TemplateView
+from django.views.generic import CreateView, ListView, TemplateView, DetailView
 
 from ..models import Contest, Notification, Round, Submission
 from ..services import notify_contest_jury, notify_contest_participants
-from .views_base import OrganizerRequiredMixin, RedirectToRegisterMixin
+from .views_base import OrganizerRequiredMixin, RedirectToRegisterMixin, ContestContextMixin
 
 
 class RoundListView(OrganizerRequiredMixin, ListView):
@@ -191,6 +191,16 @@ class RoundCloseSubmissionsView(OrganizerRequiredMixin, View):
 
 
 class RoundExtendDeadlineView(OrganizerRequiredMixin, View):
+    def get(self, request, *args, **kwargs):
+        contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
+        error = kwargs.get("error")
+        return render(request, "app/round_extend_deadline.html", {
+            "contest": contest,
+            "round": round_obj,
+            "error": error
+        })
+
     def post(self, request, *args, **kwargs):
         contest = get_object_or_404(Contest, pk=kwargs["pk"])
         round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
@@ -200,27 +210,15 @@ class RoundExtendDeadlineView(OrganizerRequiredMixin, View):
 
         new_deadline_str = request.POST.get("new_deadline")
         if not new_deadline_str:
-            return render(request, "app/round_extend_deadline.html", {
-                "contest": contest,
-                "round": round_obj,
-                "error": "New deadline is required.",
-            })
+            return self.get(request, *args, error="New deadline is required.", **kwargs)
 
         new_deadline = parse_datetime(new_deadline_str)
         if not new_deadline:
-            return render(request, "app/round_extend_deadline.html", {
-                "contest": contest,
-                "round": round_obj,
-                "error": "Invalid datetime format.",
-            })
+            return self.get(request, *args, error="Invalid datetime format.", **kwargs)
         if timezone.is_naive(new_deadline):
             new_deadline = timezone.make_aware(new_deadline)
         if new_deadline < timezone.now():
-            return render(request, "app/round_extend_deadline.html", {
-                "contest": contest,
-                "round": round_obj,
-                "error": "New deadline cannot be in the past.",
-            })
+            return self.get(request, *args, error="New deadline cannot be in the past.", **kwargs)
 
         old_deadline = round_obj.deadline
         round_obj.deadline = new_deadline
@@ -283,3 +281,56 @@ class RoundDetailTeamView(RedirectToRegisterMixin, TemplateView):
             user_submission=user_submission,
             user_team=user_team,
         )
+
+
+class RoundDetailView(RedirectToRegisterMixin, ContestContextMixin, DetailView):
+    model = Round
+    template_name = "app/round_detail.html"
+    context_object_name = "round"
+    pk_url_kwarg = "round_pk"
+
+    def get_object(self, queryset=None):
+        contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
+        round_obj = get_object_or_404(Round, pk=self.kwargs["round_pk"], contest=contest)
+
+        user = self.request.user
+        is_organizer = contest.organizer == user
+        is_jury = contest.jurys.filter(pk=user.pk).exists()
+        is_participant = contest.participants.filter(pk=user.pk).exists()
+
+        if round_obj.status == Round.Status.DRAFT and not (is_organizer or user.is_staff):
+            raise Http404("This round is not available yet.")
+
+        if not (is_organizer or is_jury or is_participant or user.is_staff):
+            raise Http404("You do not have access to this contest.")
+
+        return round_obj
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        round_obj = self.object
+        user = self.request.user
+        contest = round_obj.contest
+
+        now = timezone.now()
+        is_active = round_obj.status == Round.Status.ACTIVE and round_obj.start_time <= now
+        is_open = is_active and round_obj.deadline > now
+        time_remaining = round_obj.time_remaining() if is_active else None
+
+        user_team = contest.teams.filter(participants=user).first()
+        user_submission = None
+        if user_team:
+            user_submission = Submission.objects.filter(round=round_obj, team=user_team).first()
+
+        context.update({
+            "contest": contest,
+            "is_organizer": contest.organizer == user or user.is_staff,
+            "is_jury": contest.jurys.filter(pk=user.pk).exists(),
+            "is_active": is_active,
+            "is_open": is_open,
+            "time_remaining": time_remaining,
+            "user_submission": user_submission,
+            "user_team": user_team,
+            "submission_count": round_obj.submissions.count() if (contest.organizer == user or user.is_staff) else 0,
+        })
+        return context

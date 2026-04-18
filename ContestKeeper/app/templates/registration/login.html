@@ -1,36 +1,62 @@
 {% load static %}
 <!DOCTYPE html>
-<html lang="en">
-
+<html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Log in – ContestKeeper</title>
+    <title>Welcome Back – ContestKeeper</title>
     <link rel="stylesheet" href="{% static 'fonts/origin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/register.css' %}">
 </head>
+<body class="auth-body">
+    <div class="auth-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
 
-<body>
-    <main class="auth-page">
-        <h1 id="header">Log in</h1>
-        {% if form.errors %}
-        <p class="auth-error">Invalid username or password. Please try again.</p>
-        {% endif %}
-        <form method="post" action="{% url 'login' %}" class="auth-form">
-            {% csrf_token %}
-            <p>
-                <label for="id_username">Username</label><br>
-                <input type="text" name="username" id="id_username" required autofocus>
+    <main class="auth-card">
+        <!-- Left Column: Branding -->
+        <section class="auth-info">
+            <div class="auth-logo">ContestKeeper</div>
+            <h2>Welcome Back.</h2>
+            <p>Ready to tackle the next challenge? Sign in to access your dashboard, teams, and active competitions.</p>
+        </section>
+
+        <!-- Right Column: Form -->
+        <section class="auth-form-container">
+            <h1>Log In</h1>
+            
+            {% if form.errors %}
+            <div class="auth-error-msg">
+                Invalid username or password. Please try again.
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'login' %}" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="form-group">
+                    <label for="id_username" class="form-label">Username</label>
+                    <input type="text" name="username" id="id_username" class="auth-input" 
+                           placeholder="Enter your username" required autofocus>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_password" class="form-label">Password</label>
+                    <input type="password" name="password" id="id_password" class="auth-input" 
+                           placeholder="Enter your password" required>
+                </div>
+
+                <input type="hidden" name="next" value="{{ next }}">
+                
+                <button type="submit" class="btn-auth">Sign In</button>
+            </form>
+
+            <p class="auth-footer">
+                Don't have an account yet? <a href="{% url 'register' %}">Create one today</a>
             </p>
-            <p>
-                <label for="id_password">Password</label><br>
-                <input type="password" name="password" id="id_password" required>
-            </p>
-            <input type="hidden" name="next" value="{{ next }}">
-            <button type="submit">Log in</button>
-        </form>
-        <p class="auth-footer">Don't have an account yet? <a href="{% url 'register' %}">Register</a></p>
+        </section>
     </main>
 </body>
-
 </html>
