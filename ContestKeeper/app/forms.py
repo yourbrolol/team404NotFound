@@ -128,3 +128,24 @@ class ScoringCriterionForm(forms.ModelForm):
             "aggregation_type": forms.Select(attrs={"class": "form-input"}),
             "order": forms.NumberInput(attrs={"class": "form-input"}),
         }
+
+class JuryEvaluationForm(forms.Form):
+    def __init__(self, *args, **kwargs):
+        criteria = kwargs.pop('criteria', [])
+        initial_scores = kwargs.pop('initial_scores', {})
+        super().__init__(*args, **kwargs)
+        
+        for criterion in criteria:
+            field_name = f'criterion_{criterion.id}'
+            self.fields[field_name] = forms.DecimalField(
+                label=criterion.name,
+                min_value=0,
+                max_value=criterion.max_score,
+                initial=initial_scores.get(criterion.id),
+                widget=forms.NumberInput(attrs={
+                    'class': 'form-input',
+                    'placeholder': f'0 - {criterion.max_score}',
+                    'step': '0.01'
+                }),
+                help_text=f"Max points: {criterion.max_score} | Weight: {criterion.weight}"
+            )

@@ -33,3 +33,14 @@ class OrganizerRequiredMixin(RedirectToRegisterMixin, ContestContextMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
+class JuryRequiredMixin(RedirectToRegisterMixin, ContestContextMixin):
+    """Allow access only to users who are assigned as Jurys for the contest."""
+    def dispatch(self, request, *args, **kwargs):
+        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        if not self.contest.jurys.filter(pk=request.user.pk).exists():
+            return HttpResponseForbidden("You are not a Jury member for this contest.")
+        return super().dispatch(request, *args, **kwargs)
+
+

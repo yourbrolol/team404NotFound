@@ -44,6 +44,7 @@ from .views_rounds import (
     RoundListView,
 )
 from .views_submission import RoundSubmissionsListView, SubmissionCreateEditView, SubmissionDetailView
+from .views_evaluation import JuryEvaluationView
 from .views_team import (
     AdminPermissionMixin,
     LeaderboardAccessMixin,
@@ -117,6 +118,7 @@ __all__ = [
     "SubmissionCreateEditView",
     "SubmissionDetailView",
     "RoundSubmissionsListView",
+    "JuryEvaluationView",
     "RegisterView",
     "NotificationListView",
     "MarkNotificationReadView",

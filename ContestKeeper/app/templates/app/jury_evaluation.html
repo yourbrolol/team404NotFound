@@ -1,0 +1,196 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Evaluate: {{ team.name }} - {{ contest.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+    .evaluation-grid {
+        display: grid;
+        grid-template-columns: 1fr 450px;
+        gap: 2rem;
+        align-items: start;
+    }
+    @media (max-width: 1024px) {
+        .evaluation-grid { grid-template-columns: 1fr; }
+    }
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 20px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+    .artifact-card {
+        background: white;
+        border-radius: 16px;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        border: 1px solid rgba(0,0,0,0.05);
+    }
+    .criterion-item {
+        margin-bottom: 2rem;
+        padding-bottom: 1.5rem;
+        border-bottom: 1px solid rgba(0,0,0,0.05);
+    }
+    .criterion-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 1rem;
+    }
+    .label-text {
+        font-weight: 800;
+        color: #111827;
+        font-size: 1rem;
+    }
+    .weight-badge {
+        font-size: 0.75rem;
+        font-weight: 700;
+        background: #eef2ff;
+        color: #6366f1;
+        padding: 0.25rem 0.75rem;
+        border-radius: 99px;
+    }
+    .live-total {
+        background: #6366f1;
+        color: white;
+        padding: 1.5rem;
+        border-radius: 16px;
+        text-align: center;
+        margin-top: 2rem;
+    }
+    .score-input-wrapper { display: flex; align-items: center; gap: 1rem; }
+    .score-input-wrapper input { flex: 1; }
+    .max-score-hint { color: #6b7280; font-weight: 600; font-size: 0.9rem; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <!-- Header -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+        <div>
+            <nav class="mb-2">
+                <a href="{% url 'round_submissions' contest.pk submission.round.id %}" class="text-secondary" style="text-decoration: none; font-weight: 600;">← Back to Submissions</a>
+            </nav>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0;">Evaluating {{ team.name }}</h1>
+            <p style="color: #4b5563; margin-top: 0.5rem;">Jury Assessment for {{ contest.name }}</p>
+        </div>
+        <div class="text-end">
+            <span style="font-size: 0.85rem; font-weight: 700; color: #6b7280; text-transform: uppercase;">Juror</span>
+            <div style="font-weight: 700; color: #111827;">{{ user.get_full_name|default:user.username }}</div>
+        </div>
+    </div>
+
+    <div class="evaluation-grid">
+        <!-- Artifacts Panel -->
+        <div class="main-panel">
+            <div class="glass-card">
+                <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+                    <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
+                    Submission Artifacts
+                </h2>
+
+                {% if submission %}
+                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+                        <a href="{{ submission.github_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
+                            <div style="color: #111827; font-weight: 700; margin-bottom: 0.25rem;">GitHub Repo ↗</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">View source code</div>
+                        </a>
+                        <a href="{{ submission.video_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
+                            <div style="color: #ef4444; font-weight: 700; margin-bottom: 0.25rem;">Demo Video ↗</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Watch presentation</div>
+                        </a>
+                        {% if submission.live_demo_url %}
+                        <a href="{{ submission.live_demo_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
+                            <div style="color: #10b981; font-weight: 700; margin-bottom: 0.25rem;">Live Demo ↗</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">Open application</div>
+                        </a>
+                        {% endif %}
+                    </div>
+
+                    <div class="artifact-card">
+                        <h3 style="font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: #6b7280; margin-bottom: 1rem;">Implementation Details</h3>
+                        <div style="white-space: pre-wrap; color: #374151; line-height: 1.6;">{{ submission.description }}</div>
+                    </div>
+                {% else %}
+                    <div class="alert alert-warning">No submission found for this team yet.</div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Scoring Panel -->
+        <div class="sidebar">
+            <div class="glass-card">
+                <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem;">Scoring Card</h2>
+                
+                <form method="post" id="evaluationForm">
+                    {% csrf_token %}
+                    {% if request.GET.round_id %}
+                        <input type="hidden" name="round_id" value="{{ request.GET.round_id }}">
+                    {% endif %}
+                    
+                    {% for field in form %}
+                        <div class="criterion-item" data-weight="{{ field.help_text|cut:'Max points: ' | slice:':-1' }}">
+                            <div class="criterion-header">
+                                <label class="label-text">{{ field.label }}</label>
+                                <span class="weight-badge">{{ field.help_text }}</span>
+                            </div>
+                            <div class="score-input-wrapper">
+                                {{ field }}
+                                <span class="max-score-hint">pts</span>
+                            </div>
+                            {% if field.errors %}
+                                <div style="color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem;">{{ field.errors.0 }}</div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+
+                    {% if not is_readonly %}
+                        <button type="submit" class="btn btn-primary w-100 py-3" style="font-weight: 800; border-radius: 12px; font-size: 1rem;">
+                            Save Evaluation
+                        </button>
+                    {% else %}
+                        <div class="alert alert-info py-3 text-center">
+                            Evaluation phase is closed.
+                        </div>
+                    {% endif %}
+                </form>
+
+                <div class="live-total">
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; opacity: 0.8; margin-bottom: 0.25rem;">Final Weighted Score</div>
+                    <div style="font-size: 2.25rem; font-weight: 900;" id="totalPreview">--</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const form = document.getElementById('evaluationForm');
+    const totalPreview = document.getElementById('totalPreview');
+    const inputs = form.querySelectorAll('input[type="number"]');
+
+    function calculateTotal() {
+        let total = 0;
+        inputs.forEach(input => {
+            const val = parseFloat(input.value) || 0;
+            // Note: In a real app we'd need to fetch actual weights from JS context, 
+            // for now we just sum them for the preview or show it's "calculating"
+            total += val;
+        });
+        totalPreview.innerText = total.toFixed(2);
+    }
+
+    inputs.forEach(input => input.addEventListener('input', calculateTotal));
+    calculateTotal();
+</script>
+{% endblock %}
