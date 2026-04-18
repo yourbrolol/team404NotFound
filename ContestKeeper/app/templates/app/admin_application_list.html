@@ -1,0 +1,240 @@
+{% extends 'app/base.html' %}
+{% load static %}
+
+{% block title %}Manage Applications - {{ contest.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    :root {
+        --glass-bg: rgba(255, 255, 255, 0.7);
+        --glass-border: rgba(255, 255, 255, 0.3);
+        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+    }
+
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+
+    .glass-card {
+        background: var(--glass-bg);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid var(--glass-border);
+        border-radius: 20px;
+        box-shadow: var(--glass-shadow);
+        padding: 2rem;
+        margin-bottom: 2rem;
+    }
+
+    .tabs-nav {
+        display: flex;
+        gap: 1rem;
+        margin-bottom: 2rem;
+        border-bottom: 1px solid rgba(0,0,0,0.1);
+        padding-bottom: 1rem;
+    }
+
+    .tab-link {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        text-decoration: none;
+        color: #4b5563;
+        font-weight: 600;
+        transition: all 0.2s;
+    }
+
+    .tab-link.active {
+        background: #6366f1;
+        color: white;
+    }
+
+    .app-card {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background: white;
+        padding: 1.25rem;
+        border-radius: 16px;
+        margin-bottom: 1rem;
+        border: 1px solid #e5e7eb;
+        transition: transform 0.2s;
+    }
+
+    .app-card:hover { transform: translateY(-2px); }
+
+    .user-info {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .user-avatar {
+        width: 40px;
+        height: 40px;
+        background: #e0e7ff;
+        color: #4f46e5;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-weight: 800;
+        font-size: 1.1rem;
+    }
+
+    .user-details h3 {
+        margin: 0;
+        font-size: 1.1rem;
+        color: #1f2937;
+    }
+
+    .user-details p {
+        margin: 0;
+        font-size: 0.875rem;
+        color: #6b7280;
+    }
+
+    .actions-group {
+        display: flex;
+        gap: 0.75rem;
+    }
+
+    .btn-action {
+        padding: 0.5rem 1rem;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 0.875rem;
+        cursor: pointer;
+        border: none;
+        transition: all 0.2s;
+    }
+
+    .btn-approve { background: #dcfce7; color: #166534; }
+    .btn-approve:hover { background: #bbf7d0; }
+    .btn-reject { background: #fee2e2; color: #991b1b; }
+    .btn-reject:hover { background: #fecaca; }
+
+    .empty-state {
+        text-align: center;
+        padding: 4rem 1rem;
+        color: #6b7280;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="glass-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <div>
+                <h1 class="h2 font-weight-bold mb-0">Review Applications</h1>
+                <p class="text-muted small">Manage who joins your contest</p>
+            </div>
+            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="width: auto;">← Back to Contest</a>
+        </div>
+
+        <div class="tabs-nav" id="appTabs">
+            <a href="#teams" class="tab-link active" onclick="showTab('teams')">Teams ({{ team_apps.count }})</a>
+            <a href="#participants" class="tab-link" onclick="showTab('participants')">Individuals ({{ participant_apps.count }})</a>
+            <a href="#jurors" class="tab-link" onclick="showTab('jurors')">Jurors ({{ jury_apps.count }})</a>
+        </div>
+
+        <!-- Teams Section -->
+        <div id="section-teams" class="tab-section">
+            {% for app in team_apps %}
+                <div class="app-card">
+                    <div class="user-info">
+                        <div class="user-avatar">{{ app.team.name|slice:":1" }}</div>
+                        <div class="user-details">
+                            <h3>{{ app.team.name }}</h3>
+                            <p>Captain: {{ app.user.username }} • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
+                        </div>
+                    </div>
+                    <div class="actions-group">
+                        <form action="{% url 'approve_application' app.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-approve">Approve Team</button>
+                        </form>
+                        <form action="{% url 'reject_application' app.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-reject">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">No pending team applications.</div>
+            {% endfor %}
+        </div>
+
+        <!-- Participants Section -->
+        <div id="section-participants" class="tab-section" style="display:none;">
+            {% for app in participant_apps %}
+                <div class="app-card">
+                    <div class="user-info">
+                        <div class="user-avatar">{{ app.user.username|slice:":1" }}</div>
+                        <div class="user-details">
+                            <h3>{{ app.user.username }}</h3>
+                            <p>Individual Participant • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
+                        </div>
+                    </div>
+                    <div class="actions-group">
+                        <form action="{% url 'approve_application' app.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-approve">Approve</button>
+                        </form>
+                        <form action="{% url 'reject_application' app.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-reject">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">No pending individual applications.</div>
+            {% endfor %}
+        </div>
+
+        <!-- Jurors Section -->
+        <div id="section-jurors" class="tab-section" style="display:none;">
+            {% for app in jury_apps %}
+                <div class="app-card">
+                    <div class="user-info">
+                        <div class="user-avatar">{{ app.user.username|slice:":1" }}</div>
+                        <div class="user-details">
+                            <h3>{{ app.user.username }}</h3>
+                            <p>Jury Member • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
+                        </div>
+                    </div>
+                    <div class="actions-group">
+                        <form action="{% url 'approve_application' app.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-approve">Approve Jury</button>
+                        </form>
+                        <form action="{% url 'reject_application' app.pk %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-action btn-reject">Reject</button>
+                        </form>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">No pending jury applications.</div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+
+<script>
+    function showTab(tabId) {
+        // Toggle tabs
+        document.querySelectorAll('.tab-link').forEach(link => {
+            link.classList.remove('active');
+            if(link.getAttribute('onclick').includes(tabId)) link.classList.add('active');
+        });
+
+        // Toggle sections
+        document.querySelectorAll('.tab-section').forEach(section => {
+            section.style.display = 'none';
+        });
+        document.getElementById('section-' + tabId).style.display = 'block';
+    }
+</script>
+{% endblock %}

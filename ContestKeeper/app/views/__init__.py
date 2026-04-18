@@ -6,7 +6,7 @@ from .views_base import (
 
 from .views_general import HomeView, ProfileView, DashboardView, SettingsView
 from .views_contest import ContestDeleteView, ContestDetailView, ContestFormView, ContestListView
-from .views_application import ApplicationActionView, ApplyToContestView
+from .views_application import AdminApplicationListView, ApplicationActionView, ApplyToContestView
 from .views_announcement import AnnouncementCreateView, AnnouncementDeleteView, AnnouncementListView
 from .views_analytics import (
     OrganizerAnalyticsView,
@@ -72,6 +72,7 @@ __all__ = [
     "ContestDeleteView",
     "ApplicationActionView",
     "ApplyToContestView",
+    "AdminApplicationListView",
     "AnnouncementListView",
     "AnnouncementCreateView",
     "AnnouncementDeleteView",

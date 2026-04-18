@@ -48,6 +48,15 @@
             <h4 style="margin: 0;">Schedule</h4>
         </a>
         {% if user == contest.organizer %}
+        <a href="{% url 'admin_application_list' contest.pk %}" class="glass-panel" style="min-height: auto; padding: 1.5rem; text-decoration: none; text-align: center;">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem; color: #6366f1;">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                <circle cx="9" cy="7" r="4"></circle>
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
+                <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
+            </svg>
+            <h4 style="margin: 0;">Review Apps</h4>
+        </a>
         <a href="{% url 'organizer_analytics' contest.pk %}" class="glass-panel" style="min-height: auto; padding: 1.5rem; text-decoration: none; text-align: center;">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem; color: #10b981;">
                 <line x1="18" y1="20" x2="18" y2="10"></line>
@@ -67,16 +76,27 @@
         <p style="margin-bottom: 0;">- Your team is <strong>{{ user_team.name }}</strong>.</p>
         {% else %}
         <div style="display: flex; flex-direction: column; gap: 1rem;">
-            <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
-                {% csrf_token %}
-                <button type="submit" class="btn btn-secondary" style="width: 100%;">Register as Individual</button>
-            </form>
-            <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.9rem;">
-                <div style="flex: 1; height: 1px; background: var(--border);"></div>
-                OR
-                <div style="flex: 1; height: 1px; background: var(--border);"></div>
-            </div>
-            <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none;">Create a Team</a>
+            {% if contest.is_registration_open %}
+                <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary" style="width: 100%;">Register as Individual</button>
+                </form>
+                <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                    OR
+                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                </div>
+                <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none;">Create a Team</a>
+            {% else %}
+                <div style="text-align: center; padding: 1rem;">
+                    <h4 style="margin-top: 0; color: #ef4444;">Registration Closed</h4>
+                    {% if contest.registration_start and contest.registration_start > now %}
+                        <p class="small text-muted">Opens on {{ contest.registration_start|date:"M d, Y H:i" }}</p>
+                    {% else %}
+                        <p class="small text-muted">The registration period has ended.</p>
+                    {% endif %}
+                </div>
+            {% endif %}
         </div>
         {% endif %}
     </div>

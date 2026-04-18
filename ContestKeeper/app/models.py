@@ -92,6 +92,18 @@ class Contest(models.Model):
     def __str__(self):
         return self.name
 
+    @property
+    def is_registration_open(self):
+        from django.utils import timezone
+        now = timezone.now()
+        if self.is_draft:
+            return False
+        if self.registration_start and now < self.registration_start:
+            return False
+        if self.registration_end and now >= self.registration_end:
+            return False
+        return True
+
 class Application(models.Model):
     class Type(models.TextChoices):
         JURY = "JURY", _("Jury")

@@ -133,9 +133,24 @@ class TeamCreateView(RedirectToRegisterMixin, CreateView):
     form_class = TeamForm
     template_name = "app/team_create_form.html"
 
+    def dispatch(self, request, *args, **kwargs):
+        return super().dispatch(request, *args, **kwargs)
+
     def form_valid(self, form):
         contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
         
+        # Check registration dates
+        from django.utils import timezone
+        now = timezone.now()
+        if contest.registration_start and now < contest.registration_start:
+            from django.contrib import messages
+            messages.error(self.request, "Registration for this contest has not started yet.")
+            return redirect("contest_detail", pk=contest.pk)
+        if contest.registration_end and now >= contest.registration_end:
+            from django.contrib import messages
+            messages.error(self.request, "Registration for this contest has closed.")
+            return redirect("contest_detail", pk=contest.pk)
+
         # Check if user already in a team for this contest
         if contest.teams.filter(participants=self.request.user).exists():
             from django.contrib import messages

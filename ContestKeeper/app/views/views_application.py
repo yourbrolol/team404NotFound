@@ -3,10 +3,11 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
+from django.views.generic import ListView
 
 from ..models import Application, Contest, Notification
 from ..services import notify_user
-from .views_base import RedirectToRegisterMixin
+from .views_base import RedirectToRegisterMixin, OrganizerRequiredMixin
 
 
 class ApplicationActionView(RedirectToRegisterMixin, View):
@@ -55,8 +56,32 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
 
             if is_captain and not is_organizer:
                 return redirect("team_detail", pk=application.contest.pk, ck=application.team.pk)
+            
+            # If organizer approved from the applications list, return there
+            if is_organizer:
+                return redirect("admin_application_list", pk=application.contest.pk)
 
         return redirect("contest_detail", pk=application.contest.pk)
+
+
+class AdminApplicationListView(OrganizerRequiredMixin, ListView):
+    model = Application
+    template_name = "app/admin_application_list.html"
+    context_object_name = "applications"
+
+    def get_queryset(self):
+        return Application.objects.filter(
+            contest=self.contest,
+            status=Application.Status.PENDING
+        ).order_by("-created_at")
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        qs = self.get_queryset()
+        context["team_apps"] = qs.filter(application_type=Application.Type.TEAM)
+        context["jury_apps"] = qs.filter(application_type=Application.Type.JURY)
+        context["participant_apps"] = qs.filter(application_type=Application.Type.PARTICIPANT)
+        return context
 
 
 class ApplyToContestView(RedirectToRegisterMixin, View):
