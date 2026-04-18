@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-from .models import Contest, User, Announcement, ScheduleEvent, Submission
+from .models import Contest, User, Announcement, ScheduleEvent, Submission, Team
 
 class UserRegistrationForm(UserCreationForm):
     class Meta:
@@ -102,4 +102,17 @@ class SubmissionForm(forms.ModelForm):
             "video_url": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://youtube.com/..."}),
             "live_demo_url": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://... (optional)"}),
             "description": forms.Textarea(attrs={"class": "form-input", "rows": 4, "placeholder": "What was done, how to run..."}),
+        }
+
+class TeamForm(forms.ModelForm):
+    class Meta:
+        model = Team
+        fields = ["name", "description", "organization", "telegram_link", "discord_link", "website_link"]
+        widgets = {
+            "name": forms.TextInput(attrs={"class": "form-input", "placeholder": "Team name"}),
+            "description": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": "What is your team about?"}),
+            "organization": forms.TextInput(attrs={"class": "form-input", "placeholder": "University, Company, etc."}),
+            "telegram_link": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://t.me/yourteam"}),
+            "discord_link": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://discord.gg/yourteam"}),
+            "website_link": forms.URLInput(attrs={"class": "form-input", "placeholder": "https://yourteam.com"}),
         }

@@ -18,6 +18,7 @@ urlpatterns = [
     path("<int:pk>/teams/export/",               views.ExportTeamsCSVView.as_view(), name="export_teams_csv"),
     path("<int:pk>/leaderboard/team/<int:team_pk>/", views.TeamDetailLeaderboardView.as_view(), name="team_leaderboard_detail"),
     path("<int:pk>/teams/<int:ck>/",            views.TeamDetailView.as_view(),    name="team_detail"),
+    path("<int:pk>/teams/<int:ck>/edit/",       views.TeamUpdateView.as_view(),    name="team_edit"),
     path("<int:pk>/teams/<int:ck>/kick/<int:user_id>/",     views.TeamKickView.as_view(),      name="team_kick"),
     
     # Announcements

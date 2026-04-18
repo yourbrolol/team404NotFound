@@ -31,10 +31,43 @@
             </div>
             {% endif %}
 
+            {% if team.organization %}
+            <div class="team-detail-info">
+                <span class="info-label">Organization</span>
+                <span class="info-value">{{ team.organization }}</span>
+            </div>
+            {% endif %}
+
+            {% if team.telegram_link or team.discord_link or team.website_link %}
+            <div class="team-detail-info">
+                <span class="info-label">Links</span>
+                <span class="info-value" style="display: flex; gap: 15px;">
+                    {% if team.telegram_link %}
+                    <a href="{{ team.telegram_link }}" target="_blank" title="Telegram" style="color: #0088cc;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.64 6.8c-.15 1.58-.8 5.42-1.13 7.19-.14.75-.42 1-.68 1.03-.58.05-1.02-.38-1.58-.75-.88-.58-1.38-.94-2.23-1.5-.99-.65-.35-1.01.22-1.59.15-.15 2.71-2.48 2.76-2.69a.2.2 0 0 0-.05-.18c-.06-.05-.14-.03-.21-.02-.09.02-1.49.95-4.22 2.79-.4.27-.76.41-1.08.4-.36-.01-1.04-.2-1.55-.37-.63-.2-1.12-.31-1.08-.66.02-.18.27-.36.74-.55 2.92-1.27 4.86-2.11 5.83-2.51 2.78-1.16 3.35-1.36 3.73-1.36.08 0 .27.02.39.12.1.08.13.19.14.27-.01.06.01.24 0 .38z"/></svg>
+                    </a>
+                    {% endif %}
+                    {% if team.discord_link %}
+                    <a href="{{ team.discord_link }}" target="_blank" title="Discord" style="color: #5865F2;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M19.27 4.73C17.78 4.05 16.18 3.55 14.5 3.27c-.07.12-.15.28-.2.43-1.8-.27-3.58-.27-5.35 0-.05-.15-.13-.31-.2-.43-1.68.28-3.28.78-4.77 1.46C1.01 9.07-.01 13.25.33 17.38c2.01 1.48 3.95 2.38 5.8 2.96.47-.64.88-1.33 1.22-2.07-.69-.26-1.35-.6-1.97-1.01.16-.12.33-.24.49-.37 3.6 1.66 7.51 1.66 11.11 0 .16.13.33.25.49.37-.62.41-1.28.75-1.97 1.01.34.74.75 1.43 1.22 2.07 1.85-.58 3.79-1.48 5.8-2.96.41-4.79-.71-8.91-3.05-12.65zM8.52 14.91c-1.1 0-2-1.01-2-2.26s.88-2.26 2-2.26c1.12 0 2.02 1.01 2 2.26 0 1.25-.88 2.26-2 2.26zm6.96 0c-1.1 0-2-1.01-2-2.26s.88-2.26 2-2.26c1.12 0 2.02 1.01 2 2.26 0 1.25-.88 2.26-2 2.26z"/></svg>
+                    </a>
+                    {% endif %}
+                    {% if team.website_link %}
+                    <a href="{{ team.website_link }}" target="_blank" title="Website" style="color: #ffffff;">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+                    </a>
+                    {% endif %}
+                </span>
+            </div>
+            {% endif %}
+
             <div class="team-page-toolbar">
                 <input type="search" id="memberSearchInput" class="form-input" placeholder="Search members or applications"
                     aria-label="Search members">
                 <div class="team-page-toolbar__actions">
+                    {% if request.user == team.captain %}
+                    <a href="{% url 'team_edit' pk=contest.pk ck=team.pk %}" class="btn btn-primary" style="background: #3498db; color: white;">Edit Team</a>
+                    {% endif %}
                     <button type="button" class="btn btn-secondary" id="copyTeamNameBtn">Copy Team Name</button>
                     <button type="button" class="btn btn-secondary" id="expandAllSectionsBtn">Expand All</button>
                 </div>

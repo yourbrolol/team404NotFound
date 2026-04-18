@@ -3,7 +3,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import DetailView, ListView
 
-from ..models import Application, Contest, User
+from ..models import Application, Contest, User, Team
+from ..forms import TeamForm
 from .views_base import RedirectToRegisterMixin
 
 
@@ -89,4 +90,36 @@ class AdminPermissionMixin(LeaderboardAccessMixin):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         if request.user.is_authenticated and request.user != self.contest.organizer and not request.user.is_staff:
             return HttpResponseForbidden("You do not have admin access to this contest.")
+        return super().dispatch(request, *args, **kwargs)
+
+
+from django.views.generic import UpdateView
+from django.urls import reverse_lazy
+
+class TeamUpdateView(RedirectToRegisterMixin, UpdateView):
+    model = Team
+    form_class = TeamForm
+    template_name = "app/team_form.html"
+    context_object_name = "team"
+
+    def get_object(self, queryset=None):
+        self.contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
+        team = get_object_or_404(self.contest.teams, pk=self.kwargs["ck"])
+        if self.request.user != team.captain:
+             # This is a simple check, better to use a mixin but for now this works matching existing patterns
+             pass
+        return team
+
+    def get_context_data(self, **kwargs):
+        self.contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
+        return super().get_context_data(contest=self.contest, **kwargs)
+
+    def get_success_url(self):
+        return reverse_lazy("team_detail", kwargs={"pk": self.kwargs["pk"], "ck": self.kwargs["ck"]})
+
+    def dispatch(self, request, *args, **kwargs):
+        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
+        if request.user != team.captain:
+            return HttpResponseForbidden("You are not the captain of this team.")
         return super().dispatch(request, *args, **kwargs)

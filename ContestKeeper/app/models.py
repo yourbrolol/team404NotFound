@@ -40,6 +40,11 @@ class Team(models.Model):
     captain = models.ForeignKey(User, on_delete=models.CASCADE, related_name="captained_teams", null=True, blank=True)
     blacklisted_members = models.ManyToManyField(User, related_name="blacklisted_from_teams", blank=True)
     
+    organization = models.CharField(max_length=100, blank=True)
+    telegram_link = models.URLField(blank=True)
+    discord_link = models.URLField(blank=True)
+    website_link = models.URLField(blank=True)
+    
     def __str__(self):
         return f"Team {self.name}."
 

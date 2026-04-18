@@ -30,8 +30,14 @@ class UserAdmin(BaseUserAdmin):
 
 @admin.register(Team)
 class TeamAdmin(admin.ModelAdmin):
-    list_display = ["name"]
-    search_fields = ["name"]
+    list_display = ["name", "organization", "captain"]
+    search_fields = ["name", "organization"]
+    fieldsets = (
+        (None, {"fields": ("name", "description", "organization")}),
+        ("Social Links", {"fields": ("telegram_link", "discord_link", "website_link")}),
+        ("Members", {"fields": ("captain", "participants", "blacklisted_members")}),
+    )
+    filter_horizontal = ["participants", "blacklisted_members"]
 
 @admin.register(Contest)
 class ContestAdmin(admin.ModelAdmin):
