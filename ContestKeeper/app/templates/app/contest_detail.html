@@ -26,8 +26,27 @@
     </div>
 
     <h4 style="margin-top: 2rem;">About the contest</h4>
-    <div class="description-box" style="margin-bottom: 2rem;">
-        {{ contest.description }}
+    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 2rem;">
+        <div class="description-box" style="margin: 0;">
+            {{ contest.description }}
+        </div>
+        
+        <div>
+            {% if next_event %}
+            <div class="glass-panel" style="padding: 1.5rem; border: 1px solid rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.05);">
+                <div style="font-size: 0.7rem; font-weight: 800; color: #6366f1; text-transform: uppercase; margin-bottom: 0.5rem;">Next Up</div>
+                <h4 style="margin: 0 0 0.5rem 0; font-weight: 800;">{{ next_event.title }}</h4>
+                <div style="font-family: monospace; font-size: 0.85rem; color: #475569;">{{ next_event.start_time|date:"M d • H:i" }}</div>
+                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: #6366f1; text-decoration: none;">Full Schedule →</a>
+            </div>
+            {% else %}
+            <div class="glass-panel" style="padding: 1.5rem; border: 1px solid var(--border); opacity: 0.6;">
+                <div style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem;">Timeline</div>
+                <p style="margin: 0; font-size: 0.9rem;">No upcoming events.</p>
+                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-decoration: none;">View Schedule →</a>
+            </div>
+            {% endif %}
+        </div>
     </div>
 
     <div class="quick-links" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">

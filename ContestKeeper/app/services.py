@@ -58,6 +58,7 @@ def generate_schedule_from_rounds(contest):
         events.append(ScheduleEvent(
             contest=contest,
             title=f"Start: {rnd.title}",
+            description=rnd.description,
             start_time=rnd.start_time,
             end_time=rnd.start_time,
             event_type=ScheduleEvent.EventType.ROUND,
@@ -68,6 +69,7 @@ def generate_schedule_from_rounds(contest):
         events.append(ScheduleEvent(
             contest=contest,
             title=f"Deadline: {rnd.title}",
+            description=f"Submission deadline for {rnd.title}.",
             start_time=rnd.deadline,
             end_time=rnd.deadline,
             event_type=ScheduleEvent.EventType.DEADLINE,

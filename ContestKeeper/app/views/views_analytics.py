@@ -97,7 +97,7 @@ class ScheduleView(ContestContextMixin, ListView):
     context_object_name = "events"
 
     def get_queryset(self):
-        return ScheduleEvent.objects.filter(contest=self.contest)
+        return ScheduleEvent.objects.filter(contest=self.contest).order_by("start_time", "order")
 
 
 class ScheduleEventCreateView(OrganizerRequiredMixin, CreateView):

@@ -51,23 +51,26 @@ class ContestDetailView(DetailView):
             status=Application.Status.PENDING,
         )
 
-        return super().get_context_data(
-            user_team=user_team,
-            team_applications=t_applications,
-            jury_applications=j_applications,
-            participant_applications=p_applications,
-            has_pending_p_app=contest.contest_apps.filter(
+        context = super().get_context_data(**kwargs)
+        from django.utils import timezone
+        context.update({
+            "user_team": user_team,
+            "team_applications": t_applications,
+            "jury_applications": j_applications,
+            "participant_applications": p_applications,
+            "next_event": contest.schedule_events.filter(start_time__gte=timezone.now()).order_by("start_time", "order").first(),
+            "has_pending_p_app": contest.contest_apps.filter(
                 user=user,
                 application_type=Application.Type.TEAM,
                 status=Application.Status.PENDING,
             ).exists() if is_authenticated else False,
-            has_pending_j_app=contest.contest_apps.filter(
+            "has_pending_j_app": contest.contest_apps.filter(
                 user=user,
                 application_type=Application.Type.JURY,
                 status=Application.Status.PENDING,
             ).exists() if is_authenticated else False,
-            **kwargs,
-        )
+        })
+        return context
 
 
 class ContestFormView(RedirectToRegisterMixin, View):
