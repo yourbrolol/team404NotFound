@@ -66,10 +66,18 @@
         <h4 style="margin-top: 0; color: #10b981;">You registered already!</h4>
         <p style="margin-bottom: 0;">- Your team is <strong>{{ user_team.name }}</strong>.</p>
         {% else %}
-        <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
-            {% csrf_token %}
-            <button type="submit" class="btn btn-primary" style="width: 100%;">Register for Contest</button>
-        </form>
+        <div style="display: flex; flex-direction: column; gap: 1rem;">
+            <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-secondary" style="width: 100%;">Register as Individual</button>
+            </form>
+            <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+                <div style="flex: 1; height: 1px; background: var(--border);"></div>
+                OR
+                <div style="flex: 1; height: 1px; background: var(--border);"></div>
+            </div>
+            <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none;">Create a Team</a>
+        </div>
         {% endif %}
     </div>
     {% endif %}

@@ -1,0 +1,55 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Team – {{ contest.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/team.css' %}">
+    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
+</head>
+
+<body>
+    {% include "app/nav.html" %}
+
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 class="animate-fade-in">Create Team for "{{ contest.name }}"</h1>
+        </header>
+
+        <div class="glass-panel animate-fade-in delay-1">
+            <form method="POST" class="settings-form">
+                {% csrf_token %}
+                
+                <div class="form-section">
+                    <h2 class="section-heading">Team Details</h2>
+                    {% for field in form %}
+                        <div class="settings-field">
+                            <label for="{{ field.id_for_label }}" class="info-label">{{ field.label }}</label>
+                            {{ field }}
+                            {% if field.help_text %}
+                                <span class="help-text" style="display: block; font-size: 0.85rem; color: #a1a1aa; margin-top: 4px;">{{ field.help_text }}</span>
+                            {% endif %}
+                            {% if field.errors %}
+                            <div class="field-errors">
+                                {% for error in field.errors %}
+                                <span class="error-text" style="color: #ef4444; font-size: 0.85rem;">{{ error }}</span>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                </div>
+
+                <div class="actions-footer" style="margin-top: 2rem; justify-content: flex-end; gap: 1rem;">
+                    <a href="{% url 'contest_detail' pk=contest.pk %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">Create & Apply</button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,7 +1,7 @@
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.views import View
-from django.views.generic import DetailView, ListView
+from django.views.generic import DetailView, ListView, CreateView
 
 from ..models import Application, Contest, User, Team
 from ..forms import TeamForm
@@ -17,7 +17,10 @@ class ViewTeamsView(RedirectToRegisterMixin, ListView):
         return self.contest.teams.all()
 
     def get_context_data(self, **kwargs):
-        return super().get_context_data(contest=self.contest, **kwargs)
+        user_team = None
+        if self.request.user.is_authenticated:
+            user_team = self.contest.teams.filter(participants=self.request.user).first()
+        return super().get_context_data(contest=self.contest, user_team=user_team, **kwargs)
 
 
 class ViewJurysView(RedirectToRegisterMixin, ListView):
@@ -123,3 +126,69 @@ class TeamUpdateView(RedirectToRegisterMixin, UpdateView):
         if request.user != team.captain:
             return HttpResponseForbidden("You are not the captain of this team.")
         return super().dispatch(request, *args, **kwargs)
+
+
+class TeamCreateView(RedirectToRegisterMixin, CreateView):
+    model = Team
+    form_class = TeamForm
+    template_name = "app/team_create_form.html"
+
+    def form_valid(self, form):
+        contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
+        
+        # Check if user already in a team for this contest
+        if contest.teams.filter(participants=self.request.user).exists():
+            from django.contrib import messages
+            messages.error(self.request, "You are already a member of a team in this contest.")
+            return redirect("contest_detail", pk=contest.pk)
+
+        team = form.save()
+        team.captain = self.request.user
+        team.participants.add(self.request.user)
+        team.save()
+        
+        # Create application for the contest
+        Application.objects.get_or_create(
+            user=self.request.user,
+            contest=contest,
+            team=team,
+            application_type=Application.Type.TEAM,
+            defaults={'status': Application.Status.PENDING}
+        )
+        
+        from django.contrib import messages
+        messages.success(self.request, f"Team '{team.name}' created! Approval from organizer is pending.")
+        return redirect("contest_detail", pk=contest.pk)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["contest"] = get_object_or_404(Contest, pk=self.kwargs["pk"])
+        return context
+
+
+class TeamJoinView(RedirectToRegisterMixin, View):
+    def post(self, request, pk, ck):
+        contest = get_object_or_404(Contest, pk=pk)
+        team = get_object_or_404(Team, pk=ck)
+        
+        # Prevent double application or joining if already in a team
+        if contest.teams.filter(participants=request.user).exists():
+            from django.contrib import messages
+            messages.error(request, "You are already in a team for this contest.")
+            return redirect("contest_teams", pk=pk)
+
+        if Application.objects.filter(user=request.user, contest=contest, team=team, status=Application.Status.PENDING).exists():
+             from django.contrib import messages
+             messages.info(request, "You have already applied to this team.")
+             return redirect("contest_teams", pk=pk)
+        
+        Application.objects.create(
+            user=request.user,
+            contest=contest,
+            team=team,
+            application_type=Application.Type.PARTICIPANT,
+            status=Application.Status.PENDING
+        )
+        from django.contrib import messages
+        messages.success(request, f"Application to join '{team.name}' submitted!")
+        return redirect("contest_teams", pk=pk)
