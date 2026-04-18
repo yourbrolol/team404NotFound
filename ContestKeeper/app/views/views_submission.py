@@ -1,3 +1,4 @@
+from django.contrib import messages
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -17,11 +18,14 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
         round_obj = get_object_or_404(Round, pk=round_id, contest=contest)
         team = contest.teams.filter(participants=request.user).first()
         if not team:
-            raise Http404("You are not part of any team in this contest.")
+            return contest, round_obj, None
         return contest, round_obj, team
 
     def get(self, request, pk, round_id):
         contest, round_obj, team = self.get_round_and_team(request, pk, round_id)
+        if not team:
+            raise Http404("You are not part of any team in this contest.")
+            
         if not round_obj.is_open():
             return HttpResponseForbidden("This round is not currently open for submissions.")
         submission = Submission.objects.filter(round=round_obj, team=team).first()
@@ -36,8 +40,12 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
 
     def post(self, request, pk, round_id):
         contest, round_obj, team = self.get_round_and_team(request, pk, round_id)
+        if not team:
+            raise Http404("You are not part of any team in this contest.")
+            
         if not round_obj.is_open():
             return HttpResponseForbidden("This round is not currently open for submissions.")
+            
         submission = Submission.objects.filter(round=round_obj, team=team).first()
         form = SubmissionForm(request.POST, instance=submission)
         if form.is_valid():
@@ -45,7 +53,8 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
             obj.round = round_obj
             obj.team = team
             obj.save()
-            return redirect("round_detail_team", pk=contest.pk, round_id=round_obj.pk)
+            messages.success(request, "Your submission has been saved successfully.")
+            return redirect("round_detail", pk=contest.pk, round_pk=round_obj.pk)
         return render(request, self.template_name, {
             "contest": contest,
             "round": round_obj,
