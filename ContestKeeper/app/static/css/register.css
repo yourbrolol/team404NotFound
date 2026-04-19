@@ -47,8 +47,8 @@ body.auth-body {
 
 /* Auth Card */
 .auth-card {
-  width: min(1000px, 95%);
-  min-height: 600px;
+  width: 75vw;
+  min-height: 65vh;
   background: var(--auth-glass);
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
@@ -63,8 +63,8 @@ body.auth-body {
 
 /* Mobile-first base styles for login */
 body.auth-login .auth-card {
-  width: 90vw;
-  min-height: 60vh;
+  width: 75vw;
+  min-height: 65vh;
 }
 
 @keyframes card-appear {
@@ -83,7 +83,7 @@ body.auth-login .auth-card {
 }
 
 .auth-logo {
-  font-size: 2rem;
+  font-size: 2.5rem;
   font-weight: 800;
   background: var(--auth-accent);
   -webkit-background-clip: text;
@@ -94,7 +94,7 @@ body.auth-login .auth-card {
 }
 
 .auth-info h2 {
-  font-size: 2.5rem;
+  font-size: 3rem;
   line-height: 1.1;
   margin-bottom: 1.5rem;
   font-weight: 700;
@@ -102,7 +102,7 @@ body.auth-login .auth-card {
 
 .auth-info p {
   color: var(--text-muted);
-  font-size: 1.1rem;
+  font-size: 1.2rem;
   line-height: 1.6;
 }
 
@@ -115,7 +115,7 @@ body.auth-login .auth-card {
 }
 
 .auth-form-container h1 {
-  font-size: 1.75rem;
+  font-size: 2.2rem;
   margin-bottom: 2.5rem;
 }
 
@@ -126,7 +126,7 @@ body.auth-login .auth-card {
 
 .form-label {
   display: block;
-  font-size: 0.85rem;
+  font-size: 0.95rem;
   font-weight: 600;
   color: var(--text-muted);
   margin-bottom: 0.5rem;
@@ -139,10 +139,10 @@ body.auth-login .auth-card {
   background: rgba(15, 23, 42, 0.4);
   border: 1px solid var(--auth-glass-border);
   border-radius: 1rem;
-  padding: 1rem 1.25rem;
+  padding: 1.1rem 1.4rem;
   color: white;
   font-family: inherit;
-  font-size: 1rem;
+  font-size: 1.15rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
@@ -163,14 +163,14 @@ body.auth-login .auth-card {
 
 .btn-auth {
   width: 100%;
-  padding: 1rem;
+  padding: 1.1rem;
   margin-top: 1rem;
   border-radius: 1rem;
   border: none;
   background: var(--auth-accent);
   color: white;
   font-weight: 700;
-  font-size: 1rem;
+  font-size: 1.15rem;
   cursor: pointer;
   transition: all 0.3s ease;
   box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
@@ -188,7 +188,7 @@ body.auth-login .auth-card {
 .auth-footer {
   margin-top: 2rem;
   text-align: center;
-  font-size: 0.95rem;
+  font-size: 1.05rem;
   color: var(--text-muted);
 }
 
@@ -220,248 +220,17 @@ body.auth-login .auth-card {
   font-weight: 500;
 }
 
-/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-   Proportional desktop scaling
-   Makes login/register fill screen space better on 4K/8K and zoom-out.
-   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
-@media (min-width: 1200px) {
-  .auth-card {
-    width: 75vw;
-    min-height: 65vh;
-  }
-
-  .auth-info,
-  .auth-form-container {
-    padding: 3.5rem;
-  }
-
-  .auth-logo {
-    font-size: 2.2rem;
-  }
-
-  .auth-info h2 {
-    font-size: 2.5rem;
-  }
-
-  .auth-info p {
-    font-size: 1.1rem;
-  }
-
-  .auth-form-container h1 {
-    font-size: 2rem;
-  }
-
-  .form-label {
-    font-size: 0.9rem;
-  }
-
-  .auth-input {
-    font-size: 1.05rem;
-    padding: 1rem 1.3rem;
-  }
-
-  .btn-auth {
-    font-size: 1.05rem;
-    padding: 1rem;
-  }
-
-  .auth-footer {
-    font-size: 1rem;
-  }
-}
-
-@media (min-width: 1600px) {
-  .auth-card {
-    width: 72vw;
-    min-height: 68vh;
-  }
-
-  .auth-info,
-  .auth-form-container {
-    padding: 4rem;
-  }
-
-  .auth-logo {
-    font-size: 2.4rem;
-  }
-
-  .auth-info h2 {
-    font-size: 2.8rem;
-  }
-
-  .auth-info p {
-    font-size: 1.2rem;
-  }
-
-  .auth-form-container h1 {
-    font-size: 2.2rem;
-  }
-
-  .form-label {
-    font-size: 0.95rem;
-  }
-
-  .auth-input {
-    font-size: 1.15rem;
-    padding: 1.1rem 1.4rem;
-  }
-
-  .btn-auth {
-    font-size: 1.15rem;
-    padding: 1.1rem;
-  }
-
-  .auth-footer {
-    font-size: 1.05rem;
-  }
-}
-
-@media (min-width: 2000px) {
-  .auth-card {
-    width: 70vw;
-    min-height: 70vh;
-  }
-
-  .auth-info,
-  .auth-form-container {
-    padding: 4.5rem;
-  }
-
-  .auth-logo {
-    font-size: 2.7rem;
-  }
-
-  .auth-info h2 {
-    font-size: 3.2rem;
-  }
-
-  .auth-info p {
-    font-size: 1.3rem;
-  }
-
-  .auth-form-container h1 {
-    font-size: 2.5rem;
-  }
-
-  .form-label {
-    font-size: 1rem;
-  }
-
-  .auth-input {
-    font-size: 1.25rem;
-    padding: 1.2rem 1.6rem;
-  }
-
-  .btn-auth {
-    font-size: 1.25rem;
-    padding: 1.2rem;
-  }
-
-  .auth-footer {
-    font-size: 1.1rem;
-  }
-
-  body.auth-login .auth-card {
-    width: 68vw;
-  }
-}
-
-/* Landscape: proportional scaling with vw/vh for dimensions, rem for text */
-@media (min-width: 1200px) {
-  body.auth-login .auth-card {
-    width: 75vw;
-    min-height: 65vh;
-  }
-
-  body.auth-login .auth-info,
-  body.auth-login .auth-form-container {
-    padding: 5vh;
-  }
-
-  body.auth-login .auth-info h2 {
-    font-size: 2.5rem;
-  }
-
-  body.auth-login .auth-form-container h1 {
-    font-size: 2rem;
-  }
-
-  body.auth-login .auth-input {
-    font-size: 1.1rem;
-    padding: 1rem 1.3rem;
-  }
-
-  body.auth-login .btn-auth {
-    font-size: 1.1rem;
-    padding: 1rem;
-  }
-}
-
-@media (min-width: 1600px) {
-  body.auth-login .auth-card {
-    width: 72vw;
-    min-height: 70vh;
-  }
-
-  body.auth-login .auth-info,
-  body.auth-login .auth-form-container {
-    padding: 6vh;
-  }
-
-  body.auth-login .auth-info h2 {
-    font-size: 3rem;
-  }
-
-  body.auth-login .auth-form-container h1 {
-    font-size: 2.3rem;
-  }
-
-  body.auth-login .auth-input {
-    font-size: 1.2rem;
-    padding: 1.1rem 1.4rem;
-  }
-
-  body.auth-login .btn-auth {
-    font-size: 1.2rem;
-    padding: 1.1rem;
-  }
-}
-
-@media (min-width: 2000px) {
-  body.auth-login .auth-card {
-    width: 70vw;
-    min-height: 72vh;
-  }
-
-  body.auth-login .auth-info,
-  body.auth-login .auth-form-container {
-    padding: 7vh;
-  }
-
-  body.auth-login .auth-info h2 {
-    font-size: 3.5rem;
-  }
-
-  body.auth-login .auth-form-container h1 {
-    font-size: 2.7rem;
-  }
-
-  body.auth-login .auth-input {
-    font-size: 1.3rem;
-    padding: 1.2rem 1.6rem;
-  }
-
-  body.auth-login .btn-auth {
-    font-size: 1.3rem;
-    padding: 1.2rem;
-  }
-}
+/* Desktop-first defaults (1200px+) are set above as base styles */
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Responsive
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 /* Portrait/tablet: only structure changes here */
 @media (max-width: 900px) {
+  body.auth-body {
+    padding: 1vh 1vw;
+  }
+
   body.auth-login .auth-card {
     width: 95vw;
     min-height: auto;
@@ -476,6 +245,8 @@ body.auth-login .auth-card {
   body.auth-login .auth-form-container h1 { font-size: 1.85rem; }
 
   .auth-card {
+    width: 95vw;
+    height: 95vh;
     grid-template-columns: 1fr;
     min-height: auto;
   }
@@ -495,6 +266,10 @@ body.auth-login .auth-card {
 }
 
 @media (max-width: 500px) {
+  body.auth-body {
+    padding: 3vh 0;
+  }
+
   .auth-form-grid {
     grid-template-columns: 1fr;
   }
@@ -502,13 +277,16 @@ body.auth-login .auth-card {
   .auth-info { display: none; }
   
   .auth-card {
+    width: 95vw;
     background: transparent;
     border: none;
     box-shadow: none;
     backdrop-filter: none;
+    overflow: auto;
   }
   
   .auth-form-container {
+    padding: 2rem 1.5rem;
     background: var(--auth-glass);
     backdrop-filter: blur(25px);
     border: 1px solid var(--auth-glass-border);
