@@ -118,6 +118,13 @@
     font-size: 1.1rem;
 }
 
+/* 4K/8K readability */
+@media (min-width: 1600px) and (min-resolution: 1.5dppx) {
+    .section-title { font-size: 2.4rem; }
+    .contest-card h3 { font-size: 1.85rem; }
+    .contest-description { font-size: 1.1rem; }
+}
+
 .section-title {
     font-size: 2rem;
     margin-bottom: 2rem;

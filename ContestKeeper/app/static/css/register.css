@@ -60,6 +60,54 @@ body.auth-body {
   animation: card-appear 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   High-res readability (4K/8K)
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (min-width: 1600px) and (min-resolution: 1.5dppx) {
+  .auth-card {
+    width: min(1280px, 92vw);
+    min-height: 720px;
+  }
+
+  .auth-info,
+  .auth-form-container {
+    padding: 4.5rem;
+  }
+
+  .auth-logo { font-size: 2.25rem; }
+  .auth-info h2 { font-size: 3rem; }
+  .auth-info p { font-size: 1.25rem; }
+  .auth-form-container h1 { font-size: 2rem; }
+  .form-label { font-size: 0.95rem; }
+  .auth-input { font-size: 1.1rem; padding: 1.1rem 1.35rem; }
+  .btn-auth { font-size: 1.1rem; padding: 1.1rem; }
+  .auth-footer { font-size: 1.05rem; }
+}
+
+@media (min-width: 1900px) and (min-resolution: 1.5dppx) {
+  .auth-card {
+    width: min(1500px, 90vw);
+    min-height: 820px;
+  }
+
+  .auth-info,
+  .auth-form-container {
+    padding: 5rem;
+  }
+
+  .auth-logo { font-size: 2.5rem; }
+  .auth-info h2 { font-size: 3.4rem; }
+  .auth-form-container h1 { font-size: 2.2rem; }
+  .auth-input { font-size: 1.15rem; }
+}
+
+@media (min-width: 3000px), (min-width: 2000px) and (min-resolution: 2dppx) {
+  .auth-card {
+    width: min(1800px, 88vw);
+    min-height: 920px;
+  }
+}
+
 @keyframes card-appear {
   from { opacity: 0; transform: translateY(20px) scale(0.98); }
   to { opacity: 1; transform: translateY(0) scale(1); }

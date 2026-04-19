@@ -44,6 +44,8 @@
 
 html {
   overflow-x: clip;
+  /* Base font size scales up on 4K/8K for readability */
+  font-size: 16px;
 }
 
 body {
@@ -61,6 +63,26 @@ body {
   line-height: 1.6;
   min-height: 100vh;
   overflow-x: clip;
+}
+
+/* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+   High-res readability (4K/8K + HiDPI)
+   Note: on 4K displays browsers often report ~1920 CSS px (DPR=2),
+   so we combine width + resolution to reliably detect.
+   ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
+@media (min-width: 1600px) and (min-resolution: 1.5dppx) {
+  html { font-size: 18px; }
+  .dashboard-container { max-width: 1900px; }
+}
+
+@media (min-width: 1900px) and (min-resolution: 1.5dppx) {
+  html { font-size: 20px; }
+  .dashboard-container { max-width: 2200px; }
+}
+
+@media (min-width: 3000px), (min-width: 2000px) and (min-resolution: 2dppx) {
+  html { font-size: 22px; }
+  .dashboard-container { max-width: 2400px; }
 }
 
 .container {

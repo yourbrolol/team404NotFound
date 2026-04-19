@@ -18,6 +18,16 @@
     margin: 0 auto 2rem;
 }
 
+/* 4K/8K readability */
+@media (min-width: 1600px) and (min-resolution: 1.5dppx) {
+    .home-welcome {
+        width: min(1100px, 100%);
+    }
+
+    .home-welcome h2 { font-size: 3rem; }
+    .home-welcome p { font-size: 1.35rem; max-width: 820px; }
+}
+
 /* ── Contests section on home ─────────────────────────────── */
 .home-contests-section {
     margin-top: 1rem;
