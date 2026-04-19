@@ -27,7 +27,7 @@ media/
 *.swp
 *.swo
 
-dev/
+# dev/
 
 # Project specific
 ContestKeeper/db.sqlite3
