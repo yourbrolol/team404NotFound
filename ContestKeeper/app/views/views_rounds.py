@@ -15,7 +15,7 @@ from .views_base import OrganizerRequiredMixin, RedirectToRegisterMixin, Contest
 
 
 class RoundListView(OrganizerRequiredMixin, ListView):
-    template_name = "app/round_list.html"
+    template_name = "app/rounds/round_list.html"
     context_object_name = "rounds"
 
     def get_queryset(self):
@@ -28,7 +28,7 @@ class RoundListView(OrganizerRequiredMixin, ListView):
 
 class RoundCreateView(OrganizerRequiredMixin, CreateView):
     model = Round
-    template_name = "app/round_form.html"
+    template_name = "app/rounds/round_form.html"
     fields = ["title", "description", "tech_requirements", "must_have", "start_time", "deadline", "materials"]
 
     def get_context_data(self, **kwargs):
@@ -68,7 +68,7 @@ class RoundEditView(OrganizerRequiredMixin, View):
         if round_obj.status != Round.Status.DRAFT:
             return HttpResponseForbidden("Cannot edit a round that is not in DRAFT status.")
 
-        return render(request, "app/round_form.html", {"contest": contest, "round": round_obj})
+        return render(request, "app/rounds/round_form.html", {"contest": contest, "round": round_obj})
 
     def post(self, request, *args, **kwargs):
         contest = get_object_or_404(Contest, pk=kwargs["pk"])
@@ -84,14 +84,14 @@ class RoundEditView(OrganizerRequiredMixin, View):
         try:
             must_have = json.loads(request.POST.get("must_have", "[]"))
             if not must_have:
-                return render(request, "app/round_form.html", {
+                return render(request, "app/rounds/round_form.html", {
                     "contest": contest,
                     "round": round_obj,
                     "error": "Must have at least one checklist item.",
                 })
             round_obj.must_have = must_have
         except json.JSONDecodeError:
-            return render(request, "app/round_form.html", {
+            return render(request, "app/rounds/round_form.html", {
                 "contest": contest,
                 "round": round_obj,
                 "error": "Invalid must_have format.",
@@ -110,13 +110,13 @@ class RoundEditView(OrganizerRequiredMixin, View):
                 deadline = timezone.make_aware(deadline)
             if deadline:
                 if deadline <= round_obj.start_time:
-                    return render(request, "app/round_form.html", {
+                    return render(request, "app/rounds/round_form.html", {
                         "contest": contest,
                         "round": round_obj,
                         "error": "Deadline must be after start time.",
                     })
                 if deadline < timezone.now():
-                    return render(request, "app/round_form.html", {
+                    return render(request, "app/rounds/round_form.html", {
                         "contest": contest,
                         "round": round_obj,
                         "error": "Deadline cannot be in the past.",
@@ -195,7 +195,7 @@ class RoundExtendDeadlineView(OrganizerRequiredMixin, View):
         contest = get_object_or_404(Contest, pk=kwargs["pk"])
         round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
         error = kwargs.get("error")
-        return render(request, "app/round_extend_deadline.html", {
+        return render(request, "app/rounds/round_extend_deadline.html", {
             "contest": contest,
             "round": round_obj,
             "error": error
@@ -235,7 +235,7 @@ class RoundExtendDeadlineView(OrganizerRequiredMixin, View):
 
 
 class ContestRoundsTeamView(RedirectToRegisterMixin, TemplateView):
-    template_name = "app/contest_rounds_team.html"
+    template_name = "app/contests/contest_rounds_team.html"
 
     def get_context_data(self, **kwargs):
         contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
@@ -252,7 +252,7 @@ class ContestRoundsTeamView(RedirectToRegisterMixin, TemplateView):
 
 
 class RoundDetailTeamView(RedirectToRegisterMixin, TemplateView):
-    template_name = "app/round_detail_team.html"
+    template_name = "app/rounds/round_detail_team.html"
 
     def get_context_data(self, **kwargs):
         from django.utils import timezone as _timezone
@@ -285,7 +285,7 @@ class RoundDetailTeamView(RedirectToRegisterMixin, TemplateView):
 
 class RoundDetailView(RedirectToRegisterMixin, ContestContextMixin, DetailView):
     model = Round
-    template_name = "app/round_detail.html"
+    template_name = "app/rounds/round_detail.html"
     context_object_name = "round"
     pk_url_kwarg = "round_pk"
 

@@ -8,7 +8,7 @@ from ..models import Contest, Team, ScoringCriterion, JuryScore, Submission, Con
 from .views_base import JuryRequiredMixin
 
 class JuryEvaluationView(JuryRequiredMixin, View):
-    template_name = "app/jury_evaluation.html"
+    template_name = "app/juries/jury_evaluation.html"
 
     def get_context_data(self, **kwargs):
         contest = self.contest

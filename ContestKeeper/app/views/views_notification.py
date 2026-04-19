@@ -8,7 +8,7 @@ from .views_base import RedirectToRegisterMixin
 
 class NotificationListView(RedirectToRegisterMixin, ListView):
     model = Notification
-    template_name = "app/notifications.html"
+    template_name = "app/core/notifications.html"
     context_object_name = "notifications"
 
     def get_queryset(self):

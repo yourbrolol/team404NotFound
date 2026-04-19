@@ -1,0 +1,156 @@
+{% extends 'app/core/base.html' %}
+{% load static %}
+
+{% block title %}Schedule - {{ contest.name }}{% endblock %}
+
+{% block extra_css %}
+<style>
+    body {
+        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+        min-height: 100vh;
+    }
+    .timeline-container {
+        position: relative;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 2rem 1rem;
+    }
+    .timeline-line {
+        position: absolute;
+        left: 3rem;
+        top: 0;
+        bottom: 0;
+        width: 4px;
+        background: rgba(99, 102, 241, 0.2);
+        border-radius: 2px;
+    }
+    @media (max-width: 768px) {
+        .timeline-line { left: 1.5rem; }
+    }
+    .timeline-item {
+        position: relative;
+        margin-bottom: 3.5rem;
+        padding-left: 6rem;
+        animation: slideIn 0.6s ease-out forwards;
+        opacity: 0;
+    }
+    @media (max-width: 768px) {
+        .timeline-item { padding-left: 3.5rem; }
+    }
+    @keyframes slideIn {
+        from { transform: translateX(-30px); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
+    }
+    .timeline-dot {
+        position: absolute;
+        left: 3rem;
+        top: 1.5rem;
+        width: 24px;
+        height: 24px;
+        background: white;
+        border: 4px solid #6366f1;
+        border-radius: 50%;
+        transform: translate(-50%, -50%);
+        z-index: 2;
+        box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    }
+    .dot-ROUND { border-color: #6366f1; }
+    .dot-DEADLINE { border-color: #ef4444; }
+    .dot-WORKSHOP { border-color: #10b981; }
+    
+    .glass-card {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 24px;
+        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        padding: 2rem;
+        transition: transform 0.3s ease;
+    }
+    .glass-card:hover {
+        transform: translateY(-5px);
+        background: rgba(255, 255, 255, 0.85);
+    }
+    .time-badge {
+        display: inline-block;
+        font-family: 'Monaco', 'Consolas', monospace;
+        background: #1e293b;
+        color: #f8fafc;
+        padding: 0.4rem 1rem;
+        border-radius: 8px;
+        font-size: 0.85rem;
+        margin-bottom: 1rem;
+    }
+    .event-type-label {
+        font-size: 0.75rem;
+        font-weight: 800;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: #6366f1;
+        margin-bottom: 0.5rem;
+    }
+    .type-DEADLINE { color: #ef4444; }
+    .type-WORKSHOP { color: #10b981; }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
+        <div>
+            <h1 style="font-size: 3rem; font-weight: 900; color: #111827; margin: 0;">Tournament Schedule</h1>
+            <p style="color: #4b5563; font-size: 1.1rem; margin-top: 0.5rem;">Follow the timeline of {{ contest.name }}</p>
+        </div>
+        
+        <div style="display: flex; gap: 1rem;">
+            {% if user == contest.organizer %}
+                <form action="{% url 'schedule_regenerate' contest.pk %}" method="post">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary" style="border-radius: 12px; font-weight: 600;">Regenerate</button>
+                </form>
+                <a href="{% url 'schedule_event_create' contest.pk %}" class="btn btn-primary" style="border-radius: 12px; font-weight: 600;">+ Add Event</a>
+            {% endif %}
+            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="border-radius: 12px; font-weight: 600;">Back</a>
+        </div>
+    </div>
+
+    <div class="timeline-container">
+        <div class="timeline-line"></div>
+        
+        {% for event in events %}
+        <div class="timeline-item" style="animation-delay: {{ forloop.counter0|add:0.1 }}s">
+            <div class="timeline-dot dot-{{ event.event_type }}"></div>
+            
+            <div class="glass-card">
+                <div class="event-type-label type-{{ event.event_type }}">{{ event.get_event_type_display }}</div>
+                <div class="time-badge">
+                    {{ event.start_time|date:"M d • H:i" }}
+                    {% if event.end_time and event.end_time != event.start_time %}
+                        - {{ event.end_time|date:"H:i" }}
+                    {% endif %}
+                </div>
+                
+                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: #111827; margin: 0;">{{ event.title }}</h2>
+                    {% if user == contest.organizer %}
+                        <a href="{% url 'schedule_event_delete' contest.pk event.pk %}" style="color: #94a3b8; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'" onmouseout="this.style.color='#94a3b8'">
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg>
+                        </a>
+                    {% endif %}
+                </div>
+                
+                {% if event.description %}
+                    <p style="color: #4b5563; margin-top: 1rem; line-height: 1.6;">{{ event.description|linebreaksbr }}</p>
+                {% endif %}
+            </div>
+        </div>
+        {% empty %}
+        <div style="text-align: center; padding: 5rem 0; color: #64748b;">
+            <svg style="width: 64px; opacity: 0.3; margin-bottom: 2rem;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path></svg>
+            <h3>No events listed yet.</h3>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

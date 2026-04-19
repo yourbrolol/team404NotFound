@@ -1,0 +1,314 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ round.title }} - {{ round.contest.name }}</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+    <style>
+        .round-detail-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 2rem;
+            border-radius: 6px;
+            margin-bottom: 2rem;
+        }
+        .round-detail-header h1 {
+            margin: 0 0 1rem 0;
+            font-size: 2rem;
+        }
+        .header-meta {
+            display: flex;
+            gap: 2rem;
+            flex-wrap: wrap;
+            font-size: 0.95rem;
+        }
+        .meta-item {
+            display: flex;
+            flex-direction: column;
+        }
+        .meta-label {
+            opacity: 0.9;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .meta-value {
+            font-weight: 600;
+            font-size: 1.1rem;
+        }
+        .countdown-display {
+            background: rgba(255,255,255,0.2);
+            padding: 1.5rem;
+            border-radius: 4px;
+            backdrop-filter: blur(4px);
+        }
+        .countdown-timer {
+            font-family: monospace;
+            font-size: 1.8rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+        .countdown-timer.danger {
+            color: #ffcccc;
+        }
+        .round-status-badge {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            border-radius: 4px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+        .status-active {
+            background: rgba(40, 167, 69, 0.2);
+            color: #c8e6c9;
+        }
+        .status-closed {
+            background: rgba(255, 193, 7, 0.2);
+            color: #ffe082;
+        }
+        .status-evaluated {
+            background: rgba(108, 117, 125, 0.2);
+            color: #cfd8dc;
+        }
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        @media (max-width: 768px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+        .card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            padding: 1.5rem;
+        }
+        .card h2 {
+            margin-top: 0;
+            color: var(--text-primary);
+            font-size: 1.2rem;
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 0.75rem;
+        }
+        .checklist {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .checklist li {
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            background: #f8f9fa;
+            border-left: 3px solid #667eea;
+            border-radius: 2px;
+            display: flex;
+            align-items: center;
+        }
+        .checklist li::before {
+            content: '✓';
+            margin-right: 1rem;
+            color: #28a745;
+            font-weight: bold;
+            font-size: 1.2rem;
+        }
+        .materials-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+        .materials-list li {
+            padding: 0.75rem 0;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .materials-list li:last-child {
+            border-bottom: none;
+        }
+        .material-link {
+            display: inline-block;
+            padding: 0.5rem 1rem;
+            background: #667eea;
+            color: white;
+            text-decoration: none;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            transition: background 0.2s;
+        }
+        .material-link:hover {
+            background: #764ba2;
+        }
+        .description-text {
+            color: var(--text-primary);
+            line-height: 1.6;
+            margin-bottom: 0;
+        }
+        .empty-materials {
+            color: var(--text-muted);
+            font-style: italic;
+        }
+        .closed-message {
+            background: #fff3cd;
+            border: 1px solid #ffc107;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            color: #856404;
+        }
+        .evaluated-message {
+            background: #d1ecf1;
+            border: 1px solid #17a2b8;
+            padding: 1.5rem;
+            border-radius: 4px;
+            margin-bottom: 2rem;
+            color: #0c5460;
+        }
+        .back-link {
+            display: inline-block;
+            margin-bottom: 1rem;
+            color: #667eea;
+            text-decoration: none;
+            font-size: 0.95rem;
+        }
+        .back-link:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+    {% include 'app/core/nav.html' %}
+    <main class="dashboard-container">
+        <a href="{% url 'contest_rounds_team' round.contest.pk %}" class="back-link">← Back to All Rounds</a>
+
+        {% if round.status == 'SUBMISSION_CLOSED' %}
+            <div class="closed-message">
+                <strong>⏁ Submissions Closed</strong> - This round is no longer accepting submissions. Results will be published after evaluation.
+            </div>
+        {% endif %}
+
+        {% if round.status == 'EVALUATED' %}
+            <div class="evaluated-message">
+                <strong>✅ Evaluation Complete</strong> - Check the leaderboard to see results and rankings.
+            </div>
+        {% endif %}
+
+        <div class="round-detail-header">
+            <h1>{{ round.title }}</h1>
+            <div class="header-meta">
+                <div class="meta-item">
+                    <span class="meta-label">Contest</span>
+                    <span class="meta-value">{{ round.contest.name }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Start Date</span>
+                    <span class="meta-value">{{ round.start_time|date:'Y-m-d H:i' }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="meta-label">Deadline</span>
+                    <span class="meta-value">{{ round.deadline|date:'Y-m-d H:i' }}</span>
+                </div>
+                <div class="meta-item">
+                    <span class="round-status-badge {% if round.status == 'ACTIVE' %}status-active{% elif round.status == 'SUBMISSION_CLOSED' %}status-closed{% else %}status-evaluated{% endif %}">
+                        {{ round.status|upper }}
+                    </span>
+                </div>
+            </div>
+
+            {% if round.is_open %}
+                <div class="countdown-display">
+                    <div class="meta-label">Time Remaining</div>
+                    <div class="countdown-timer" id="countdown">Loading...</div>
+                    <small style="opacity: 0.8;">Submit before deadline</small>
+                </div>
+            {% endif %}
+        </div>
+
+            <div class="card">
+                <h2>🚀 Your Submission</h2>
+                {% if not user_team %}
+                    <p class="description-text" style="color: var(--text-muted); font-style: italic;">
+                        You are not part of a team in this contest. You must be in a team to submit work.
+                    </p>
+                {% else %}
+                    {% if user_submission %}
+                        <div style="margin-bottom: 1rem;">
+                            <div class="meta-label">Status</div>
+                            <div class="meta-value" style="color: #28a745;">✅ Submitted</div>
+                        </div>
+                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+                            <a href="{{ user_submission.github_url }}" target="_blank" class="material-link" style="background: #24292e;">GitHub Repository ↗</a>
+                            <a href="{{ user_submission.video_url }}" target="_blank" class="material-link" style="background: #ff0000;">Video Presentation ↗</a>
+                            {% if user_submission.live_demo_url %}
+                                <a href="{{ user_submission.live_demo_url }}" target="_blank" class="material-link" style="background: #28a745;">Live Demo ↗</a>
+                            {% endif %}
+                        </div>
+                        <div style="display: flex; gap: 0.5rem;">
+                            <a href="{% url 'submission_detail' round.contest.pk round.pk user_submission.pk %}" class="material-link" style="background: var(--secondary); flex: 1; text-align: center;">View Full Details</a>
+                            {% if is_open %}
+                                <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="background: #6c757d; flex: 1; text-align: center;">Edit Submission</a>
+                            {% endif %}
+                        </div>
+                    {% else %}
+                        <div style="margin-bottom: 1.5rem;">
+                            <div class="meta-label">Status</div>
+                            <div class="meta-value" style="color: #dc3545;">❌ Not Submitted</div>
+                        </div>
+                        {% if is_open %}
+                            <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="width: 100%; text-align: center; padding: 1rem; font-size: 1.1rem; font-weight: bold;">Submit Your Work Now →</a>
+                        {% else %}
+                            <p class="description-text" style="color: var(--text-muted); font-style: italic;">
+                                Submissions are closed for this round.
+                            </p>
+                        {% endif %}
+                    {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </main>
+
+    <script>
+        function updateCountdown() {
+            const deadline = new Date('{{ round.deadline|date:"c" }}');
+            const now = new Date();
+            const remainingMs = deadline - now;
+
+            const el = document.getElementById('countdown');
+            if (!el) return;
+
+            if (remainingMs <= 0) {
+                el.textContent = '00:00:00:00';
+                el.className = 'countdown-timer danger';
+                return;
+            }
+
+            const days = Math.floor(remainingMs / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((remainingMs / (1000 * 60 * 60)) % 24);
+            const minutes = Math.floor((remainingMs / (1000 * 60)) % 60);
+            const seconds = Math.floor((remainingMs / 1000) % 60);
+
+            el.textContent = `${String(days).padStart(2, '0')}:${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(seconds).padStart(2, '0')}`;
+
+            // Change color if less than 1 hour remaining
+            if (remainingMs < 3600000) {
+                el.className = 'countdown-timer danger';
+            }
+        }
+
+        // Only update if round is active
+        {% if round.is_open %}
+            updateCountdown();
+            setInterval(updateCountdown, 1000);
+        {% endif %}
+    </script>
+</body>
+</html>

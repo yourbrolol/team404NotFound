@@ -8,7 +8,7 @@ from .views_base import RedirectToRegisterMixin
 
 
 class HomeView(RedirectToRegisterMixin, TemplateView):
-    template_name = "app/index.html"
+    template_name = "app/core/index.html"
 
     def get_context_data(self, **kwargs):
         contests = Contest.objects.exclude(status=Contest.Status.DRAFT)
@@ -156,7 +156,7 @@ class ProfileView(RedirectToRegisterMixin, View):
         form = ProfileBioForm(instance=request.user)
         return render(
             request,
-            "app/profile.html",
+            "app/core/profile.html",
             self._build_context(request, form, saved=request.GET.get("saved") == "1"),
         )
 
@@ -167,13 +167,13 @@ class ProfileView(RedirectToRegisterMixin, View):
             return redirect("/profile/?saved=1")
         return render(
             request,
-            "app/profile.html",
+            "app/core/profile.html",
             self._build_context(request, form, saved=False),
         )
 
 
 class DashboardView(RedirectToRegisterMixin, TemplateView):
-    template_name = "app/dashboard.html"
+    template_name = "app/core/dashboard.html"
 
     def get_context_data(self, **kwargs):
         user = self.request.user
@@ -191,7 +191,7 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
 class SettingsView(RedirectToRegisterMixin, View):
     def get(self, request):
         form = UserSettingsForm(instance=request.user)
-        return render(request, "app/settings.html", {
+        return render(request, "app/core/settings.html", {
             "form": form,
             "saved": request.GET.get("saved") == "1",
         })
@@ -201,7 +201,7 @@ class SettingsView(RedirectToRegisterMixin, View):
         if form.is_valid():
             form.save()
             return redirect("/settings/?saved=1")
-        return render(request, "app/settings.html", {
+        return render(request, "app/core/settings.html", {
             "form": form,
             "saved": False,
         })

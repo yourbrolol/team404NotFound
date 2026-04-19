@@ -1,0 +1,167 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ContestKeeper - Notifications</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
+    <style>
+        .notifications-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .notification-card {
+            background: var(--bg-card);
+            backdrop-filter: blur(10px);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            display: flex;
+            gap: 1rem;
+        }
+        .notification-card.unread {
+            border-left: 4px solid var(--primary);
+            background: rgba(99, 102, 241, 0.1);
+        }
+        .notification-card:hover {
+            transform: translateY(-2px);
+            border-color: var(--primary);
+        }
+        .notification-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--glass);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-shrink: 0;
+            color: var(--primary);
+        }
+        .notification-content {
+            flex-grow: 1;
+        }
+        .notification-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.5rem;
+        }
+        .notification-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--text-main);
+            margin: 0;
+        }
+        .notification-time {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+        }
+        .notification-message {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.5;
+            margin-bottom: 1rem;
+        }
+        .notification-actions {
+            display: flex;
+            gap: 1rem;
+        }
+        .mark-read-btn {
+            background: none;
+            border: none;
+            color: var(--primary);
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            padding: 0;
+            text-decoration: underline;
+        }
+        .mark-read-btn:hover {
+            color: var(--primary-hover);
+        }
+        .notifications-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+        .empty-notifications {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: var(--bg-card);
+            border-radius: 12px;
+            border: 1px dashed var(--border);
+            color: var(--text-muted);
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'app/core/nav.html' %}
+    <main class="dashboard-container">
+        <div class="notifications-container">
+            <header class="notifications-header">
+                <div>
+                    <h1 id="h1">Notifications</h1>
+                </div>
+                {% if notifications %}
+                <form action="{% url 'notifications_mark_all_read' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-secondary">Mark all as read</button>
+                </form>
+                {% endif %}
+            </header>
+
+            <div class="notifications-list">
+                {% for notification in notifications %}
+                <div class="notification-card {% if not notification.is_read %}unread{% endif %}">
+                    <div class="notification-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                            <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                        </svg>
+                    </div>
+                    <div class="notification-content">
+                        <div class="notification-header">
+                            <h3 class="notification-title">{{ notification.title }}</h3>
+                            <span class="notification-time">{{ notification.created_at|timesince }} ago</span>
+                        </div>
+                        <p class="notification-message">{{ notification.message }}</p>
+                        <div class="notification-actions">
+                            {% if notification.link %}
+                            <form action="{% url 'notification_read' notification.pk %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-primary btn-sm">View Details</button>
+                            </form>
+                            {% elif not notification.is_read %}
+                            <form action="{% url 'notification_read' notification.pk %}" method="POST" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="mark-read-btn">Mark as read</button>
+                            </form>
+                            {% endif %}
+                        </div>
+                    </div>
+                </div>
+                {% empty %}
+                <div class="empty-notifications">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3; margin-bottom: 1rem;">
+                        <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
+                        <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+                    </svg>
+                    <p>No notifications yet.</p>
+                </div>
+                {% endfor %}
+            </div>
+        </div>
+    </main>
+</body>
+
+</html>

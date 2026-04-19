@@ -11,7 +11,7 @@ from .views_base import OrganizerRequiredMixin
 
 
 class SubmissionCreateEditView(RedirectToRegisterMixin, View):
-    template_name = "app/submission_form.html"
+    template_name = "app/submissions/submission_form.html"
 
     def get_round_and_team(self, request, pk, round_id):
         contest = get_object_or_404(Contest, pk=pk)
@@ -66,7 +66,7 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
 
 class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
     model = Submission
-    template_name = "app/submission_detail.html"
+    template_name = "app/submissions/submission_detail.html"
     context_object_name = "submission"
     pk_url_kwarg = "sub_pk"
 
@@ -89,7 +89,7 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
 
 
 class RoundSubmissionsListView(OrganizerRequiredMixin, ListView):
-    template_name = "app/submission_list.html"
+    template_name = "app/submissions/submission_list.html"
     context_object_name = "submissions"
 
     def dispatch(self, request, *args, **kwargs):

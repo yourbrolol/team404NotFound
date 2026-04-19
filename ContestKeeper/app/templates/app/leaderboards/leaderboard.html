@@ -1,0 +1,72 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ contest.name }} Leaderboard</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
+</head>
+<body>
+    {% include 'app/core/nav.html' %}
+    <main class="dashboard-container">
+        <div class="detail-card" style="width:100%;">
+            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+                <div>
+                    <h1 class="detail-title">{{ contest.name }} Leaderboard</h1>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Final ranking table for contest participants.</p>
+                </div>
+                {% if can_view_missing %}
+                <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">Evaluation Dashboard</a>
+                {% endif %}
+            </div>
+
+            {% if not leaderboard_available %}
+                <div class="info-grid" style="padding: 2rem; text-align: center;">
+                    <h2>Leaderboard is not yet available.</h2>
+                    <p>{{ not_available_message }}</p>
+                </div>
+            {% else %}
+                <table class="table" style="width:100%; margin-top:1.5rem;">
+                    <thead>
+                        <tr>
+                            <th>Rank</th>
+                            <th>Team</th>
+                            <th>Total Score</th>
+                            {% for criterion in criteria %}
+                                <th>{{ criterion.name }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in entries %}
+                        <tr{% if item.entry.is_tied %} class="highlight"{% endif %}>
+                            <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
+                            <td>{{ item.entry.team.name }}</td>
+                            <td>{{ item.entry.total_score }}</td>
+                            {% for score in item.category_values %}
+                                <td>{{ score }}</td>
+                            {% endfor %}
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+
+                {% if can_view_missing %}
+                    <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">
+                        <div class="info-item" style="flex: 1; min-width: 220px;">
+                            <h4>Missing scores</h4>
+                            <p>{{ overall_missing|length }} unresolved entries</p>
+                        </div>
+                        <div class="info-item" style="flex: 1; min-width: 220px;">
+                            <h4>Computation status</h4>
+                            <p>{% if entries and entries.0.entry.computation_complete %}Complete{% else %}Incomplete{% endif %}</p>
+                        </div>
+                    </div>
+                {% endif %}
+            {% endif %}
+        </div>
+    </main>
+</body>
+</html>

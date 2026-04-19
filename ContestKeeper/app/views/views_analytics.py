@@ -11,7 +11,7 @@ from .views_base import ContestContextMixin, OrganizerRequiredMixin
 
 
 class OrganizerAnalyticsView(OrganizerRequiredMixin, TemplateView):
-    template_name = "app/analytics.html"
+    template_name = "app/admin/analytics.html"
 
     def get_context_data(self, **kwargs):
         from django.db.models import Avg
@@ -93,7 +93,7 @@ class OrganizerAnalyticsView(OrganizerRequiredMixin, TemplateView):
 
 class ScheduleView(ContestContextMixin, ListView):
     model = ScheduleEvent
-    template_name = "app/schedule.html"
+    template_name = "app/schedule/schedule.html"
     context_object_name = "events"
 
     def get_queryset(self):
@@ -103,7 +103,7 @@ class ScheduleView(ContestContextMixin, ListView):
 class ScheduleEventCreateView(OrganizerRequiredMixin, CreateView):
     model = ScheduleEvent
     form_class = ScheduleEventForm
-    template_name = "app/schedule_event_form.html"
+    template_name = "app/schedule/schedule_event_form.html"
 
     def form_valid(self, form):
         form.instance.contest = self.contest
@@ -115,7 +115,7 @@ class ScheduleEventCreateView(OrganizerRequiredMixin, CreateView):
 
 class ScheduleEventDeleteView(OrganizerRequiredMixin, DeleteView):
     model = ScheduleEvent
-    template_name = "app/schedule_event_confirm_delete.html"
+    template_name = "app/schedule/schedule_event_confirm_delete.html"
 
     def get_success_url(self):
         return reverse("schedule", kwargs={"pk": self.contest.pk})

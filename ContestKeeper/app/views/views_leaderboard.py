@@ -14,7 +14,7 @@ from .views_team import AdminPermissionMixin, LeaderboardAccessMixin
 
 
 class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
-    template_name = "app/leaderboard.html"
+    template_name = "app/leaderboards/leaderboard.html"
 
     def get_context_data(self, **kwargs):
         phase, _ = ContestEvaluationPhase.objects.get_or_create(
@@ -71,7 +71,7 @@ class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
 
 
 class TeamDetailLeaderboardView(LeaderboardAccessMixin, TemplateView):
-    template_name = "app/team_leaderboard_detail.html"
+    template_name = "app/leaderboards/team_leaderboard_detail.html"
 
     def get(self, request, *args, **kwargs):
         self.team = get_object_or_404(self.contest.teams, pk=kwargs["team_pk"])
@@ -187,7 +187,7 @@ class LeaderboardAPIView(LeaderboardAccessMixin, View):
 
 
 class AdminLeaderboardDashboardView(AdminPermissionMixin, TemplateView):
-    template_name = "app/admin_leaderboard_dashboard.html"
+    template_name = "app/leaderboards/admin_leaderboard_dashboard.html"
 
     def get_context_data(self, **kwargs):
         phase, _ = ContestEvaluationPhase.objects.get_or_create(
@@ -304,7 +304,7 @@ class ExportTeamsCSVView(AdminPermissionMixin, View):
 class CriterionCreateView(AdminPermissionMixin, CreateView):
     model = ScoringCriterion
     form_class = ScoringCriterionForm
-    template_name = "app/criterion_form.html"
+    template_name = "app/juries/criterion_form.html"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -323,7 +323,7 @@ class CriterionCreateView(AdminPermissionMixin, CreateView):
 class CriterionUpdateView(AdminPermissionMixin, UpdateView):
     model = ScoringCriterion
     form_class = ScoringCriterionForm
-    template_name = "app/criterion_form.html"
+    template_name = "app/juries/criterion_form.html"
     pk_url_kwarg = "criterion_id"
 
     def get_context_data(self, **kwargs):
@@ -338,7 +338,7 @@ class CriterionUpdateView(AdminPermissionMixin, UpdateView):
 
 class CriterionDeleteView(AdminPermissionMixin, DeleteView):
     model = ScoringCriterion
-    template_name = "app/announcement_confirm_delete.html"  # Reusing generic confirm delete
+    template_name = "app/announcements/announcement_confirm_delete.html"  # Reusing generic confirm delete
     pk_url_kwarg = "criterion_id"
 
     def get_context_data(self, **kwargs):

@@ -21,7 +21,7 @@ class ContestListView(ListView):
 
 class ContestDetailView(DetailView):
     model = Contest
-    template_name = "app/contest_detail.html"
+    template_name = "app/contests/contest_detail.html"
     context_object_name = "contest"
 
     def get_object(self, queryset=None):
@@ -75,7 +75,7 @@ class ContestDetailView(DetailView):
 
 class ContestFormView(RedirectToRegisterMixin, View):
     """Handles contest creation (no pk in URL) and editing (pk present)."""
-    template_name = "app/contest_form.html"
+    template_name = "app/contests/contest_form.html"
 
     def _get_contest(self):
         pk = self.kwargs.get("pk")

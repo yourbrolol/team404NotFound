@@ -74,4 +74,4 @@ class RoundTask09Test(TestCase):
         url = reverse('round_extend_deadline', kwargs={'pk': self.contest.pk, 'round_id': self.round.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'app/round_extend_deadline.html')
+        self.assertTemplateUsed(response, 'app/rounds/round_extend_deadline.html')

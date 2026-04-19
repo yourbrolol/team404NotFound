@@ -9,7 +9,7 @@ from .views_base import RedirectToRegisterMixin
 
 
 class ViewTeamsView(RedirectToRegisterMixin, ListView):
-    template_name = "app/teams.html"
+    template_name = "app/teams/teams.html"
     context_object_name = "teams"
 
     def get_queryset(self):
@@ -24,7 +24,7 @@ class ViewTeamsView(RedirectToRegisterMixin, ListView):
 
 
 class ViewJurysView(RedirectToRegisterMixin, ListView):
-    template_name = "app/jurys.html"
+    template_name = "app/juries/jurys.html"
     context_object_name = "jurys"
 
     def get_queryset(self):
@@ -36,7 +36,7 @@ class ViewJurysView(RedirectToRegisterMixin, ListView):
 
 
 class TeamDetailView(RedirectToRegisterMixin, DetailView):
-    template_name = "app/team.html"
+    template_name = "app/teams/team.html"
     context_object_name = "team"
 
     def get_object(self, queryset=None):
@@ -102,7 +102,7 @@ from django.urls import reverse_lazy
 class TeamUpdateView(RedirectToRegisterMixin, UpdateView):
     model = Team
     form_class = TeamForm
-    template_name = "app/team_form.html"
+    template_name = "app/teams/team_form.html"
     context_object_name = "team"
 
     def get_object(self, queryset=None):
@@ -131,7 +131,7 @@ class TeamUpdateView(RedirectToRegisterMixin, UpdateView):
 class TeamCreateView(RedirectToRegisterMixin, CreateView):
     model = Team
     form_class = TeamForm
-    template_name = "app/team_create_form.html"
+    template_name = "app/teams/team_create_form.html"
 
     def dispatch(self, request, *args, **kwargs):
         return super().dispatch(request, *args, **kwargs)

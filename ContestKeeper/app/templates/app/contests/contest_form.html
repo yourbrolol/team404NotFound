@@ -1,0 +1,86 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %} - ContestKeeper</title>
+    <link rel="stylesheet" href="{% static 'css/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
+
+    <style>
+        /* Fix centering for checkbox group */
+        .form-group.checkbox-row {
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: flex-start;
+            /* Align to the left */
+            gap: 12px;
+            margin: 1.5rem 0;
+        }
+ 
+        /* Remove extra margins from the checkbox itself */
+        .form-group.checkbox-row input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            margin: 0;
+            cursor: pointer;
+        }
+ 
+        /* Reset standard label styles for checkbox */
+        .form-group.checkbox-row .form-label {
+            margin: 0;
+            cursor: pointer;
+            order: 2;
+            /* Text follows the checkbox */
+        }
+    </style>
+</head>
+
+<body>
+    {% include 'app/core/nav.html' %}
+    <main class="dashboard-container">
+        <header class="dashboard-header">
+            <h1 id="h1">{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %}</h1>
+        </header>
+
+        <div class="form-card">
+            <form method="post">
+                {% csrf_token %}
+                {% for field in form %}
+                {% if field.field.widget.input_type == 'checkbox' %}
+                {# Специальный вывод для галочки #}
+                <div class="form-group checkbox-row">
+                    {{ field }}
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {% if field.errors %}
+                    <p class="field-error">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% else %}
+                {# Обычный вывод для всех остальных полей #}
+                <div class="form-group">
+                    <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                    <p class="field-error">{{ field.errors.0 }}</p>
+                    {% endif %}
+                </div>
+                {% endif %}
+                {% endfor %}
+
+                <div class="contest-actions" style="margin-top: 2rem;">
+                    <button type="submit" class="btn btn-primary">
+                        {% if is_edit %}Save Changes{% else %}Create Contest{% endif %}
+                    </button>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+
+</html>

@@ -66,7 +66,7 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
 
 class AdminApplicationListView(OrganizerRequiredMixin, ListView):
     model = Application
-    template_name = "app/admin_application_list.html"
+    template_name = "app/admin/admin_application_list.html"
     context_object_name = "applications"
 
     def get_queryset(self):

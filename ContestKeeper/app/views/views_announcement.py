@@ -10,7 +10,7 @@ from .views_base import ContestContextMixin, OrganizerRequiredMixin
 
 class AnnouncementListView(ContestContextMixin, ListView):
     model = Announcement
-    template_name = "app/announcements.html"
+    template_name = "app/announcements/announcements.html"
     context_object_name = "announcements"
 
     def get_queryset(self):
@@ -20,7 +20,7 @@ class AnnouncementListView(ContestContextMixin, ListView):
 class AnnouncementCreateView(OrganizerRequiredMixin, CreateView):
     model = Announcement
     form_class = AnnouncementForm
-    template_name = "app/announcement_form.html"
+    template_name = "app/announcements/announcement_form.html"
 
     def form_valid(self, form):
         form.instance.contest = self.contest
@@ -44,7 +44,7 @@ class AnnouncementCreateView(OrganizerRequiredMixin, CreateView):
 
 class AnnouncementDeleteView(OrganizerRequiredMixin, DeleteView):
     model = Announcement
-    template_name = "app/announcement_confirm_delete.html"
+    template_name = "app/announcements/announcement_confirm_delete.html"
 
     def get_success_url(self):
         return reverse("announcement_list", kwargs={"pk": self.contest.pk})
