@@ -27,7 +27,7 @@ SECRET_KEY = config('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["*"] # CHANGE IN PROD!!!
 
 
 # Application definition
@@ -143,3 +143,7 @@ AUTH_USER_MODEL = 'app.User'
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'
 LOGOUT_REDIRECT_URL = 'home'
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.ngrok-free.app", # CHANGE IN PROD!!!
+]
