@@ -56,6 +56,19 @@
                 });
             });
 
+            (function highlightActiveNav() {
+                var path = window.location.pathname.replace(/\/+$/, '') || '/';
+                document.querySelectorAll('.nav-link[data-url]').forEach(function (button) {
+                    var raw = button.getAttribute('data-url');
+                    if (!raw) return;
+                    try {
+                        var u = new URL(raw, window.location.origin);
+                        var p = u.pathname.replace(/\/+$/, '') || '/';
+                        if (p === path) button.classList.add('nav-link--active');
+                    } catch (e) { /* ignore */ }
+                });
+            })();
+
             (function() {
                 const toggle = document.getElementById('themeToggle');
                 const icon = document.getElementById('themeIcon');

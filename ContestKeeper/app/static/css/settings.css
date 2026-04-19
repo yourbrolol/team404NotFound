@@ -2,13 +2,31 @@
   margin-bottom: 1.25rem;
 }
 
+/* Profile / Settings: left column, no inline flex on <main> */
+main.dashboard-container.page-narrow {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.page-narrow .dashboard-header,
+.page-narrow .settings-layout,
+.page-narrow .settings-alert {
+  width: 100%;
+  max-width: min(1100px, 92vw);
+}
+
+.page-narrow .settings-layout {
+  margin: 0;
+}
+
 /* ─── Settings Layout ─────────────────────────────────── */
 .settings-layout {
   display: flex;
   flex-direction: column;
   gap: 1.75rem;
   width: 100%;
-  max-width: 800px;
+  max-width: min(1100px, 92vw);
 }
 
 /* ─── Settings Card ───────────────────────────────────── */
@@ -139,7 +157,7 @@
 }
 
 .settings-info-item__value {
-  font-size: clamp(0.85rem, 3vw, 0.95rem);
+  font-size: clamp(0.85rem, 0.82rem + 0.25vmin, 0.95rem);
   color: var(--text-main);
   font-weight: 600;
   display: flex;
@@ -167,11 +185,22 @@
   border-radius: 0.9rem;
   font-weight: 600;
   font-size: 0.9rem;
-  max-width: 720px;
+  max-width: min(1100px, 92vw);
   transition:
     opacity 0.4s ease,
     transform 0.4s ease;
   margin-bottom: 0.25rem;
+}
+
+/* On ultrawide screens / heavy zoom-out, keep cards readable instead of tiny center column */
+@media (min-width: 2200px) {
+  .page-narrow .dashboard-header,
+  .page-narrow .settings-layout,
+  .page-narrow .settings-alert,
+  .settings-layout,
+  .settings-alert {
+    max-width: min(1400px, 88vw);
+  }
 }
 
 .settings-alert--success {

@@ -1,8 +1,8 @@
 /* ── Home welcome panel ────────────────────────────────────── */
 .home-welcome {
     margin: 0 auto 3rem;
-    width: min(800px, 90%);
-    padding: clamp(2rem, 8vw, 4rem);
+    width: min(800px, 100%);
+    padding: clamp(2rem, 1.5rem + 2vmin, 4rem);
     text-align: center;
 }
 
@@ -245,7 +245,7 @@
 /* ── Responsive ───────────────────────────────────────────── */
 @media (max-width: 900px) {
     .home-welcome {
-        max-width: 80vw;
+        max-width: 100%;
         padding: 2.5rem;
     }
 

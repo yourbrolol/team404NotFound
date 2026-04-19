@@ -1,12 +1,14 @@
+/* Main column sits beside fixed nav — one source of truth for width (--nav-width in common.css) */
 body {
-    padding-left: 280px;
-    transition: padding-left 0.3s ease;
+    margin: 0;
+    min-height: 100vh;
 }
 
-@media (max-width: 1200px) {
-    body {
-        padding-left: 240px;
-    }
+main.dashboard-container {
+    margin-left: var(--nav-width);
+    margin-right: 0;
+    width: calc(100% - var(--nav-width));
+    /* Left-align the content block; avoids “drifting” toward center on zoom / ultrawide / 4K */
 }
 
 /* ── Mobile top bar ── */
@@ -68,7 +70,7 @@ body {
     color: var(--text-main);
     padding: 0;
     margin: 0;
-    width: 280px;
+    width: var(--nav-width);
     height: 100vh;
     position: fixed;
     top: 0;
@@ -77,12 +79,6 @@ body {
     z-index: 1000;
     overflow-y: auto;
     transition: width 0.3s ease;
-}
-
-@media (max-width: 1200px) {
-    #nav {
-        width: 240px;
-    }
 }
 
 .nav-container {
@@ -136,9 +132,16 @@ body {
     transform: translateX(4px);
 }
 
+.nav-link--active {
     color: white;
     background: var(--primary);
     box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+}
+
+.nav-link--active:hover {
+    color: white;
+    background: var(--primary);
+    transform: none;
 }
 
 .notification-btn {
@@ -190,10 +193,14 @@ body {
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (max-width: 900px) {
 
-    /* Remove desktop sidebar space */
+    /* Remove desktop sidebar offset */
     body {
-        padding-left: 0 !important;
         padding-top: 60px; /* room for the top bar */
+    }
+
+    main.dashboard-container {
+        margin-left: 0 !important;
+        width: 100%;
     }
 
     /* Slide-in sidebar */
