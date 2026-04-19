@@ -1,16 +1,13 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ contest.name }} - Admin Leaderboard Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
-</head>
-<body>
-    {% include 'app/core/nav.html' %}
-    <main class="dashboard-container">
+
+{% block title %}{{ contest.name }} - Admin Leaderboard Dashboard{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
+{% endblock %}
+
+{% block content %}
         <div class="detail-card" style="width:100%;">
             <div class="detail-header" style="justify-content: space-between; align-items: center;">
                 <div>
@@ -141,6 +138,4 @@
                 {% endif %}
             </section>
         </div>
-    </main>
-</body>
-</html>
+{% endblock %}

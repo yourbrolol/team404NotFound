@@ -1,19 +1,15 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ContestKeeper - Settings</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/settings.css' %}">
-    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
-</head>
+{% block title %}ContestKeeper - Settings{% endblock %}
 
-<body>
-    {% include 'app/core/nav.html' %}
-    <main class="dashboard-container page-narrow">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/settings.css' %}">
+{% endblock %}
+
+{% block main_class %}page-narrow{% endblock %}
+
+{% block content %}
         <header class="dashboard-header">
             <div class="header-left header-left--row">
                 <h1 id="h1">Settings</h1>
@@ -162,9 +158,10 @@
                 <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
             </div>
         </form>
-    </main>
+{% endblock %}
 
-    <script>
+{% block extra_js %}
+<script>
         // Auto-dismiss the success alert after 4 seconds
         const alert = document.getElementById('savedAlert');
         if (alert) {
@@ -236,6 +233,4 @@
             });
         }
     </script>
-</body>
-
-</html>
+{% endblock %}

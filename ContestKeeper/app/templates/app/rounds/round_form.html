@@ -1,16 +1,13 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if round %}Edit{% else %}Create{% endif %} Round - {{ contest.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
-</head>
-<body>
-    {% include 'app/core/nav.html' %}
-    <main class="dashboard-container">
+
+{% block title %}{% if round %}Edit{% else %}Create{% endif %} Round - {{ contest.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
+{% endblock %}
+
+{% block content %}
         <div class="detail-card" style="max-width: 700px; margin: auto;">
             <h1 class="detail-title">{% if round %}Edit Round{% else %}Create New Round{% endif %}</h1>
             <p style="margin: 0.5rem 0 1.5rem; color: var(--text-muted);">{{ contest.name }}</p>
@@ -99,9 +96,10 @@
                 </div>
             </form>
         </div>
-    </main>
+{% endblock %}
 
-    <script>
+{% block extra_js %}
+<script>
         // Parse must_have from textarea and convert to JSON array
         document.querySelector('form').addEventListener('submit', function(e) {
             const must_have_textarea = document.getElementById('must_have');
@@ -119,5 +117,4 @@
             must_have_textarea.value = JSON.stringify(items);
         });
     </script>
-</body>
-</html>
+{% endblock %}

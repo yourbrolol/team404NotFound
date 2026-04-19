@@ -1,15 +1,14 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ContestKeeper - Notifications</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
-    <style>
+{% block title %}ContestKeeper - Notifications{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block extra_head %}
+<style>
         .notifications-container {
             max-width: 800px;
             margin: 0 auto;
@@ -102,11 +101,9 @@
             color: var(--text-muted);
         }
     </style>
-</head>
+{% endblock %}
 
-<body>
-    {% include 'app/core/nav.html' %}
-    <main class="dashboard-container">
+{% block content %}
         <div class="notifications-container">
             <header class="notifications-header">
                 <div>
@@ -161,7 +158,4 @@
                 {% endfor %}
             </div>
         </div>
-    </main>
-</body>
-
-</html>
+{% endblock %}

@@ -1,19 +1,13 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ContestKeeper - Dashboard</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
-</head>
+{% block title %}ContestKeeper - Dashboard{% endblock %}
 
-<body>
-    {% include 'app/core/nav.html' %}
-    <main class="dashboard-container">
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block content %}
         <header class="dashboard-header">
             <div class="header-left">
                 <h1 id="h1">Dashboard</h1>
@@ -78,7 +72,4 @@
                 {% endfor %}
             </div>
         </section>
-    </main>
-</body>
-
-</html>
+{% endblock %}

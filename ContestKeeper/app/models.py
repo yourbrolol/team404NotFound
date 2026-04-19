@@ -33,7 +33,7 @@ class Team(models.Model):
         DRAFT = "DRAFT", _("Draft")
         ACTIVE = "ACTIVE", _("Active")
     
-    name = models.CharField(max_length=20)
+    name = models.CharField(max_length=100)
     description = models.TextField(max_length=200, blank=True)
     status = models.CharField(choices=Status.choices, default=Status.DRAFT)
     participants = models.ManyToManyField(User, related_name="participated_teams")

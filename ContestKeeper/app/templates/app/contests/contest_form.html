@@ -1,16 +1,14 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %} - ContestKeeper</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
+{% block title %}{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %} - ContestKeeper{% endblock %}
 
-    <style>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
+{% endblock %}
+
+{% block extra_head %}
+<style>
         /* Fix centering for checkbox group */
         .form-group.checkbox-row {
             display: flex;
@@ -38,11 +36,9 @@
             /* Text follows the checkbox */
         }
     </style>
-</head>
+{% endblock %}
 
-<body>
-    {% include 'app/core/nav.html' %}
-    <main class="dashboard-container">
+{% block content %}
         <header class="dashboard-header">
             <h1 id="h1">{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %}</h1>
         </header>
@@ -80,7 +76,4 @@
                 </div>
             </form>
         </div>
-    </main>
-</body>
-
-</html>
+{% endblock %}

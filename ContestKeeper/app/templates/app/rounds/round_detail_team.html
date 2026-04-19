@@ -1,13 +1,14 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ round.title }} - {{ round.contest.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/nav.css' %}">
-    <style>
+
+{% block title %}{{ round.title }} - {{ round.contest.name }}{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
+{% endblock %}
+
+{% block extra_head %}
+<style>
         .round-detail-header {
             background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
@@ -184,10 +185,9 @@
             text-decoration: underline;
         }
     </style>
-</head>
-<body>
-    {% include 'app/core/nav.html' %}
-    <main class="dashboard-container">
+{% endblock %}
+
+{% block content %}
         <a href="{% url 'contest_rounds_team' round.contest.pk %}" class="back-link">← Back to All Rounds</a>
 
         {% if round.status == 'SUBMISSION_CLOSED' %}
@@ -274,9 +274,10 @@
                 {% endif %}
             </div>
         </div>
-    </main>
+{% endblock %}
 
-    <script>
+{% block extra_js %}
+<script>
         function updateCountdown() {
             const deadline = new Date('{{ round.deadline|date:"c" }}');
             const now = new Date();
@@ -310,5 +311,4 @@
             setInterval(updateCountdown, 1000);
         {% endif %}
     </script>
-</body>
-</html>
+{% endblock %}

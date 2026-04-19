@@ -1,21 +1,14 @@
+{% extends 'app/core/base.html' %}
 {% load static %}
-<!DOCTYPE html>
-<html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Teams - {{ contest.name }}</title>
-    <link rel="stylesheet" href="{% static 'css/common.css' %}">
-    <link rel="stylesheet" href="{% static 'css/team.css' %}">
-    <link rel="stylesheet" href="{% static 'css/teams.css' %}">
-    <link href="{% static 'fonts/origin.css' %}" rel="stylesheet">
-</head>
+{% block title %}Teams - {{ contest.name }}{% endblock %}
 
-<body>
-    {% include "app/core/nav.html" %}
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/team.css' %}">
+<link rel="stylesheet" href="{% static 'css/teams.css' %}">
+{% endblock %}
 
-    <main class="dashboard-container">
+{% block content %}
         <header class="dashboard-header">
             <h1 id="h1" class="animate-fade-in">Teams for "{{ contest.name }}"</h1>
         </header>
@@ -109,9 +102,8 @@
                 </a>
             </div>
         </div>
-    </main>
+{% endblock %}
 
-    <script src="{% static 'js/teams.js' %}"></script>
-</body>
-
-</html>
+{% block extra_js %}
+<script src="{% static 'js/teams.js' %}"></script>
+{% endblock %}
