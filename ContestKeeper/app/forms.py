@@ -2,7 +2,7 @@ from django import forms
 from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
-from .models import Contest, User, Announcement, ScheduleEvent, Submission, Team, ScoringCriterion
+from app.models import Contest, User, Announcement, ScheduleEvent, Submission, Team, ScoringCriterion
 
 class UserRegistrationForm(UserCreationForm):
     class Meta:

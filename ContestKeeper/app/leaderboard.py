@@ -7,7 +7,7 @@ from decimal import Decimal, ROUND_HALF_UP
 from django.db import transaction
 from django.utils import timezone
 
-from .models import ContestEvaluationPhase, JuryScore, LeaderboardEntry, ScoringCriterion
+from app.models import ContestEvaluationPhase, JuryScore, LeaderboardEntry, ScoringCriterion
 
 
 logger = logging.getLogger(__name__)

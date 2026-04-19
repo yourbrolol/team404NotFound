@@ -1,4 +1,4 @@
-from .models import Notification
+from app.models import Notification
 
 def notify_user(user, notification_type, title, message, link=""):
     """Create a single notification for a user."""
@@ -46,7 +46,7 @@ def notify_contest_jury(contest, notification_type, title, message, link=""):
 
 def generate_schedule_from_rounds(contest):
     """Automatically generate schedule events based on contest rounds."""
-    from .models import ScheduleEvent
+    from app.models import ScheduleEvent
     
     # Clear existing auto-generated round events
     ScheduleEvent.objects.filter(contest=contest, event_type=ScheduleEvent.EventType.ROUND).delete()

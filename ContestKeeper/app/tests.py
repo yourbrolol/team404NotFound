@@ -5,8 +5,8 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
-from .leaderboard import compute_leaderboard, export_csv, get_missing_scores, save_leaderboard
-from .models import (
+from app.leaderboard import compute_leaderboard, export_csv, get_missing_scores, save_leaderboard
+from app.models import (
     Application,
     Contest,
     ContestEvaluationPhase,
