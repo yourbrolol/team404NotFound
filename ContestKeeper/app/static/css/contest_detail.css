@@ -230,6 +230,47 @@
     white-space: nowrap;
 }
 
+/* ── Quick Links ── */
+.quick-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin-bottom: 2rem;
+}
+
+.quick-link-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.5rem;
+    text-decoration: none !important;
+    color: var(--text-main, #f8fafc) !important;
+    background: var(--glass, rgba(255, 255, 255, 0.05));
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+    border-radius: 1.25rem;
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+}
+
+.quick-link-card:hover {
+    transform: translateY(-4px);
+    border-color: rgba(99, 102, 241, 0.4);
+    background: rgba(30, 41, 59, 0.9);
+}
+
+.quick-link-card h4 {
+    margin: 0;
+    font-size: 1rem;
+    color: inherit;
+}
+.quick-link-card svg {
+    margin-bottom: 0.25rem;
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Tablet  (≤ 900px)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */

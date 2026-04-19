@@ -5,6 +5,44 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/contest_detail.css' %}">
+    <style>
+        .quick-links {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .quick-link-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 1rem;
+            text-decoration: none !important;
+            color: var(--text-main, #f8fafc) !important;
+            background: var(--glass, rgba(255, 255, 255, 0.05));
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+            border-radius: 1.25rem;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+        .quick-link-card:hover {
+            transform: translateY(-4px);
+            border-color: rgba(99, 102, 241, 0.4);
+            background: rgba(30, 41, 59, 0.9);
+        }
+        .quick-link-card h4 {
+            margin: 0;
+            font-size: 1rem;
+            color: inherit;
+        }
+        .quick-link-card svg {
+            margin-bottom: 0.25rem;
+        }
+    </style>
 {% endblock %}
 
 {% block content %}
@@ -49,40 +87,40 @@
         </div>
     </div>
 
-    <div class="quick-links" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
-        <a href="{% url 'announcement_list' contest.pk %}" class="glass-panel" style="min-height: auto; padding: 1.5rem; text-decoration: none; text-align: center;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem; color: var(--primary);">
+    <div class="quick-links">
+        <a href="{% url 'announcement_list' contest.pk %}" class="quick-link-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
-            <h4 style="margin: 0;">Announcements</h4>
+            <h4>Announcements</h4>
         </a>
-        <a href="{% url 'schedule' contest.pk %}" class="glass-panel" style="min-height: auto; padding: 1.5rem; text-decoration: none; text-align: center;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem; color: var(--secondary);">
+        <a href="{% url 'schedule' contest.pk %}" class="quick-link-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--secondary);">
                 <rect x="3" y="4" width="18" height="18" rx="2" ry="2"></rect>
                 <line x1="16" y1="2" x2="16" y2="6"></line>
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
-            <h4 style="margin: 0;">Schedule</h4>
+            <h4>Schedule</h4>
         </a>
         {% if user == contest.organizer %}
-        <a href="{% url 'admin_application_list' contest.pk %}" class="glass-panel" style="min-height: auto; padding: 1.5rem; text-decoration: none; text-align: center;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem; color: #6366f1;">
+        <a href="{% url 'admin_application_list' contest.pk %}" class="quick-link-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #6366f1;">
                 <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
                 <circle cx="9" cy="7" r="4"></circle>
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
-            <h4 style="margin: 0;">Review Apps</h4>
+            <h4>Review Apps</h4>
         </a>
-        <a href="{% url 'organizer_analytics' contest.pk %}" class="glass-panel" style="min-height: auto; padding: 1.5rem; text-decoration: none; text-align: center;">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-bottom: 0.5rem; color: #10b981;">
+        <a href="{% url 'organizer_analytics' contest.pk %}" class="quick-link-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;">
                 <line x1="18" y1="20" x2="18" y2="10"></line>
                 <line x1="12" y1="20" x2="12" y2="4"></line>
                 <line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
-            <h4 style="margin: 0;">Analytics</h4>
+            <h4>Analytics</h4>
         </a>
         {% endif %}
     </div>

@@ -5,24 +5,13 @@
 
 {% block extra_css %}
 <style>
-    :root {
-        --glass-bg: rgba(255, 255, 255, 0.7);
-        --glass-border: rgba(255, 255, 255, 0.3);
-        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
-    }
-
-    body {
-        background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-        min-height: 100vh;
-    }
-
     .glass-card {
-        background: var(--glass-bg);
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        border: 1px solid var(--glass-border);
-        border-radius: 20px;
-        box-shadow: var(--glass-shadow);
+        background: var(--bg-card);
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border);
+        border-radius: 1.5rem;
+        box-shadow: var(--shadow-lg);
         padding: 2rem;
         margin-bottom: 2rem;
     }
@@ -31,7 +20,7 @@
         display: flex;
         gap: 1rem;
         margin-bottom: 2rem;
-        border-bottom: 1px solid rgba(0,0,0,0.1);
+        border-bottom: 1px solid var(--border);
         padding-bottom: 1rem;
     }
 
@@ -39,13 +28,17 @@
         padding: 0.5rem 1rem;
         border-radius: 8px;
         text-decoration: none;
-        color: #4b5563;
+        color: var(--text-muted);
         font-weight: 600;
         transition: all 0.2s;
     }
 
+    .tab-link:hover {
+        color: var(--text-main);
+    }
+
     .tab-link.active {
-        background: #6366f1;
+        background: var(--primary);
         color: white;
     }
 
@@ -53,15 +46,19 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: white;
+        background: var(--glass);
         padding: 1.25rem;
         border-radius: 16px;
         margin-bottom: 1rem;
-        border: 1px solid #e5e7eb;
+        border: 1px solid var(--border);
         transition: transform 0.2s;
+        color: var(--text-main);
     }
 
-    .app-card:hover { transform: translateY(-2px); }
+    .app-card:hover { 
+        transform: translateY(-2px); 
+        border-color: rgba(99, 102, 241, 0.4);
+    }
 
     .user-info {
         display: flex;
@@ -72,8 +69,9 @@
     .user-avatar {
         width: 40px;
         height: 40px;
-        background: #e0e7ff;
-        color: #4f46e5;
+        background: rgba(99, 102, 241, 0.15);
+        color: var(--primary);
+        border: 1px solid rgba(99, 102, 241, 0.3);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -85,13 +83,13 @@
     .user-details h3 {
         margin: 0;
         font-size: 1.1rem;
-        color: #1f2937;
+        color: var(--text-main);
     }
 
     .user-details p {
         margin: 0;
         font-size: 0.875rem;
-        color: #6b7280;
+        color: var(--text-muted);
     }
 
     .actions-group {
@@ -109,15 +107,15 @@
         transition: all 0.2s;
     }
 
-    .btn-approve { background: #dcfce7; color: #166534; }
-    .btn-approve:hover { background: #bbf7d0; }
-    .btn-reject { background: #fee2e2; color: #991b1b; }
-    .btn-reject:hover { background: #fecaca; }
+    .btn-approve { background: rgba(34, 197, 94, 0.2); color: #4ade80; border: 1px solid rgba(34, 197, 94, 0.3); }
+    .btn-approve:hover { background: rgba(34, 197, 94, 0.35); }
+    .btn-reject { background: rgba(239, 68, 68, 0.2); color: #f87171; border: 1px solid rgba(239, 68, 68, 0.3); }
+    .btn-reject:hover { background: rgba(239, 68, 68, 0.35); }
 
     .empty-state {
         text-align: center;
         padding: 4rem 1rem;
-        color: #6b7280;
+        color: var(--text-muted);
     }
 </style>
 {% endblock %}

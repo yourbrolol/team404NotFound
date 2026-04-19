@@ -10,10 +10,20 @@
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
         gap: 1.5rem;
         margin-bottom: 2rem;
-    }
     .summary-card {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
         text-align: center;
         padding: 1.5rem;
+        background: var(--glass, rgba(255, 255, 255, 0.05));
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+        border-radius: 1.25rem;
+        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        min-height: 120px;
     }
     .summary-value {
         font-size: 2.25rem;
@@ -97,19 +107,19 @@
 </header>
 
 <div class="analytics-summary">
-    <div class="glass-panel summary-card">
+    <div class="summary-card">
         <div class="summary-value">{{ total_teams }}</div>
         <div class="summary-label">Teams</div>
     </div>
-    <div class="glass-panel summary-card">
+    <div class="summary-card">
         <div class="summary-value">{{ total_jury }}</div>
         <div class="summary-label">Jury</div>
     </div>
-    <div class="glass-panel summary-card">
+    <div class="summary-card">
         <div class="summary-value">{{ total_submissions }}</div>
         <div class="summary-label">Submissions</div>
     </div>
-    <div class="glass-panel summary-card">
+    <div class="summary-card">
         <div class="summary-value">{{ total_evaluations }}</div>
         <div class="summary-label">Evaluations</div>
     </div>
