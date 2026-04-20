@@ -45,7 +45,7 @@
 html {
   overflow-x: clip;
   /* Base font size scales up on 4K/8K for readability */
-  font-size: 16px;
+  font-size: clamp(16px, 1vw, 5vw);
 }
 
 body {
@@ -71,18 +71,34 @@ body {
    so we combine width + resolution to reliably detect.
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
 @media (min-width: 1600px) and (min-resolution: 1.5dppx) {
-  html { font-size: 18px; }
-  .dashboard-container { max-width: 1900px; }
+  html {
+    font-size: 18px;
+  }
+
+  .dashboard-container {
+    max-width: 1900px;
+  }
 }
 
 @media (min-width: 1900px) and (min-resolution: 1.5dppx) {
-  html { font-size: 20px; }
-  .dashboard-container { max-width: 2200px; }
+  html {
+    font-size: 20px;
+  }
+
+  .dashboard-container {
+    max-width: 2200px;
+  }
 }
 
-@media (min-width: 3000px), (min-width: 2000px) and (min-resolution: 2dppx) {
-  html { font-size: 22px; }
-  .dashboard-container { max-width: 2400px; }
+@media (min-width: 3000px),
+(min-width: 2000px) and (min-resolution: 2dppx) {
+  html {
+    font-size: 22px;
+  }
+
+  .dashboard-container {
+    max-width: 2400px;
+  }
 }
 
 .container {
@@ -141,8 +157,8 @@ h3 {
   border-radius: 1.25rem;
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   box-shadow: var(--shadow-lg);
-  min-height: 30vh;
-  min-width: 320px;
+  /* min-height: 30vh;
+  min-width: 320px; */
   padding: 2.5rem;
   flex-direction: column;
 }
@@ -167,7 +183,8 @@ h3 {
   text-decoration: none;
   transition: all 0.2s ease;
   cursor: pointer;
-  border: 1px solid transparent; /* Match the box model of tinted buttons */
+  border: 1px solid transparent;
+  /* Match the box model of tinted buttons */
   gap: 0.5rem;
 }
 
@@ -300,7 +317,8 @@ select:focus {
 
   .glass-panel,
   .contest-card {
-    min-width: 0; /* allow shrinking inside grid */
+    min-width: 0;
+    /* allow shrinking inside grid */
     min-height: 0;
     padding: 1.5rem;
   }
@@ -332,7 +350,8 @@ select:focus {
   }
 
   .contest-grid {
-    grid-template-columns: 1fr; /* single column */
+    grid-template-columns: 1fr;
+    /* single column */
     gap: 1rem;
   }
 
