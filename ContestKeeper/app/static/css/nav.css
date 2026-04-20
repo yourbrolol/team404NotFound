@@ -50,7 +50,7 @@ main.dashboard-container {
 
 /* ── Nav overlay backdrop ── */
 .nav-overlay {
-    display: none;
+    pointer-events: none;
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.55);
@@ -61,6 +61,7 @@ main.dashboard-container {
 
 .nav-overlay.visible {
     opacity: 1;
+    pointer-events: auto;
 }
 
 #nav {
@@ -218,7 +219,6 @@ main.dashboard-container {
 
     /* Show overlay when nav is open — starts below the 60px top bar */
     .nav-overlay {
-        display: block;
         top: 60px;   /* don't cover the hamburger button */
     }
 
