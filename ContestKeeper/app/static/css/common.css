@@ -1,6 +1,6 @@
 :root {
   /* Sidebar width — keep in sync with nav.css (fixed rail + main offset) */
-  --nav-width: 280px;
+  --nav-width: 260px;
   --primary: #6366f1;
   --primary-hover: #4f46e5;
   --secondary: #a855f7;
