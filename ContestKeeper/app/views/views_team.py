@@ -3,9 +3,9 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import DetailView, ListView, CreateView
 
-from ..models import Application, Contest, User, Team
-from ..forms import TeamForm
-from .views_base import RedirectToRegisterMixin
+from app.models import Application, Contest, User, Team
+from app.forms import TeamForm
+from app.views.views_base import RedirectToRegisterMixin
 
 
 class ViewTeamsView(RedirectToRegisterMixin, ListView):

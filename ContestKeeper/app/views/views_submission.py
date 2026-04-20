@@ -4,10 +4,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView
 
-from ..forms import SubmissionForm
-from ..models import Contest, Round, Submission
-from .views_base import RedirectToRegisterMixin
-from .views_base import OrganizerRequiredMixin
+from app.forms import SubmissionForm
+from app.models import Contest, Round, Submission
+from app.views.views_base import RedirectToRegisterMixin
+from app.views.views_base import OrganizerRequiredMixin
 
 
 class SubmissionCreateEditView(RedirectToRegisterMixin, View):

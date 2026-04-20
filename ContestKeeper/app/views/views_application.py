@@ -5,9 +5,9 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 
-from ..models import Application, Contest, Notification
-from ..services import notify_user
-from .views_base import RedirectToRegisterMixin, OrganizerRequiredMixin
+from app.models import Application, Contest, Notification
+from app.services import notify_user
+from app.views.views_base import RedirectToRegisterMixin, OrganizerRequiredMixin
 
 
 class ApplicationActionView(RedirectToRegisterMixin, View):

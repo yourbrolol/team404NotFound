@@ -4,10 +4,10 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, TemplateView
 
-from ..forms import ScheduleEventForm
-from ..models import JuryScore, LeaderboardEntry, ScheduleEvent, Submission
-from ..services import generate_schedule_from_rounds
-from .views_base import ContestContextMixin, OrganizerRequiredMixin
+from app.forms import ScheduleEventForm
+from app.models import JuryScore, LeaderboardEntry, ScheduleEvent, Submission
+from app.services import generate_schedule_from_rounds
+from app.views.views_base import ContestContextMixin, OrganizerRequiredMixin
 
 
 class OrganizerAnalyticsView(OrganizerRequiredMixin, TemplateView):

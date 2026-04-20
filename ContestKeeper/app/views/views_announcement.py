@@ -2,10 +2,10 @@ from django.contrib import messages
 from django.urls import reverse
 from django.views.generic import CreateView, DeleteView, ListView
 
-from ..forms import AnnouncementForm
-from ..models import Announcement, Notification
-from ..services import notify_contest_participants
-from .views_base import ContestContextMixin, OrganizerRequiredMixin
+from app.forms import AnnouncementForm
+from app.models import Announcement, Notification
+from app.services import notify_contest_participants
+from app.views.views_base import ContestContextMixin, OrganizerRequiredMixin
 
 
 class AnnouncementListView(ContestContextMixin, ListView):

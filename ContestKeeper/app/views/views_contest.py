@@ -1,11 +1,11 @@
 from django.http import Http404, HttpResponseForbidden, JsonResponse
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView
 
-from ..forms import ContestForm
-from ..models import Application, Contest
-from .views_base import RedirectToRegisterMixin
+from app.forms import ContestForm
+from app.models import Application, Contest
+from app.views.views_base import RedirectToRegisterMixin
 
 
 class ContestListView(ListView):

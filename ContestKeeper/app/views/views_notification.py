@@ -2,8 +2,8 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import ListView
 
-from ..models import Notification
-from .views_base import RedirectToRegisterMixin
+from app.models import Notification
+from app.views.views_base import RedirectToRegisterMixin
 
 
 class NotificationListView(RedirectToRegisterMixin, ListView):

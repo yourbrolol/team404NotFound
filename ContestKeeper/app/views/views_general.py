@@ -2,9 +2,9 @@ from django.shortcuts import redirect, render
 from django.views import View
 from django.views.generic import TemplateView
 
-from ..forms import ProfileBioForm, UserSettingsForm
-from ..models import Contest, LeaderboardEntry, JuryScore, Round, Team
-from .views_base import RedirectToRegisterMixin
+from app.forms import ProfileBioForm, UserSettingsForm
+from app.models import Contest, LeaderboardEntry, JuryScore, Round, Team
+from app.views.views_base import RedirectToRegisterMixin
 
 
 class HomeView(RedirectToRegisterMixin, TemplateView):

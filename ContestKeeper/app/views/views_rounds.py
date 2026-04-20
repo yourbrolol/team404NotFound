@@ -9,9 +9,9 @@ from django.utils.dateparse import parse_datetime
 from django.views import View
 from django.views.generic import CreateView, ListView, TemplateView, DetailView
 
-from ..models import Contest, Notification, Round, Submission
-from ..services import notify_contest_jury, notify_contest_participants
-from .views_base import OrganizerRequiredMixin, RedirectToRegisterMixin, ContestContextMixin
+from app.models import Contest, Notification, Round, Submission
+from app.services import notify_contest_jury, notify_contest_participants
+from app.views.views_base import OrganizerRequiredMixin, RedirectToRegisterMixin, ContestContextMixin
 
 
 class RoundListView(OrganizerRequiredMixin, ListView):

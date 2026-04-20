@@ -2,7 +2,7 @@ from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 
-from ..models import Contest
+from app.models import Contest
 
 
 class RedirectToRegisterMixin(LoginRequiredMixin):

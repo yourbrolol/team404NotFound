@@ -6,11 +6,11 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 
-from ..forms import ScoringCriterionForm
+from app.forms import ScoringCriterionForm
 
-from ..leaderboard import LeaderboardComputer
-from ..models import ContestEvaluationPhase, JuryScore, LeaderboardEntry, ScoringCriterion
-from .views_team import AdminPermissionMixin, LeaderboardAccessMixin
+from app.leaderboard import LeaderboardComputer
+from app.models import ContestEvaluationPhase, JuryScore, LeaderboardEntry, ScoringCriterion
+from app.views.views_team import AdminPermissionMixin, LeaderboardAccessMixin
 
 
 class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):

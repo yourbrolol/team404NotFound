@@ -3,9 +3,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.db import transaction
 
-from ..forms import JuryEvaluationForm
-from ..models import Contest, Team, ScoringCriterion, JuryScore, Submission, ContestEvaluationPhase
-from .views_base import JuryRequiredMixin
+from app.forms import JuryEvaluationForm
+from app.models import Contest, Team, ScoringCriterion, JuryScore, Submission, ContestEvaluationPhase
+from app.views.views_base import JuryRequiredMixin
 
 class JuryEvaluationView(JuryRequiredMixin, View):
     template_name = "app/juries/jury_evaluation.html"
