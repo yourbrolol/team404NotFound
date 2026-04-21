@@ -4,7 +4,7 @@
 {% block title %}ContestKeeper - Home{% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/home.css' %}">
+<link rel="stylesheet" href="{% static 'css/home.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -15,13 +15,13 @@
     </div>
 </header>
 
-<section class="home-welcome glass-panel">
+<!-- <section class="home-welcome glass-panel">
     <h2>Welcome to ContestKeeper</h2>
     <p>The ultimate platform for organizing, participating, and judging contests with ease and style.</p>
     <div class="cta-actions">
         <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
     </div>
-</section>
+</section> -->
 
 {% if user_contest %}
 <section class="quick-access glass-panel">
@@ -30,7 +30,8 @@
             <p class="quick-access__eyebrow">Quick Access</p>
             <h2>Your current contest</h2>
         </div>
-        <span class="status-indicator status-{{ user_contest.status|lower }}">{{ user_contest.get_status_display }}</span>
+        <span class="status-indicator status-{{ user_contest.status|lower }}">{{ user_contest.get_status_display
+            }}</span>
     </div>
     <div class="quick-access__grid">
         <div class="quick-access__item">
@@ -50,7 +51,8 @@
         <a href="{% url 'contest_detail' user_contest.pk %}" class="btn btn-primary">Open Contest</a>
         <a href="{% url 'contest_rounds_team' user_contest.pk %}" class="btn btn-secondary">View Rounds</a>
         {% if active_round %}
-        <a href="{% url 'round_detail_team' user_contest.pk active_round.pk %}" class="btn btn-secondary">Open Current Round</a>
+        <a href="{% url 'round_detail_team' user_contest.pk active_round.pk %}" class="btn btn-secondary">Open Current
+            Round</a>
         {% endif %}
     </div>
 </section>
@@ -62,7 +64,8 @@
         <div class="filter-bar">
             <a href="{% url 'home' %}" class="filter-btn {% if not status_filter %}active{% endif %}">All</a>
             {% for value, label in status_choices %}
-            <a href="{% url 'home' %}?status={{ value }}" class="filter-btn {% if status_filter == value %}active{% endif %}">{{ label }}</a>
+            <a href="{% url 'home' %}?status={{ value }}"
+                class="filter-btn {% if status_filter == value %}active{% endif %}">{{ label }}</a>
             {% endfor %}
         </div>
     </div>
@@ -91,9 +94,16 @@
         {% empty %}
         <div class="empty-state">
             <div class="empty-icon">
-                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1"
+                    stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
+                    <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
+                    <polyline points="14 2 14 8 20 8"></polyline>
+                    <line x1="12" y1="18" x2="12" y2="12"></line>
+                    <line x1="9" y1="15" x2="15" y2="15"></line>
+                </svg>
             </div>
-            <p>{% if status_filter %}No contests match this filter yet.{% else %}No contests available yet.{% endif %}</p>
+            <p>{% if status_filter %}No contests match this filter yet.{% else %}No contests available yet.{% endif %}
+            </p>
         </div>
         {% endfor %}
     </div>

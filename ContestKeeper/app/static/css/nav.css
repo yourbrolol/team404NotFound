@@ -44,9 +44,17 @@ main.dashboard-container {
     transform-origin: center;
 }
 
-.nav-hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-.nav-hamburger.open span:nth-child(2) { opacity: 0; }
-.nav-hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+.nav-hamburger.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.nav-hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.nav-hamburger.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
 
 /* ── Nav overlay backdrop ── */
 .nav-overlay {
@@ -124,7 +132,8 @@ main.dashboard-container {
     cursor: pointer;
     width: 100%;
     font-family: inherit;
-    min-height: 44px; /* Accessible tap target */
+    min-height: 44px;
+    /* Accessible tap target */
 }
 
 .nav-link:hover {
@@ -196,7 +205,8 @@ main.dashboard-container {
 
     /* Remove desktop sidebar offset */
     body {
-        padding-top: 60px; /* room for the top bar */
+        padding-top: 60px;
+        /* room for the top bar */
     }
 
     main.dashboard-container {
@@ -219,7 +229,8 @@ main.dashboard-container {
 
     /* Show overlay when nav is open — starts below the 60px top bar */
     .nav-overlay {
-        top: 60px;   /* don't cover the hamburger button */
+        top: 60px;
+        /* don't cover the hamburger button */
     }
 
     /* Sticky top bar visible on mobile/tablet */
@@ -237,7 +248,8 @@ main.dashboard-container {
         align-items: center;
         justify-content: space-between;
         padding: 0 1.25rem;
-        z-index: 1002; /* must be above overlay (999) and nav (1000) */
+        z-index: 1002;
+        /* must be above overlay (999) and nav (1000) */
     }
 
     .nav-topbar-logo {
