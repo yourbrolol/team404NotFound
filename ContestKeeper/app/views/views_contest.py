@@ -5,7 +5,7 @@ from django.views.generic import DetailView, ListView
 
 from app.forms import ContestForm
 from app.models import Application, Contest
-from app.views.views_base import RedirectToRegisterMixin
+from app.views.views_base import OrganizerRequiredMixin, RedirectToRegisterMixin
 
 
 class ContestListView(ListView):
@@ -84,12 +84,6 @@ class ContestFormView(RedirectToRegisterMixin, View):
         contest = Contest.objects.filter(pk=pk).first()
         return contest, (contest is not None and contest.organizer != self.request.user)
 
-    def get(self, request, *args, **kwargs):
-        contest, forbidden = self._get_contest()
-        if forbidden:
-            return HttpResponseForbidden("You are not the organizer of this contest.")
-        form = ContestForm(instance=contest)
-        return render(request, self.template_name, {"form": form, "is_edit": contest is not None})
 
     def post(self, request, *args, **kwargs):
         contest, forbidden = self._get_contest()
@@ -105,9 +99,13 @@ class ContestFormView(RedirectToRegisterMixin, View):
         return render(request, self.template_name, {"form": form, "is_edit": contest is not None})
 
 
-class ContestDeleteView(RedirectToRegisterMixin, View):
+class ContestDeleteView(OrganizerRequiredMixin, View):
     model = Contest
     success_url = "dashboard"
 
     def get(self, request, *args, **kwargs):
         return redirect("contest_detail", pk=kwargs["pk"])
+
+    def post(self, request, *args, **kwargs):
+        self.contest.delete()
+        return redirect("dashboard")
