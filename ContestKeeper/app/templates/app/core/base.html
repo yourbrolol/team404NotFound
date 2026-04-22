@@ -19,9 +19,10 @@
     {% block extra_head %}{% endblock %}
 </head>
 <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     {% include 'app/core/nav.html' %}
     
-    <main class="dashboard-container {% block main_class %}{% endblock %}">
+    <main id="main-content" class="dashboard-container {% block main_class %}{% endblock %}">
         {% block content %}{% endblock %}
     </main>
 

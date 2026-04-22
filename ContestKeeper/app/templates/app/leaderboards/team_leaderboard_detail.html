@@ -36,7 +36,7 @@
 
                 <section style="margin-bottom: 1.5rem;">
                     <h4>Category breakdown</h4>
-                    <table class="table" style="width:100%; margin-top:0.75rem;">
+                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
                         <thead>
                             <tr>
                                 <th>Criterion</th>
@@ -53,7 +53,7 @@
                                 </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                    </table></div>
                 </section>
 
                 <section style="margin-bottom: 1.5rem;">
@@ -64,7 +64,7 @@
                         {% for item in breakdown_by_criterion %}
                             <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface);">
                                 <h5 style="margin-top:0;">{{ item.criterion.name }}</h5>
-                                <table class="table" style="width:100%; margin-top:0.75rem;">
+                                <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
                                     <thead>
                                         <tr>
                                             <th>Jury</th>
@@ -79,7 +79,7 @@
                                             </tr>
                                         {% endfor %}
                                     </tbody>
-                                </table>
+                                </table></div>
                             </div>
                         {% endfor %}
                     {% endif %}

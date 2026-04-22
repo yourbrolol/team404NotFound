@@ -25,30 +25,32 @@
                     <p>{{ not_available_message }}</p>
                 </div>
             {% else %}
-                <table class="table" style="width:100%; margin-top:1.5rem;">
-                    <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Team</th>
-                            <th>Total Score</th>
-                            {% for criterion in criteria %}
-                                <th>{{ criterion.name }}</th>
+                <div style="overflow-x: auto; margin-top: 1.5rem;">
+                    <table class="table" style="width:100%; min-width: 600px;">
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th>Team</th>
+                                <th>Total Score</th>
+                                {% for criterion in criteria %}
+                                    <th>{{ criterion.name }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for item in entries %}
+                            <tr{% if item.entry.is_tied %} class="highlight"{% endif %}>
+                                <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
+                                <td>{{ item.entry.team.name }}</td>
+                                <td>{{ item.entry.total_score }}</td>
+                                {% for score in item.category_values %}
+                                    <td>{{ score }}</td>
+                                {% endfor %}
+                            </tr>
                             {% endfor %}
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {% for item in entries %}
-                        <tr{% if item.entry.is_tied %} class="highlight"{% endif %}>
-                            <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
-                            <td>{{ item.entry.team.name }}</td>
-                            <td>{{ item.entry.total_score }}</td>
-                            {% for score in item.category_values %}
-                                <td>{{ score }}</td>
-                            {% endfor %}
-                        </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
+                        </tbody>
+                    </table></div>
+                </div>
 
                 {% if can_view_missing %}
                     <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">

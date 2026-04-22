@@ -54,7 +54,7 @@
             <section style="margin-top: 1.5rem;">
                 <h4>Missing scores</h4>
                 {% if missing_scores %}
-                    <table class="table" style="width:100%; margin-top:0.75rem;">
+                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
                         <thead>
                             <tr>
                                 <th>Team</th>
@@ -71,7 +71,7 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                    </table></div>
                 {% else %}
                     <p>No missing scores detected.</p>
                 {% endif %}
@@ -101,7 +101,7 @@
             <section style="margin-top: 1.5rem;">
                 <h4>Current leaderboard preview</h4>
                 {% if entries %}
-                    <table class="table" style="width:100%; margin-top:0.75rem;">
+                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
                         <thead>
                             <tr>
                                 <th>Rank</th>
@@ -132,7 +132,7 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                    </table></div>
                 {% else %}
                     <p>No leaderboard entries available yet.</p>
                 {% endif %}

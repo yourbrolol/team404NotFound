@@ -65,6 +65,24 @@ body {
   overflow-x: clip;
 }
 
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: white;
+  z-index: 9999;
+  transition: top 0.2s;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    High-res readability (4K/8K + HiDPI)
    Note: on 4K displays browsers often report ~1920 CSS px (DPR=2),
@@ -382,3 +400,21 @@ select:focus {
     padding: 0.4rem 1rem;
   }
 }
+/* Skip link for accessibility */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  padding: 8px 16px;
+  background: var(--primary);
+  color: white;
+  z-index: 9999;
+  transition: top 0.2s;
+  text-decoration: none;
+  border-radius: 0 0 4px 4px;
+}
+
+.skip-link:focus {
+  top: 0;
+}
+.btn:focus { outline: 2px solid var(--primary); outline-offset: 2px; }

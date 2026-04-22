@@ -210,7 +210,7 @@
 
                 {% if leaderboard_entries %}
                 <div class="profile-table-wrap">
-                    <table class="profile-table">
+                    <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
                         <thead>
                             <tr>
                                 <th>Contest</th>
@@ -229,7 +229,7 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
                 {% else %}
                 <div class="empty-state profile-empty-state">
@@ -293,7 +293,7 @@
 
                 {% if jury_scores %}
                 <div class="profile-table-wrap">
-                    <table class="profile-table">
+                    <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
                         <thead>
                             <tr>
                                 <th>Contest</th>
@@ -312,7 +312,7 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table>
+                    </table></div>
                 </div>
                 {% else %}
                 <div class="empty-state profile-empty-state">
