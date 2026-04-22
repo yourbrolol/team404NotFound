@@ -49,8 +49,30 @@
                             </tr>
                             {% endfor %}
                         </tbody>
-                    </table></div>
+                    </table>
                 </div>
+
+                {% if entries.has_other_pages %}
+                <div class="pagination" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                    {% if entries.has_previous %}
+                        <a href="?page=1" class="btn btn-secondary btn-sm">First</a>
+                        <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">Previous</a>
+                    {% endif %}
+                    
+                    {% for num in entries.paginator.page_range %}
+                        {% if entries.number == num %}
+                            <span class="btn btn-primary btn-sm" style="cursor: default;">{{ num }}</span>
+                        {% elif num > entries.number|add:-3 and num < entries.number|add:3 %}
+                            <a href="?page={{ num }}" class="btn btn-secondary btn-sm">{{ num }}</a>
+                        {% endif %}
+                    {% endfor %}
+                    
+                    {% if entries.has_next %}
+                        <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">Next</a>
+                        <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">Last</a>
+                    {% endif %}
+                </div>
+                {% endif %}
 
                 {% if can_view_missing %}
                     <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">

@@ -1,5 +1,6 @@
 import csv
 
+from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
@@ -50,6 +51,12 @@ class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
             }
             for entry in raw_entries
         ]
+        
+        # Paginate entries (50 per page for better performance)
+        paginator = Paginator(entries, 50)
+        page_number = self.request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
+        
         can_view_missing = self.request.user.is_staff or self.request.user == self.contest.organizer
         show_jury_breakdown = (
             self.request.user.is_staff
@@ -62,7 +69,7 @@ class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
             contest=self.contest,
             phase=phase,
             leaderboard_available=True,
-            entries=entries,
+            entries=page_obj,
             criteria=criteria,
             show_jury_breakdown=show_jury_breakdown,
             can_view_missing=can_view_missing,
@@ -211,6 +218,11 @@ class AdminLeaderboardDashboardView(AdminPermissionMixin, TemplateView):
             }
             for entry in raw_entries
         ]
+        
+        # Paginate entries for admin dashboard (25 per page)
+        paginator = Paginator(entries_data, 25)
+        page_number = self.request.GET.get('page', 1)
+        page_obj = paginator.get_page(page_number)
 
         return super().get_context_data(
             contest=self.contest,
@@ -220,7 +232,7 @@ class AdminLeaderboardDashboardView(AdminPermissionMixin, TemplateView):
             expected=total_expected,
             progress_percent=progress_percent,
             missing_scores=missing_scores,
-            entries=entries_data,
+            entries=page_obj,
             show_jury_breakdown_to_participants=phase.show_jury_breakdown_to_participants,
         )
 
