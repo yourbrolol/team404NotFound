@@ -1,5 +1,12 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin as BaseUserAdmin
+from app.models import JuryAssignment
+# JuryAssignment admin
+@admin.register(JuryAssignment)
+class JuryAssignmentAdmin(admin.ModelAdmin):
+    list_display = ("contest", "team", "jury_member", "assigned_at")
+    list_filter = ("contest", "jury_member")
+    search_fields = ("team__name", "jury_member__username", "contest__name")
 
 from app.models import (
     Application,

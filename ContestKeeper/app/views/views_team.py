@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect
 from django.views import View
 from django.views.generic import DetailView, ListView, CreateView
 
-from app.models import Application, Contest, User, Team
+from app.models import Application, Contest, User, Team, JuryAssignment
 from app.forms import TeamForm
 from app.views.views_base import RedirectToRegisterMixin
 
@@ -32,7 +32,8 @@ class ViewJurysView(RedirectToRegisterMixin, ListView):
         return self.contest.jurys.all()
 
     def get_context_data(self, **kwargs):
-        return super().get_context_data(contest=self.contest, **kwargs)
+        assignments = JuryAssignment.objects.filter(contest=self.contest).select_related('team', 'jury_member')
+        return super().get_context_data(contest=self.contest, assignments=assignments, **kwargs)
 
 
 class TeamDetailView(RedirectToRegisterMixin, DetailView):

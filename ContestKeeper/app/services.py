@@ -1,4 +1,59 @@
-from app.models import Notification
+import random
+from app.models import Notification, JuryAssignment
+
+def assign_jury_to_teams(contest, min_reviews_per_team=2):
+    """
+    Randomly and evenly assign jury members to teams for a contest.
+    
+    Args:
+        contest: Contest instance
+        min_reviews_per_team: how many jury members should review each team
+        
+    Returns:
+        Number of assignments created.
+    """
+    jurys = list(contest.jurys.all())
+    teams = list(contest.teams.all())
+    
+    if not jurys:
+        return 0
+    
+    # If we have fewer jurys than min_reviews, cap it
+    k = min(min_reviews_per_team, len(jurys))
+    
+    # Clear existing assignments for this contest
+    JuryAssignment.objects.filter(contest=contest).delete()
+    
+    assignments = []
+    
+    # Simple round-robin like distribution to keep it even
+    # Shuffle juries to ensure randomness
+    random.shuffle(jurys)
+    
+    jury_pool = jurys * ((len(teams) * k // len(jurys)) + 1)
+    pool_idx = 0
+    
+    for team in teams:
+        # For each team, we need k unique jury members
+        assigned_to_team = 0
+        tried_indices = set()
+        
+        while assigned_to_team < k:
+            jury = jury_pool[pool_idx % len(jury_pool)]
+            
+            # Ensure jury member is not already assigned to this team
+            if jury not in [a.jury_member for a in assignments if a.team == team]:
+                assignments.append(JuryAssignment(
+                    contest=contest,
+                    team=team,
+                    jury_member=jury
+                ))
+                assigned_to_team += 1
+            
+            pool_idx += 1
+            
+    JuryAssignment.objects.bulk_create(assignments)
+    return len(assignments)
 
 def notify_user(user, notification_type, title, message, link=""):
     """Create a single notification for a user."""

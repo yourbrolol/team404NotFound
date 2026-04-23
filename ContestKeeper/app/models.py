@@ -161,6 +161,22 @@ class ScoringCriterion(models.Model):
         return f"{self.contest.name}: {self.name}"
 
 
+class JuryAssignment(models.Model):
+    """Assignment of a jury member to a team for a specific contest."""
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="jury_assignments")
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="jury_assignments")
+    jury_member = models.ForeignKey(User, on_delete=models.CASCADE, related_name="jury_assignments")
+    assigned_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        unique_together = ("contest", "team", "jury_member")
+        verbose_name = "Jury Assignment"
+        verbose_name_plural = "Jury Assignments"
+
+    def __str__(self):
+        return f"{self.jury_member.username} → {self.team.name} ({self.contest.name})"
+
+
 class JuryScore(models.Model):
     contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="jury_scores")
     team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="jury_scores")

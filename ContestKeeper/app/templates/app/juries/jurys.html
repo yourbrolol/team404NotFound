@@ -22,12 +22,45 @@
 
         <div class="glass-panel animate-fade-in delay-1">
             <div id="jurys-panel" class="tab-panel active">
+                {% if user == contest.organizer and jurys and contest.teams.all.exists %}
+                <div class="actions-header" style="margin-bottom: 2rem;">
+                    <form action="{% url 'assign_jury' pk=contest.pk %}" method="post" style="display: flex; gap: 1rem; align-items: center;">
+                        {% csrf_token %}
+                        <div class="form-group" style="margin-bottom: 0;">
+                            <label class="form-label">Reviews per team:</label>
+                            <input type="number" name="min_reviews" value="2" min="1" max="{{ jurys.count }}" class="form-input" style="width: 80px;">
+                        </div>
+                        <button type="submit" class="btn btn-primary">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M16 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
+                                <circle cx="8.5" cy="7" r="4"></circle>
+                                <polyline points="17 11 19 13 23 9"></polyline>
+                            </svg>
+                            Run Random Assignment
+                        </button>
+                    </form>
+                </div>
+                {% endif %}
+
                 {% if jurys %}
                 <ul class="teams-list">
                     {% for jury in jurys %}
                     <li>
                         <div class="team-card">
-                            <span class="team-name">{{ jury.username }}</span>
+                            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+                                <span class="team-name">{{ jury.username }}</span>
+                                <div class="assigned-teams" style="font-size: 0.85rem; color: var(--text-muted);">
+                                    {% with jury_assignments=assignments|dictsort:"team.name" %}
+                                        {% for assignment in jury_assignments %}
+                                            {% if assignment.jury_member_id == jury.id %}
+                                                <span class="badge" style="background: var(--glass); padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem;">
+                                                    {{ assignment.team.name }}
+                                                </span>
+                                            {% endif %}
+                                        {% endfor %}
+                                    {% endwith %}
+                                </div>
+                            </div>
                         </div>
                     </li>
                     {% endfor %}

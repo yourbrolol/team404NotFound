@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import DetailView, ListView
 
 from app.forms import SubmissionForm
-from app.models import Contest, Round, Submission
+from app.models import Contest, Round, Submission, JuryAssignment
 from app.views.views_base import RedirectToRegisterMixin
 from app.views.views_base import OrganizerRequiredMixin
 
@@ -104,7 +104,19 @@ class RoundSubmissionsListView(OrganizerRequiredMixin, ListView):
         return super(OrganizerRequiredMixin, self).dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
-        return Submission.objects.filter(round=self.round).order_by("-submitted_at")
+        qs = Submission.objects.filter(round=self.round)
+        user = self.request.user
+        
+        # If user is jury (and not organizer/staff), filter by assignments
+        is_organizer = self.contest.organizer == user
+        if not (user.is_staff or is_organizer):
+            if self.contest.jurys.filter(pk=user.pk).exists():
+                assignments = JuryAssignment.objects.filter(contest=self.contest, jury_member=user)
+                if assignments.exists():
+                    assigned_teams = assignments.values_list('team_id', flat=True)
+                    qs = qs.filter(team_id__in=assigned_teams)
+                    
+        return qs.order_by("-submitted_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

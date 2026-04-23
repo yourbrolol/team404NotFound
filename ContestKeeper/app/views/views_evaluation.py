@@ -2,10 +2,25 @@ from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.db import transaction
+from django.http import HttpResponseForbidden
 
 from app.forms import JuryEvaluationForm
-from app.models import Contest, Team, ScoringCriterion, JuryScore, Submission, ContestEvaluationPhase
-from app.views.views_base import JuryRequiredMixin
+from app.models import Contest, Team, ScoringCriterion, JuryScore, Submission, ContestEvaluationPhase, JuryAssignment
+from app.views.views_base import JuryRequiredMixin, OrganizerRequiredMixin
+from app.services import assign_jury_to_teams
+
+class AssignJuryView(OrganizerRequiredMixin, View):
+    def post(self, request, pk):
+        contest = self.contest
+        k = request.POST.get("min_reviews", 2)
+        try:
+            k = int(k)
+        except ValueError:
+            k = 2
+            
+        num = assign_jury_to_teams(contest, min_reviews_per_team=k)
+        messages.success(request, f"Successfully created {num} jury assignments for {contest.teams.count()} teams.")
+        return redirect("contest_jurys", pk=contest.pk)
 
 class JuryEvaluationView(JuryRequiredMixin, View):
     template_name = "app/juries/jury_evaluation.html"
@@ -13,6 +28,15 @@ class JuryEvaluationView(JuryRequiredMixin, View):
     def get_context_data(self, **kwargs):
         contest = self.contest
         team = get_object_or_404(Team, pk=self.kwargs["team_pk"])
+        
+        # Check for assignment
+        if not JuryAssignment.objects.filter(contest=contest, team=team, jury_member=self.request.user).exists():
+            # If there are NO assignments at all for this contest, we might allow it (optional fallback)
+            # but per spec we should probably enforce it if assignments exist.
+            # Let's enforce it strictly if ANY assignments exist for this contest.
+            if JuryAssignment.objects.filter(contest=contest).exists():
+                return None # Will trigger 403 in get/post
+
         round_id = self.kwargs.get("round_id")
         
         # Get latest submission for reference
@@ -48,9 +72,15 @@ class JuryEvaluationView(JuryRequiredMixin, View):
 
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
+        if context is None:
+            return HttpResponseForbidden("You are not assigned to evaluate this team.")
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
+        context = self.get_context_data()
+        if context is None:
+            return HttpResponseForbidden("You are not assigned to evaluate this team.")
+            
         contest = self.contest
         team = get_object_or_404(Team, pk=self.kwargs["team_pk"])
         criteria = contest.scoring_criteria.all()

@@ -3,7 +3,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from app.forms import ProfileBioForm, UserSettingsForm
-from app.models import Contest, LeaderboardEntry, JuryScore, Round, Team
+from app.models import Contest, LeaderboardEntry, JuryScore, Round, Team, JuryAssignment
 from app.views.views_base import RedirectToRegisterMixin
 
 
@@ -126,7 +126,19 @@ class ProfileView(RedirectToRegisterMixin, View):
                 existing_pairs = set(
                     JuryScore.objects.filter(contest=contest, jury_member=user).values_list("team_id", "criterion_id")
                 )
-                for team in contest.teams.order_by("name"):
+                
+                # Respect assignments if they exist
+                assignments = JuryAssignment.objects.filter(contest=contest, jury_member=user)
+                if assignments.exists():
+                    teams_to_evaluate = [a.team for a in assignments.select_related('team').order_by('team__name')]
+                else:
+                    # If assignments exist for the contest but not for this jury member, they get nothing
+                    if JuryAssignment.objects.filter(contest=contest).exists():
+                        teams_to_evaluate = []
+                    else:
+                        teams_to_evaluate = contest.teams.order_by("name")
+                
+                for team in teams_to_evaluate:
                     missing = [
                         criterion
                         for criterion in contest.scoring_criteria.order_by("order", "name")
