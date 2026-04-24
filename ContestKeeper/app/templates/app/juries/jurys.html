@@ -1,7 +1,8 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Jurys – {{ contest.name }}{% endblock %}
+{% block title %}{% blocktrans with name=contest.name %}Jurys – {{ name }}{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/team.css' %}">
@@ -10,13 +11,13 @@
 
 {% block content %}
         <header class="dashboard-header">
-            <h1 id="h1" class="animate-fade-in">Jury Panel for "{{ contest.name }}"</h1>
+            <h1 id="h1" class="animate-fade-in">{% blocktrans with name=contest.name %}Jury Panel for "{{ name }}"{% endblocktrans %}</h1>
         </header>
 
         <div class="tabs-header animate-fade-in delay-1">
-            <button class="tab-btn active" onclick="switchTab(event, 'jurys')">Jury Panel</button>
+            <button class="tab-btn active" onclick="switchTab(event, 'jurys')">{% trans "Jury Panel" %}</button>
             {% if user == contest.organizer %}
-            <button class="tab-btn" onclick="switchTab(event, 'apps')">Applications</button>
+            <button class="tab-btn" onclick="switchTab(event, 'apps')">{% trans "Applications" %}</button>
             {% endif %}
         </div>
 
@@ -27,7 +28,7 @@
                     <form action="{% url 'assign_jury' pk=contest.pk %}" method="post" style="display: flex; gap: 1rem; align-items: center;">
                         {% csrf_token %}
                         <div class="form-group" style="margin-bottom: 0;">
-                            <label class="form-label">Reviews per team:</label>
+                            <label class="form-label">{% trans "Reviews per team:" %}</label>
                             <input type="number" name="min_reviews" value="2" min="1" max="{{ jurys.count }}" class="form-input" style="width: 80px;">
                         </div>
                         <button type="submit" class="btn btn-primary">
@@ -36,7 +37,7 @@
                                 <circle cx="8.5" cy="7" r="4"></circle>
                                 <polyline points="17 11 19 13 23 9"></polyline>
                             </svg>
-                            Run Random Assignment
+                            {% trans "Run Random Assignment" %}
                         </button>
                     </form>
                 </div>
@@ -67,7 +68,7 @@
                 </ul>
                 {% else %}
                 <div class="empty-state">
-                    <p>No jurys assigned to this contest yet.</p>
+                    <p>{% trans "No jurys assigned to this contest yet." %}</p>
                 </div>
                 {% endif %}
             </div>
@@ -75,7 +76,7 @@
             {% if user == contest.organizer %}
             <div id="apps-panel" class="tab-panel">
                 <div class="empty-state">
-                    <p>Jury applications will appear here.</p>
+                    <p>{% trans "Jury applications will appear here." %}</p>
                 </div>
             </div>
             {% endif %}
@@ -87,7 +88,7 @@
                         <line x1="19" y1="12" x2="5" y2="12"></line>
                         <polyline points="12 19 5 12 12 5"></polyline>
                     </svg>
-                    Back to Contest
+                    {% trans "Back to Contest" %}
                 </a>
             </div>
         </div>

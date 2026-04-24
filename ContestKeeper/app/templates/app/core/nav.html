@@ -1,9 +1,9 @@
-{% load static %}
+{% load static i18n %}
 
 <!-- Mobile top bar (hidden on desktop) -->
 <div class="nav-topbar">
     <a href="{% url 'home' %}" class="nav-topbar-logo">ContestKeeper</a>
-    <button class="nav-hamburger" id="navHamburger" aria-label="Toggle navigation" aria-expanded="false">
+    <button class="nav-hamburger" id="navHamburger" aria-label="{% trans 'Toggle navigation' %}" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -17,20 +17,38 @@
     <div class="nav-container">
         <a href="{% url 'home' %}" class="nav-logo">ContestKeeper</a>
         <div class="nav-links">
-            <button data-url="{% url 'home' %}" class="nav-link" id="homeBtn">Home</button>
-            <button data-url="{% url 'dashboard' %}" class="nav-link" id="dashboardBtn">Dashboard</button>
-            <button data-url="{% url 'profile' %}" class="nav-link" id="profileBtn">Profile</button>
-            <button data-url="{% url 'settings' %}" class="nav-link" id="settingsBtn">Settings</button>
-            <button id="themeToggle" class="nav-link" aria-label="Toggle theme">
+            <button data-url="{% url 'home' %}" class="nav-link" id="homeBtn">{% trans "Home" %}</button>
+            <button data-url="{% url 'dashboard' %}" class="nav-link" id="dashboardBtn">{% trans "Dashboard" %}</button>
+            <button data-url="{% url 'profile' %}" class="nav-link" id="profileBtn">{% trans "Profile" %}</button>
+            <button data-url="{% url 'settings' %}" class="nav-link" id="settingsBtn">{% trans "Settings" %}</button>
+            
+            <div class="nav-lang-switcher">
+                <form action="{% url 'set_language' %}" method="post" style="display: inline;">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path|slice:'3:' }}">
+                    <select name="language" onchange="this.form.submit()" class="nav-lang-select" aria-label="{% trans 'Select language' %}">
+                        {% get_current_language as LANGUAGE_CODE %}
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                {{ language.name_local }} ({{ language.code }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
+
+            <button id="themeToggle" class="nav-link" aria-label="{% trans 'Toggle theme' %}">
                 <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.75rem;">
                     <!-- Moon icon (default) -->
                     <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>
                 </svg>
-                <span id="themeText">Dark Mode</span>
+                <span id="themeText">{% if request.COOKIES.theme == 'light' %}{% trans "Light Mode" %}{% else %}{% trans "Dark Mode" %}{% endif %}</span>
             </button>
             <hr class="nav-auth-divider">
             {% if user.is_authenticated %}
-            <button data-url="{% url 'notification_list' %}" class="nav-link notification-btn" id="notificationsBtn" aria-label="Notifications">
+            <button data-url="{% url 'notification_list' %}" class="nav-link notification-btn" id="notificationsBtn" aria-label="{% trans 'Notifications' %}">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                     <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                     <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
@@ -42,11 +60,11 @@
             <span class="nav-user">{{ user.username }}</span>
             <form method="post" action="{% url 'logout' %}" class="nav-logout-form">
                 {% csrf_token %}
-                <button type="submit" class="nav-link">Log out</button>
+                <button type="submit" class="nav-link">{% trans "Log out" %}</button>
             </form>
             {% else %}
-            <a href="{% url 'register' %}" class="nav-link">Register</a>
-            <a href="{% url 'login' %}" class="nav-link">Log in</a>
+            <a href="{% url 'register' %}" class="nav-link">{% trans "Register" %}</a>
+            <a href="{% url 'login' %}" class="nav-link">{% trans "Log in" %}</a>
             {% endif %}
         </div>
         <script>
@@ -57,14 +75,17 @@
             });
 
             (function highlightActiveNav() {
-                var path = window.location.pathname.replace(/\/+$/, '') || '/';
+                var path = window.location.pathname;
+                // For i18n urls like /uk/dashboard/ we want to match /dashboard/
+                var pathWithoutLang = path.replace(/^\/[a-z]{2}\//, '/').replace(/\/+$/, '') || '/';
+                
                 document.querySelectorAll('.nav-link[data-url]').forEach(function (button) {
                     var raw = button.getAttribute('data-url');
                     if (!raw) return;
                     try {
                         var u = new URL(raw, window.location.origin);
-                        var p = u.pathname.replace(/\/+$/, '') || '/';
-                        if (p === path) button.classList.add('nav-link--active');
+                        var p = u.pathname.replace(/^\/[a-z]{2}\//, '/').replace(/\/+$/, '') || '/';
+                        if (p === pathWithoutLang) button.classList.add('nav-link--active');
                     } catch (e) { /* ignore */ }
                 });
             })();
@@ -77,13 +98,16 @@
                 const sunIcon = '<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
                 const moonIcon = '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path>';
 
+                const lightModeText = "{% trans 'Light Mode' %}";
+                const darkModeText = "{% trans 'Dark Mode' %}";
+
                 function updateUI(theme) {
                     if (theme === 'light') {
                         icon.innerHTML = sunIcon;
-                        text.textContent = 'Light Mode';
+                        text.textContent = lightModeText;
                     } else {
                         icon.innerHTML = moonIcon;
-                        text.textContent = 'Dark Mode';
+                        text.textContent = darkModeText;
                     }
                 }
 
@@ -95,12 +119,72 @@
                     const next = current === 'dark' ? 'light' : 'dark';
                     document.documentElement.setAttribute('data-theme', next);
                     localStorage.setItem('theme', next);
+                    document.cookie = "theme=" + next + "; path=/; max-age=31536000";
                     updateUI(next);
                 });
             })();
         </script>
     </div>
 </nav>
+
+<style>
+    .nav-lang-select {
+        background: var(--glass);
+        color: var(--text-main);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 4px 8px;
+        font-size: 0.85rem;
+        cursor: pointer;
+        outline: none;
+        margin-right: 0.5rem;
+    }
+    .nav-lang-select:hover {
+        background: var(--glass-hover);
+        border-color: var(--accent);
+    }
+    .nav-lang-select option {
+        background: #1e293b;
+        color: #f8fafc;
+    }
+</style>
+
+<link rel="stylesheet" href="{% static 'css/nav.css' %}">
+
+<script>
+    (function () {
+        const hamburger = document.getElementById('navHamburger');
+        const nav = document.getElementById('nav');
+        const overlay = document.getElementById('navOverlay');
+
+        function openNav() {
+            nav.classList.add('nav-open');
+            overlay.classList.add('visible');
+            hamburger.classList.add('open');
+            hamburger.setAttribute('aria-expanded', 'true');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeNav() {
+            nav.classList.remove('nav-open');
+            overlay.classList.remove('visible');
+            hamburger.classList.remove('open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', function () {
+            nav.classList.contains('nav-open') ? closeNav() : openNav();
+        });
+
+        overlay.addEventListener('click', closeNav);
+
+        // Close on Escape key
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') closeNav();
+        });
+    })();
+</script>
 
 <link rel="stylesheet" href="{% static 'css/nav.css' %}">
 

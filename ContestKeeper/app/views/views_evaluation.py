@@ -31,11 +31,7 @@ class JuryEvaluationView(JuryRequiredMixin, View):
         
         # Check for assignment
         if not JuryAssignment.objects.filter(contest=contest, team=team, jury_member=self.request.user).exists():
-            # If there are NO assignments at all for this contest, we might allow it (optional fallback)
-            # but per spec we should probably enforce it if assignments exist.
-            # Let's enforce it strictly if ANY assignments exist for this contest.
-            if JuryAssignment.objects.filter(contest=contest).exists():
-                return None # Will trigger 403 in get/post
+            return None # Will trigger 403 in get/post
 
         round_id = self.kwargs.get("round_id")
         

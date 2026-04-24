@@ -1,7 +1,8 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}{% if round %}Edit{% else %}Create{% endif %} Round - {{ contest.name }}{% endblock %}
+{% block title %}{% if round %}{% trans "Edit" %}{% else %}{% trans "Create" %}{% endif %} {% trans "Round" %} - {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/nav.css' %}">
@@ -9,7 +10,7 @@
 
 {% block content %}
         <div class="detail-card" style="max-width: 700px; margin: auto;">
-            <h1 class="detail-title">{% if round %}Edit Round{% else %}Create New Round{% endif %}</h1>
+            <h1 class="detail-title">{% if round %}{% trans "Edit Round" %}{% else %}{% trans "Create New Round" %}{% endif %}</h1>
             <p style="margin: 0.5rem 0 1.5rem; color: var(--text-muted);">{{ contest.name }}</p>
 
             {% if error %}
@@ -28,7 +29,7 @@
                 {% csrf_token %}
 
                 <div>
-                    <label for="title">Title *</label>
+                    <label for="title">{% trans "Title *" %}</label>
                     <input type="text" id="title" name="title" value="{{ round.title|default:'' }}" required 
                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem;">
                     {% if form.title.errors %}
@@ -37,7 +38,7 @@
                 </div>
 
                 <div>
-                    <label for="description">Description *</label>
+                    <label for="description">{% trans "Description *" %}</label>
                     <textarea id="description" name="description" required rows="4"
                               style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; font-family: inherit;">{{ round.description|default:'' }}</textarea>
                     {% if form.description.errors %}
@@ -46,7 +47,7 @@
                 </div>
 
                 <div>
-                    <label for="tech_requirements">Tech Requirements *</label>
+                    <label for="tech_requirements">{% trans "Tech Requirements *" %}</label>
                     <textarea id="tech_requirements" name="tech_requirements" required rows="4"
                               style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; font-family: inherit;">{{ round.tech_requirements|default:'' }}</textarea>
                     {% if form.tech_requirements.errors %}
@@ -55,17 +56,17 @@
                 </div>
 
                 <div>
-                    <label for="must_have">Must Have Checklist (JSON array, one item per line) *</label>
+                    <label for="must_have">{% trans "Must Have Checklist (JSON array, one item per line) *" %}</label>
                     <textarea id="must_have" name="must_have" required rows="4"
                               style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; font-family: monospace; background: #fafafa;">{% if round %}{{ round.must_have|join:'&#10;' }}{% endif %}</textarea>
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">Enter each item on a separate line, e.g.: API endpoint, Database schema, Deployment</p>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans "Enter each item on a separate line, e.g.: API endpoint, Database schema, Deployment" %}</p>
                     {% if form.must_have.errors %}
                         <p style="color: #c33; margin-top: 0.25rem;">{{ form.must_have.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label for="start_time">Start Time *</label>
+                    <label for="start_time">{% trans "Start Time *" %}</label>
                     <input type="datetime-local" id="start_time" name="start_time" value="{% if round %}{{ round.start_time|date:'Y-m-d\TH:i' }}{% endif %}" required
                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem;">
                     {% if form.start_time.errors %}
@@ -74,25 +75,25 @@
                 </div>
 
                 <div>
-                    <label for="deadline">Deadline *</label>
+                    <label for="deadline">{% trans "Deadline *" %}</label>
                     <input type="datetime-local" id="deadline" name="deadline" value="{% if round %}{{ round.deadline|date:'Y-m-d\TH:i' }}{% endif %}" required
                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem;">
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">Must be after start time</p>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans "Must be after start time" %}</p>
                     {% if form.deadline.errors %}
                         <p style="color: #c33; margin-top: 0.25rem;">{{ form.deadline.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
-                    <label for="materials">Materials (JSON array with {label, url} objects, optional)</label>
+                    <label for="materials">{% trans "Materials (JSON array with {label, url} objects, optional)" %}</label>
                     <textarea id="materials" name="materials" rows="3"
                               style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; font-family: monospace; background: #fafafa;">{% if round %}{{ round.materials|safe }}{% endif %}</textarea>
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">Example: [{"label": "Docs", "url": "https://..."}, {"label": "API", "url": "https://..."}]</p>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans 'Example: [{"label": "Docs", "url": "https://..."}, {"label": "API", "url": "https://..."}]' %}</p>
                 </div>
 
                 <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
-                    <button type="submit" class="btn btn-primary">{% if round %}Update Round{% else %}Create Round{% endif %}</button>
-                    <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">{% if round %}{% trans "Update Round" %}{% else %}{% trans "Create Round" %}{% endif %}</button>
+                    <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
                 </div>
             </form>
         </div>
@@ -109,7 +110,7 @@
                 .filter(s => s.length > 0);
             
             if (items.length === 0) {
-                alert('Must have at least one checklist item!');
+                alert('{% trans "Must have at least one checklist item!" %}');
                 e.preventDefault();
                 return false;
             }

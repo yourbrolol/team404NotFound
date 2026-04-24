@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}ContestKeeper - Profile{% endblock %}
+{% block title %}ContestKeeper - {% trans "Profile" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/settings.css' %}">
@@ -14,7 +14,7 @@
 {% block content %}
         <header class="dashboard-header">
             <div class="header-left header-left--row">
-                <h1 id="h1">Profile</h1>
+                <h1 id="h1">{% trans "Profile" %}</h1>
                 <span class="role-badge">{{ user.get_role_display }}</span>
             </div>
         </header>
@@ -25,7 +25,7 @@
                 stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            Changes saved successfully!
+            {% trans "Changes saved successfully!" %}
         </div>
         {% endif %}
 
@@ -42,8 +42,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">Account</h2>
-                        <p class="settings-card__subtitle">Your personal information</p>
+                        <h2 class="settings-card__title">{% trans "Account" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Your personal information" %}</p>
                     </div>
                 </div>
 
@@ -59,35 +59,35 @@
 
                 <div class="settings-fields">
                     <div class="form-group">
-                        <label class="form-label">Username</label>
+                        <label class="form-label">{% trans "Username" %}</label>
                         <div class="inline-value-row">
                             <div class="form-input" id="profileUsernameValue" style="cursor:default; user-select:text;">{{ user.username }}</div>
-                            <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileUsernameValue">Copy</button>
+                            <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileUsernameValue">{% trans "Copy" %}</button>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Email</label>
+                        <label class="form-label">{% trans "Email" %}</label>
                         <div class="inline-value-row">
                             <div class="form-input" id="profileEmailValue" style="cursor:default; user-select:text;">{{ user.email|default:"-" }}</div>
-                            <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileEmailValue">Copy</button>
+                            <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileEmailValue">{% trans "Copy" %}</button>
                         </div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">First Name</label>
+                        <label class="form-label">{% trans "First Name" %}</label>
                         <div class="form-input" style="cursor:default; user-select:text;">{{ user.first_name|default:"-" }}</div>
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label">Last Name</label>
+                        <label class="form-label">{% trans "Last Name" %}</label>
                         <div class="form-input" style="cursor:default; user-select:text;">{{ user.last_name|default:"-" }}</div>
                     </div>
 
                     <div class="form-group">
                         <form method="post" id="profileBioForm">
                             {% csrf_token %}
-                            <label class="form-label" for="{{ form.bio.id_for_label }}">Bio</label>
+                            <label class="form-label" for="{{ form.bio.id_for_label }}">{% trans "Bio" %}</label>
                             {{ form.bio }}
                             <div class="settings-toolbar" style="margin-top: 0.5rem;">
                                 <span class="settings-helper" id="profileBioCounter"></span>
@@ -99,7 +99,7 @@
                             {% endfor %}
                             {% endif %}
                             <div class="settings-actions" style="justify-content: flex-start; margin-top: 1rem;">
-                                <button type="submit" class="btn btn-primary">Save Bio</button>
+                                <button type="submit" class="btn btn-primary">{% trans "Save Bio" %}</button>
                             </div>
                         </form>
                     </div>
@@ -117,8 +117,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">Account Info</h2>
-                        <p class="settings-card__subtitle">Your account details (read-only)</p>
+                        <h2 class="settings-card__title">{% trans "Account Info" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Your account details (read-only)" %}</p>
                     </div>
                     <button type="button" class="btn btn-secondary section-toggle-btn" data-toggle-target="profileInfoPanel"
                         aria-expanded="true" style="margin-left: auto;">
@@ -126,23 +126,23 @@
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="6 9 12 15 18 9"></polyline>
                         </svg>
-                        Collapse
+                        {% trans "Collapse" %}
                     </button>
                 </div>
 
                 <div class="settings-info-grid collapsible-content" id="profileInfoPanel">
                     <div class="settings-info-item">
-                        <span class="settings-info-item__label">Role</span>
+                        <span class="settings-info-item__label">{% trans "Role" %}</span>
                         <span class="settings-info-item__value">
                             <span class="role-badge">{{ user.get_role_display }}</span>
                         </span>
                     </div>
                     <div class="settings-info-item">
-                        <span class="settings-info-item__label">Member since</span>
+                        <span class="settings-info-item__label">{% trans "Member since" %}</span>
                         <span class="settings-info-item__value">{{ user.date_joined|date:"M d, Y" }}</span>
                     </div>
                     <div class="settings-info-item">
-                        <span class="settings-info-item__label">Last login</span>
+                        <span class="settings-info-item__label">{% trans "Last login" %}</span>
                         <span class="settings-info-item__value">{{ user.last_login|date:"M d, Y" }}</span>
                     </div>
                 </div>
@@ -161,8 +161,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">My Teams</h2>
-                        <p class="settings-card__subtitle">Teams and contests you participate in</p>
+                        <h2 class="settings-card__title">{% trans "My Teams" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Teams and contests you participate in" %}</p>
                     </div>
                 </div>
 
@@ -174,19 +174,21 @@
                             <h3>{{ row.team.name }}</h3>
                             <p>
                                 {% if row.contest %}
-                                Contest: {{ row.contest.name }}
+                                {% blocktrans with contest_name=row.contest.name %}Contest: {{ contest_name }}{% endblocktrans %}
                                 {% else %}
-                                Contest not assigned yet
+                                {% trans "Contest not assigned yet" %}
                                 {% endif %}
                             </p>
                         </div>
-                        <span class="role-badge">{{ row.is_captain|yesno:"Captain,Member" }}</span>
+                        <span class="role-badge">
+                            {% if row.is_captain %}{% trans "Captain" %}{% else %}{% trans "Member" %}{% endif %}
+                        </span>
                     </article>
                     {% endfor %}
                 </div>
                 {% else %}
                 <div class="empty-state profile-empty-state">
-                    <p>You are not part of any teams yet.</p>
+                    <p>{% trans "You are not part of any teams yet." %}</p>
                 </div>
                 {% endif %}
             </section>
@@ -203,8 +205,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">Leaderboard History</h2>
-                        <p class="settings-card__subtitle">Placements and scores from completed contests</p>
+                        <h2 class="settings-card__title">{% trans "Leaderboard History" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Placements and scores from completed contests" %}</p>
                     </div>
                 </div>
 
@@ -213,10 +215,10 @@
                     <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
                         <thead>
                             <tr>
-                                <th>Contest</th>
-                                <th>Team</th>
-                                <th>Rank</th>
-                                <th>Total score</th>
+                                <th>{% trans "Contest" %}</th>
+                                <th>{% trans "Team" %}</th>
+                                <th>{% trans "Rank" %}</th>
+                                <th>{% trans "Total score" %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -233,7 +235,7 @@
                 </div>
                 {% else %}
                 <div class="empty-state profile-empty-state">
-                    <p>No leaderboard results available yet.</p>
+                    <p>{% trans "No leaderboard results available yet." %}</p>
                 </div>
                 {% endif %}
             </section>
@@ -248,8 +250,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">Pending Reviews</h2>
-                        <p class="settings-card__subtitle">Teams and criteria that still need your scores</p>
+                        <h2 class="settings-card__title">{% trans "Pending Reviews" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Teams and criteria that still need your scores" %}</p>
                     </div>
                 </div>
 
@@ -260,19 +262,19 @@
                         <div>
                             <h3>{{ review.team.name }}</h3>
                             <p>{{ review.contest.name }}</p>
-                            <p>Missing criteria:
+                            <p>{% trans "Missing criteria:" %}
                                 {% for criterion in review.missing_criteria %}
                                 {{ criterion.name }}{% if not forloop.last %}, {% endif %}
                                 {% endfor %}
                             </p>
                         </div>
-                        <a href="{% url 'contest_leaderboard' review.contest.pk %}" class="btn btn-secondary">Open Contest</a>
+                        <a href="{% url 'contest_leaderboard' review.contest.pk %}" class="btn btn-secondary">{% trans "Open Contest" %}</a>
                     </article>
                     {% endfor %}
                 </div>
                 {% else %}
                 <div class="empty-state profile-empty-state">
-                    <p>You have no pending reviews right now.</p>
+                    <p>{% trans "You have no pending reviews right now." %}</p>
                 </div>
                 {% endif %}
             </section>
@@ -286,8 +288,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">Completed Reviews</h2>
-                        <p class="settings-card__subtitle">Scores you have already submitted</p>
+                        <h2 class="settings-card__title">{% trans "Completed Reviews" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Scores you have already submitted" %}</p>
                     </div>
                 </div>
 
@@ -296,10 +298,10 @@
                     <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
                         <thead>
                             <tr>
-                                <th>Contest</th>
-                                <th>Team</th>
-                                <th>Criterion</th>
-                                <th>Score</th>
+                                <th>{% trans "Contest" %}</th>
+                                <th>{% trans "Team" %}</th>
+                                <th>{% trans "Criterion" %}</th>
+                                <th>{% trans "Score" %}</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -316,7 +318,7 @@
                 </div>
                 {% else %}
                 <div class="empty-state profile-empty-state">
-                    <p>You have not submitted any scores yet.</p>
+                    <p>{% trans "You have not submitted any scores yet." %}</p>
                 </div>
                 {% endif %}
             </section>
@@ -332,8 +334,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">My Contests</h2>
-                        <p class="settings-card__subtitle">Contests you created and currently manage</p>
+                        <h2 class="settings-card__title">{% trans "My Contests" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Contests you created and currently manage" %}</p>
                     </div>
                 </div>
 
@@ -343,18 +345,18 @@
                     <article class="profile-list__item">
                         <div>
                             <h3>{{ contest.name }}</h3>
-                            <p>{{ contest.start_date|date:"M d, Y" }} to {{ contest.end_date|date:"M d, Y" }}</p>
+                            <p>{% blocktrans with start=contest.start_date|date:"M d, Y" end=contest.end_date|date:"M d, Y" %}{{ start }} to {{ end }}{% endblocktrans %}</p>
                         </div>
                         <div class="profile-list__actions">
                             <span class="status-indicator status-{{ contest.status|lower }}">{{ contest.get_status_display }}</span>
-                            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">Open</a>
+                            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">{% trans "Open" %}</a>
                         </div>
                     </article>
                     {% endfor %}
                 </div>
                 {% else %}
                 <div class="empty-state profile-empty-state">
-                    <p>You have not created any contests yet.</p>
+                    <p>{% trans "You have not created any contests yet." %}</p>
                 </div>
                 {% endif %}
             </section>
@@ -363,8 +365,8 @@
             <!-- Edit button -->
             <div class="settings-actions settings-toolbar" style="justify-content: space-between;">
                 <div class="settings-toolbar__group">
-                    <button type="button" class="btn btn-secondary" id="scrollToBioBtn">Jump to Bio</button>
-                    <button type="button" class="btn btn-secondary" id="copyProfileSummaryBtn">Copy Summary</button>
+                    <button type="button" class="btn btn-secondary" id="scrollToBioBtn">{% trans "Jump to Bio" %}</button>
+                    <button type="button" class="btn btn-secondary" id="copyProfileSummaryBtn">{% trans "Copy Summary" %}</button>
                 </div>
                 <a href="{% url 'settings' %}" class="btn btn-primary settings-save-btn">
                     <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
@@ -372,7 +374,7 @@
                         <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
                         <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
                     </svg>
-                    Edit in Settings
+                    {% trans "Edit in Settings" %}
                 </a>
             </div>
         </div>
@@ -414,7 +416,7 @@
                 bioInput.style.height = 'auto';
                 bioInput.style.height = `${bioInput.scrollHeight}px`;
                 const current = bioInput.value.length;
-                bioCounter.textContent = maxLength ? `${current}/${maxLength} characters` : `${current} characters`;
+                bioCounter.textContent = maxLength ? `${current}/${maxLength} {% trans 'characters' %}` : `${current} {% trans 'characters' %}`;
             };
 
             updateBioMeta();
@@ -427,15 +429,15 @@
                 if (!target) return;
                 const value = target.textContent.trim();
                 if (!value || value === '-') {
-                    setFeedback('Nothing to copy yet.');
+                    setFeedback("{% trans 'Nothing to copy yet.' %}");
                     return;
                 }
 
                 try {
                     await navigator.clipboard.writeText(value);
-                    setFeedback(`Copied: ${value}`);
+                    setFeedback(`{% trans 'Copied' %}: ${value}`);
                 } catch (error) {
-                    setFeedback('Clipboard access was blocked.');
+                    setFeedback("{% trans 'Clipboard access was blocked.' %}");
                 }
             });
         });
@@ -447,7 +449,7 @@
                 const expanded = button.getAttribute('aria-expanded') === 'true';
                 button.setAttribute('aria-expanded', String(!expanded));
                 panel.hidden = expanded;
-                button.lastChild.textContent = expanded ? ' Expand' : ' Collapse';
+                button.lastChild.textContent = expanded ? " {% trans 'Expand' %}" : " {% trans 'Collapse' %}";
             });
         });
 
@@ -461,17 +463,17 @@
         if (copyProfileSummaryBtn) {
             copyProfileSummaryBtn.addEventListener('click', async () => {
                 const summary = [
-                    `Username: {{ user.username|escapejs }}`,
-                    `Email: {{ user.email|default:"-"|escapejs }}`,
-                    `Role: {{ user.get_role_display|escapejs }}`,
-                    `Member since: {{ user.date_joined|date:"M d, Y"|escapejs }}`
+                    `{% trans "Username" %}: {{ user.username|escapejs }}`,
+                    `{% trans "Email" %}: {{ user.email|default:"-"|escapejs }}`,
+                    `{% trans "Role" %}: {{ user.get_role_display|escapejs }}`,
+                    `{% trans "Member since" %}: {{ user.date_joined|date:"M d, Y"|escapejs }}`
                 ].join('\n');
 
                 try {
                     await navigator.clipboard.writeText(summary);
-                    setFeedback('Profile summary copied.');
+                    setFeedback("{% trans 'Profile summary copied.' %}");
                 } catch (error) {
-                    setFeedback('Clipboard access was blocked.');
+                    setFeedback("{% trans 'Clipboard access was blocked.' %}");
                 }
             });
         }

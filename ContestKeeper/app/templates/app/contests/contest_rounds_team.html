@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Rounds - {{ contest.name }}{% endblock %}
+{% block title %}{% trans "Rounds" %} - {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/nav.css' %}">
@@ -109,35 +109,35 @@
 {% endblock %}
 
 {% block content %}
-        <h1 style="text-align: center; margin-bottom: 2rem;">Contest Rounds</h1>
+        <h1 style="text-align: center; margin-bottom: 2rem;">{% trans "Contest Rounds" %}</h1>
 
         {% if active_rounds %}
             <div class="round-section">
-                <h2>🚀 Active Rounds</h2>
+                <h2>🚀 {% trans "Active Rounds" %}</h2>
                 <div class="rounds-container">
                     {% for round in active_rounds %}
                         <div class="round-card active">
                             <div class="round-info">
                                 <div class="round-title">{{ round.title }}</div>
                                 <div class="round-meta">
-                                    <span><strong>Deadline:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
+                                    <span><strong>{% trans "Deadline" %}:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
                                     <span>
                                         {% with total_seconds=round.time_remaining %}
                                             {% if total_seconds > 0 %}
-                                                <strong class="countdown">⏱ Time Left:</strong>
+                                                <strong class="countdown">⏱ {% trans "Time Left" %}:</strong>
                                                 <span id="countdown-{{ round.id }}" data-deadline="{{ round.deadline|date:'c' }}">
-                                                    Loading...
+                                                    {% trans "Loading..." %}
                                                 </span>
                                             {% else %}
-                                                <strong class="countdown-danger">⏱ CLOSED</strong>
+                                                <strong class="countdown-danger">⏱ {% trans "CLOSED" %}</strong>
                                             {% endif %}
                                         {% endwith %}
                                     </span>
                                 </div>
                             </div>
                             <div class="round-actions">
-                                <span class="status-badge status-active">ACTIVE</span>
-                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-primary">View Details</a>
+                                <span class="status-badge status-active">{% trans "ACTIVE" %}</span>
+                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-primary">{% trans "View Details" %}</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -147,19 +147,19 @@
 
         {% if closed_rounds %}
             <div class="round-section">
-                <h2>🚪 Submission Closed</h2>
+                <h2>🚪 {% trans "Submission Closed" %}</h2>
                 <div class="rounds-container">
                     {% for round in closed_rounds %}
                         <div class="round-card closed">
                             <div class="round-info">
                                 <div class="round-title">{{ round.title }}</div>
                                 <div class="round-meta">
-                                    <span><strong>Closed:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
+                                    <span><strong>{% trans "Closed" %}:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
                                 </div>
                             </div>
                             <div class="round-actions">
-                                <span class="status-badge status-closed">CLOSED</span>
-                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">View Details</a>
+                                <span class="status-badge status-closed">{% trans "CLOSED" %}</span>
+                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">{% trans "View Details" %}</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -169,19 +169,19 @@
 
         {% if evaluated_rounds %}
             <div class="round-section">
-                <h2>✅ Evaluated</h2>
+                <h2>✅ {% trans "Evaluated" %}</h2>
                 <div class="rounds-container">
                     {% for round in evaluated_rounds %}
                         <div class="round-card evaluated">
                             <div class="round-info">
                                 <div class="round-title">{{ round.title }}</div>
                                 <div class="round-meta">
-                                    <span><strong>Evaluated:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
+                                    <span><strong>{% trans "Evaluated" %}:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</span>
                                 </div>
                             </div>
                             <div class="round-actions">
-                                <span class="status-badge status-evaluated">EVALUATED</span>
-                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">View Results</a>
+                                <span class="status-badge status-evaluated">{% trans "EVALUATED" %}</span>
+                                <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">{% trans "View Results" %}</a>
                             </div>
                         </div>
                     {% endfor %}
@@ -191,13 +191,16 @@
 
         {% if not active_rounds and not closed_rounds and not evaluated_rounds %}
             <div class="empty-message">
-                <p>No rounds yet. Check back soon!</p>
+                <p>{% trans "No rounds yet. Check back soon!" %}</p>
             </div>
         {% endif %}
 {% endblock %}
 
 {% block extra_js %}
 <script>
+        const closedText = "{% trans 'Closed' %}";
+        const loadingText = "{% trans 'Loading...' %}";
+
         // Update countdowns every second
         function updateCountdowns() {
             document.querySelectorAll('[id^="countdown-"]').forEach(el => {
@@ -206,7 +209,7 @@
                 const remainingMs = deadline - now;
 
                 if (remainingMs <= 0) {
-                    el.textContent = 'Closed';
+                    el.textContent = closedText;
                     el.className = 'countdown-danger';
                     return;
                 }

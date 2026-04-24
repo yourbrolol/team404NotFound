@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}ContestKeeper - Dashboard{% endblock %}
+{% block title %}ContestKeeper - {% trans "Dashboard" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
@@ -10,14 +10,14 @@
 {% block content %}
         <header class="dashboard-header">
             <div class="header-left">
-                <h1 id="h1">Dashboard</h1>
+                <h1 id="h1">{% trans "Dashboard" %}</h1>
                 <span class="role-badge">{{ user.get_role_display }}</span>
             </div>
             {% if user.is_organizer %}
             <div class="header-actions">
                 <a href="{% url 'contest_create' %}" class="btn btn-primary">
                     <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="12" y1="5" x2="12" y2="19"></line><line x1="5" y1="12" x2="19" y2="12"></line></svg>
-                    New Contest
+                    {% trans "New Contest" %}
                 </a>
             </div>
             {% endif %}
@@ -26,11 +26,11 @@
         <section class="contest-section">
             <h2 class="section-title">
                 {% if user.is_organizer %}
-                My Organized Contests
+                {% trans "My Organized Contests" %}
                 {% elif user.is_jury %}
-                Contests to Judge
+                {% trans "Contests to Judge" %}
                 {% elif user.is_participant %}
-                My Contests
+                {% trans "My Contests" %}
                 {% endif %}
             </h2>
 
@@ -44,18 +44,18 @@
                     <p class="contest-description">{{ contest.description }}</p>
                     <div class="contest-details">
                         <div class="detail-item">
-                            <span class="label">Starts</span>
+                            <span class="label">{% trans "Starts" %}</span>
                             <span class="value">{{ contest.start_date|date:"M d, Y" }}</span>
                         </div>
                         <div class="detail-item">
-                            <span class="label">Ends</span>
+                            <span class="label">{% trans "Ends" %}</span>
                             <span class="value">{{ contest.end_date|date:"M d, Y" }}</span>
                         </div>
                     </div>
                     <div class="contest-actions">
-                        <a href="{% url 'contest_detail' contest.id %}" class="btn btn-secondary">Details</a>
+                        <a href="{% url 'contest_detail' contest.id %}" class="btn btn-secondary">{% trans "Details" %}</a>
                         {% if user.is_organizer %}
-                        <a href="{% url 'contest_edit' contest.id %}" class="btn btn-primary">Edit</a>
+                        <a href="{% url 'contest_edit' contest.id %}" class="btn btn-primary">{% trans "Edit" %}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -64,9 +64,9 @@
                     <div class="empty-icon">
                         <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
                     </div>
-                    <p>No contests found in your list.</p>
+                    <p>{% trans "No contests found in your list." %}</p>
                     {% if user.is_organizer %}
-                    <a href="{% url 'contest_create' %}" class="btn btn-primary">Create Your First Contest</a>
+                    <a href="{% url 'contest_create' %}" class="btn btn-primary">{% trans "Create Your First Contest" %}</a>
                     {% endif %}
                 </div>
                 {% endfor %}

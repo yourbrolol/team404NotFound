@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Edit Team: {{ team.name }} – {{ contest.name }}{% endblock %}
+{% block title %}{% trans "Edit Team" %}: {{ team.name }} – {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/team.css' %}">
@@ -9,7 +9,7 @@
 
 {% block content %}
         <header class="dashboard-header">
-            <h1 class="animate-fade-in">Edit Team: {{ team.name }}</h1>
+            <h1 class="animate-fade-in">{% trans "Edit Team" %}: {{ team.name }}</h1>
         </header>
 
         <div class="glass-panel animate-fade-in delay-1">
@@ -17,7 +17,7 @@
                 {% csrf_token %}
                 
                 <div class="form-section">
-                    <h2 class="section-heading">Basic Info</h2>
+                    <h2 class="section-heading">{% trans "Basic Info" %}</h2>
                     {% for field in form %}
                         {% if field.name == 'name' or field.name == 'description' or field.name == 'organization' %}
                         <div class="settings-field">
@@ -36,7 +36,7 @@
                 </div>
 
                 <div class="form-section" style="margin-top: 2rem;">
-                    <h2 class="section-heading">Social Links</h2>
+                    <h2 class="section-heading">{% trans "Social Links" %}</h2>
                     {% for field in form %}
                         {% if field.name == 'telegram_link' or field.name == 'discord_link' or field.name == 'website_link' %}
                         <div class="settings-field">
@@ -55,8 +55,8 @@
                 </div>
 
                 <div class="actions-footer" style="margin-top: 2rem; justify-content: flex-end; gap: 1rem;">
-                    <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
                 </div>
             </form>
         </div>

@@ -1,7 +1,8 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}{{ round.title }} - {{ round.contest.name }}{% endblock %}
+{% block title %}{% blocktrans with title=round.title contest_name=round.contest.name %}{{ title }} - {{ contest_name }}{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/nav.css' %}">
@@ -188,17 +189,17 @@
 {% endblock %}
 
 {% block content %}
-        <a href="{% url 'contest_rounds_team' round.contest.pk %}" class="back-link">← Back to All Rounds</a>
+        <a href="{% url 'contest_rounds_team' round.contest.pk %}" class="back-link">{% trans "← Back to All Rounds" %}</a>
 
         {% if round.status == 'SUBMISSION_CLOSED' %}
             <div class="closed-message">
-                <strong>⏁ Submissions Closed</strong> - This round is no longer accepting submissions. Results will be published after evaluation.
+                <strong>{% trans "⏁ Submissions Closed" %}</strong> {% trans "- This round is no longer accepting submissions. Results will be published after evaluation." %}
             </div>
         {% endif %}
 
         {% if round.status == 'EVALUATED' %}
             <div class="evaluated-message">
-                <strong>✅ Evaluation Complete</strong> - Check the leaderboard to see results and rankings.
+                <strong>{% trans "✅ Evaluation Complete" %}</strong> {% trans "- Check the leaderboard to see results and rankings." %}
             </div>
         {% endif %}
 
@@ -206,68 +207,68 @@
             <h1>{{ round.title }}</h1>
             <div class="header-meta">
                 <div class="meta-item">
-                    <span class="meta-label">Contest</span>
+                    <span class="meta-label">{% trans "Contest" %}</span>
                     <span class="meta-value">{{ round.contest.name }}</span>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-label">Start Date</span>
+                    <span class="meta-label">{% trans "Start Date" %}</span>
                     <span class="meta-value">{{ round.start_time|date:'Y-m-d H:i' }}</span>
                 </div>
                 <div class="meta-item">
-                    <span class="meta-label">Deadline</span>
+                    <span class="meta-label">{% trans "Deadline" %}</span>
                     <span class="meta-value">{{ round.deadline|date:'Y-m-d H:i' }}</span>
                 </div>
                 <div class="meta-item">
                     <span class="round-status-badge {% if round.status == 'ACTIVE' %}status-active{% elif round.status == 'SUBMISSION_CLOSED' %}status-closed{% else %}status-evaluated{% endif %}">
-                        {{ round.status|upper }}
+                        {{ round.get_status_display|upper }}
                     </span>
                 </div>
             </div>
 
             {% if round.is_open %}
                 <div class="countdown-display">
-                    <div class="meta-label">Time Remaining</div>
-                    <div class="countdown-timer" id="countdown">Loading...</div>
-                    <small style="opacity: 0.8;">Submit before deadline</small>
+                    <div class="meta-label">{% trans "Time Remaining" %}</div>
+                    <div class="countdown-timer" id="countdown">{% trans "Loading..." %}</div>
+                    <small style="opacity: 0.8;">{% trans "Submit before deadline" %}</small>
                 </div>
             {% endif %}
         </div>
 
             <div class="card">
-                <h2>🚀 Your Submission</h2>
+                <h2>{% trans "🚀 Your Submission" %}</h2>
                 {% if not user_team %}
                     <p class="description-text" style="color: var(--text-muted); font-style: italic;">
-                        You are not part of a team in this contest. You must be in a team to submit work.
+                        {% trans "You are not part of a team in this contest. You must be in a team to submit work." %}
                     </p>
                 {% else %}
                     {% if user_submission %}
                         <div style="margin-bottom: 1rem;">
-                            <div class="meta-label">Status</div>
-                            <div class="meta-value" style="color: #28a745;">✅ Submitted</div>
+                            <div class="meta-label">{% trans "Status" %}</div>
+                            <div class="meta-value" style="color: #28a745;">{% trans "✅ Submitted" %}</div>
                         </div>
                         <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
-                            <a href="{{ user_submission.github_url }}" target="_blank" class="material-link" style="background: #24292e;">GitHub Repository ↗</a>
-                            <a href="{{ user_submission.video_url }}" target="_blank" class="material-link" style="background: #ff0000;">Video Presentation ↗</a>
+                            <a href="{{ user_submission.github_url }}" target="_blank" class="material-link" style="background: #24292e;">{% trans "GitHub Repository ↗" %}</a>
+                            <a href="{{ user_submission.video_url }}" target="_blank" class="material-link" style="background: #ff0000;">{% trans "Video Presentation ↗" %}</a>
                             {% if user_submission.live_demo_url %}
-                                <a href="{{ user_submission.live_demo_url }}" target="_blank" class="material-link" style="background: #28a745;">Live Demo ↗</a>
+                                <a href="{{ user_submission.live_demo_url }}" target="_blank" class="material-link" style="background: #28a745;">{% trans "Live Demo ↗" %}</a>
                             {% endif %}
                         </div>
                         <div style="display: flex; gap: 0.5rem;">
-                            <a href="{% url 'submission_detail' round.contest.pk round.pk user_submission.pk %}" class="material-link" style="background: var(--secondary); flex: 1; text-align: center;">View Full Details</a>
+                            <a href="{% url 'submission_detail' round.contest.pk round.pk user_submission.pk %}" class="material-link" style="background: var(--secondary); flex: 1; text-align: center;">{% trans "View Full Details" %}</a>
                             {% if is_open %}
-                                <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="background: #6c757d; flex: 1; text-align: center;">Edit Submission</a>
+                                <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="background: #6c757d; flex: 1; text-align: center;">{% trans "Edit Submission" %}</a>
                             {% endif %}
                         </div>
                     {% else %}
                         <div style="margin-bottom: 1.5rem;">
-                            <div class="meta-label">Status</div>
-                            <div class="meta-value" style="color: #dc3545;">❌ Not Submitted</div>
+                            <div class="meta-label">{% trans "Status" %}</div>
+                            <div class="meta-value" style="color: #dc3545;">{% trans "❌ Not Submitted" %}</div>
                         </div>
                         {% if is_open %}
-                            <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="width: 100%; text-align: center; padding: 1rem; font-size: 1.1rem; font-weight: bold;">Submit Your Work Now →</a>
+                            <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="width: 100%; text-align: center; padding: 1rem; font-size: 1.1rem; font-weight: bold;">{% trans "Submit Your Work Now →" %}</a>
                         {% else %}
                             <p class="description-text" style="color: var(--text-muted); font-style: italic;">
-                                Submissions are closed for this round.
+                                {% trans "Submissions are closed for this round." %}
                             </p>
                         {% endif %}
                     {% endif %}

@@ -1,7 +1,8 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}{% if is_edit %}Edit{% else %}Create{% endif %} Submission - {{ round.title }}{% endblock %}
+{% block title %}{% if is_edit %}{% trans "Edit" %}{% else %}{% trans "Create" %}{% endif %} {% trans "Submission" %} - {{ round.title }}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -79,16 +80,16 @@
     <div style="max-width: 700px; margin: 0 auto;">
         
         <nav class="mb-4">
-            <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="width: auto; background: none; border: none; font-weight: 600;">← Cancel and Return</a>
+            <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="width: auto; background: none; border: none; font-weight: 600;">{% trans "← Cancel and Return" %}</a>
         </nav>
 
         <div class="glass-card">
             <div class="form-header">
-                <span class="round-info_badge">{{ round.title }}</span>
+                <span class="round-info-badge">{{ round.title }}</span>
                 <h1 style="font-size: 2rem; font-weight: 800; color: #111827; margin: 0;">
-                    {% if is_edit %}Update Your Submission{% else %}Submit Your Work{% endif %}
+                    {% if is_edit %}{% trans "Update Your Submission" %}{% else %}{% trans "Submit Your Work" %}{% endif %}
                 </h1>
-                <p style="color: #6b7280; margin-top: 0.5rem;">Fill in the details below. You can update your submission anytime before the deadline.</p>
+                <p style="color: #6b7280; margin-top: 0.5rem;">{% trans "Fill in the details below. You can update your submission anytime before the deadline." %}</p>
             </div>
 
             <form method="post">
@@ -103,31 +104,31 @@
                 <div class="mb-4">
                     <label class="form-label" for="{{ form.github_url.id_for_label }}">
                         <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                        GitHub Repository URL *
+                        {% trans "GitHub Repository URL *" %}
                     </label>
                     {{ form.github_url }}
                     {% if form.github_url.errors %}
                         <p class="field-error">{{ form.github_url.errors.0 }}</p>
                     {% endif %}
-                    <p class="help-text">Link to the source code repository (Public or shared with reviewers).</p>
+                    <p class="help-text">{% trans "Link to the source code repository (Public or shared with reviewers)." %}</p>
                 </div>
 
                 <div class="row">
                     <div class="col-md-6 mb-4">
                         <label class="form-label" for="{{ form.video_url.id_for_label }}">
                             <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-                            Presentation Video URL *
+                            {% trans "Presentation Video URL *" %}
                         </label>
                         {{ form.video_url }}
                         {% if form.video_url.errors %}
                             <p class="field-error">{{ form.video_url.errors.0 }}</p>
                         {% endif %}
-                        <p class="help-text">YouTube, Loom, or Drive link.</p>
+                        <p class="help-text">{% trans "YouTube, Loom, or Drive link." %}</p>
                     </div>
                     <div class="col-md-6 mb-4">
                         <label class="form-label" for="{{ form.live_demo_url.id_for_label }}">
                             <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
-                            Live Demo URL (Optional)
+                            {% trans "Live Demo URL (Optional)" %}
                         </label>
                         {{ form.live_demo_url }}
                         {% if form.live_demo_url.errors %}
@@ -139,20 +140,20 @@
                 <div class="mb-4">
                     <label class="form-label" for="{{ form.description.id_for_label }}">
                         <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
-                        Implementation Details *
+                        {% trans "Implementation Details *" %}
                     </label>
                     {{ form.description }}
                     {% if form.description.errors %}
                         <p class="field-error">{{ form.description.errors.0 }}</p>
                     {% endif %}
-                    <p class="help-text">Briefly describe what your team built, tech stack, and how to test it.</p>
+                    <p class="help-text">{% trans "Briefly describe what your team built, tech stack, and how to test it." %}</p>
                 </div>
 
                 <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
                     <button type="submit" class="btn btn-primary" style="flex: 2; padding: 1rem;">
-                        {% if is_edit %}Save Changes{% else %}Submit Work{% endif %}
+                        {% if is_edit %}{% trans "Save Changes" %}{% else %}{% trans "Submit Work" %}{% endif %}
                     </button>
-                    <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="flex: 1; padding: 1rem; border: none; background: rgba(0,0,0,0.05);">Cancel</a>
+                    <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="flex: 1; padding: 1rem; border: none; background: rgba(0,0,0,0.05);">{% trans "Cancel" %}</a>
                 </div>
             </form>
         </div>

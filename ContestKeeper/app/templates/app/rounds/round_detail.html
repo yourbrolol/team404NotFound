@@ -1,7 +1,8 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}{{ round.title }} - Round Detail{% endblock %}
+{% block title %}{% blocktrans with title=round.title %}{{ title }} - Round Detail{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -211,22 +212,22 @@
     <!-- Back Link -->
     <nav class="mb-4">
         {% if is_organizer %}
-            <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary" style="width: auto;">← Back to Rounds List</a>
+            <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary" style="width: auto;">{% trans "← Back to Rounds List" %}</a>
         {% else %}
-            <a href="{% url 'contest_rounds_team' contest.pk %}" class="btn btn-secondary" style="width: auto;">← Back to Rounds List</a>
+            <a href="{% url 'contest_rounds_team' contest.pk %}" class="btn btn-secondary" style="width: auto;">{% trans "← Back to Rounds List" %}</a>
         {% endif %}
     </nav>
 
     <!-- Round Header -->
     <div class="glass-card round-header">
         <div class="round-title-section">
-            <span class="round-number">Round {{ round.order }}</span>
+            <span class="round-number">{% blocktrans with order=round.order %}Round {{ order }}{% endblocktrans %}</span>
             <h1 class="round-title">{{ round.title }}</h1>
         </div>
         <div class="status-section text-right">
             <span class="status-badge status-{{ round.status|lower }}">{{ round.get_status_display }}</span>
             <div class="info-group mt-3">
-                <span class="info-label">Deadline</span>
+                <span class="info-label">{% trans "Deadline" %}</span>
                 <span class="info-content">{{ round.deadline|date:"M d, Y H:i" }}</span>
             </div>
         </div>
@@ -239,7 +240,7 @@
             <div class="glass-card">
                 <h2 class="section-title">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
-                    Description
+                    {% trans "Description" %}
                 </h2>
                 <div class="info-content">
                     {{ round.description|linebreaks }}
@@ -250,7 +251,7 @@
             <div class="glass-card">
                 <h2 class="section-title">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
-                    Technical Requirements
+                    {% trans "Technical Requirements" %}
                 </h2>
                 <div class="info-content">
                     {{ round.tech_requirements|linebreaks }}
@@ -261,7 +262,7 @@
             <div class="glass-card">
                 <h2 class="section-title">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path></svg>
-                    Must-Have Checklist
+                    {% trans "Must-Have Checklist" %}
                 </h2>
                 <div>
                     {% for item in round.must_have %}
@@ -270,7 +271,7 @@
                             <span>{{ item }}</span>
                         </div>
                     {% empty %}
-                        <p class="text-muted italic">No checklist items provided.</p>
+                        <p class="text-muted italic">{% trans "No checklist items provided." %}</p>
                     {% endfor %}
                 </div>
             </div>
@@ -281,11 +282,11 @@
             <!-- Countdown / Submission Status for Teams -->
             {% if not is_organizer and not is_jury %}
                 <div class="glass-card">
-                    <h2 class="section-title">Submission</h2>
+                    <h2 class="section-title">{% trans "Submission" %}</h2>
                     
                     {% if is_active %}
                         <div class="countdown-box">
-                            <div class="info-label text-white">Time Remaining</div>
+                            <div class="info-label text-white">{% trans "Time Remaining" %}</div>
                             <div class="countdown-timer" id="countdown">--:--:--</div>
                         </div>
                     {% endif %}
@@ -293,26 +294,26 @@
                     {% if user_team %}
                         {% if user_submission %}
                             <div class="alert alert-success mb-3">
-                                <strong>✅ Submitted</strong><br>
-                                <small>at {{ user_submission.submitted_at|date:"M d, H:i" }}</small>
+                                <strong>{% trans "✅ Submitted" %}</strong><br>
+                                <small>{% blocktrans with date=user_submission.submitted_at|date:"M d, H:i" %}at {{ date }}{% endblocktrans %}</small>
                             </div>
-                            <a href="{% url 'submission_detail' contest.pk round.pk user_submission.pk %}" class="action-button btn-secondary mb-2">View Your Submission</a>
+                            <a href="{% url 'submission_detail' contest.pk round.pk user_submission.pk %}" class="action-button btn-secondary mb-2">{% trans "View Your Submission" %}</a>
                             {% if is_open %}
-                                <a href="{% url 'submission_create' contest.pk round.pk %}" class="action-button btn-primary">Update Submission</a>
+                                <a href="{% url 'submission_create' contest.pk round.pk %}" class="action-button btn-primary">{% trans "Update Submission" %}</a>
                             {% endif %}
                         {% else %}
                             <div class="alert alert-warning mb-3">
-                                <strong>❌ Not Submitted</strong><br>
-                                <small>Team: {{ user_team.name }}</small>
+                                <strong>{% trans "❌ Not Submitted" %}</strong><br>
+                                <small>{% blocktrans with name=user_team.name %}Team: {{ name }}{% endblocktrans %}</small>
                             </div>
                             {% if is_open %}
-                                <a href="{% url 'submission_create' contest.pk round.pk %}" class="action-button btn-primary">Submit Now</a>
+                                <a href="{% url 'submission_create' contest.pk round.pk %}" class="action-button btn-primary">{% trans "Submit Now" %}</a>
                             {% else %}
-                                <p class="text-muted small">Submissions are closed.</p>
+                                <p class="text-muted small">{% trans "Submissions are closed." %}</p>
                             {% endif %}
                         {% endif %}
                     {% else %}
-                        <p class="text-danger small">You must be in a team to submit.</p>
+                        <p class="text-danger small">{% trans "You must be in a team to submit." %}</p>
                     {% endif %}
                 </div>
             {% endif %}
@@ -320,28 +321,28 @@
             <!-- Organizer Controls -->
             {% if is_organizer %}
                 <div class="glass-card">
-                    <h2 class="section-title">Management</h2>
+                    <h2 class="section-title">{% trans "Management" %}</h2>
                     <div class="management-panel">
                         <div class="info-group">
-                            <span class="info-label">Current Submissions</span>
+                            <span class="info-label">{% trans "Current Submissions" %}</span>
                             <span class="info-content" style="font-size: 1.5rem; font-weight: 700;">{{ submission_count }}</span>
                         </div>
-                        <a href="{% url 'round_submissions' contest.pk round.id %}" class="action-button btn-secondary">View All Submissions</a>
+                        <a href="{% url 'round_submissions' contest.pk round.id %}" class="action-button btn-secondary">{% trans "View All Submissions" %}</a>
                         
                         <hr>
                         
                         {% if round.status == 'DRAFT' %}
                             <form action="{% url 'round_activate' contest.pk round.id %}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="action-button btn-primary">Activate Round</button>
+                                <button type="submit" class="action-button btn-primary">{% trans "Activate Round" %}</button>
                             </form>
-                            <a href="{% url 'round_edit' contest.pk round.id %}" class="action-button btn-secondary">Edit Round</a>
+                            <a href="{% url 'round_edit' contest.pk round.id %}" class="action-button btn-secondary">{% trans "Edit Round" %}</a>
                         {% elif round.status == 'ACTIVE' %}
                             <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST">
                                 {% csrf_token %}
-                                <button type="submit" class="action-button btn-danger">Close Submissions</button>
+                                <button type="submit" class="action-button btn-danger">{% trans "Close Submissions" %}</button>
                             </form>
-                            <a href="{% url 'round_extend_deadline' contest.pk round.id %}" class="action-button btn-secondary mt-2">Extend Deadline</a>
+                            <a href="{% url 'round_extend_deadline' contest.pk round.id %}" class="action-button btn-secondary mt-2">{% trans "Extend Deadline" %}</a>
                         {% endif %}
                     </div>
                 </div>
@@ -349,15 +350,15 @@
 
             <!-- Materials -->
             <div class="glass-card">
-                <h2 class="section-title">Materials</h2>
+                <h2 class="section-title">{% trans "Materials" %}</h2>
                 <div>
                     {% for mat in round.materials %}
                         <div class="material-item">
                             <span class="material-label">{{ mat.label }}</span>
-                            <a href="{{ mat.url }}" target="_blank" class="material-link">Open →</a>
+                            <a href="{{ mat.url }}" target="_blank" class="material-link">{% trans "Open →" %}</a>
                         </div>
                     {% empty %}
-                        <p class="text-muted italic">No materials uploaded.</p>
+                        <p class="text-muted italic">{% trans "No materials uploaded." %}</p>
                     {% endfor %}
                 </div>
             </div>
@@ -373,7 +374,7 @@
         const diff = deadline - now;
 
         if (diff <= 0) {
-            document.getElementById('countdown').innerHTML = "EXPIRED";
+            document.getElementById('countdown').innerHTML = "{% trans 'EXPIRED' %}";
             return;
         }
 

@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Teams - {{ contest.name }}{% endblock %}
+{% block title %}{% trans "Teams" %} - {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/team.css' %}">
@@ -10,13 +10,13 @@
 
 {% block content %}
         <header class="dashboard-header">
-            <h1 id="h1" class="animate-fade-in">Teams for "{{ contest.name }}"</h1>
+            <h1 id="h1" class="animate-fade-in">{% blocktrans with name=contest.name %}Teams for "{{ name }}"{% endblocktrans %}</h1>
         </header>
 
         <div class="tabs-header animate-fade-in delay-1">
-            <button class="tab-btn active" data-tab-id="teams" onclick="switchTab(event, 'teams')">Teams</button>
+            <button class="tab-btn active" data-tab-id="teams" onclick="switchTab(event, 'teams')">{% trans "Teams" %}</button>
             {% if user == contest.organizer %}
-            <button class="tab-btn" data-tab-id="apps" onclick="switchTab(event, 'apps')">Applications</button>
+            <button class="tab-btn" data-tab-id="apps" onclick="switchTab(event, 'apps')">{% trans "Applications" %}</button>
             {% endif %}
         </div>
 
@@ -25,25 +25,25 @@
                 <div class="teams-toolbar">
                     <div class="teams-search">
                         <input type="search" id="teamSearchInput" class="form-input"
-                            placeholder="Search teams by name" aria-label="Search teams">
+                            placeholder="{% trans 'Search teams by name' %}" aria-label="{% trans 'Search teams' %}">
                     </div>
                     <div class="teams-toolbar__actions">
-                        <select id="teamSortSelect" class="form-input teams-sort" aria-label="Sort teams">
-                            <option value="name-asc">Name A-Z</option>
-                            <option value="name-desc">Name Z-A</option>
-                            <option value="members-desc">Most members</option>
-                            <option value="members-asc">Fewest members</option>
+                        <select id="teamSortSelect" class="form-input teams-sort" aria-label="{% trans 'Sort teams' %}">
+                            <option value="name-asc">{% trans "Name A-Z" %}</option>
+                            <option value="name-desc">{% trans "Name Z-A" %}</option>
+                            <option value="members-desc">{% trans "Most members" %}</option>
+                            <option value="members-asc">{% trans "Fewest members" %}</option>
                         </select>
-                        <button type="button" id="clearTeamSearchBtn" class="btn btn-secondary btn-sm">Clear</button>
+                        <button type="button" id="clearTeamSearchBtn" class="btn btn-secondary btn-sm">{% trans "Clear" %}</button>
                         {% if user == contest.organizer %}
-                        <a href="{% url 'export_teams_csv' contest.pk %}" class="btn btn-secondary btn-sm">Export Teams</a>
+                        <a href="{% url 'export_teams_csv' contest.pk %}" class="btn btn-secondary btn-sm">{% trans "Export Teams" %}</a>
                         {% endif %}
                     </div>
                     <div class="teams-summary" id="teamsSummary" aria-live="polite"></div>
                 </div>
                 <div class="teams-feedback" id="teamsFeedback" aria-live="polite"></div>
                 <div class="empty-state" id="filteredTeamsEmpty" hidden>
-                    <p id="filteredTeamsEmptyText">No teams match your search.</p>
+                    <p id="filteredTeamsEmptyText">{% trans "No teams match your search." %}</p>
                 </div>
                 {% if teams %}
                 <ul class="teams-list" id="teamsList">
@@ -53,19 +53,19 @@
                             <div class="team-card">
                                 <div class="team-card__content">
                                     <span class="team-name" data-team-name-label>{{ team.name }}</span>
-                                    <span class="team-meta">{{ team.participants.all|length }} member{{ team.participants.all|length|pluralize }}</span>
+                                    <span class="team-meta">{% blocktrans count members=team.participants.all|length %}{{ members }} member{% plural %}{{ members }} members{% endblocktrans %}</span>
                                 </div>
                                 <div class="team-card__actions">
                                     <div style="display: flex; gap: 8px; align-items: center;">
                                         {% if user.is_authenticated and user.is_participant and not user_team and user != team.captain %}
                                         <form action="{% url 'team_join' pk=contest.pk ck=team.pk %}" method="post" style="margin: 0;">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn-sm btn-primary" style="background: #2ecc71; color: white;">Join</button>
+                                            <button type="submit" class="btn-sm btn-primary" style="background: #2ecc71; color: white;">{% trans "Join" %}</button>
                                         </form>
                                         {% endif %}
                                         <button type="button" class="btn-sm btn-secondary copy-team-btn"
-                                            data-team-name-copy="{{ team.name }}" aria-label="Copy team name {{ team.name }}">
-                                            Copy
+                                            data-team-name-copy="{{ team.name }}" aria-label="{% blocktrans with name=team.name %}Copy team name {{ name }}{% endblocktrans %}">
+                                            {% trans "Copy" %}
                                         </button>
                                     </div>
                                     <span class="team-arrow">→</span>
@@ -77,16 +77,16 @@
                 </ul>
                 {% else %}
                 <div class="empty-state">
-                    <p>No teams registered for this contest yet.</p>
+                    <p>{% trans "No teams registered for this contest yet." %}</p>
                 </div>
                 {% endif %}
             </div>
 
             {% if user == contest.organizer %}
             <div id="apps-panel" class="tab-panel">
-                <div class="teams-summary teams-summary--soft">Organizer tools tab. The active tab is remembered on this device.</div>
+                <div class="teams-summary teams-summary--soft">{% trans "Organizer tools tab. The active tab is remembered on this device." %}</div>
                 <div class="empty-state">
-                    <p>Team applications will appear here.</p>
+                    <p>{% trans "Team applications will appear here." %}</p>
                 </div>
             </div>
             {% endif %}
@@ -98,7 +98,7 @@
                         <line x1="19" y1="12" x2="5" y2="12"></line>
                         <polyline points="12 19 5 12 12 5"></polyline>
                     </svg>
-                    Back to Contest
+                    {% trans "Back to Contest" %}
                 </a>
             </div>
         </div>

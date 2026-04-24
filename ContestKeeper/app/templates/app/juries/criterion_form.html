@@ -1,5 +1,5 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}{{ title }} - {{ contest.name }}{% endblock %}
 
@@ -135,8 +135,8 @@
 
 {% block content %}
 <div class="glass-card">
-    <h1 class="form-title">{{ title }}</h1>
-    <p class="form-subtitle">Contest: {{ contest.name }}</p>
+    <h1 class="form-title">{% if "Edit" in title %}{% trans "Edit Criterion" %}{% else %}{% trans "Create Criterion" %}{% endif %}</h1>
+    <p class="form-subtitle">{% trans "Contest" %}: {{ contest.name }}</p>
 
     <form method="post">
         {% csrf_token %}
@@ -155,8 +155,8 @@
         {% endfor %}
 
         <div class="actions-grid">
-            <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">Cancel</a>
-            <button type="submit" class="btn btn-primary">Save Criterion</button>
+            <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+            <button type="submit" class="btn btn-primary">{% trans "Save Criterion" %}</button>
         </div>
     </form>
 </div>

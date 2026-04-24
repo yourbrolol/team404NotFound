@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}ContestKeeper - Home{% endblock %}
+{% block title %}ContestKeeper - {% trans "Home" %}{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/home.css' %}">
@@ -10,16 +10,16 @@
 {% block content %}
 <header class="dashboard-header">
     <div class="header-left">
-        <h1 id="h1">Home</h1>
+        <h1 id="h1">{% trans "Home" %}</h1>
         <span class="role-badge">{{ user.get_role_display }}</span>
     </div>
 </header>
 
 <section class="home-welcome glass-panel">
-    <h2>Welcome to ContestKeeper</h2>
-    <p>The ultimate platform for organizing, participating, and judging contests with ease and style.</p>
+    <h2>{% trans "Welcome to ContestKeeper" %}</h2>
+    <p>{% trans "The ultimate platform for organizing, participating, and judging contests with ease and style." %}</p>
     <div class="cta-actions">
-        <a href="{% url 'dashboard' %}" class="btn btn-primary">Go to Dashboard</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-primary">{% trans "Go to Dashboard" %}</a>
     </div>
 </section>
 
@@ -27,30 +27,30 @@
 <section class="quick-access glass-panel">
     <div class="quick-access__header">
         <div>
-            <p class="quick-access__eyebrow">Quick Access</p>
-            <h2>Your current contest</h2>
+            <p class="quick-access__eyebrow">{% trans "Quick Access" %}</p>
+            <h2>{% trans "Your current contest" %}</h2>
         </div>
         <span class="status-indicator status-{{ user_contest.status|lower }}">{{ user_contest.get_status_display }}</span>
     </div>
     <div class="quick-access__grid">
         <div class="quick-access__item">
-            <span class="label">Contest</span>
+            <span class="label">{% trans "Contest" %}</span>
             <strong>{{ user_contest.name }}</strong>
         </div>
         <div class="quick-access__item">
-            <span class="label">Team</span>
+            <span class="label">{% trans "Team" %}</span>
             <strong>{{ user_team.name }}</strong>
         </div>
         <div class="quick-access__item">
-            <span class="label">Current round</span>
-            <strong>{% if active_round %}{{ active_round.title }}{% else %}No active round yet{% endif %}</strong>
+            <span class="label">{% trans "Current round" %}</span>
+            <strong>{% if active_round %}{{ active_round.title }}{% else %}{% trans "No active round yet" %}{% endif %}</strong>
         </div>
     </div>
     <div class="quick-access__actions">
-        <a href="{% url 'contest_detail' user_contest.pk %}" class="btn btn-primary">Open Contest</a>
-        <a href="{% url 'contest_rounds_team' user_contest.pk %}" class="btn btn-secondary">View Rounds</a>
+        <a href="{% url 'contest_detail' user_contest.pk %}" class="btn btn-primary">{% trans "Open Contest" %}</a>
+        <a href="{% url 'contest_rounds_team' user_contest.pk %}" class="btn btn-secondary">{% trans "View Rounds" %}</a>
         {% if active_round %}
-        <a href="{% url 'round_detail_team' user_contest.pk active_round.pk %}" class="btn btn-secondary">Open Current Round</a>
+        <a href="{% url 'round_detail_team' user_contest.pk active_round.pk %}" class="btn btn-secondary">{% trans "Open Current Round" %}</a>
         {% endif %}
     </div>
 </section>
@@ -58,9 +58,9 @@
 
 <section class="home-contests-section">
     <div class="home-section-header">
-        <h2 class="section-title">All Contests</h2>
+        <h2 class="section-title">{% trans "All Contests" %}</h2>
         <div class="filter-bar">
-            <a href="{% url 'home' %}" class="filter-btn {% if not status_filter %}active{% endif %}">All</a>
+            <a href="{% url 'home' %}" class="filter-btn {% if not status_filter %}active{% endif %}">{% trans "All" %}</a>
             {% for value, label in status_choices %}
             <a href="{% url 'home' %}?status={{ value }}" class="filter-btn {% if status_filter == value %}active{% endif %}">{{ label }}</a>
             {% endfor %}
@@ -76,16 +76,16 @@
             <p class="contest-description">{{ contest.description }}</p>
             <div class="contest-details">
                 <div class="detail-item">
-                    <span class="label">Starts</span>
+                    <span class="label">{% trans "Starts" %}</span>
                     <span class="value">{{ contest.start_date|date:"M d, Y" }}</span>
                 </div>
                 <div class="detail-item">
-                    <span class="label">Ends</span>
+                    <span class="label">{% trans "Ends" %}</span>
                     <span class="value">{{ contest.end_date|date:"M d, Y" }}</span>
                 </div>
             </div>
             <div class="contest-actions">
-                <a href="{% url 'contest_detail' contest.id %}" class="btn btn-secondary">Details</a>
+                <a href="{% url 'contest_detail' contest.id %}" class="btn btn-secondary">{% trans "Details" %}</a>
             </div>
         </div>
         {% empty %}
@@ -93,7 +93,7 @@
             <div class="empty-icon">
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
             </div>
-            <p>{% if status_filter %}No contests match this filter yet.{% else %}No contests available yet.{% endif %}</p>
+            <p>{% if status_filter %}{% trans "No contests match this filter yet." %}{% else %}{% trans "No contests available yet." %}{% endif %}</p>
         </div>
         {% endfor %}
     </div>

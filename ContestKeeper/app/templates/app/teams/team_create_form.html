@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}Create Team – {{ contest.name }}{% endblock %}
+{% block title %}{% trans "Create Team" %} – {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/team.css' %}">
@@ -9,7 +9,7 @@
 
 {% block content %}
         <header class="dashboard-header">
-            <h1 class="animate-fade-in">Create Team for "{{ contest.name }}"</h1>
+            <h1 class="animate-fade-in">{% blocktrans with name=contest.name %}Create Team for "{{ name }}"{% endblocktrans %}</h1>
         </header>
 
         <div class="glass-panel animate-fade-in delay-1">
@@ -17,7 +17,7 @@
                 {% csrf_token %}
                 
                 <div class="form-section">
-                    <h2 class="section-heading">Team Details</h2>
+                    <h2 class="section-heading">{% trans "Team Details" %}</h2>
                     {% for field in form %}
                         <div class="settings-field">
                             <label for="{{ field.id_for_label }}" class="info-label">{{ field.label }}</label>
@@ -37,8 +37,8 @@
                 </div>
 
                 <div class="actions-footer" style="margin-top: 2rem; justify-content: flex-end; gap: 1rem;">
-                    <a href="{% url 'contest_detail' pk=contest.pk %}" class="btn btn-secondary">Cancel</a>
-                    <button type="submit" class="btn btn-primary">Create & Apply</button>
+                    <a href="{% url 'contest_detail' pk=contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Create & Apply" %}</button>
                 </div>
             </form>
         </div>

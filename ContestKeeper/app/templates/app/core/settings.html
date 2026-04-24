@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}ContestKeeper - Settings{% endblock %}
+{% block title %}ContestKeeper - {% trans "Settings" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/settings.css' %}">
@@ -12,7 +12,7 @@
 {% block content %}
         <header class="dashboard-header">
             <div class="header-left header-left--row">
-                <h1 id="h1">Settings</h1>
+                <h1 id="h1">{% trans "Settings" %}</h1>
                 <span class="role-badge">{{ user.get_role_display }}</span>
             </div>
         </header>
@@ -23,7 +23,7 @@
                 stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="20 6 9 17 4 12"></polyline>
             </svg>
-            Changes saved successfully!
+            {% trans "Changes saved successfully!" %}
         </div>
         {% endif %}
 
@@ -41,8 +41,8 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">Account</h2>
-                        <p class="settings-card__subtitle">Update your personal information</p>
+                        <h2 class="settings-card__title">{% trans "Account" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Update your personal information" %}</p>
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
 
                 <div class="settings-fields">
                     <div class="form-group">
-                        <label class="form-label" for="{{ form.username.id_for_label }}">Username</label>
+                        <label class="form-label" for="{{ form.username.id_for_label }}">{% trans "Username" %}</label>
                         {{ form.username }}
                         {% if form.username.errors %}
                         {% for error in form.username.errors %}
@@ -68,7 +68,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="{{ form.email.id_for_label }}">Email</label>
+                        <label class="form-label" for="{{ form.email.id_for_label }}">{% trans "Email" %}</label>
                         {{ form.email }}
                         {% if form.email.errors %}
                         {% for error in form.email.errors %}
@@ -78,7 +78,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="{{ form.first_name.id_for_label }}">First Name</label>
+                        <label class="form-label" for="{{ form.first_name.id_for_label }}">{% trans "First Name" %}</label>
                         {{ form.first_name }}
                         {% if form.first_name.errors %}
                         {% for error in form.first_name.errors %}
@@ -88,7 +88,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="{{ form.last_name.id_for_label }}">Last Name</label>
+                        <label class="form-label" for="{{ form.last_name.id_for_label }}">{% trans "Last Name" %}</label>
                         {{ form.last_name }}
                         {% if form.last_name.errors %}
                         {% for error in form.last_name.errors %}
@@ -98,7 +98,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="form-label" for="{{ form.bio.id_for_label }}">Bio</label>
+                        <label class="form-label" for="{{ form.bio.id_for_label }}">{% trans "Bio" %}</label>
                         {{ form.bio }}
                         <div id="bioCounter" style="margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.75;"></div>
                         {% if form.bio.errors %}
@@ -121,24 +121,24 @@
                         </svg>
                     </div>
                     <div>
-                        <h2 class="settings-card__title">Account Info</h2>
-                        <p class="settings-card__subtitle">Your account details (read-only)</p>
+                        <h2 class="settings-card__title">{% trans "Account Info" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Your account details (read-only)" %}</p>
                     </div>
                 </div>
 
                 <div class="settings-info-grid">
                     <div class="settings-info-item">
-                        <span class="settings-info-item__label">Role</span>
+                        <span class="settings-info-item__label">{% trans "Role" %}</span>
                         <span class="settings-info-item__value">
                             <span class="role-badge">{{ user.get_role_display }}</span>
                         </span>
                     </div>
                     <div class="settings-info-item">
-                        <span class="settings-info-item__label">Member since</span>
+                        <span class="settings-info-item__label">{% trans "Member since" %}</span>
                         <span class="settings-info-item__value">{{ user.date_joined|date:"M d, Y" }}</span>
                     </div>
                     <div class="settings-info-item">
-                        <span class="settings-info-item__label">Last login</span>
+                        <span class="settings-info-item__label">{% trans "Last login" %}</span>
                         <span class="settings-info-item__value">{{ user.last_login|date:"M d, Y" }}</span>
                     </div>
                 </div>
@@ -153,9 +153,9 @@
                         <polyline points="17 21 17 13 7 13 7 21"></polyline>
                         <polyline points="7 3 7 8 15 8"></polyline>
                     </svg>
-                    Save Changes
+                    {% trans "Save Changes" %}
                 </button>
-                <a href="{% url 'profile' %}" class="btn btn-secondary">Cancel</a>
+                <a href="{% url 'profile' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
             </div>
         </form>
 {% endblock %}
@@ -184,7 +184,7 @@
             const updateProfilePreview = () => {
                 const username = usernameInput.value.trim();
                 avatarCircle.textContent = (username.slice(0, 2) || '?').toUpperCase();
-                avatarName.textContent = username || 'Unnamed user';
+                avatarName.textContent = username || "{% trans 'Unnamed user' %}";
             };
 
             updateProfilePreview();
@@ -197,14 +197,14 @@
             const updateBioCounter = () => {
                 const currentLength = bioInput.value.length;
                 bioCounter.textContent = maxLength
-                    ? `${currentLength}/${maxLength} characters`
-                    : `${currentLength} characters`;
+                    ? `${currentLength}/${maxLength} {% trans 'characters' %}`
+                    : `${currentLength} {% trans 'characters' %}`;
             };
 
             updateBioCounter();
             bioInput.addEventListener('input', updateBioCounter);
         }
-
+...
         if (form && saveButton) {
             const fields = Array.from(form.querySelectorAll('input, textarea, select'))
                 .filter((field) => field.type !== 'hidden' && field.type !== 'submit');

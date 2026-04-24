@@ -1,7 +1,8 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Evaluate: {{ team.name }} - {{ contest.name }}{% endblock %}
+{% block title %}{% blocktrans with team_name=team.name contest_name=contest.name %}Evaluate: {{ team_name }} - {{ contest_name }}{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
 <style>
@@ -80,16 +81,16 @@
         <div>
             <nav class="mb-2">
                 {% if submission %}
-                <a href="{% url 'round_submissions' contest.pk submission.round.id %}" class="text-secondary" style="text-decoration: none; font-weight: 600;">← Back to Submissions</a>
+                <a href="{% url 'round_submissions' contest.pk submission.round.id %}" class="text-secondary" style="text-decoration: none; font-weight: 600;">{% trans "← Back to Submissions" %}</a>
                 {% else %}
-                <a href="{% url 'contest_detail' contest.pk %}" class="text-secondary" style="text-decoration: none; font-weight: 600;">← Back to Contest</a>
+                <a href="{% url 'contest_detail' contest.pk %}" class="text-secondary" style="text-decoration: none; font-weight: 600;">{% trans "← Back to Contest" %}</a>
                 {% endif %}
             </nav>
-            <h1 style="font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0;">Evaluating {{ team.name }}</h1>
-            <p style="color: #4b5563; margin-top: 0.5rem;">Jury Assessment for {{ contest.name }}</p>
+            <h1 style="font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0;">{% blocktrans with name=team.name %}Evaluating {{ name }}{% endblocktrans %}</h1>
+            <p style="color: #4b5563; margin-top: 0.5rem;">{% blocktrans with name=contest.name %}Jury Assessment for {{ name }}{% endblocktrans %}</p>
         </div>
         <div class="text-end">
-            <span style="font-size: 0.85rem; font-weight: 700; color: #6b7280; text-transform: uppercase;">Juror</span>
+            <span style="font-size: 0.85rem; font-weight: 700; color: #6b7280; text-transform: uppercase;">{% trans "Juror" %}</span>
             <div style="font-weight: 700; color: #111827;">{{ user.get_full_name|default:user.username }}</div>
         </div>
     </div>
@@ -100,33 +101,33 @@
             <div class="glass-card">
                 <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
                     <svg width="24" height="24" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path></svg>
-                    Submission Artifacts
+                    {% trans "Submission Artifacts" %}
                 </h2>
 
                 {% if submission %}
                     <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
                         <a href="{{ submission.github_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
-                            <div style="color: #111827; font-weight: 700; margin-bottom: 0.25rem;">GitHub Repo ↗</div>
-                            <div style="font-size: 0.8rem; color: #6b7280;">View source code</div>
+                            <div style="color: #111827; font-weight: 700; margin-bottom: 0.25rem;">{% trans "GitHub Repo ↗" %}</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">{% trans "View source code" %}</div>
                         </a>
                         <a href="{{ submission.video_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
-                            <div style="color: #ef4444; font-weight: 700; margin-bottom: 0.25rem;">Demo Video ↗</div>
-                            <div style="font-size: 0.8rem; color: #6b7280;">Watch presentation</div>
+                            <div style="color: #ef4444; font-weight: 700; margin-bottom: 0.25rem;">{% trans "Demo Video ↗" %}</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">{% trans "Watch presentation" %}</div>
                         </a>
                         {% if submission.live_demo_url %}
                         <a href="{{ submission.live_demo_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
-                            <div style="color: #10b981; font-weight: 700; margin-bottom: 0.25rem;">Live Demo ↗</div>
-                            <div style="font-size: 0.8rem; color: #6b7280;">Open application</div>
+                            <div style="color: #10b981; font-weight: 700; margin-bottom: 0.25rem;">{% trans "Live Demo ↗" %}</div>
+                            <div style="font-size: 0.8rem; color: #6b7280;">{% trans "Open application" %}</div>
                         </a>
                         {% endif %}
                     </div>
 
                     <div class="artifact-card">
-                        <h3 style="font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: #6b7280; margin-bottom: 1rem;">Implementation Details</h3>
+                        <h3 style="font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: #6b7280; margin-bottom: 1rem;">{% trans "Implementation Details" %}</h3>
                         <div style="white-space: pre-wrap; color: #374151; line-height: 1.6;">{{ submission.description }}</div>
                     </div>
                 {% else %}
-                    <div class="alert alert-warning">No submission found for this team yet.</div>
+                    <div class="alert alert-warning">{% trans "No submission found for this team yet." %}</div>
                 {% endif %}
             </div>
         </div>
@@ -134,7 +135,7 @@
         <!-- Scoring Panel -->
         <div class="sidebar">
             <div class="glass-card">
-                <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem;">Scoring Card</h2>
+                <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem;">{% trans "Scoring Card" %}</h2>
                 
                 <form method="post" id="evaluationForm">
                     {% csrf_token %}
@@ -150,7 +151,7 @@
                             </div>
                             <div class="score-input-wrapper">
                                 {{ field }}
-                                <span class="max-score-hint">pts</span>
+                                <span class="max-score-hint">{% trans "pts" %}</span>
                             </div>
                             {% if field.errors %}
                                 <div style="color: #ef4444; font-size: 0.8rem; margin-top: 0.5rem;">{{ field.errors.0 }}</div>
@@ -160,17 +161,17 @@
 
                     {% if not is_readonly %}
                         <button type="submit" class="btn btn-primary w-100 py-3" style="font-weight: 800; border-radius: 12px; font-size: 1rem;">
-                            Save Evaluation
+                            {% trans "Save Evaluation" %}
                         </button>
                     {% else %}
                         <div class="alert alert-info py-3 text-center">
-                            Evaluation phase is closed.
+                            {% trans "Evaluation phase is closed." %}
                         </div>
                     {% endif %}
                 </form>
 
                 <div class="live-total">
-                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; opacity: 0.8; margin-bottom: 0.25rem;">Final Weighted Score</div>
+                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; opacity: 0.8; margin-bottom: 0.25rem;">{% trans "Final Weighted Score" %}</div>
                     <div style="font-size: 2.25rem; font-weight: 900;" id="totalPreview">--</div>
                 </div>
             </div>

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-04-21 15:41+0000\n"
+"POT-Creation-Date: 2026-04-24 17:42+0000\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,7 +16,10 @@ msgstr ""
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != 11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % 100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || (n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
+"Plural-Forms: nplurals=4; plural=(n % 1 == 0 && n % 10 == 1 && n % 100 != "
+"11 ? 0 : n % 1 == 0 && n % 10 >= 2 && n % 10 <= 4 && (n % 100 < 12 || n % "
+"100 > 14) ? 1 : n % 1 == 0 && (n % 10 ==0 || (n % 10 >=5 && n % 10 <=9) || "
+"(n % 100 >=11 && n % 100 <=14 )) ? 2: 3);\n"
 
 #: ContestKeeper/settings.py:122
 msgid "English"
@@ -26,7 +29,7 @@ msgstr "English"
 msgid "Ukrainian"
 msgstr "Українська"
 
-#: app/models.py:11
+#: app/models.py:11 app/templates/app/contests/contest_detail.html:57
 msgid "Organizer"
 msgstr "Організатор"
 
@@ -38,11 +41,11 @@ msgstr "Журі"
 msgid "Participant"
 msgstr "Учасник"
 
-#: app/models.py:33 app/models.py:72 app/models.py:254
+#: app/models.py:33 app/models.py:72 app/models.py:279
 msgid "Draft"
 msgstr "Чернетка"
 
-#: app/models.py:34 app/models.py:255
+#: app/models.py:34 app/models.py:280
 msgid "Active"
 msgstr "Активна"
 
@@ -58,7 +61,9 @@ msgstr "Активна"
 msgid "Finished"
 msgstr "Завершено"
 
-#: app/models.py:110
+#: app/models.py:110 app/templates/app/core/index.html:41
+#: app/templates/app/core/profile.html:219
+#: app/templates/app/core/profile.html:302
 msgid "Team"
 msgstr "Команда"
 
@@ -82,77 +87,1632 @@ msgstr "Сума"
 msgid "Average"
 msgstr "Середнє"
 
-#: app/models.py:209
+#: app/models.py:234
 msgid "Not started"
 msgstr "Не розпочато"
 
-#: app/models.py:210
+#: app/models.py:235
 msgid "In progress"
 msgstr "В процесі"
 
-#: app/models.py:211
+#: app/models.py:236
 msgid "Completed"
 msgstr "Завершено"
 
-#: app/models.py:214
+#: app/models.py:239
 msgid "Automatic"
 msgstr "Автоматично"
 
-#: app/models.py:215
+#: app/models.py:240
 msgid "Manual"
 msgstr "Вручну"
 
-#: app/models.py:256
+#: app/models.py:281 app/templates/app/contests/contest_rounds_team.html:150
 msgid "Submission Closed"
 msgstr "Подання закрито"
 
-#: app/models.py:257
+#: app/models.py:282 app/templates/app/contests/contest_rounds_team.html:172
+#: app/templates/app/contests/contest_rounds_team.html:179
 msgid "Evaluated"
 msgstr "Оцінено"
 
-#: app/models.py:324
+#: app/models.py:349
 msgid "Registration Open"
 msgstr "Реєстрація відкрита"
 
-#: app/models.py:325
+#: app/models.py:350
 msgid "Round Started"
 msgstr "Раунд розпочато"
 
-#: app/models.py:326
+#: app/models.py:351
 msgid "Deadline Approaching"
 msgstr "Дедлайн наближається"
 
-#: app/models.py:327
+#: app/models.py:352
 msgid "Submissions Closed"
 msgstr "Подання закрито"
 
-#: app/models.py:328
+#: app/models.py:353
 msgid "Evaluation Complete"
 msgstr "Оцінка завершена"
 
-#: app/models.py:329
+#: app/models.py:354
 msgid "Application Update"
 msgstr "Оновлення заявки"
 
-#: app/models.py:330
+#: app/models.py:355
 msgid "Announcement"
 msgstr "Оголошення"
 
-#: app/models.py:364
+#: app/models.py:389 app/templates/app/rounds/round_form.html:5
 msgid "Round"
 msgstr "Раунд"
 
-#: app/models.py:365
+#: app/models.py:390 app/templates/app/contests/contest_rounds_team.html:123
+#: app/templates/app/rounds/round_detail.html:230
+#: app/templates/app/rounds/round_detail_team.html:218
+#: app/templates/app/rounds/round_list.html:33
 msgid "Deadline"
 msgstr "Дедлайн"
 
-#: app/models.py:366
+#: app/models.py:391
 msgid "Workshop"
 msgstr "Вебінар"
 
-#: app/models.py:367
+#: app/models.py:392
 msgid "Other"
 msgstr "Інше"
+
+#: app/templates/app/contests/contest_detail.html:4
+#, python-format
+msgid "%(name)s - ContestKeeper"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:61
+#: app/templates/app/contests/contest_detail.html:82
+#, fuzzy
+#| msgid "Deadline"
+msgid "Timeline"
+msgstr "Дедлайн"
+
+#: app/templates/app/contests/contest_detail.html:62
+#, python-format
+msgid "%(start)s — %(end)s"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:66
+msgid "About the contest"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:75
+msgid "Next Up"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:78
+msgid "Full Schedule"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:83
+msgid "No upcoming events."
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:84
+msgid "View Schedule"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:96
+#, fuzzy
+#| msgid "Announcement"
+msgid "Announcements"
+msgstr "Оголошення"
+
+#: app/templates/app/contests/contest_detail.html:105
+msgid "Schedule"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:115
+msgid "Review Apps"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:123
+msgid "Analytics"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:132
+msgid "You registered already!"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:133
+#, python-format
+msgid "- Your team is <strong>%(name)s</strong>."
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:139
+msgid "Register as Individual"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:143
+msgid "OR"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:146
+msgid "Create a Team"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:149
+#, fuzzy
+#| msgid "Registration Open"
+msgid "Registration Closed"
+msgstr "Реєстрація відкрита"
+
+#: app/templates/app/contests/contest_detail.html:151
+#, python-format
+msgid "Opens on %(start)s"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:153
+msgid "The registration period has ended."
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:166
+#: app/templates/app/juries/jurys.html:18
+msgid "Jury Panel"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:167
+#: app/templates/app/contests/contest_detail.html:175
+msgid "View"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:169
+msgid "View assigned jurys..."
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:174
+#: app/templates/app/teams/teams.html:4 app/templates/app/teams/teams.html:17
+#, fuzzy
+#| msgid "Team"
+msgid "Teams"
+msgstr "Команда"
+
+#: app/templates/app/contests/contest_detail.html:177
+msgid "View participating teams..."
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:182
+msgid "Back to Dashboard"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:184
+msgid "Manage Contest"
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:188
+msgid ""
+"Are you sure you want to delete this contest? This action cannot be undone."
+msgstr ""
+
+#: app/templates/app/contests/contest_detail.html:190
+msgid "Delete Contest"
+msgstr ""
+
+#: app/templates/app/contests/contest_form.html:4
+#: app/templates/app/contests/contest_form.html:43
+msgid "Edit Contest"
+msgstr ""
+
+#: app/templates/app/contests/contest_form.html:4
+#: app/templates/app/contests/contest_form.html:43
+msgid "Create New Contest"
+msgstr ""
+
+#: app/templates/app/contests/contest_form.html:73
+#: app/templates/app/core/settings.html:156
+#: app/templates/app/submissions/submission_form.html:154
+#: app/templates/app/teams/team_form.html:59
+msgid "Save Changes"
+msgstr ""
+
+#: app/templates/app/contests/contest_form.html:73
+msgid "Create Contest"
+msgstr ""
+
+#: app/templates/app/contests/contest_form.html:75
+#: app/templates/app/core/settings.html:158
+#: app/templates/app/juries/criterion_form.html:158
+#: app/templates/app/rounds/round_extend_deadline.html:46
+#: app/templates/app/rounds/round_form.html:96
+#: app/templates/app/submissions/submission_form.html:156
+#: app/templates/app/teams/team_create_form.html:40
+#: app/templates/app/teams/team_form.html:58
+msgid "Cancel"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:4
+#: app/templates/app/rounds/round_list.html:4
+#: app/templates/app/rounds/round_list.html:14
+#, fuzzy
+#| msgid "Round"
+msgid "Rounds"
+msgstr "Раунд"
+
+#: app/templates/app/contests/contest_rounds_team.html:112
+msgid "Contest Rounds"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:116
+#, fuzzy
+#| msgid "Active"
+msgid "Active Rounds"
+msgstr "Активна"
+
+#: app/templates/app/contests/contest_rounds_team.html:127
+msgid "Time Left"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:129
+#: app/templates/app/contests/contest_rounds_team.html:202
+#: app/templates/app/rounds/round_detail_team.html:231
+msgid "Loading..."
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:132
+#: app/templates/app/contests/contest_rounds_team.html:161
+msgid "CLOSED"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:139
+msgid "ACTIVE"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:140
+#: app/templates/app/contests/contest_rounds_team.html:162
+#: app/templates/app/core/notifications.html:139
+msgid "View Details"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:157
+#: app/templates/app/contests/contest_rounds_team.html:201
+msgid "Closed"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:183
+msgid "EVALUATED"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:184
+msgid "View Results"
+msgstr ""
+
+#: app/templates/app/contests/contest_rounds_team.html:194
+msgid "No rounds yet. Check back soon!"
+msgstr ""
+
+#: app/templates/app/core/base.html:23
+msgid "Skip to content"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:4
+#: app/templates/app/core/dashboard.html:13 app/templates/app/core/nav.html:21
+msgid "Dashboard"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:20
+msgid "New Contest"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:29
+msgid "My Organized Contests"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:31
+msgid "Contests to Judge"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:33
+#: app/templates/app/core/profile.html:337
+msgid "My Contests"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:47
+#: app/templates/app/core/index.html:79
+msgid "Starts"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:51
+#: app/templates/app/core/index.html:83
+msgid "Ends"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:56
+#: app/templates/app/core/index.html:88
+#: app/templates/app/submissions/submission_list.html:103
+msgid "Details"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:58
+#: app/templates/app/rounds/round_form.html:5
+#: app/templates/app/rounds/round_list.html:42
+#: app/templates/app/submissions/submission_form.html:5
+msgid "Edit"
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:67
+msgid "No contests found in your list."
+msgstr ""
+
+#: app/templates/app/core/dashboard.html:69
+msgid "Create Your First Contest"
+msgstr ""
+
+#: app/templates/app/core/index.html:4 app/templates/app/core/index.html:13
+#: app/templates/app/core/nav.html:20
+msgid "Home"
+msgstr ""
+
+#: app/templates/app/core/index.html:19
+msgid "Welcome to ContestKeeper"
+msgstr ""
+
+#: app/templates/app/core/index.html:20
+msgid ""
+"The ultimate platform for organizing, participating, and judging contests "
+"with ease and style."
+msgstr ""
+
+#: app/templates/app/core/index.html:22
+msgid "Go to Dashboard"
+msgstr ""
+
+#: app/templates/app/core/index.html:30
+msgid "Quick Access"
+msgstr ""
+
+#: app/templates/app/core/index.html:31
+msgid "Your current contest"
+msgstr ""
+
+#: app/templates/app/core/index.html:37 app/templates/app/core/profile.html:218
+#: app/templates/app/core/profile.html:301
+#: app/templates/app/juries/criterion_form.html:139
+#: app/templates/app/rounds/round_detail_team.html:210
+#: app/templates/app/teams/team.html:17
+msgid "Contest"
+msgstr ""
+
+#: app/templates/app/core/index.html:45
+msgid "Current round"
+msgstr ""
+
+#: app/templates/app/core/index.html:46
+msgid "No active round yet"
+msgstr ""
+
+#: app/templates/app/core/index.html:50 app/templates/app/core/profile.html:271
+msgid "Open Contest"
+msgstr ""
+
+#: app/templates/app/core/index.html:51
+#, fuzzy
+#| msgid "Round"
+msgid "View Rounds"
+msgstr "Раунд"
+
+#: app/templates/app/core/index.html:53
+msgid "Open Current Round"
+msgstr ""
+
+#: app/templates/app/core/index.html:61
+msgid "All Contests"
+msgstr ""
+
+#: app/templates/app/core/index.html:63
+msgid "All"
+msgstr ""
+
+#: app/templates/app/core/index.html:96
+msgid "No contests match this filter yet."
+msgstr ""
+
+#: app/templates/app/core/index.html:96
+msgid "No contests available yet."
+msgstr ""
+
+#: app/templates/app/core/nav.html:6
+msgid "Toggle navigation"
+msgstr ""
+
+#: app/templates/app/core/nav.html:22 app/templates/app/core/profile.html:4
+#: app/templates/app/core/profile.html:17
+msgid "Profile"
+msgstr ""
+
+#: app/templates/app/core/nav.html:23 app/templates/app/core/settings.html:4
+#: app/templates/app/core/settings.html:15
+msgid "Settings"
+msgstr ""
+
+#: app/templates/app/core/nav.html:29
+msgid "Select language"
+msgstr ""
+
+#: app/templates/app/core/nav.html:42
+msgid "Toggle theme"
+msgstr ""
+
+#: app/templates/app/core/nav.html:47 app/templates/app/core/nav.html:101
+msgid "Light Mode"
+msgstr ""
+
+#: app/templates/app/core/nav.html:47 app/templates/app/core/nav.html:102
+msgid "Dark Mode"
+msgstr ""
+
+#: app/templates/app/core/nav.html:51
+#: app/templates/app/core/notifications.html:4
+#: app/templates/app/core/notifications.html:110
+msgid "Notifications"
+msgstr ""
+
+#: app/templates/app/core/nav.html:63
+msgid "Log out"
+msgstr ""
+
+#: app/templates/app/core/nav.html:66
+#, fuzzy
+#| msgid "Registration"
+msgid "Register"
+msgstr "Реєстрація"
+
+#: app/templates/app/core/nav.html:67
+msgid "Log in"
+msgstr ""
+
+#: app/templates/app/core/notifications.html:115
+msgid "Mark all as read"
+msgstr ""
+
+#: app/templates/app/core/notifications.html:132
+#, python-format
+msgid "%(timesince)s ago"
+msgstr ""
+
+#: app/templates/app/core/notifications.html:144
+msgid "Mark as read"
+msgstr ""
+
+#: app/templates/app/core/notifications.html:156
+msgid "No notifications yet."
+msgstr ""
+
+#: app/templates/app/core/profile.html:28
+#: app/templates/app/core/settings.html:26
+msgid "Changes saved successfully!"
+msgstr ""
+
+#: app/templates/app/core/profile.html:45
+#: app/templates/app/core/settings.html:44
+msgid "Account"
+msgstr ""
+
+#: app/templates/app/core/profile.html:46
+msgid "Your personal information"
+msgstr ""
+
+#: app/templates/app/core/profile.html:62
+#: app/templates/app/core/profile.html:466
+#: app/templates/app/core/settings.html:61
+msgid "Username"
+msgstr ""
+
+#: app/templates/app/core/profile.html:65
+#: app/templates/app/core/profile.html:73 app/templates/app/teams/teams.html:68
+msgid "Copy"
+msgstr ""
+
+#: app/templates/app/core/profile.html:70
+#: app/templates/app/core/profile.html:467
+#: app/templates/app/core/settings.html:71
+msgid "Email"
+msgstr ""
+
+#: app/templates/app/core/profile.html:78
+#: app/templates/app/core/settings.html:81
+msgid "First Name"
+msgstr ""
+
+#: app/templates/app/core/profile.html:83
+#: app/templates/app/core/settings.html:91
+msgid "Last Name"
+msgstr ""
+
+#: app/templates/app/core/profile.html:90
+#: app/templates/app/core/settings.html:101
+msgid "Bio"
+msgstr ""
+
+#: app/templates/app/core/profile.html:102
+msgid "Save Bio"
+msgstr ""
+
+#: app/templates/app/core/profile.html:120
+#: app/templates/app/core/settings.html:124
+msgid "Account Info"
+msgstr ""
+
+#: app/templates/app/core/profile.html:121
+#: app/templates/app/core/settings.html:125
+msgid "Your account details (read-only)"
+msgstr ""
+
+#: app/templates/app/core/profile.html:129
+#: app/templates/app/core/profile.html:452
+msgid "Collapse"
+msgstr ""
+
+#: app/templates/app/core/profile.html:135
+#: app/templates/app/core/profile.html:468
+#: app/templates/app/core/settings.html:131
+msgid "Role"
+msgstr ""
+
+#: app/templates/app/core/profile.html:141
+#: app/templates/app/core/profile.html:469
+#: app/templates/app/core/settings.html:137
+msgid "Member since"
+msgstr ""
+
+#: app/templates/app/core/profile.html:145
+#: app/templates/app/core/settings.html:141
+msgid "Last login"
+msgstr ""
+
+#: app/templates/app/core/profile.html:164
+#, fuzzy
+#| msgid "Team"
+msgid "My Teams"
+msgstr "Команда"
+
+#: app/templates/app/core/profile.html:165
+msgid "Teams and contests you participate in"
+msgstr ""
+
+#: app/templates/app/core/profile.html:177
+#, python-format
+msgid "Contest: %(contest_name)s"
+msgstr ""
+
+#: app/templates/app/core/profile.html:179
+msgid "Contest not assigned yet"
+msgstr ""
+
+#: app/templates/app/core/profile.html:184
+#: app/templates/app/submissions/submission_detail.html:148
+#: app/templates/app/teams/team.html:22
+msgid "Captain"
+msgstr ""
+
+#: app/templates/app/core/profile.html:184
+msgid "Member"
+msgstr ""
+
+#: app/templates/app/core/profile.html:191
+msgid "You are not part of any teams yet."
+msgstr ""
+
+#: app/templates/app/core/profile.html:208
+msgid "Leaderboard History"
+msgstr ""
+
+#: app/templates/app/core/profile.html:209
+msgid "Placements and scores from completed contests"
+msgstr ""
+
+#: app/templates/app/core/profile.html:220
+msgid "Rank"
+msgstr ""
+
+#: app/templates/app/core/profile.html:221
+msgid "Total score"
+msgstr ""
+
+#: app/templates/app/core/profile.html:238
+msgid "No leaderboard results available yet."
+msgstr ""
+
+#: app/templates/app/core/profile.html:253
+#, fuzzy
+#| msgid "Pending"
+msgid "Pending Reviews"
+msgstr "Очікує розгляду"
+
+#: app/templates/app/core/profile.html:254
+msgid "Teams and criteria that still need your scores"
+msgstr ""
+
+#: app/templates/app/core/profile.html:265
+msgid "Missing criteria:"
+msgstr ""
+
+#: app/templates/app/core/profile.html:277
+msgid "You have no pending reviews right now."
+msgstr ""
+
+#: app/templates/app/core/profile.html:291
+#, fuzzy
+#| msgid "Completed"
+msgid "Completed Reviews"
+msgstr "Завершено"
+
+#: app/templates/app/core/profile.html:292
+msgid "Scores you have already submitted"
+msgstr ""
+
+#: app/templates/app/core/profile.html:303
+msgid "Criterion"
+msgstr ""
+
+#: app/templates/app/core/profile.html:304
+msgid "Score"
+msgstr ""
+
+#: app/templates/app/core/profile.html:321
+msgid "You have not submitted any scores yet."
+msgstr ""
+
+#: app/templates/app/core/profile.html:338
+msgid "Contests you created and currently manage"
+msgstr ""
+
+#: app/templates/app/core/profile.html:348
+#, python-format
+msgid "%(start)s to %(end)s"
+msgstr ""
+
+#: app/templates/app/core/profile.html:352
+msgid "Open"
+msgstr ""
+
+#: app/templates/app/core/profile.html:359
+msgid "You have not created any contests yet."
+msgstr ""
+
+#: app/templates/app/core/profile.html:368
+msgid "Jump to Bio"
+msgstr ""
+
+#: app/templates/app/core/profile.html:369
+msgid "Copy Summary"
+msgstr ""
+
+#: app/templates/app/core/profile.html:377
+msgid "Edit in Settings"
+msgstr ""
+
+#: app/templates/app/core/profile.html:419
+#: app/templates/app/core/settings.html:200
+#: app/templates/app/core/settings.html:201
+msgid "characters"
+msgstr ""
+
+#: app/templates/app/core/profile.html:432
+msgid "Nothing to copy yet."
+msgstr ""
+
+#: app/templates/app/core/profile.html:438
+msgid "Copied"
+msgstr ""
+
+#: app/templates/app/core/profile.html:440
+#: app/templates/app/core/profile.html:476
+#: app/templates/app/teams/team.html:265
+msgid "Clipboard access was blocked."
+msgstr ""
+
+#: app/templates/app/core/profile.html:452
+msgid "Expand"
+msgstr ""
+
+#: app/templates/app/core/profile.html:474
+msgid "Profile summary copied."
+msgstr ""
+
+#: app/templates/app/core/settings.html:45
+msgid "Update your personal information"
+msgstr ""
+
+#: app/templates/app/core/settings.html:187
+msgid "Unnamed user"
+msgstr ""
+
+#: app/templates/app/juries/criterion_form.html:138
+msgid "Edit Criterion"
+msgstr ""
+
+#: app/templates/app/juries/criterion_form.html:138
+msgid "Create Criterion"
+msgstr ""
+
+#: app/templates/app/juries/criterion_form.html:159
+msgid "Save Criterion"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:5
+#, python-format
+msgid "Evaluate: %(team_name)s - %(contest_name)s"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:84
+msgid "← Back to Submissions"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:86
+msgid "← Back to Contest"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:89
+#, fuzzy, python-format
+#| msgid "Evaluation Complete"
+msgid "Evaluating %(name)s"
+msgstr "Оцінка завершена"
+
+#: app/templates/app/juries/jury_evaluation.html:90
+#, python-format
+msgid "Jury Assessment for %(name)s"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:93
+msgid "Juror"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:104
+#, fuzzy
+#| msgid "Submission Closed"
+msgid "Submission Artifacts"
+msgstr "Подання закрито"
+
+#: app/templates/app/juries/jury_evaluation.html:110
+msgid "GitHub Repo ↗"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:111
+msgid "View source code"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:114
+msgid "Demo Video ↗"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:115
+msgid "Watch presentation"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:119
+#: app/templates/app/rounds/round_detail_team.html:253
+msgid "Live Demo ↗"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:120
+msgid "Open application"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:126
+msgid "Implementation Details"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:130
+msgid "No submission found for this team yet."
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:138
+msgid "Scoring Card"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:154
+msgid "pts"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:164
+msgid "Save Evaluation"
+msgstr ""
+
+#: app/templates/app/juries/jury_evaluation.html:168
+#, fuzzy
+#| msgid "Evaluation Complete"
+msgid "Evaluation phase is closed."
+msgstr "Оцінка завершена"
+
+#: app/templates/app/juries/jury_evaluation.html:174
+msgid "Final Weighted Score"
+msgstr ""
+
+#: app/templates/app/juries/jurys.html:5
+#, python-format
+msgid "Jurys – %(name)s"
+msgstr ""
+
+#: app/templates/app/juries/jurys.html:14
+#, python-format
+msgid "Jury Panel for \"%(name)s\""
+msgstr ""
+
+#: app/templates/app/juries/jurys.html:20 app/templates/app/teams/teams.html:19
+#, fuzzy
+#| msgid "Application Update"
+msgid "Applications"
+msgstr "Оновлення заявки"
+
+#: app/templates/app/juries/jurys.html:31
+msgid "Reviews per team:"
+msgstr ""
+
+#: app/templates/app/juries/jurys.html:40
+msgid "Run Random Assignment"
+msgstr ""
+
+#: app/templates/app/juries/jurys.html:71
+msgid "No jurys assigned to this contest yet."
+msgstr ""
+
+#: app/templates/app/juries/jurys.html:79
+msgid "Jury applications will appear here."
+msgstr ""
+
+#: app/templates/app/juries/jurys.html:91 app/templates/app/teams/team.html:195
+#: app/templates/app/teams/teams.html:101
+msgid "Back to Contest"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:5
+#, python-format
+msgid "%(title)s - Round Detail"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:215
+#: app/templates/app/rounds/round_detail.html:217
+msgid "← Back to Rounds List"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:224
+#, python-format
+msgid "Round %(order)s"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:243
+#, fuzzy
+#| msgid "Registration"
+msgid "Description"
+msgstr "Реєстрація"
+
+#: app/templates/app/rounds/round_detail.html:254
+msgid "Technical Requirements"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:265
+msgid "Must-Have Checklist"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:274
+msgid "No checklist items provided."
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:285
+#: app/templates/app/submissions/submission_form.html:5
+#, fuzzy
+#| msgid "Submission Closed"
+msgid "Submission"
+msgstr "Подання закрито"
+
+#: app/templates/app/rounds/round_detail.html:289
+#: app/templates/app/rounds/round_detail_team.html:230
+msgid "Time Remaining"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:297
+#: app/templates/app/rounds/round_detail_team.html:247
+msgid "✅ Submitted"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:298
+#, python-format
+msgid "at %(date)s"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:300
+msgid "View Your Submission"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:302
+msgid "Update Submission"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:306
+#: app/templates/app/rounds/round_detail_team.html:265
+msgid "❌ Not Submitted"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:307
+#, python-format
+msgid "Team: %(name)s"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:310
+msgid "Submit Now"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:312
+#, fuzzy
+#| msgid "Submissions Closed"
+msgid "Submissions are closed."
+msgstr "Подання закрито"
+
+#: app/templates/app/rounds/round_detail.html:316
+msgid "You must be in a team to submit."
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:324
+msgid "Management"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:327
+#, fuzzy
+#| msgid "Submission Closed"
+msgid "Current Submissions"
+msgstr "Подання закрито"
+
+#: app/templates/app/rounds/round_detail.html:330
+msgid "View All Submissions"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:337
+#, fuzzy
+#| msgid "Active"
+msgid "Activate Round"
+msgstr "Активна"
+
+#: app/templates/app/rounds/round_detail.html:339
+#: app/templates/app/rounds/round_form.html:13
+#, fuzzy
+#| msgid "Round"
+msgid "Edit Round"
+msgstr "Раунд"
+
+#: app/templates/app/rounds/round_detail.html:343
+#: app/templates/app/rounds/round_list.html:55
+#, fuzzy
+#| msgid "Submission Closed"
+msgid "Close Submissions"
+msgstr "Подання закрито"
+
+#: app/templates/app/rounds/round_detail.html:345
+#: app/templates/app/rounds/round_extend_deadline.html:13
+#: app/templates/app/rounds/round_extend_deadline.html:45
+#: app/templates/app/rounds/round_list.html:51
+#, fuzzy
+#| msgid "Deadline"
+msgid "Extend Deadline"
+msgstr "Дедлайн"
+
+#: app/templates/app/rounds/round_detail.html:353
+msgid "Materials"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:358
+msgid "Open →"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:361
+msgid "No materials uploaded."
+msgstr ""
+
+#: app/templates/app/rounds/round_detail.html:377
+msgid "EXPIRED"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:5
+#, python-format
+msgid "%(title)s - %(contest_name)s"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:192
+msgid "← Back to All Rounds"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:196
+#, fuzzy
+#| msgid "Submissions Closed"
+msgid "⏁ Submissions Closed"
+msgstr "Подання закрито"
+
+#: app/templates/app/rounds/round_detail_team.html:196
+msgid ""
+"- This round is no longer accepting submissions. Results will be published "
+"after evaluation."
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:202
+#, fuzzy
+#| msgid "Evaluation Complete"
+msgid "✅ Evaluation Complete"
+msgstr "Оцінка завершена"
+
+#: app/templates/app/rounds/round_detail_team.html:202
+msgid "- Check the leaderboard to see results and rankings."
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:214
+msgid "Start Date"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:232
+msgid "Submit before deadline"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:238
+msgid "🚀 Your Submission"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:241
+msgid ""
+"You are not part of a team in this contest. You must be in a team to submit "
+"work."
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:246
+#: app/templates/app/rounds/round_detail_team.html:264
+#: app/templates/app/rounds/round_list.html:32
+#: app/templates/app/submissions/submission_detail.html:156
+msgid "Status"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:250
+msgid "GitHub Repository ↗"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:251
+msgid "Video Presentation ↗"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:257
+msgid "View Full Details"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:259
+#: app/templates/app/submissions/submission_detail.html:90
+#, fuzzy
+#| msgid "Submission Closed"
+msgid "Edit Submission"
+msgstr "Подання закрито"
+
+#: app/templates/app/rounds/round_detail_team.html:268
+msgid "Submit Your Work Now →"
+msgstr ""
+
+#: app/templates/app/rounds/round_detail_team.html:271
+#, fuzzy
+#| msgid "Submissions Closed"
+msgid "Submissions are closed for this round."
+msgstr "Подання закрито"
+
+#: app/templates/app/rounds/round_extend_deadline.html:5
+#, python-format
+msgid "Extend Deadline - %(title)s"
+msgstr ""
+
+#: app/templates/app/rounds/round_extend_deadline.html:17
+#, fuzzy
+#| msgid "Deadline"
+msgid "Current Deadline:"
+msgstr "Дедлайн"
+
+#: app/templates/app/rounds/round_extend_deadline.html:30
+#, fuzzy
+#| msgid "Deadline"
+msgid "New Deadline *"
+msgstr "Дедлайн"
+
+#: app/templates/app/rounds/round_extend_deadline.html:34
+msgid "Must be after the current date and time"
+msgstr ""
+
+#: app/templates/app/rounds/round_extend_deadline.html:38
+msgid "Reason (optional)"
+msgstr ""
+
+#: app/templates/app/rounds/round_extend_deadline.html:40
+msgid "e.g., Extended due to infrastructure issues"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:5
+#: app/templates/app/submissions/submission_form.html:5
+msgid "Create"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:13
+msgid "Create New Round"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:32
+msgid "Title *"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:41
+msgid "Description *"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:50
+msgid "Tech Requirements *"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:59
+msgid "Must Have Checklist (JSON array, one item per line) *"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:62
+msgid ""
+"Enter each item on a separate line, e.g.: API endpoint, Database schema, "
+"Deployment"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:69
+msgid "Start Time *"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:78
+#, fuzzy
+#| msgid "Deadline"
+msgid "Deadline *"
+msgstr "Дедлайн"
+
+#: app/templates/app/rounds/round_form.html:81
+msgid "Must be after start time"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:88
+msgid "Materials (JSON array with {label, url} objects, optional)"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:91
+msgid ""
+"Example: [{\"label\": \"Docs\", \"url\": \"https://...\"}, {\"label\": "
+"\"API\", \"url\": \"https://...\"}]"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:95
+msgid "Update Round"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:95
+msgid "Create Round"
+msgstr ""
+
+#: app/templates/app/rounds/round_form.html:113
+msgid "Must have at least one checklist item!"
+msgstr ""
+
+#: app/templates/app/rounds/round_list.html:15
+msgid "Manage contest rounds and evaluations."
+msgstr ""
+
+#: app/templates/app/rounds/round_list.html:17
+#, fuzzy
+#| msgid "Round"
+msgid "New Round"
+msgstr "Раунд"
+
+#: app/templates/app/rounds/round_list.html:28
+#, python-format
+msgid "Round %(order)s: %(title)s"
+msgstr ""
+
+#: app/templates/app/rounds/round_list.html:45
+#, fuzzy
+#| msgid "Active"
+msgid "Activate"
+msgstr "Активна"
+
+#: app/templates/app/rounds/round_list.html:58
+msgid "Back"
+msgstr ""
+
+#: app/templates/app/rounds/round_list.html:65
+#, python-format
+msgid "No rounds created yet. <a href=\"%(url)s\">Create the first round</a>"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:5
+#, python-format
+msgid "Submission: %(name)s - %(title)s"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:88
+#: app/templates/app/submissions/submission_list.html:75
+msgid "← Back to Round"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:97
+#, fuzzy
+#| msgid "Submission Closed"
+msgid "Team Submission"
+msgstr "Подання закрито"
+
+#: app/templates/app/submissions/submission_detail.html:98
+#, python-format
+msgid "Submitted %(date)s"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:101
+#, fuzzy
+#| msgid "Round"
+msgid "Round:"
+msgstr "Раунд"
+
+#: app/templates/app/submissions/submission_detail.html:110
+msgid "Source Code"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:111
+msgid "View on GitHub ↗"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:120
+msgid "Demo Video"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:121
+msgid "Watch Presentation ↗"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:131
+#: app/templates/app/submissions/submission_list.html:90
+msgid "Live Demo"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:132
+#, fuzzy
+#| msgid "Application Update"
+msgid "Open Application ↗"
+msgstr "Оновлення заявки"
+
+#: app/templates/app/submissions/submission_detail.html:141
+msgid "Technical Description"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:152
+msgid "Team Members"
+msgstr ""
+
+#: app/templates/app/submissions/submission_detail.html:157
+#, fuzzy
+#| msgid "Active"
+msgid "● Active"
+msgstr "Активна"
+
+#: app/templates/app/submissions/submission_form.html:83
+msgid "← Cancel and Return"
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:90
+msgid "Update Your Submission"
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:90
+msgid "Submit Your Work"
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:92
+msgid ""
+"Fill in the details below. You can update your submission anytime before the "
+"deadline."
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:107
+msgid "GitHub Repository URL *"
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:113
+msgid "Link to the source code repository (Public or shared with reviewers)."
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:120
+msgid "Presentation Video URL *"
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:126
+msgid "YouTube, Loom, or Drive link."
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:131
+msgid "Live Demo URL (Optional)"
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:143
+msgid "Implementation Details *"
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:149
+msgid "Briefly describe what your team built, tech stack, and how to test it."
+msgstr ""
+
+#: app/templates/app/submissions/submission_form.html:154
+msgid "Submit Work"
+msgstr ""
+
+#: app/templates/app/submissions/submission_list.html:5
+#, fuzzy, python-format
+#| msgid "Submissions Closed"
+msgid "Submissions - %(title)s"
+msgstr "Подання закрито"
+
+#: app/templates/app/submissions/submission_list.html:71
+#, fuzzy
+#| msgid "Organizer"
+msgid "Organizer View"
+msgstr "Організатор"
+
+#: app/templates/app/submissions/submission_list.html:72
+#, fuzzy
+#| msgid "Submission Closed"
+msgid "Submissions"
+msgstr "Подання закрито"
+
+#: app/templates/app/submissions/submission_list.html:73
+#, python-format
+msgid "%(title)s • %(count)s total teams"
+msgstr ""
+
+#: app/templates/app/submissions/submission_list.html:98
+#, fuzzy
+#| msgid "Evaluated"
+msgid "Evaluate"
+msgstr "Оцінено"
+
+#: app/templates/app/submissions/submission_list.html:100
+msgid "GitHub"
+msgstr ""
+
+#: app/templates/app/submissions/submission_list.html:109
+#, fuzzy
+#| msgid "Submissions Closed"
+msgid "No Submissions Yet"
+msgstr "Подання закрито"
+
+#: app/templates/app/submissions/submission_list.html:110
+msgid "Once teams submit their work, they will appear here."
+msgstr ""
+
+#: app/templates/app/teams/team.html:29
+#, fuzzy
+#| msgid "Organizer"
+msgid "Organization"
+msgstr "Організатор"
+
+#: app/templates/app/teams/team.html:36
+msgid "Links"
+msgstr ""
+
+#: app/templates/app/teams/team.html:49
+msgid "Website"
+msgstr ""
+
+#: app/templates/app/teams/team.html:58
+msgid "Search members or applications"
+msgstr ""
+
+#: app/templates/app/teams/team.html:59
+msgid "Search members"
+msgstr ""
+
+#: app/templates/app/teams/team.html:62
+#: app/templates/app/teams/team_form.html:4
+#: app/templates/app/teams/team_form.html:12
+#, fuzzy
+#| msgid "Team"
+msgid "Edit Team"
+msgstr "Команда"
+
+#: app/templates/app/teams/team.html:64
+msgid "Copy Team Name"
+msgstr ""
+
+#: app/templates/app/teams/team.html:65
+msgid "Expand All"
+msgstr ""
+
+#: app/templates/app/teams/team.html:79
+msgid "Members"
+msgstr ""
+
+#: app/templates/app/teams/team.html:82 app/templates/app/teams/team.html:128
+#: app/templates/app/teams/team.html:158 app/templates/app/teams/team.html:246
+#: app/templates/app/teams/team.html:277
+msgid "Hide"
+msgstr ""
+
+#: app/templates/app/teams/team.html:99
+#, python-format
+msgid "Kick %(name)s from the team?"
+msgstr ""
+
+#: app/templates/app/teams/team.html:101
+msgid "Kick"
+msgstr ""
+
+#: app/templates/app/teams/team.html:103
+#, python-format
+msgid "Block %(name)s from this team?"
+msgstr ""
+
+#: app/templates/app/teams/team.html:105
+msgid "Block"
+msgstr ""
+
+#: app/templates/app/teams/team.html:114
+msgid "No members joined this team yet."
+msgstr ""
+
+#: app/templates/app/teams/team.html:125
+msgid "Blacklisted Members"
+msgstr ""
+
+#: app/templates/app/teams/team.html:136
+#, python-format
+msgid "Unblock %(name)s?"
+msgstr ""
+
+#: app/templates/app/teams/team.html:138
+msgid "Unblock"
+msgstr ""
+
+#: app/templates/app/teams/team.html:145
+msgid "No blacklisted members."
+msgstr ""
+
+#: app/templates/app/teams/team.html:155
+msgid "Pending Applications"
+msgstr ""
+
+#: app/templates/app/teams/team.html:169
+#, fuzzy
+#| msgid "Approved"
+msgid "Approve"
+msgstr "Схвалено"
+
+#: app/templates/app/teams/team.html:171
+#, python-format
+msgid "Reject %(name)s's application?"
+msgstr ""
+
+#: app/templates/app/teams/team.html:173
+#, fuzzy
+#| msgid "Rejected"
+msgid "Reject"
+msgstr "Відхилено"
+
+#: app/templates/app/teams/team.html:181
+msgid "No pending applications."
+msgstr ""
+
+#: app/templates/app/teams/team.html:233
+msgid "Showing"
+msgstr ""
+
+#: app/templates/app/teams/team.html:233
+msgid "matching entries."
+msgstr ""
+
+#: app/templates/app/teams/team.html:246
+msgid "Show"
+msgstr ""
+
+#: app/templates/app/teams/team.html:263
+msgid "Team name copied."
+msgstr ""
+
+#: app/templates/app/teams/team.html:279
+msgid "All sections expanded."
+msgstr ""
+
+#: app/templates/app/teams/team_create_form.html:4
+msgid "Create Team"
+msgstr ""
+
+#: app/templates/app/teams/team_create_form.html:12
+#, python-format
+msgid "Create Team for \"%(name)s\""
+msgstr ""
+
+#: app/templates/app/teams/team_create_form.html:20
+msgid "Team Details"
+msgstr ""
+
+#: app/templates/app/teams/team_create_form.html:41
+msgid "Create & Apply"
+msgstr ""
+
+#: app/templates/app/teams/team_form.html:20
+msgid "Basic Info"
+msgstr ""
+
+#: app/templates/app/teams/team_form.html:39
+msgid "Social Links"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:13
+#, python-format
+msgid "Teams for \"%(name)s\""
+msgstr ""
+
+#: app/templates/app/teams/teams.html:28
+msgid "Search teams by name"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:28
+msgid "Search teams"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:31
+msgid "Sort teams"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:32
+msgid "Name A-Z"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:33
+msgid "Name Z-A"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:34
+msgid "Most members"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:35
+msgid "Fewest members"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:37
+#: venv/lib/python3.13/site-packages/django/forms/widgets.py:528
+msgid "Clear"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:39
+msgid "Export Teams"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:46
+msgid "No teams match your search."
+msgstr ""
+
+#: app/templates/app/teams/teams.html:56
+#, python-format
+msgid "%(members)s member"
+msgid_plural "%(members)s members"
+msgstr[0] ""
+msgstr[1] ""
+msgstr[2] ""
+msgstr[3] ""
+
+#: app/templates/app/teams/teams.html:63
+msgid "Join"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:67
+#, python-format
+msgid "Copy team name %(name)s"
+msgstr ""
+
+#: app/templates/app/teams/teams.html:80
+msgid "No teams registered for this contest yet."
+msgstr ""
+
+#: app/templates/app/teams/teams.html:87
+msgid "Organizer tools tab. The active tab is remembered on this device."
+msgstr ""
+
+#: app/templates/app/teams/teams.html:89
+msgid "Team applications will appear here."
+msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/contrib/messages/apps.py:16
 msgid "Messages"
@@ -211,11 +1771,14 @@ msgstr ""
 
 #. Translators: "letters" means latin letters: a-z and A-Z.
 #: venv/lib/python3.13/site-packages/django/core/validators.py:289
-msgid "Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
+msgid ""
+"Enter a valid “slug” consisting of letters, numbers, underscores or hyphens."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:297
-msgid "Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or hyphens."
+msgid ""
+"Enter a valid “slug” consisting of Unicode letters, numbers, underscores, or "
+"hyphens."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:309
@@ -265,20 +1828,30 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:441
 #, python-format
-msgid "Ensure this value is a multiple of step size %(limit_value)s, starting from %(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
+msgid ""
+"Ensure this value is a multiple of step size %(limit_value)s, starting from "
+"%(offset)s, e.g. %(offset)s, %(valid_value1)s, %(valid_value2)s, and so on."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:473
 #, python-format
-msgid "Ensure this value has at least %(limit_value)d character (it has %(show_value)d)."
-msgid_plural "Ensure this value has at least %(limit_value)d characters (it has %(show_value)d)."
+msgid ""
+"Ensure this value has at least %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at least %(limit_value)d characters (it has "
+"%(show_value)d)."
 msgstr[0] ""
 msgstr[1] ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:491
 #, python-format
-msgid "Ensure this value has at most %(limit_value)d character (it has %(show_value)d)."
-msgid_plural "Ensure this value has at most %(limit_value)d characters (it has %(show_value)d)."
+msgid ""
+"Ensure this value has at most %(limit_value)d character (it has "
+"%(show_value)d)."
+msgid_plural ""
+"Ensure this value has at most %(limit_value)d characters (it has "
+"%(show_value)d)."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -304,14 +1877,18 @@ msgstr[1] ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:526
 #, python-format
-msgid "Ensure that there are no more than %(max)s digit before the decimal point."
-msgid_plural "Ensure that there are no more than %(max)s digits before the decimal point."
+msgid ""
+"Ensure that there are no more than %(max)s digit before the decimal point."
+msgid_plural ""
+"Ensure that there are no more than %(max)s digits before the decimal point."
 msgstr[0] ""
 msgstr[1] ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:597
 #, python-format
-msgid "File extension “%(extension)s” is not allowed. Allowed extensions are: %(allowed_extensions)s."
+msgid ""
+"File extension “%(extension)s” is not allowed. Allowed extensions are: "
+"%(allowed_extensions)s."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/core/validators.py:659
@@ -355,7 +1932,8 @@ msgstr ""
 #. 'month'. Eg: "Title must be unique for pub_date year"
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:141
 #, python-format
-msgid "%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
+msgid ""
+"%(field_label)s must be unique for %(date_field_label)s %(lookup_type)s."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:180
@@ -392,13 +1970,17 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1426
 #, python-format
-msgid "“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD format."
+msgid ""
+"“%(value)s” value has an invalid date format. It must be in YYYY-MM-DD "
+"format."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1430
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1565
 #, python-format
-msgid "“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid date."
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD) but it is an invalid "
+"date."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1434
@@ -407,12 +1989,16 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1561
 #, python-format
-msgid "“%(value)s” value has an invalid format. It must be in YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ] format."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in YYYY-MM-DD "
+"HH:MM[:ss[.uuuuuu]][TZ] format."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1569
 #, python-format
-msgid "“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]][TZ]) but it is an invalid date/time."
+msgid ""
+"“%(value)s” value has the correct format (YYYY-MM-DD HH:MM[:ss[.uuuuuu]]"
+"[TZ]) but it is an invalid date/time."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1574
@@ -430,7 +2016,9 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1864
 #, python-format
-msgid "“%(value)s” value has an invalid format. It must be in [DD] [[HH:]MM:]ss[.uuuuuu] format."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in [DD] "
+"[[HH:]MM:]ss[.uuuuuu] format."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:1868
@@ -512,12 +2100,16 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2526
 #, python-format
-msgid "“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] format."
+msgid ""
+"“%(value)s” value has an invalid format. It must be in HH:MM[:ss[.uuuuuu]] "
+"format."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2530
 #, python-format
-msgid "“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an invalid time."
+msgid ""
+"“%(value)s” value has the correct format (HH:MM[:ss[.uuuuuu]]) but it is an "
+"invalid time."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/db/models/fields/__init__.py:2534
@@ -637,7 +2229,8 @@ msgstr ""
 #: venv/lib/python3.13/site-packages/django/forms/fields.py:642
 #, python-format
 msgid "Ensure this filename has at most %(max)d character (it has %(length)d)."
-msgid_plural "Ensure this filename has at most %(max)d characters (it has %(length)d)."
+msgid_plural ""
+"Ensure this filename has at most %(max)d characters (it has %(length)d)."
 msgstr[0] ""
 msgstr[1] ""
 
@@ -646,7 +2239,9 @@ msgid "Please either submit a file or check the clear checkbox, not both."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/fields.py:715
-msgid "Upload a valid image. The file you uploaded was either not an image or a corrupted image."
+msgid ""
+"Upload a valid image. The file you uploaded was either not an image or a "
+"corrupted image."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/fields.py:862
@@ -686,7 +2281,9 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/formsets.py:61
 #, python-format
-msgid "ManagementForm data is missing or has been tampered with. Missing fields: %(field_names)s. You may need to file a bug report if the issue persists."
+msgid ""
+"ManagementForm data is missing or has been tampered with. Missing fields: "
+"%(field_names)s. You may need to file a bug report if the issue persists."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/formsets.py:65
@@ -724,7 +2321,9 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/models.py:937
 #, python-format
-msgid "Please correct the duplicate data for %(field_name)s which must be unique for the %(lookup)s in %(date_field)s."
+msgid ""
+"Please correct the duplicate data for %(field_name)s which must be unique "
+"for the %(lookup)s in %(date_field)s."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/models.py:946
@@ -746,11 +2345,9 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/utils.py:229
 #, python-format
-msgid "%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it may be ambiguous or it may not exist."
-msgstr ""
-
-#: venv/lib/python3.13/site-packages/django/forms/widgets.py:528
-msgid "Clear"
+msgid ""
+"%(datetime)s couldn’t be interpreted in time zone %(current_timezone)s; it "
+"may be ambiguous or it may not exist."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/forms/widgets.py:529
@@ -1198,23 +2795,40 @@ msgid "CSRF verification failed. Request aborted."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/csrf.py:34
-msgid "You are seeing this message because this HTTPS site requires a “Referer header” to be sent by your web browser, but none was sent. This header is required for security reasons, to ensure that your browser is not being hijacked by third parties."
+msgid ""
+"You are seeing this message because this HTTPS site requires a “Referer "
+"header” to be sent by your web browser, but none was sent. This header is "
+"required for security reasons, to ensure that your browser is not being "
+"hijacked by third parties."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/csrf.py:40
-msgid "If you have configured your browser to disable “Referer” headers, please re-enable them, at least for this site, or for HTTPS connections, or for “same-origin” requests."
+msgid ""
+"If you have configured your browser to disable “Referer” headers, please re-"
+"enable them, at least for this site, or for HTTPS connections, or for “same-"
+"origin” requests."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/csrf.py:45
-msgid "If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or including the “Referrer-Policy: no-referrer” header, please remove them. The CSRF protection requires the “Referer” header to do strict referer checking. If you’re concerned about privacy, use alternatives like <a rel=\"noreferrer\" …> for links to third-party sites."
+msgid ""
+"If you are using the <meta name=\"referrer\" content=\"no-referrer\"> tag or "
+"including the “Referrer-Policy: no-referrer” header, please remove them. The "
+"CSRF protection requires the “Referer” header to do strict referer checking. "
+"If you’re concerned about privacy, use alternatives like <a "
+"rel=\"noreferrer\" …> for links to third-party sites."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/csrf.py:54
-msgid "You are seeing this message because this site requires a CSRF cookie when submitting forms. This cookie is required for security reasons, to ensure that your browser is not being hijacked by third parties."
+msgid ""
+"You are seeing this message because this site requires a CSRF cookie when "
+"submitting forms. This cookie is required for security reasons, to ensure "
+"that your browser is not being hijacked by third parties."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/csrf.py:60
-msgid "If you have configured your browser to disable cookies, please re-enable them, at least for this site, or for “same-origin” requests."
+msgid ""
+"If you have configured your browser to disable cookies, please re-enable "
+"them, at least for this site, or for “same-origin” requests."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/csrf.py:66
@@ -1251,7 +2865,9 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/generic/dates.py:680
 #, python-format
-msgid "Future %(verbose_name_plural)s not available because %(class_name)s.allow_future is False."
+msgid ""
+"Future %(verbose_name_plural)s not available because "
+"%(class_name)s.allow_future is False."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/generic/dates.py:720
@@ -1301,12 +2917,18 @@ msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:206
 #, python-format
-msgid "View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
+msgid ""
+"View <a href=\"https://docs.djangoproject.com/en/%(version)s/releases/\" "
+"target=\"_blank\" rel=\"noopener\">release notes</a> for Django %(version)s"
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:208
 #, python-format
-msgid "You are seeing this page because <a href=\"https://docs.djangoproject.com/en/%(version)s/ref/settings/#debug\" target=\"_blank\" rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not configured any URLs."
+msgid ""
+"You are seeing this page because <a href=\"https://docs.djangoproject.com/en/"
+"%(version)s/ref/settings/#debug\" target=\"_blank\" "
+"rel=\"noopener\">DEBUG=True</a> is in your settings file and you have not "
+"configured any URLs."
 msgstr ""
 
 #: venv/lib/python3.13/site-packages/django/views/templates/default_urlconf.html:217

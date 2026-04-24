@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}{{ contest.name }} - ContestKeeper{% endblock %}
+{% block title %}{% blocktrans with name=contest.name %}{{ name }} - ContestKeeper{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'css/contest_detail.css' %}">
@@ -54,16 +54,16 @@
 
     <div class="info-grid" style="margin-top: 2rem;">
         <div class="info-item">
-            <h4>Organizer</h4>
+            <h4>{% trans "Organizer" %}</h4>
             <p>{{ contest.organizer.username }}</p>
         </div>
         <div class="info-item">
-            <h4>Timeline</h4>
-            <p>{{ contest.start_date|date:"M d, Y" }} — {{ contest.end_date|date:"M d, Y" }}</p>
+            <h4>{% trans "Timeline" %}</h4>
+            <p>{% blocktrans with start=contest.start_date|date:"M d, Y" end=contest.end_date|date:"M d, Y" %}{{ start }} — {{ end }}{% endblocktrans %}</p>
         </div>
     </div>
 
-    <h4 style="margin-top: 2rem;">About the contest</h4>
+    <h4 style="margin-top: 2rem;">{% trans "About the contest" %}</h4>
     <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 2rem;">
         <div class="description-box" style="margin: 0;">
             {{ contest.description }}
@@ -72,16 +72,16 @@
         <div>
             {% if next_event %}
             <div class="glass-panel" style="padding: 1.5rem; border: 1px solid rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.05);">
-                <div style="font-size: 0.7rem; font-weight: 800; color: #6366f1; text-transform: uppercase; margin-bottom: 0.5rem;">Next Up</div>
+                <div style="font-size: 0.7rem; font-weight: 800; color: #6366f1; text-transform: uppercase; margin-bottom: 0.5rem;">{% trans "Next Up" %}</div>
                 <h4 style="margin: 0 0 0.5rem 0; font-weight: 800;">{{ next_event.title }}</h4>
                 <div style="font-family: monospace; font-size: 0.85rem; color: #475569;">{{ next_event.start_time|date:"M d • H:i" }}</div>
-                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: #6366f1; text-decoration: none;">Full Schedule →</a>
+                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: #6366f1; text-decoration: none;">{% trans "Full Schedule" %} →</a>
             </div>
             {% else %}
             <div class="glass-panel" style="padding: 1.5rem; border: 1px solid var(--border); opacity: 0.6;">
-                <div style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem;">Timeline</div>
-                <p style="margin: 0; font-size: 0.9rem;">No upcoming events.</p>
-                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-decoration: none;">View Schedule →</a>
+                <div style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem;">{% trans "Timeline" %}</div>
+                <p style="margin: 0; font-size: 0.9rem;">{% trans "No upcoming events." %}</p>
+                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-decoration: none;">{% trans "View Schedule" %} →</a>
             </div>
             {% endif %}
         </div>
@@ -93,7 +93,7 @@
                 <path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"></path>
                 <path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
             </svg>
-            <h4>Announcements</h4>
+            <h4>{% trans "Announcements" %}</h4>
         </a>
         <a href="{% url 'schedule' contest.pk %}" class="quick-link-card">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--secondary);">
@@ -102,7 +102,7 @@
                 <line x1="8" y1="2" x2="8" y2="6"></line>
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
-            <h4>Schedule</h4>
+            <h4>{% trans "Schedule" %}</h4>
         </a>
         {% if user == contest.organizer %}
         <a href="{% url 'admin_application_list' contest.pk %}" class="quick-link-card">
@@ -112,7 +112,7 @@
                 <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
                 <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
             </svg>
-            <h4>Review Apps</h4>
+            <h4>{% trans "Review Apps" %}</h4>
         </a>
         <a href="{% url 'organizer_analytics' contest.pk %}" class="quick-link-card">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;">
@@ -120,7 +120,7 @@
                 <line x1="12" y1="20" x2="12" y2="4"></line>
                 <line x1="6" y1="20" x2="6" y2="14"></line>
             </svg>
-            <h4>Analytics</h4>
+            <h4>{% trans "Analytics" %}</h4>
         </a>
         {% endif %}
     </div>
@@ -129,28 +129,28 @@
     <div class="registration-block"
         style="margin-bottom: 2rem; background: var(--glass); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
         {% if user_team %}
-        <h4 style="margin-top: 0; color: #10b981;">You registered already!</h4>
-        <p style="margin-bottom: 0;">- Your team is <strong>{{ user_team.name }}</strong>.</p>
+        <h4 style="margin-top: 0; color: #10b981;">{% trans "You registered already!" %}</h4>
+        <p style="margin-bottom: 0;">{% blocktrans with name=user_team.name %}- Your team is <strong>{{ name }}</strong>.{% endblocktrans %}</p>
         {% else %}
         <div style="display: flex; flex-direction: column; gap: 1rem;">
             {% if contest.is_registration_open %}
                 <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
                     {% csrf_token %}
-                    <button type="submit" class="btn btn-secondary" style="width: 100%;">Register as Individual</button>
+                    <button type="submit" class="btn btn-secondary" style="width: 100%;">{% trans "Register as Individual" %}</button>
                 </form>
                 <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.9rem;">
                     <div style="flex: 1; height: 1px; background: var(--border);"></div>
-                    OR
+                    {% trans "OR" %}
                     <div style="flex: 1; height: 1px; background: var(--border);"></div>
                 </div>
-                <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none;">Create a Team</a>
+                <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none;">{% trans "Create a Team" %}</a>
             {% else %}
                 <div style="text-align: center; padding: 1rem;">
-                    <h4 style="margin-top: 0; color: #ef4444;">Registration Closed</h4>
+                    <h4 style="margin-top: 0; color: #ef4444;">{% trans "Registration Closed" %}</h4>
                     {% if contest.registration_start and contest.registration_start > now %}
-                        <p class="small text-muted">Opens on {{ contest.registration_start|date:"M d, Y H:i" }}</p>
+                        <p class="small text-muted">{% blocktrans with start=contest.registration_start|date:"M d, Y H:i" %}Opens on {{ start }}{% endblocktrans %}</p>
                     {% else %}
-                        <p class="small text-muted">The registration period has ended.</p>
+                        <p class="small text-muted">{% trans "The registration period has ended." %}</p>
                     {% endif %}
                 </div>
             {% endif %}
@@ -163,31 +163,31 @@
         <div>
             <div
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <h4 style="margin: 0;">Jury Panel</h4>
-                <a href="{% url 'contest_jurys' contest.pk %}" class="btn-sm btn-secondary">View</a>
+                <h4 style="margin: 0;">{% trans "Jury Panel" %}</h4>
+                <a href="{% url 'contest_jurys' contest.pk %}" class="btn-sm btn-secondary">{% trans "View" %}</a>
             </div>
-            <span class="empty-label">View assigned jurys...</span>
+            <span class="empty-label">{% trans "View assigned jurys..." %}</span>
         </div>
         <div>
             <div
                 style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
-                <h4 style="margin: 0;">Teams</h4>
-                <a href="{% url 'contest_teams' contest.pk %}" class="btn-sm btn-secondary">View</a>
+                <h4 style="margin: 0;">{% trans "Teams" %}</h4>
+                <a href="{% url 'contest_teams' contest.pk %}" class="btn-sm btn-secondary">{% trans "View" %}</a>
             </div>
-            <span class="empty-label">View participating teams...</span>
+            <span class="empty-label">{% trans "View participating teams..." %}</span>
         </div>
     </div>
 
     <div class="contest-actions" style="margin-top: 2rem;">
-        <a href="{% url 'dashboard' %}" class="btn btn-secondary">Back to Dashboard</a>
+        <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Back to Dashboard" %}</a>
         {% if user == contest.organizer or user.is_staff %}
-        <a href="{% url 'contest_edit' contest.pk %}" class="btn btn-primary">Manage Contest</a>
+        <a href="{% url 'contest_edit' contest.pk %}" class="btn btn-primary">{% trans "Manage Contest" %}</a>
         {% endif %}
         {% if user == contest.organizer %}
         <form class="delete-form" action="{% url 'contest_delete' contest.pk %}" method="POST"
-            onsubmit="return confirm('Are you sure you want to delete this contest? This action cannot be undone.');" style="display: inline;">
+            onsubmit="return confirm('{% trans "Are you sure you want to delete this contest? This action cannot be undone." %}');" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" class="btn btn-tinted btn-delete" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">Delete Contest</button>
+            <button type="submit" class="btn btn-tinted btn-delete" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">{% trans "Delete Contest" %}</button>
         </form>
         {% endif %}
     </div>

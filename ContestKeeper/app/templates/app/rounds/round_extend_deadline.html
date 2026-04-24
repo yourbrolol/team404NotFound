@@ -1,7 +1,8 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
+{% load i18n %}
 
-{% block title %}Extend Deadline - {{ round.title }}{% endblock %}
+{% block title %}{% blocktrans with title=round.title %}Extend Deadline - {{ title }}{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/nav.css' %}">
@@ -9,11 +10,11 @@
 
 {% block content %}
         <div class="detail-card" style="max-width: 500px; margin: auto;">
-            <h1 class="detail-title">Extend Deadline</h1>
+            <h1 class="detail-title">{% trans "Extend Deadline" %}</h1>
             <p style="margin: 0.5rem 0 1rem; color: var(--text-muted);">{{ round.title }}</p>
 
             <div style="background: #f0f7ff; padding: 1rem; border-radius: 4px; margin-bottom: 1rem; border-left: 4px solid #0066cc;">
-                <p style="margin: 0; font-size: 0.9rem;"><strong>Current Deadline:</strong> {{ round.deadline|date:'Y-m-d H:i' }}</p>
+                <p style="margin: 0; font-size: 0.9rem;"><strong>{% trans "Current Deadline:" %}</strong> {{ round.deadline|date:'Y-m-d H:i' }}</p>
             </div>
 
             {% if error %}
@@ -26,23 +27,23 @@
                 {% csrf_token %}
 
                 <div>
-                    <label for="new_deadline">New Deadline *</label>
+                    <label for="new_deadline">{% trans "New Deadline *" %}</label>
                     <input type="datetime-local" id="new_deadline" name="new_deadline" required
                            min="{% now 'Y-m-d\TH:i' %}"
                            style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem;">
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">Must be after the current date and time</p>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans "Must be after the current date and time" %}</p>
                 </div>
 
                 <div>
-                    <label for="reason">Reason (optional)</label>
+                    <label for="reason">{% trans "Reason (optional)" %}</label>
                     <textarea id="reason" name="reason" rows="3"
-                              placeholder="e.g., Extended due to infrastructure issues"
+                              placeholder="{% trans 'e.g., Extended due to infrastructure issues' %}"
                               style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; font-family: inherit;"></textarea>
                 </div>
 
                 <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
-                    <button type="submit" class="btn btn-primary">Extend Deadline</button>
-                    <a href="{% url 'contest_rounds' round.contest.pk %}" class="btn btn-secondary">Cancel</a>
+                    <button type="submit" class="btn btn-primary">{% trans "Extend Deadline" %}</button>
+                    <a href="{% url 'contest_rounds' round.contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
                 </div>
             </form>
         </div>

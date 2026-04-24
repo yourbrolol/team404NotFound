@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %} - ContestKeeper{% endblock %}
+{% block title %}{% if is_edit %}{% trans "Edit Contest" %}{% else %}{% trans "Create New Contest" %}{% endif %} - ContestKeeper{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
@@ -40,7 +40,7 @@
 
 {% block content %}
         <header class="dashboard-header">
-            <h1 id="h1">{% if is_edit %}Edit Contest{% else %}Create New Contest{% endif %}</h1>
+            <h1 id="h1">{% if is_edit %}{% trans "Edit Contest" %}{% else %}{% trans "Create New Contest" %}{% endif %}</h1>
         </header>
 
         <div class="form-card">
@@ -70,9 +70,9 @@
 
                 <div class="contest-actions" style="margin-top: 2rem;">
                     <button type="submit" class="btn btn-primary">
-                        {% if is_edit %}Save Changes{% else %}Create Contest{% endif %}
+                        {% if is_edit %}{% trans "Save Changes" %}{% else %}{% trans "Create Contest" %}{% endif %}
                     </button>
-                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">Cancel</a>
+                    <a href="{% url 'dashboard' %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
                 </div>
             </form>
         </div>

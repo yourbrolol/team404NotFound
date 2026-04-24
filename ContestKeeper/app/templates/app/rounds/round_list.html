@@ -1,7 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}{{ contest.name }} - Rounds{% endblock %}
+{% block title %}{{ contest.name }} - {% trans "Rounds" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/nav.css' %}">
@@ -11,10 +11,10 @@
         <div class="detail-card" style="width:100%;">
             <div class="detail-header" style="justify-content: space-between; align-items: center;">
                 <div>
-                    <h1 class="detail-title">{{ contest.name }} - Rounds</h1>
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Manage contest rounds and evaluations.</p>
+                    <h1 class="detail-title">{{ contest.name }} - {% trans "Rounds" %}</h1>
+                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">{% trans "Manage contest rounds and evaluations." %}</p>
                 </div>
-                <a href="{% url 'round_create' contest.pk %}" class="btn btn-primary">New Round</a>
+                <a href="{% url 'round_create' contest.pk %}" class="btn btn-primary">{% trans "New Round" %}</a>
             </div>
 
             {% if rounds %}
@@ -25,12 +25,12 @@
                                 <div>
                                     <h3 style="margin: 0;">
                                         <a href="{% url 'round_detail' contest.pk round.id %}" style="text-decoration: none; color: inherit;">
-                                            Round {{ round.order }}: {{ round.title }}
+                                            {% blocktrans with order=round.order title=round.title %}Round {{ order }}: {{ title }}{% endblocktrans %}
                                         </a>
                                     </h3>
                                     <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">
-                                        Status: <strong>{{ round.get_status_display }}</strong>
-                                        | Deadline: {{ round.deadline|date:"M d, Y H:i" }}
+                                        {% trans "Status" %}: <strong>{{ round.get_status_display }}</strong>
+                                        | {% trans "Deadline" %}: {{ round.deadline|date:"M d, Y H:i" }}
                                     </p>
                                 </div>
                             </div>
@@ -39,30 +39,30 @@
 
                             <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
                                 {% if round.status == 'DRAFT' %}
-                                    <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem;">Edit</a>
+                                    <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem;">{% trans "Edit" %}</a>
                                     <form action="{% url 'round_activate' contest.pk round.id %}" method="POST" style="display: inline;">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary" style="font-size: 0.85rem;">Activate</button>
+                                        <button type="submit" class="btn btn-primary" style="font-size: 0.85rem;">{% trans "Activate" %}</button>
                                     </form>
                                 {% elif round.status == 'ACTIVE' %}
                                     <form action="{% url 'round_extend_deadline' contest.pk round.id %}" method="POST" style="display: inline;">
                                         {% csrf_token %}
                                         <input type="datetime-local" name="new_deadline" required style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem;">
-                                        <button type="submit" class="btn btn-secondary" style="font-size: 0.85rem;">Extend Deadline</button>
+                                        <button type="submit" class="btn btn-secondary" style="font-size: 0.85rem;">{% trans "Extend Deadline" %}</button>
                                     </form>
                                     <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" style="display: inline;">
                                         {% csrf_token %}
-                                        <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem;">Close Submissions</button>
+                                        <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem;">{% trans "Close Submissions" %}</button>
                                     </form>
                                 {% endif %}
-                                <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="font-size: 0.85rem;">Back</a>
+                                <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="font-size: 0.85rem;">{% trans "Back" %}</a>
                             </div>
                         </div>
                     {% endfor %}
                 </div>
             {% else %}
                 <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
-                    <p>No rounds created yet. <a href="{% url 'round_create' contest.pk %}">Create the first round</a></p>
+                    <p>{% blocktrans with url=round_create_url %}No rounds created yet. <a href="{{ url }}">Create the first round</a>{% endblocktrans %}</p>
                 </div>
             {% endif %}
         </div>
