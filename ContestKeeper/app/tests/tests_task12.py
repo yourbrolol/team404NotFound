@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils import timezone, translation
 from datetime import timedelta
 from decimal import Decimal
-from app.models import Contest, Round, Team, Submission, User, ScoringCriterion, JuryScore
+from app.models import Contest, Round, Team, Submission, User, ScoringCriterion, JuryScore, JuryAssignment
 
 class JuryEvaluationTask12Test(TestCase):
     def setUp(self):
@@ -40,6 +40,9 @@ class JuryEvaluationTask12Test(TestCase):
         
         self.team = Team.objects.create(name='Alpha Team', captain=self.participant)
         self.contest.teams.add(self.team)
+        
+        # Create JuryAssignment so jury can evaluate
+        JuryAssignment.objects.create(contest=self.contest, team=self.team, jury_member=self.jury)
         
         self.submission = Submission.objects.create(
             round=self.round,

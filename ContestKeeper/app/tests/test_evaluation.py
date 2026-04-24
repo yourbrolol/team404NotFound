@@ -67,6 +67,14 @@ class EvaluationModelsTest(TestCase):
         )
 
     def test_create_scoring_models(self):
+        # Create JuryAssignment first
+        from app.models import JuryAssignment
+        JuryAssignment.objects.create(
+            contest=self.contest,
+            team=self.team_one,
+            jury_member=self.jury_one
+        )
+        
         score = JuryScore.objects.create(
             contest=self.contest,
             team=self.team_one,
@@ -82,6 +90,14 @@ class EvaluationModelsTest(TestCase):
         self.assertEqual(str(self.backend), "EvalCup: Backend")
 
     def test_score_validation_rejects_score_above_maximum(self):
+        # Create JuryAssignment first
+        from app.models import JuryAssignment
+        JuryAssignment.objects.create(
+            contest=self.contest,
+            team=self.team_one,
+            jury_member=self.jury_one
+        )
+        
         with self.assertRaises(ValidationError):
             JuryScore.objects.create(
                 contest=self.contest,
@@ -92,8 +108,13 @@ class EvaluationModelsTest(TestCase):
             )
 
     def test_score_validation_rejects_team_outside_contest(self):
+        # Create JuryAssignment for a team not in contest (will still fail for team validation)
+        from app.models import JuryAssignment
+        
         outsider_team = Team.objects.create(name="Gamma", captain=self.member, status=Team.Status.ACTIVE)
         outsider_team.participants.add(self.member)
+        
+        # This will fail on team validation, not assignment
 
         with self.assertRaises(ValidationError):
             JuryScore.objects.create(

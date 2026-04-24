@@ -174,6 +174,10 @@ class ProfileViewTaskTest(TestCase):
         self.assertContains(response, "95.00")
 
     def test_profile_for_jury_shows_pending_and_completed_reviews(self):
+        # Create JuryAssignment first
+        from app.models import JuryAssignment
+        JuryAssignment.objects.create(contest=self.contest, team=self.team, jury_member=self.jury)
+        
         JuryScore.objects.create(
             contest=self.contest,
             team=self.team,
@@ -184,6 +188,8 @@ class ProfileViewTaskTest(TestCase):
         second_team = Team.objects.create(name="Challengers", captain=self.member, status=Team.Status.ACTIVE)
         second_team.participants.add(self.member)
         self.contest.teams.add(second_team)
+        # Add JuryAssignment for second_team
+        JuryAssignment.objects.create(contest=self.contest, team=second_team, jury_member=self.jury)
 
         self.client.force_login(self.jury)
         response = self.client.get(reverse("profile"))

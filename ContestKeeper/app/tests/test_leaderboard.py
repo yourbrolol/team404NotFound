@@ -17,6 +17,7 @@ from app.models import (
     Submission,
     Team,
     User,
+    JuryAssignment,
 )
 
 
@@ -113,6 +114,11 @@ class LeaderboardHelperFunctionsTest(TestCase):
             aggregation_type=ScoringCriterion.AggregationType.AVERAGE,
             order=2,
         )
+        
+        # Create JuryAssignments for all teams and juries
+        for team in [self.team_one, self.team_two]:
+            for jury in [self.jury_one, self.jury_two]:
+                JuryAssignment.objects.create(contest=self.contest, team=team, jury_member=jury)
 
     def test_compute_leaderboard_orders_teams_by_weighted_score(self):
         JuryScore.objects.create(contest=self.contest, team=self.team_one, jury_member=self.jury_one, criterion=self.backend, score=Decimal("90.00"))
