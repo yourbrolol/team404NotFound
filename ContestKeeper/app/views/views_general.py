@@ -1,4 +1,6 @@
+from django.db.models import Q
 from django.shortcuts import redirect, render
+
 from django.views import View
 from django.views.generic import TemplateView
 
@@ -194,7 +196,9 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
         elif user.is_jury():
             contests = user.judged_contests.exclude(status=Contest.Status.DRAFT)
         elif user.is_participant():
-            contests = user.participated_contests.exclude(status=Contest.Status.DRAFT)
+            contests = Contest.objects.filter(
+                Q(participants=user) | Q(teams__participants=user)
+            ).exclude(status=Contest.Status.DRAFT).distinct()
         else:
             contests = Contest.objects.none()
         return super().get_context_data(contests=contests, **kwargs)
