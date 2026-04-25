@@ -177,6 +177,25 @@ class BugfixRegressionTest(TestCase):
         # Should contain the dynamic status display
         status_display = self.contest.get_status_display()
         self.assertIn(status_display, content)
+
+    def test_contest_create_view_renders_form_on_get(self):
+        """GET /contests/new/ should render the contest creation form."""
+        self.client.force_login(self.organizer)
+        url = reverse('contest_create')
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Create New Contest', response.content.decode())
+        self.assertTrue(response.context['form'])
+
+    def test_contest_edit_view_renders_form_for_organizer(self):
+        """GET /contests/<pk>/edit/ should render the existing contest form."""
+        self.client.force_login(self.organizer)
+        url = reverse('contest_edit', kwargs={'pk': self.contest.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('Edit Contest', response.content.decode())
+        self.assertEqual(response.context['form'].instance, self.contest)
+
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError

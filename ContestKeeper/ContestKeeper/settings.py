@@ -149,3 +149,18 @@ LOGOUT_REDIRECT_URL = 'home'
 CSRF_TRUSTED_ORIGINS = [
     "https://*.ngrok-free.app", # CHANGE IN PROD!!!
 ]
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {'class': 'logging.StreamHandler'},
+    },
+    'loggers': {
+        'app.models': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+            'propagate': False,
+        },
+    },
+}

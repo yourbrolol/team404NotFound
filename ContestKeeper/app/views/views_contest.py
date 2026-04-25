@@ -1,7 +1,9 @@
 from django.http import Http404, HttpResponseForbidden, JsonResponse
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView
+
+from django.utils import timezone
 
 from app.forms import ContestForm
 from app.models import Application, Contest
@@ -52,7 +54,6 @@ class ContestDetailView(DetailView):
         )
 
         context = super().get_context_data(**kwargs)
-        from django.utils import timezone
         context.update({
             "user_team": user_team,
             "team_applications": t_applications,
@@ -69,6 +70,7 @@ class ContestDetailView(DetailView):
                 application_type=Application.Type.JURY,
                 status=Application.Status.PENDING,
             ).exists() if is_authenticated else False,
+            "now": timezone.now(),
         })
         return context
 
@@ -81,9 +83,15 @@ class ContestFormView(RedirectToRegisterMixin, View):
         pk = self.kwargs.get("pk")
         if pk is None:
             return None, False
-        contest = Contest.objects.filter(pk=pk).first()
-        return contest, (contest is not None and contest.organizer != self.request.user)
+        contest = get_object_or_404(Contest, pk=pk)
+        return contest, contest.organizer != self.request.user
 
+    def get(self, request, *args, **kwargs):
+        contest, forbidden = self._get_contest()
+        if forbidden:
+            return HttpResponseForbidden("You are not the organizer of this contest.")
+        form = ContestForm(instance=contest)
+        return render(request, self.template_name, {"form": form, "is_edit": contest is not None})
 
     def post(self, request, *args, **kwargs):
         contest, forbidden = self._get_contest()
