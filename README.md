@@ -11,38 +11,54 @@ ContestKeeper is a web platform for organizing programming tournaments with team
 
 ## Installation & Startup
 
-1. **Clone the repository and enter the project root:**
+**Clone the repository and enter the project root:**
    ```bash
    cd team404NotFound
    ```
 
-2. **Create a virtual environment:**
+**There are 2 ways to run the app: The default way and the Docker way**
+
+**Default way:**
+
+1. **Create a virtual environment:**
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate
    ```
 
-3. **Install dependencies:**
+2. **Install dependencies:**
    ```bash
    pip install -r ContestKeeper/requirements.txt
    ```
 
-4. **Set up environment variables:**
+3. **Set up environment variables:**
    Copy `.env.example` to `.env` and adjust settings.
    ```bash
    cp ContestKeeper/.env.example ContestKeeper/.env
    ```
 
-5. **Run migrations:**
+4. **Run migrations:**
    ```bash
    cd ContestKeeper
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-6. **Start the server:**
+5. **Start the server:**
    ```bash
    python manage.py runserver
+   ```
+
+**Docker way**
+
+1. **Build the Docker image**
+   ```bash
+   sudo docker build -t contestkeeper . # optionally change "contestkeeper" to custom name
+   ```
+
+2. **Run the Docker image**
+   ```bash
+   sudo docker run -p 8000:8000 contestkeeper # change "contestkeeper" to container name; change the first 8000 to the needed port
    ```
 
 ## User Roles & Credentials
