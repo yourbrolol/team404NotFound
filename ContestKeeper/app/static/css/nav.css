@@ -198,6 +198,28 @@ main.dashboard-container {
     margin-top: auto;
 }
 
+.nav-lang-select {
+    background: var(--glass);
+    color: var(--text-main);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 4px 8px;
+    font-size: 0.85rem;
+    cursor: pointer;
+    outline: none;
+    margin-right: 0.5rem;
+}
+
+.nav-lang-select:hover {
+    background: var(--glass-hover);
+    border-color: var(--accent);
+}
+
+.nav-lang-select option {
+    background: #1e293b;
+    color: #f8fafc;
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Tablet / Mobile  (≤ 900px)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */

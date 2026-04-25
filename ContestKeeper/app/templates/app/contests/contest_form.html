@@ -4,38 +4,7 @@
 {% block title %}{% if is_edit %}{% trans "Edit Contest" %}{% else %}{% trans "Create New Contest" %}{% endif %} - ContestKeeper{% endblock %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/dashboard.css' %}">
-{% endblock %}
-
-{% block extra_head %}
-<style>
-        /* Fix centering for checkbox group */
-        .form-group.checkbox-row {
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: flex-start;
-            /* Align to the left */
-            gap: 12px;
-            margin: 1.5rem 0;
-        }
- 
-        /* Remove extra margins from the checkbox itself */
-        .form-group.checkbox-row input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            margin: 0;
-            cursor: pointer;
-        }
- 
-        /* Reset standard label styles for checkbox */
-        .form-group.checkbox-row .form-label {
-            margin: 0;
-            cursor: pointer;
-            order: 2;
-            /* Text follows the checkbox */
-        }
-    </style>
+<link rel="stylesheet" href="{% static 'css/contest_form.css' %}">
 {% endblock %}
 
 {% block content %}

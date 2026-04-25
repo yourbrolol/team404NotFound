@@ -1,0 +1,21 @@
+.form-group.checkbox-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 1.5rem 0;
+}
+
+.form-group.checkbox-row input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+}
+
+.form-group.checkbox-row .form-label {
+    margin: 0;
+    cursor: pointer;
+    order: 2;
+}
