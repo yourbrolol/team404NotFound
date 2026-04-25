@@ -93,9 +93,9 @@ body {
     font-size: 18px;
   }
 
-  .dashboard-container {
+  /* .dashboard-container {
     max-width: 1900px;
-  }
+  } */
 }
 
 @media (min-width: 1900px) and (min-resolution: 1.5dppx) {
@@ -103,9 +103,9 @@ body {
     font-size: 20px;
   }
 
-  .dashboard-container {
+  /* .dashboard-container {
     max-width: 2200px;
-  }
+  } */
 }
 
 @media (min-width: 3000px),
@@ -114,9 +114,9 @@ body {
     font-size: 22px;
   }
 
-  .dashboard-container {
+  /* .dashboard-container {
     max-width: 2400px;
-  }
+  } */
 }
 
 .container {
@@ -127,7 +127,7 @@ body {
 
 .dashboard-container {
   box-sizing: border-box;
-  max-width: 1600px;
+  /* max-width: 1600px; */
   width: 100%;
   padding: clamp(0.75rem, min(3vw, 1.5rem), 1.5rem);
 }
