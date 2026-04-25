@@ -84,10 +84,36 @@
 
             {% if user == contest.organizer %}
             <div id="apps-panel" class="tab-panel">
-                <div class="teams-summary teams-summary--soft">{% trans "Organizer tools tab. The active tab is remembered on this device." %}</div>
+                <div class="teams-summary teams-summary--soft">{% trans "Pending team registration requests." %}</div>
+                
+                {% if team_applications %}
+                <ul class="teams-list">
+                    {% for app in team_applications %}
+                    <li class="team-list-item">
+                        <div class="team-card">
+                            <div class="team-card__content">
+                                <span class="team-name">{{ app.team.name }}</span>
+                                <span class="team-meta">{% trans "Captain" %}: {{ app.user.username }}</span>
+                            </div>
+                            <div class="team-card__actions" style="display: flex; gap: 10px;">
+                                <form action="{% url 'approve_application' app.pk %}" method="post" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary btn-sm" style="background: #2ecc71; border-color: #2ecc71;">{% trans "Approve" %}</button>
+                                </form>
+                                <form action="{% url 'reject_application' app.pk %}" method="post" style="margin: 0;">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-secondary btn-sm" style="background: #e74c3c; border-color: #e74c3c; color: white;">{% trans "Reject" %}</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
                 <div class="empty-state">
-                    <p>{% trans "Team applications will appear here." %}</p>
+                    <p>{% trans "No pending team applications." %}</p>
                 </div>
+                {% endif %}
             </div>
             {% endif %}
 

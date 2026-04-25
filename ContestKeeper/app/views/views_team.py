@@ -1,7 +1,10 @@
+from django.contrib import messages
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
+from django.urls import reverse_lazy
+from django.utils import timezone
 from django.views import View
-from django.views.generic import DetailView, ListView, CreateView
+from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
 from app.models import Application, Contest, User, Team, JuryAssignment
 from app.forms import TeamForm
@@ -18,9 +21,22 @@ class ViewTeamsView(RedirectToRegisterMixin, ListView):
 
     def get_context_data(self, **kwargs):
         user_team = None
+        team_applications = None
         if self.request.user.is_authenticated:
             user_team = self.contest.teams.filter(participants=self.request.user).first()
-        return super().get_context_data(contest=self.contest, user_team=user_team, **kwargs)
+            if self.request.user == self.contest.organizer:
+                team_applications = Application.objects.filter(
+                    contest=self.contest,
+                    application_type=Application.Type.TEAM,
+                    status=Application.Status.PENDING
+                ).select_related('user', 'team')
+        
+        return super().get_context_data(
+            contest=self.contest, 
+            user_team=user_team, 
+            team_applications=team_applications,
+            **kwargs
+        )
 
 
 class ViewJurysView(RedirectToRegisterMixin, ListView):
@@ -97,8 +113,6 @@ class AdminPermissionMixin(LeaderboardAccessMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-from django.views.generic import UpdateView
-from django.urls import reverse_lazy
 
 class TeamUpdateView(RedirectToRegisterMixin, UpdateView):
     model = Team
@@ -141,21 +155,29 @@ class TeamCreateView(RedirectToRegisterMixin, CreateView):
         contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
         
         # Check registration dates
-        from django.utils import timezone
         now = timezone.now()
         if contest.registration_start and now < contest.registration_start:
-            from django.contrib import messages
             messages.error(self.request, "Registration for this contest has not started yet.")
             return redirect("contest_detail", pk=contest.pk)
         if contest.registration_end and now >= contest.registration_end:
-            from django.contrib import messages
             messages.error(self.request, "Registration for this contest has closed.")
             return redirect("contest_detail", pk=contest.pk)
 
         # Check if user already in a team for this contest
         if contest.teams.filter(participants=self.request.user).exists():
-            from django.contrib import messages
             messages.error(self.request, "You are already a member of a team in this contest.")
+            return redirect("contest_detail", pk=contest.pk)
+
+        # Check for existing application of type TEAM for this contest
+        # Use first() to avoid MultipleObjectsReturned (though unique constraint should prevent it)
+        existing_app = Application.objects.filter(
+            user=self.request.user,
+            contest=contest,
+            application_type=Application.Type.TEAM
+        ).first()
+
+        if existing_app and existing_app.status != Application.Status.REJECTED:
+            messages.error(self.request, "You already have a team application for this contest.")
             return redirect("contest_detail", pk=contest.pk)
 
         team = form.save()
@@ -163,16 +185,19 @@ class TeamCreateView(RedirectToRegisterMixin, CreateView):
         team.participants.add(self.request.user)
         team.save()
         
-        # Create application for the contest
-        Application.objects.get_or_create(
+        # Create or update application for the contest
+        # Use get_or_create with only unique fields in lookup to avoid IntegrityError
+        app, created = Application.objects.get_or_create(
             user=self.request.user,
             contest=contest,
-            team=team,
             application_type=Application.Type.TEAM,
-            defaults={'status': Application.Status.PENDING}
+            defaults={'team': team, 'status': Application.Status.PENDING}
         )
+        if not created:
+            app.team = team
+            app.status = Application.Status.PENDING
+            app.save()
         
-        from django.contrib import messages
         messages.success(self.request, f"Team '{team.name}' created! Approval from organizer is pending.")
         return redirect("contest_detail", pk=contest.pk)
 
@@ -189,14 +214,34 @@ class TeamJoinView(RedirectToRegisterMixin, View):
         
         # Prevent double application or joining if already in a team
         if contest.teams.filter(participants=request.user).exists():
-            from django.contrib import messages
             messages.error(request, "You are already in a team for this contest.")
             return redirect("contest_teams", pk=pk)
 
-        if Application.objects.filter(user=request.user, contest=contest, team=team, status=Application.Status.PENDING).exists():
-             from django.contrib import messages
-             messages.info(request, "You have already applied to this team.")
-             return redirect("contest_teams", pk=pk)
+        # Check for existing application of type PARTICIPANT to avoid IntegrityError
+        existing_app = Application.objects.filter(
+            user=request.user, 
+            contest=contest, 
+            application_type=Application.Type.PARTICIPANT
+        ).first()
+
+        if existing_app:
+            if existing_app.team == team:
+                if existing_app.status == Application.Status.PENDING:
+                    messages.info(request, "You have already applied to this team.")
+                else:
+                    # If was rejected or approved (shouldn't be here if approved due to line 191), try again
+                    existing_app.status = Application.Status.PENDING
+                    existing_app.save()
+                    messages.success(request, f"Application to join '{team.name}' submitted!")
+            elif existing_app.status != Application.Status.REJECTED:
+                 messages.error(request, "You already have a pending application for another team in this contest.")
+            else:
+                # Switching team application after rejection
+                existing_app.team = team
+                existing_app.status = Application.Status.PENDING
+                existing_app.save()
+                messages.success(request, f"Application to join '{team.name}' submitted!")
+            return redirect("contest_teams", pk=pk)
         
         Application.objects.create(
             user=request.user,
@@ -205,6 +250,5 @@ class TeamJoinView(RedirectToRegisterMixin, View):
             application_type=Application.Type.PARTICIPANT,
             status=Application.Status.PENDING
         )
-        from django.contrib import messages
         messages.success(request, f"Application to join '{team.name}' submitted!")
         return redirect("contest_teams", pk=pk)
