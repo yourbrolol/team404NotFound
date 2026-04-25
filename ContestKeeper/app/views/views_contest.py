@@ -71,6 +71,11 @@ class ContestDetailView(DetailView):
                 status=Application.Status.PENDING,
             ).exists() if is_authenticated else False,
             "now": timezone.now(),
+            "active_round": contest.rounds.filter(
+                status="ACTIVE", 
+                start_time__lte=timezone.now(), 
+                deadline__gt=timezone.now()
+            ).order_by("order").first(),
         })
         return context
 

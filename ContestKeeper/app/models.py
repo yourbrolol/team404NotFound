@@ -397,6 +397,7 @@ class ScheduleEvent(models.Model):
     start_time = models.DateTimeField()
     end_time = models.DateTimeField(null=True, blank=True)
     event_type = models.CharField(max_length=20, choices=EventType.choices, default=EventType.ROUND)
+    round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="schedule_events", null=True, blank=True)
     order = models.PositiveIntegerField(default=0)
 
     class Meta:

@@ -117,6 +117,7 @@ def generate_schedule_from_rounds(contest):
             start_time=rnd.start_time,
             end_time=rnd.start_time,
             event_type=ScheduleEvent.EventType.ROUND,
+            round=rnd,
             order=rnd.order * 10
         ))
         
@@ -128,6 +129,7 @@ def generate_schedule_from_rounds(contest):
             start_time=rnd.deadline,
             end_time=rnd.deadline,
             event_type=ScheduleEvent.EventType.DEADLINE,
+            round=rnd,
             order=rnd.order * 10 + 5
         ))
     

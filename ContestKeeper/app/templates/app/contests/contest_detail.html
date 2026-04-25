@@ -49,6 +49,21 @@
         </div>
     </div>
 
+    {% if active_round %}
+    <div class="active-round-banner" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.15)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+        <div>
+            <div style="font-size: 0.75rem; font-weight: 800; color: #10b981; text-transform: uppercase; margin-bottom: 0.5rem;">🔥 {% trans "Current Active Round" %}</div>
+            <h3 style="margin: 0; font-weight: 800;">{{ active_round.title }}</h3>
+            <p style="margin: 0.25rem 0 0; font-size: 0.9rem; color: #475569;">
+                {% trans "Deadline" %}: <span style="font-weight: 600;">{{ active_round.deadline|date:"M d, H:i" }}</span>
+            </p>
+        </div>
+        <a href="{% if user == contest.organizer %}{% url 'contest_rounds' contest.pk %}{% else %}{% url 'round_detail_team' contest.pk active_round.pk %}{% endif %}" class="btn btn-primary" style="background: #10b981; border: none;">
+            {% if user == contest.organizer %}{% trans "Manage Round" %}{% else %}{% trans "View & Submit" %}{% endif %}
+        </a>
+    </div>
+    {% endif %}
+
     <div class="quick-links">
         <a href="{% url 'announcement_list' contest.pk %}" class="quick-link-card">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
@@ -65,6 +80,13 @@
                 <line x1="3" y1="10" x2="21" y2="10"></line>
             </svg>
             <h4>{% trans "Schedule" %}</h4>
+        </a>
+        <a href="{% if user == contest.organizer %}{% url 'contest_rounds' contest.pk %}{% else %}{% url 'contest_rounds_team' contest.pk %}{% endif %}" class="quick-link-card">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                <line x1="4" y1="22" x2="4" y2="15"></line>
+            </svg>
+            <h4>{% trans "Rounds" %}</h4>
         </a>
         {% if user == contest.organizer %}
         <a href="{% url 'admin_application_list' contest.pk %}" class="quick-link-card">

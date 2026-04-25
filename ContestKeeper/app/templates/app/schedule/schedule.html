@@ -1,5 +1,5 @@
 {% extends 'app/core/base.html' %}
-{% load static %}
+{% load static i18n %}
 
 {% block title %}Schedule - {{ contest.name }}{% endblock %}
 
@@ -64,6 +64,19 @@
 
                 {% if event.description %}
                 <p style="color: #4b5563; margin-top: 1rem; line-height: 1.6;">{{ event.description|linebreaksbr }}</p>
+                {% endif %}
+
+                {% if event.round %}
+                <div style="margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
+                    <a href="{% if user == contest.organizer %}{% url 'round_detail' contest.pk event.round.id %}{% else %}{% url 'round_detail_team' contest.pk event.round.id %}{% endif %}" 
+                       class="btn btn-sm btn-primary" style="font-size: 0.8rem; border-radius: 8px;">
+                        {% if event.event_type == 'DEADLINE' %}
+                            {% trans "Go to Submission" %}
+                        {% else %}
+                            {% trans "View Round Details" %}
+                        {% endif %}
+                    </a>
+                </div>
                 {% endif %}
             </div>
         </div>
