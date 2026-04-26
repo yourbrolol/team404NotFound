@@ -1,5 +1,5 @@
 :root {
-  --auth-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+  --auth-bg-gradient: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-hover) 100%);
   --auth-glass: var(--glass);
   --auth-glass-border: var(--border);
   --auth-accent: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
@@ -13,7 +13,7 @@ body.auth-body {
   justify-content: center;
   background: var(--auth-bg-gradient);
   font-family: "Inter", sans-serif;
-  color: #f8fafc;
+  color: var(--text-main);
   overflow-x: hidden;
   padding: 1rem 0;
 }
@@ -388,7 +388,7 @@ body.auth-login .btn-auth {
 }
 
 .auth-footer a {
-  color: #818cf8;
+  color: var(--bg-primary-tint);
   text-decoration: none;
   font-weight: 600;
 }
@@ -400,7 +400,7 @@ body.auth-login .btn-auth {
 .auth-error-msg {
   background: var(--bg-error-tint);
   border: 1px solid rgba(var(--error-rgb), 0.2);
-  color: #f87171;
+  color: var(--error);
   padding: 1rem;
   border-radius: 0.75rem;
   margin-bottom: 2rem;
@@ -409,7 +409,7 @@ body.auth-login .btn-auth {
 }
 
 .field-error {
-  color: #f87171;
+  color: var(--error);
   font-size: 0.8rem;
   margin-top: 0.4rem;
   font-weight: 500;

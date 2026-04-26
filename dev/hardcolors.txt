@@ -1,0 +1,95 @@
+./ContestKeeper/app/static/css/announcements/announcements.css:8:.button-001 { color: #ef4444; }
+./ContestKeeper/app/static/css/announcements/announcement_confirm_delete.css:4:.button-001 { background:#ef4444; flex:1; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:265:    color: var(--text-main, #f8fafc) !important;
+./ContestKeeper/app/static/css/contests/contest_detail.css:386:.h4-001 { margin-top: 0; color: #ef4444; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:388:.h4-003 { margin-top: 0; color: #10b981; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:390:.a-002 { background: #10b981; border: none; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:391:.a-003 { display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: #6366f1; text-decoration: none; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:396:.div-003 { font-size: 0.75rem; font-weight: 800; color: #10b981; text-transform: uppercase; margin-bottom: 0.5rem; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:400:.div-007 { font-size: 0.7rem; font-weight: 800; color: #6366f1; text-transform: uppercase; margin-bottom: 0.5rem; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:403:.div-010 { font-family: monospace; font-size: 0.85rem; color: #475569; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:411:.p-001 { margin: 0.25rem 0 0; font-size: 0.9rem; color: #475569; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:416:.svg-002 { color: #10b981; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:417:.svg-003 { color: #f59e0b; }
+./ContestKeeper/app/static/css/contests/contest_detail.css:418:.svg-004 { color: #6366f1; }
+./ContestKeeper/app/static/css/core/home.css:83:    color: #fff;
+./ContestKeeper/app/static/css/core/nav.css:232:    background: #1e293b;
+./ContestKeeper/app/static/css/core/nav.css:233:    color: #f8fafc;
+./ContestKeeper/app/static/css/core/register.css:2:  --auth-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+./ContestKeeper/app/static/css/core/register.css:16:  color: #f8fafc;
+./ContestKeeper/app/static/css/core/register.css:391:  color: #818cf8;
+./ContestKeeper/app/static/css/core/register.css:403:  color: #f87171;
+./ContestKeeper/app/static/css/core/register.css:412:  color: #f87171;
+./ContestKeeper/app/static/css/core/settings.css:301:  color: #4ade80;
+./ContestKeeper/app/static/css/juries/jury_evaluation.css:2:    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+./ContestKeeper/app/static/css/juries/jury_evaluation.css:44:    color: #111827;
+./ContestKeeper/app/static/css/juries/jury_evaluation.css:50:    background: #eef2ff;
+./ContestKeeper/app/static/css/juries/jury_evaluation.css:51:    color: #6366f1;
+./ContestKeeper/app/static/css/juries/jury_evaluation.css:56:    background: #6366f1;
+./ContestKeeper/app/static/css/juries/jury_evaluation.css:65:.max-score-hint { color: #6b7280; font-weight: 600; font-size: 0.9rem; }
+./ContestKeeper/app/static/css/leaderboards/admin_leaderboard_dashboard.css:5:.a-002 { color: #e53e3e; }
+./ContestKeeper/app/static/css/rounds/round_detail.css:58:    background: #d1fae5;
+./ContestKeeper/app/static/css/rounds/round_detail.css:59:    color: #065f46;
+./ContestKeeper/app/static/css/rounds/round_detail.css:63:    background: #fee2e2;
+./ContestKeeper/app/static/css/rounds/round_detail.css:64:    color: #991b1b;
+./ContestKeeper/app/static/css/rounds/round_detail.css:68:    background: #e2e8f0;
+./ContestKeeper/app/static/css/rounds/round_detail.css:69:    color: #1e293b;
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:58:    color: #ffcccc;
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:135:    color: #28a745;
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:204:    border-left: 4px solid #ffc107;
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:208:    border-left: 4px solid #17a2b8;
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:214:    color: #667eea;
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:225:.a-002 { background: #28a745; }
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:227:.a-004 { background: #24292e; }
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:228:.a-005 { background: #6c757d; flex: 1; text-align: center; }
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:229:.a-006 { background: #ff0000; }
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:232:.div-003 { color: #dc3545; }
+./ContestKeeper/app/static/css/rounds/round_detail_team.css:235:.div-006 { color: #28a745; }
+./ContestKeeper/app/static/css/schedule/schedule.css:57:    border-color: #6366f1;
+./ContestKeeper/app/static/css/schedule/schedule.css:60:    border-color: #ef4444;
+./ContestKeeper/app/static/css/schedule/schedule.css:63:    border-color: #10b981;
+./ContestKeeper/app/static/css/schedule/schedule.css:83:    background: #1e293b;
+./ContestKeeper/app/static/css/schedule/schedule.css:84:    color: #f8fafc;
+./ContestKeeper/app/static/css/schedule/schedule_event_confirm_delete.css:4:.button-001 { background:#ef4444; flex:1; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:2:    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+./ContestKeeper/app/static/css/submissions/submission_detail.css:65:    color: #6b7280;
+./ContestKeeper/app/static/css/submissions/submission_detail.css:69:    color: #1f2937;
+./ContestKeeper/app/static/css/submissions/submission_detail.css:73:.h1-001 { font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:74:.h3-001 { font-size: 1.1rem; font-weight: 800; color: #111827; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:78:.div-002 { font-size: 0.8rem; color: #10b981; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:80:.div-004 { font-size: 0.8rem; color: #ef4444; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:81:.div-005 { font-size: 0.8rem; color: #6366f1; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:84:.div-008 { white-space: pre-wrap; color: #374151; line-height: 1.7; font-size: 1rem; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:87:.div-011 { font-weight: 700; color: #111827; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:88:.p-001 { color: #4b5563; font-size: 1.1rem; margin-top: 0.5rem; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:89:.span-001 { color: #10b981; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:90:.span-002 { background: #6366f1; color: white; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase; }
+./ContestKeeper/app/static/css/submissions/submission_detail.css:91:.span-003 { color: #6b7280; font-size: 0.85rem; }
+./ContestKeeper/app/static/css/submissions/submission_form.css:2:    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+./ContestKeeper/app/static/css/submissions/submission_form.css:36:    color: #374151;
+./ContestKeeper/app/static/css/submissions/submission_form.css:58:    color: #ef4444;
+./ContestKeeper/app/static/css/submissions/submission_form.css:65:    color: #6b7280;
+./ContestKeeper/app/static/css/submissions/submission_form.css:70:.h1-001 { font-size: 2rem; font-weight: 800; color: #111827; margin: 0; }
+./ContestKeeper/app/static/css/submissions/submission_form.css:76:.p-001 { color: #6b7280; margin-top: 0.5rem; }
+./ContestKeeper/app/static/css/submissions/submission_list.css:2:    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+./ContestKeeper/app/static/css/submissions/submission_list.css:58:.h1-001 { font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0; }
+./ContestKeeper/app/static/css/submissions/submission_list.css:59:.h3-001 { color: #111827; font-weight: 700; }
+./ContestKeeper/app/static/css/submissions/submission_list.css:63:.a-004 { padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; background: #10b981; border-color: #10b981; }
+./ContestKeeper/app/static/css/submissions/submission_list.css:69:.div-006 { font-weight: 800; font-size: 1.15rem; color: #111827; }
+./ContestKeeper/app/static/css/submissions/submission_list.css:72:.p-001 { color: #6b7280; }
+./ContestKeeper/app/static/css/submissions/submission_list.css:73:.p-002 { color: #4b5563; margin-top: 0.5rem; }
+./ContestKeeper/app/static/css/submissions/submission_list.css:74:.span-001 { color: #6366f1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; }
+./ContestKeeper/app/static/css/teams/team.css:168:    color: #4ade80;
+./ContestKeeper/app/static/css/teams/team.css:241:.a-001 { color: #0088cc; }
+./ContestKeeper/app/static/css/teams/team.css:242:.a-002 { color: #ffffff; }
+./ContestKeeper/app/static/css/teams/team.css:243:.a-003 { background: #3498db; color: white; }
+./ContestKeeper/app/static/css/teams/team.css:244:.a-004 { color: #5865F2; }
+./ContestKeeper/app/static/css/teams/team.css:245:.button-001 { padding: 4px 8px; font-size: 0.8rem; background: #e74c3c; color: white; }
+./ContestKeeper/app/static/css/teams/team.css:247:.button-003 { padding: 4px 8px; font-size: 0.8rem; background: #2ecc71; color: white; }
+./ContestKeeper/app/static/css/teams/team.css:252:.span-001 { color: #e74c3c; }
+./ContestKeeper/app/static/css/teams/teams.css:76:    color: #4ade80;
+./ContestKeeper/app/static/css/teams/teams.css:126:.button-001 { background: #2ecc71; border-color: #2ecc71; }
+./ContestKeeper/app/static/css/teams/teams.css:127:.button-002 { background: #e74c3c; border-color: #e74c3c; color: white; }
+./ContestKeeper/app/static/css/teams/teams.css:128:.button-003 { background: #2ecc71; color: white; }
+./ContestKeeper/app/static/css/teams/team_create_form.css:5:.span-001 { display: block; font-size: 0.85rem; color: #a1a1aa; margin-top: 4px; }
+./ContestKeeper/app/static/css/teams/team_create_form.css:6:.span-002 { color: #ef4444; font-size: 0.85rem; }

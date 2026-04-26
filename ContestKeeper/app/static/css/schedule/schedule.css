@@ -54,13 +54,13 @@
     box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.4);
 }
 .dot-ROUND {
-    border-color: #6366f1;
+    border-color: var(--primary);
 }
 .dot-DEADLINE {
-    border-color: #ef4444;
+    border-color: var(--error);
 }
 .dot-WORKSHOP {
-    border-color: #10b981;
+    border-color: var(--success);
 }
 .glass-card {
     background: var(--glass);
@@ -80,8 +80,8 @@
 .time-badge {
     display: inline-block;
     font-family: 'Monaco', 'Consolas', monospace;
-    background: #1e293b;
-    color: #f8fafc;
+    background: var(--bg-card-hover);
+    color: var(--text-main);
     padding: 0.4rem 1rem;
     border-radius: 8px;
     font-size: 0.85rem;

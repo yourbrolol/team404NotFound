@@ -55,7 +55,7 @@
 }
 
 .countdown-timer.danger {
-    color: #ffcccc;
+    color: var(--bg-error-tint);
 }
 
 .round-status-badge {
@@ -132,7 +132,7 @@
 .checklist li::before {
     content: '✓';
     margin-right: 1rem;
-    color: #28a745;
+    color: var(--success);
     font-weight: bold;
     font-size: 1.2rem;
 }
@@ -201,17 +201,17 @@
 }
 
 .closed-message {
-    border-left: 4px solid #ffc107;
+    border-left: 4px solid var(--warning);
 }
 
 .evaluated-message {
-    border-left: 4px solid #17a2b8;
+    border-left: 4px solid var(--info);
 }
 
 .back-link {
     display: inline-block;
     margin-bottom: 1rem;
-    color: #667eea;
+    color: var(--primary);
     text-decoration: none;
     font-size: 0.95rem;
 }
@@ -222,16 +222,16 @@
 
 /* --- Extracted from round_detail_team.html --- */
 .a-001 { background: var(--secondary); flex: 1; text-align: center; }
-.a-002 { background: #28a745; }
+.a-002 { background: var(--success); }
 .a-003 { width: 100%; text-align: center; padding: 1rem; font-size: 1.1rem; font-weight: bold; }
-.a-004 { background: #24292e; }
-.a-005 { background: #6c757d; flex: 1; text-align: center; }
-.a-006 { background: #ff0000; }
+.a-004 { background: var(--bg-dark); }
+.a-005 { background: var(--text-muted); flex: 1; text-align: center; }
+.a-006 { background: var(--error); }
 .div-001 { margin-bottom: 1rem; }
 .div-002 { display: flex; gap: 0.5rem; }
-.div-003 { color: #dc3545; }
+.div-003 { color: var(--error); }
 .div-004 { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
 .div-005 { margin-bottom: 1.5rem; }
-.div-006 { color: #28a745; }
+.div-006 { color: var(--success); }
 .p-001 { color: var(--text-muted); font-style: italic; }
 .small-001 { opacity: 0.8; }

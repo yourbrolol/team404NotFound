@@ -80,7 +80,7 @@
 
 .filter-btn.active,
 .filter-btn:hover {
-    color: #fff;
+    color: var(--input-text);
     background: var(--primary);
     border-color: var(--primary);
 }

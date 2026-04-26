@@ -69,6 +69,24 @@
   --white-alpha-03: rgba(var(--white-rgb), 0.03);
   --white-alpha-07: rgba(var(--white-rgb), 0.07);
   --white-alpha-20: rgba(var(--white-rgb), 0.20);
+
+  /* --- Phase 4 Hex Consolidations (Grouped Mappings) --- */
+  
+  /* Primary & Brands */
+  --hex-primary-1: var(--primary); /* #6366f1 */
+  --hex-primary-2: var(--primary); /* #667eea */
+  --hex-indigo-alt: var(--primary); /* #5865f2 */
+  --hex-primary-light: var(--bg-primary-tint); /* #818cf8 */
+  --hex-primary-lightest: var(--bg-primary-tint); /* #eef2ff */
+  --hex-primary-dark: var(--primary-hover); /* #1e1b4b */
+  
+  /* Success & Greens */
+  --hex-success-1: var(--success); /* #10b981 */
+  --hex-success-2: var(--success); /* #2ecc71 */
+  --hex-success-3: var(--success); /* #4ade80 */
+  --hex-success-4: var(--success); /* #28a745 */
+  --hex-success-light: var(--bg-success-tint); /* #d1fae5 */
+  --hex-success-dark: var(--success); /* #065f46 */
 }
 
 @media (max-width: 1200px) {

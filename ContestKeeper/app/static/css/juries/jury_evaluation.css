@@ -1,5 +1,5 @@
 body {
-    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    background: linear-gradient(135deg, var(--text-main) 0%, var(--border) 100%);
     min-height: 100vh;
 }
 .evaluation-grid {
@@ -41,19 +41,19 @@ body {
 }
 .label-text {
     font-weight: 800;
-    color: #111827;
+    color: var(--bg-dark);
     font-size: 1rem;
 }
 .weight-badge {
     font-size: 0.75rem;
     font-weight: 700;
-    background: #eef2ff;
-    color: #6366f1;
+    background: var(--bg-primary-tint);
+    color: var(--primary);
     padding: 0.25rem 0.75rem;
     border-radius: 99px;
 }
 .live-total {
-    background: #6366f1;
+    background: var(--primary);
     color: white;
     padding: 1.5rem;
     border-radius: 16px;
@@ -62,7 +62,7 @@ body {
 }
 .score-input-wrapper { display: flex; align-items: center; gap: 1rem; }
 .score-input-wrapper input { flex: 1; }
-.max-score-hint { color: #6b7280; font-weight: 600; font-size: 0.9rem; }
+.max-score-hint { color: var(--text-muted); font-weight: 600; font-size: 0.9rem; }
 
 /* --- Extracted from jury_evaluation.html --- */
 .h1-001 { font-size: 2.5rem; font-weight: 900; color: var(--text-main); margin: 0; }

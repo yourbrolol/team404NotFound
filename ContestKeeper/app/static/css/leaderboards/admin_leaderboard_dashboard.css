@@ -2,7 +2,7 @@
 
 /* --- Extracted from admin_leaderboard_dashboard.html --- */
 .a-001 { color: var(--primary-color); }
-.a-002 { color: #e53e3e; }
+.a-002 { color: var(--error); }
 .div-001 { margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
 .div-002 { overflow-x: auto; margin-top: 0.75rem; }
 .div-003 { justify-content: space-between; align-items: center; }

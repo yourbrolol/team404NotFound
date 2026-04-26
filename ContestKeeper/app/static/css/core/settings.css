@@ -298,7 +298,7 @@ main.dashboard-container.page-narrow {
 
 .copy-feedback {
   min-height: 1rem;
-  color: #4ade80;
+  color: var(--success);
 }
 
 @media (max-width: 600px) {

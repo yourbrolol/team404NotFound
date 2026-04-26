@@ -1,5 +1,5 @@
 /* Styles for schedule_event_confirm_delete.html */
 
 /* --- Extracted from schedule_event_confirm_delete.html --- */
-.button-001 { background:#ef4444; flex:1; }
+.button-001 { background:var(--error); flex:1; }
 .div-001 { display: flex; gap: 1rem; margin-top: 2rem; }

@@ -229,8 +229,8 @@ main.dashboard-container {
 }
 
 .nav-lang-select option {
-    background: #1e293b;
-    color: #f8fafc;
+    background: var(--bg-card-hover);
+    color: var(--text-main);
     padding: 1rem;
 }
 
