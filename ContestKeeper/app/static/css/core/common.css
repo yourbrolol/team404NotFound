@@ -2,6 +2,7 @@
   /* Sidebar width — keep in sync with nav.css (fixed rail + main offset) */
   --nav-width: 260px;
   --primary: #6366f1;
+  --primary-rgb: 99, 102, 241;
   --primary-hover: #4f46e5;
   --secondary: #a855f7;
   --bg-dark: #0f172a;
@@ -15,6 +16,12 @@
   --input-bg-focus: rgba(15, 23, 42, 0.8);
   --input-text: #ffffff;
   --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+
+  /* Semantic Colors */
+  --success: #22c55e;
+  --error: #ef4444;
+  --warning: #f59e0b;
+  --info: #3b82f6;
 }
 
 @media (max-width: 1200px) {
@@ -35,6 +42,12 @@
   --input-bg-focus: rgba(0, 0, 0, 0.07);
   --input-text: #1e293b;
   --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+
+  /* Semantic Colors - Light adjustments */
+  --success: #16a34a;
+  --error: #dc2626;
+  --warning: #d97706;
+  --info: #2563eb;
 }
 
 * {

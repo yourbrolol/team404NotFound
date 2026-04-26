@@ -1,13 +1,10 @@
 :root {
-    --white: #fff;
-    --black: 255, 255, 255;
-    --header: #64748b;
-    --tag: 99, 102, 241;
-    --tag-bg: #818cf8;
-    --green-bg: 34, 197, 94;
-    --green-text: #4ade80;
-    --red-bg: 239, 68, 68;
-    --red-text: #f87171;
+    --white: var(--text-main);
+    --header: var(--text-muted);
+    --tag: var(--primary-rgb);
+    --tag-bg: var(--primary);
+    --success-rgb: 34, 197, 94;
+    --error-rgb: 239, 68, 68;
 }
 
 /* ── Card ── */
@@ -159,9 +156,9 @@
 }
 
 /* Per-button color tokens */
-.btn-approve { --btn-color: var(--green-bg); --btn-text: var(--green-text); }
-.btn-reject  { --btn-color: var(--red-bg);   --btn-text: var(--red-text); }
-.btn-delete  { --btn-color: var(--red-bg);   --btn-text: var(--red-text); background: rgba(var(--red-bg), 0.1); }
+.btn-approve { --btn-color: var(--success-rgb); --btn-text: var(--success); }
+.btn-reject  { --btn-color: var(--error-rgb);   --btn-text: var(--error); }
+.btn-delete  { --btn-color: var(--error-rgb);   --btn-text: var(--error); background: rgba(var(--error-rgb), 0.1); }
 
 /* ── Apply button ── */
 .btn-apply {
@@ -239,7 +236,7 @@
     overflow-x: auto;
     padding-bottom: 0.5rem;
     scrollbar-width: thin;
-    scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+    scrollbar-color: rgba(var(--primary-rgb), 0.5) transparent;
 }
 
 .quick-links::-webkit-scrollbar {
@@ -251,7 +248,7 @@
 }
 
 .quick-links::-webkit-scrollbar-thumb {
-    background-color: rgba(99, 102, 241, 0.5);
+    background-color: rgba(var(--primary-rgb), 0.5);
     border-radius: 20px;
 }
 
@@ -278,7 +275,7 @@
 
 .quick-link-card:hover {
     transform: translateY(-4px);
-    border-color: rgba(99, 102, 241, 0.4);
+    border-color: rgba(var(--primary-rgb), 0.4);
     background: rgba(30, 41, 59, 0.9);
 }
 

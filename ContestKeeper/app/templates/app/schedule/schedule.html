@@ -51,7 +51,7 @@
                     <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0;">{{ event.title }}</h2>
                     {% if user == contest.organizer %}
                     <a href="{% url 'schedule_event_delete' contest.pk event.pk %}"
-                        style="color: var(--text-muted); transition: color 0.2s;" onmouseover="this.style.color='#ef4444'"
+                        style="color: var(--text-muted); transition: color 0.2s;" onmouseover="this.style.color='var(--error)'"
                         onmouseout="this.style.color='var(--text-muted)'">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -67,7 +67,7 @@
                 {% endif %}
 
                 {% if event.round %}
-                <div style="margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
+                <div style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
                     <a href="{% if user == contest.organizer %}{% url 'round_detail' contest.pk event.round.id %}{% else %}{% url 'round_detail_team' contest.pk event.round.id %}{% endif %}"
                         class="btn btn-sm btn-primary" style="font-size: 0.8rem; border-radius: 8px;">
                         {% if event.event_type == 'DEADLINE' %}
@@ -81,7 +81,7 @@
             </div>
         </div>
         {% empty %}
-        <div style="text-align: center; padding: 5rem 0; color: #64748b;">
+        <div style="text-align: center; padding: 5rem 0; color: var(--text-muted);">
             <svg style="width: 64px; opacity: 0.3; margin-bottom: 2rem;" fill="none" stroke="currentColor"
                 viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

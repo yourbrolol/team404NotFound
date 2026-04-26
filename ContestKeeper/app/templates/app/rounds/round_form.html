@@ -14,13 +14,13 @@
             <p style="margin: 0.5rem 0 1.5rem; color: var(--text-muted);">{{ contest.name }}</p>
 
             {% if error %}
-                <div style="padding: 1rem; background: #fee; border: 1px solid #fcc; border-radius: 4px; margin-bottom: 1rem; color: #c33;">
+                <div style="padding: 1rem; background: rgba(var(--error-rgb, 239, 68, 68), 0.1); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
                     {{ error }}
                 </div>
             {% endif %}
 
             {% if form.non_field_errors %}
-                <div style="padding: 1rem; background: #fee; border: 1px solid #fcc; border-radius: 4px; margin-bottom: 1rem; color: #c33;">
+                <div style="padding: 1rem; background: rgba(var(--error-rgb, 239, 68, 68), 0.1); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}
@@ -31,63 +31,63 @@
                 <div>
                     <label for="title">{% trans "Title *" %}</label>
                     <input type="text" id="title" name="title" value="{{ round.title|default:'' }}" required 
-                           style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem;">
+                           class="form-input">
                     {% if form.title.errors %}
-                        <p style="color: #c33; margin-top: 0.25rem;">{{ form.title.errors.0 }}</p>
+                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.title.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
                     <label for="description">{% trans "Description *" %}</label>
                     <textarea id="description" name="description" required rows="4"
-                              style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; font-family: inherit;">{{ round.description|default:'' }}</textarea>
+                               class="form-input">{{ round.description|default:'' }}</textarea>
                     {% if form.description.errors %}
-                        <p style="color: #c33; margin-top: 0.25rem;">{{ form.description.errors.0 }}</p>
+                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.description.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
                     <label for="tech_requirements">{% trans "Tech Requirements *" %}</label>
                     <textarea id="tech_requirements" name="tech_requirements" required rows="4"
-                              style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem; font-family: inherit;">{{ round.tech_requirements|default:'' }}</textarea>
+                               class="form-input">{{ round.tech_requirements|default:'' }}</textarea>
                     {% if form.tech_requirements.errors %}
-                        <p style="color: #c33; margin-top: 0.25rem;">{{ form.tech_requirements.errors.0 }}</p>
+                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.tech_requirements.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
                     <label for="must_have">{% trans "Must Have Checklist (JSON array, one item per line) *" %}</label>
                     <textarea id="must_have" name="must_have" required rows="4"
-                              style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; font-family: monospace; background: #fafafa;">{% if round %}{{ round.must_have|join:'&#10;' }}{% endif %}</textarea>
+                              class="form-input" style="font-family: monospace;">{% if round %}{{ round.must_have|join:'&#10;' }}{% endif %}</textarea>
                     <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans "Enter each item on a separate line, e.g.: API endpoint, Database schema, Deployment" %}</p>
                     {% if form.must_have.errors %}
-                        <p style="color: #c33; margin-top: 0.25rem;">{{ form.must_have.errors.0 }}</p>
+                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.must_have.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
                     <label for="start_time">{% trans "Start Time *" %}</label>
                     <input type="datetime-local" id="start_time" name="start_time" value="{% if round %}{{ round.start_time|date:'Y-m-d\TH:i' }}{% endif %}" required
-                           style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem;">
+                           class="form-input">
                     {% if form.start_time.errors %}
-                        <p style="color: #c33; margin-top: 0.25rem;">{{ form.start_time.errors.0 }}</p>
+                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.start_time.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
                     <label for="deadline">{% trans "Deadline *" %}</label>
                     <input type="datetime-local" id="deadline" name="deadline" value="{% if round %}{{ round.deadline|date:'Y-m-d\TH:i' }}{% endif %}" required
-                           style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 1rem;">
+                           class="form-input">
                     <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans "Must be after start time" %}</p>
                     {% if form.deadline.errors %}
-                        <p style="color: #c33; margin-top: 0.25rem;">{{ form.deadline.errors.0 }}</p>
+                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.deadline.errors.0 }}</p>
                     {% endif %}
                 </div>
 
                 <div>
                     <label for="materials">{% trans "Materials (JSON array with {label, url} objects, optional)" %}</label>
                     <textarea id="materials" name="materials" rows="3"
-                              style="width: 100%; padding: 0.75rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.9rem; font-family: monospace; background: #fafafa;">{% if round %}{{ round.materials|safe }}{% endif %}</textarea>
+                              class="form-input" style="font-family: monospace;">{% if round %}{{ round.materials|safe }}{% endif %}</textarea>
                     <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans 'Example: [{"label": "Docs", "url": "https://..."}, {"label": "API", "url": "https://..."}]' %}</p>
                 </div>
 

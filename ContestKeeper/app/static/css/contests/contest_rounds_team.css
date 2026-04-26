@@ -37,15 +37,15 @@
 }
 
 .round-card.active {
-    border-left: 4px solid #28a745;
+    border-left: 4px solid var(--success);
 }
 
 .round-card.closed {
-    border-left: 4px solid #ffc107;
+    border-left: 4px solid var(--warning);
 }
 
 .round-card.evaluated {
-    border-left: 4px solid #6c757d;
+    border-left: 4px solid var(--text-muted);
 }
 
 .round-info {
@@ -55,7 +55,7 @@
 .round-title {
     font-size: 1.1rem;
     font-weight: 600;
-    color: var(--text-primary);
+    color: var(--text-main);
     margin-bottom: 0.5rem;
 }
 
@@ -85,27 +85,30 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: #d4edda;
-    color: #155724;
+    background: rgba(34, 197, 94, 0.15);
+    color: var(--success);
+    border: 1px solid rgba(34, 197, 94, 0.3);
 }
 
 .status-closed {
-    background: #fff3cd;
-    color: #856404;
+    background: rgba(245, 158, 11, 0.15);
+    color: var(--warning);
+    border: 1px solid rgba(245, 158, 11, 0.3);
 }
 
 .status-evaluated {
-    background: #e2e3e5;
-    color: #383d41;
+    background: rgba(148, 163, 184, 0.15);
+    color: var(--text-muted);
+    border: 1px solid rgba(148, 163, 184, 0.3);
 }
 
 .countdown {
     font-weight: 600;
-    color: #28a745;
+    color: var(--success);
 }
 
 .countdown-danger {
-    color: #dc3545;
+    color: var(--error);
     font-weight: 600;
 }
 
