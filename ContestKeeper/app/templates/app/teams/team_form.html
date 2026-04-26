@@ -4,6 +4,7 @@
 {% block title %}{% trans "Edit Team" %}: {{ team.name }} – {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/teams/team_form.css' %}">
 <link rel="stylesheet" href="{% static 'css/teams/team.css' %}">
 {% endblock %}
 
@@ -35,7 +36,7 @@
                     {% endfor %}
                 </div>
 
-                <div class="form-section" style="margin-top: 2rem;">
+                <div class="form-section div-002">
                     <h2 class="section-heading">{% trans "Social Links" %}</h2>
                     {% for field in form %}
                         {% if field.name == 'telegram_link' or field.name == 'discord_link' or field.name == 'website_link' %}
@@ -54,7 +55,7 @@
                     {% endfor %}
                 </div>
 
-                <div class="actions-footer" style="margin-top: 2rem; justify-content: flex-end; gap: 1rem;">
+                <div class="actions-footer div-001">
                     <a href="{% url 'team_detail' pk=contest.pk ck=team.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
                     <button type="submit" class="btn btn-primary">{% trans "Save Changes" %}</button>
                 </div>

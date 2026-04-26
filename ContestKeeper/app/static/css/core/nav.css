@@ -320,3 +320,6 @@ main.dashboard-container {
         font-size: 1.1rem;
     }
 }
+/* --- Extracted from nav.html --- */
+.form-001 { display: inline; }
+.svg-001 { margin-right: 0.75rem; }

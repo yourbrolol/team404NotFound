@@ -1,11 +1,16 @@
 {% extends 'app/core/base.html' %}
 {% load static %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/schedule/schedule_event_form.css' %}">
+{% endblock %}
+
+
 {% block title %}Add Schedule Event - {{ contest.name }}{% endblock %}
 
 {% block content %}
 <div class="form-card">
-    <h2 style="margin-bottom: 2rem;">Add Schedule Event</h2>
+    <h2 class="h2-001">Add Schedule Event</h2>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -17,8 +22,8 @@
             {% endif %}
         </div>
         {% endfor %}
-        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
-            <button type="submit" class="btn btn-primary" style="flex:1;">Add Event</button>
+        <div class="div-001">
+            <button type="submit" class="btn btn-primary button-001">Add Event</button>
             <a href="{% url 'schedule' contest.pk %}" class="btn btn-secondary">Cancel</a>
         </div>
     </form>

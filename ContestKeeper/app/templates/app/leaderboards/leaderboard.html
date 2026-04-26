@@ -4,15 +4,16 @@
 {% block title %}{{ contest.name }} Leaderboard{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/leaderboards/leaderboard.css' %}">
 <link rel="stylesheet" href="{% static 'css/core/nav.css' %}">
 {% endblock %}
 
 {% block content %}
-        <div class="detail-card" style="width:100%;">
-            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+        <div class="detail-card div-005">
+            <div class="detail-header div-003">
                 <div>
                     <h1 class="detail-title">{{ contest.name }} Leaderboard</h1>
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Final ranking table for contest participants.</p>
+                    <p class="p-001">Final ranking table for contest participants.</p>
                 </div>
                 {% if can_view_missing %}
                 <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">Evaluation Dashboard</a>
@@ -20,13 +21,13 @@
             </div>
 
             {% if not leaderboard_available %}
-                <div class="info-grid" style="padding: 2rem; text-align: center;">
+                <div class="info-grid div-006">
                     <h2>Leaderboard is not yet available.</h2>
                     <p>{{ not_available_message }}</p>
                 </div>
             {% else %}
-                <div style="overflow-x: auto; margin-top: 1.5rem;">
-                    <table class="table" style="width:100%; min-width: 600px;">
+                <div class="div-004">
+                    <table class="table table-001">
                         <thead>
                             <tr>
                                 <th>Rank</th>
@@ -53,7 +54,7 @@
                 </div>
 
                 {% if entries.has_other_pages %}
-                <div class="pagination" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                <div class="pagination div-001">
                     {% if entries.has_previous %}
                         <a href="?page=1" class="btn btn-secondary btn-sm">First</a>
                         <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">Previous</a>
@@ -61,7 +62,7 @@
                     
                     {% for num in entries.paginator.page_range %}
                         {% if entries.number == num %}
-                            <span class="btn btn-primary btn-sm" style="cursor: default;">{{ num }}</span>
+                            <span class="btn btn-primary btn-sm span-001">{{ num }}</span>
                         {% elif num > entries.number|add:-3 and num < entries.number|add:3 %}
                             <a href="?page={{ num }}" class="btn btn-secondary btn-sm">{{ num }}</a>
                         {% endif %}
@@ -75,12 +76,12 @@
                 {% endif %}
 
                 {% if can_view_missing %}
-                    <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">
-                        <div class="info-item" style="flex: 1; min-width: 220px;">
+                    <div class="info-grid div-007">
+                        <div class="info-item div-002">
                             <h4>Missing scores</h4>
                             <p>{{ overall_missing|length }} unresolved entries</p>
                         </div>
-                        <div class="info-item" style="flex: 1; min-width: 220px;">
+                        <div class="info-item div-002">
                             <h4>Computation status</h4>
                             <p>{% if entries and entries.0.entry.computation_complete %}Complete{% else %}Incomplete{% endif %}</p>
                         </div>

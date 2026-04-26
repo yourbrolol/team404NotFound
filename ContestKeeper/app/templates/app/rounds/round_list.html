@@ -4,57 +4,58 @@
 {% block title %}{{ contest.name }} - {% trans "Rounds" %}{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rounds/round_list.css' %}">
 <link rel="stylesheet" href="{% static 'css/core/nav.css' %}">
 {% endblock %}
 
 {% block content %}
-        <div class="detail-card" style="width:100%;">
-            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+        <div class="detail-card div-009">
+            <div class="detail-header div-005">
                 <div>
                     <h1 class="detail-title">{{ contest.name }} - {% trans "Rounds" %}</h1>
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">{% trans "Manage contest rounds and evaluations." %}</p>
+                    <p class="p-003">{% trans "Manage contest rounds and evaluations." %}</p>
                 </div>
-                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                <div class="div-004">
                     <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">{% trans "Back" %}</a>
                     <a href="{% url 'round_create' contest.pk %}" class="btn btn-primary">{% trans "New Round" %}</a>
                 </div>
             </div>
 
             {% if rounds %}
-                <div style="margin-top: 1.5rem;">
+                <div class="div-003">
                     {% for round in rounds %}
-                        <div style="padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; background: var(--surface);">
-                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+                        <div class="div-006">
+                            <div class="div-007">
                                 <div>
-                                    <h3 style="margin: 0;">
-                                        <a href="{% url 'round_detail' contest.pk round.id %}" style="text-decoration: none; color: inherit;">
+                                    <h3 class="h3-001">
+                                        <a href="{% url 'round_detail' contest.pk round.id %}" class="a-001">
                                             {% blocktrans with order=round.order title=round.title %}Round {{ order }}: {{ title }}{% endblocktrans %}
                                         </a>
                                     </h3>
-                                    <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">
+                                    <p class="p-002">
                                         {% trans "Status" %}: <strong>{{ round.get_status_display }}</strong>
                                         | {% trans "Deadline" %}: {{ round.deadline|date:"M d, Y H:i" }}
                                     </p>
                                 </div>
                             </div>
 
-                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">{{ round.description|truncatewords:20 }}</p>
+                            <p class="p-001">{{ round.description|truncatewords:20 }}</p>
 
-                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; align-items: flex-end;">
+                            <div class="div-010">
                                 {% if round.status == 'DRAFT' %}
-                                    <div style="display: flex; gap: 1rem;">
-                                        <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Edit" %}</a>
-                                        <form action="{% url 'round_activate' contest.pk round.id %}" method="POST" style="display: inline;">
+                                    <div class="div-001">
+                                        <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary a-002">{% trans "Edit" %}</a>
+                                        <form action="{% url 'round_activate' contest.pk round.id %}" method="POST" class="form-001">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Activate" %}</button>
+                                            <button type="submit" class="btn btn-primary a-002">{% trans "Activate" %}</button>
                                         </form>
                                     </div>
                                 {% elif round.status == 'ACTIVE' %}
-                                    <div style="display: flex; gap: 1rem; align-items: center;">
-                                        <a href="{% url 'round_extend_deadline' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Extend Deadline" %}</a>
-                                        <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" style="display: inline;">
+                                    <div class="div-002">
+                                        <a href="{% url 'round_extend_deadline' contest.pk round.id %}" class="btn btn-secondary a-002">{% trans "Extend Deadline" %}</a>
+                                        <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" class="form-001">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Close Submissions" %}</button>
+                                            <button type="submit" class="btn btn-tinted a-002">{% trans "Close Submissions" %}</button>
                                         </form>
                                     </div>
                                 {% endif %}
@@ -63,7 +64,7 @@
                     {% endfor %}
                 </div>
             {% else %}
-                <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+                <div class="div-008">
                     <p>{% blocktrans with url=round_create_url %}No rounds created yet. <a href="{{ url }}">Create the first round</a>{% endblocktrans %}</p>
                 </div>
             {% endif %}

@@ -4,6 +4,7 @@
 {% block title %}ContestKeeper - {% trans "Profile" %}{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/core/profile.css' %}">
 <link rel="stylesheet" href="{% static 'css/core/settings.css' %}">
 <link rel="stylesheet" href="{% static 'css/core/home.css' %}">
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -47,7 +48,7 @@
                     </div>
                 </div>
 
-                <div class="settings-avatar" style="justify-content: flex-start;">
+                <div class="settings-avatar div-001">
                     <div class="settings-avatar__circle">
                         {{ user.username|slice:":2"|upper }}
                     </div>
@@ -61,7 +62,7 @@
                     <div class="form-group">
                         <label class="form-label">{% trans "Username" %}</label>
                         <div class="inline-value-row">
-                            <div class="form-input" id="profileUsernameValue" style="cursor:default; user-select:text;">{{ user.username }}</div>
+                            <div class="form-input div-005" id="profileUsernameValue">{{ user.username }}</div>
                             <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileUsernameValue">{% trans "Copy" %}</button>
                         </div>
                     </div>
@@ -69,19 +70,19 @@
                     <div class="form-group">
                         <label class="form-label">{% trans "Email" %}</label>
                         <div class="inline-value-row">
-                            <div class="form-input" id="profileEmailValue" style="cursor:default; user-select:text;">{{ user.email|default:"-" }}</div>
+                            <div class="form-input div-005" id="profileEmailValue">{{ user.email|default:"-" }}</div>
                             <button type="button" class="btn btn-secondary settings-copy-btn" data-copy-target="profileEmailValue">{% trans "Copy" %}</button>
                         </div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">{% trans "First Name" %}</label>
-                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.first_name|default:"-" }}</div>
+                        <div class="form-input div-005">{{ user.first_name|default:"-" }}</div>
                     </div>
 
                     <div class="form-group">
                         <label class="form-label">{% trans "Last Name" %}</label>
-                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.last_name|default:"-" }}</div>
+                        <div class="form-input div-005">{{ user.last_name|default:"-" }}</div>
                     </div>
 
                     <div class="form-group">
@@ -89,7 +90,7 @@
                             {% csrf_token %}
                             <label class="form-label" for="{{ form.bio.id_for_label }}">{% trans "Bio" %}</label>
                             {{ form.bio }}
-                            <div class="settings-toolbar" style="margin-top: 0.5rem;">
+                            <div class="settings-toolbar div-006">
                                 <span class="settings-helper" id="profileBioCounter"></span>
                                 <span class="settings-helper copy-feedback" id="profileCopyFeedback" aria-live="polite"></span>
                             </div>
@@ -98,7 +99,7 @@
                             <p class="field-error">{{ error }}</p>
                             {% endfor %}
                             {% endif %}
-                            <div class="settings-actions" style="justify-content: flex-start; margin-top: 1rem;">
+                            <div class="settings-actions div-003">
                                 <button type="submit" class="btn btn-primary">{% trans "Save Bio" %}</button>
                             </div>
                         </form>
@@ -120,8 +121,7 @@
                         <h2 class="settings-card__title">{% trans "Account Info" %}</h2>
                         <p class="settings-card__subtitle">{% trans "Your account details (read-only)" %}</p>
                     </div>
-                    <button type="button" class="btn btn-secondary section-toggle-btn" data-toggle-target="profileInfoPanel"
-                        aria-expanded="true" style="margin-left: auto;">
+                    <button type="button" class="btn btn-secondary section-toggle-btn button-001" data-toggle-target="profileInfoPanel" aria-expanded="true">
                         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             <polyline points="6 9 12 15 18 9"></polyline>
@@ -212,7 +212,7 @@
 
                 {% if leaderboard_entries %}
                 <div class="profile-table-wrap">
-                    <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
+                    <div class="div-004"><table class="profile-table table-001">
                         <thead>
                             <tr>
                                 <th>{% trans "Contest" %}</th>
@@ -295,7 +295,7 @@
 
                 {% if jury_scores %}
                 <div class="profile-table-wrap">
-                    <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
+                    <div class="div-004"><table class="profile-table table-001">
                         <thead>
                             <tr>
                                 <th>{% trans "Contest" %}</th>
@@ -363,7 +363,7 @@
             {% endif %}
 
             <!-- Edit button -->
-            <div class="settings-actions settings-toolbar" style="justify-content: space-between;">
+            <div class="settings-actions settings-toolbar div-002">
                 <div class="settings-toolbar__group">
                     <button type="button" class="btn btn-secondary" id="scrollToBioBtn">{% trans "Jump to Bio" %}</button>
                     <button type="button" class="btn btn-secondary" id="copyProfileSummaryBtn">{% trans "Copy Summary" %}</button>

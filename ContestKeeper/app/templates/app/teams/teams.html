@@ -56,11 +56,11 @@
                                     <span class="team-meta">{% blocktrans count members=team.participants.all|length %}{{ members }} member{% plural %}{{ members }} members{% endblocktrans %}</span>
                                 </div>
                                 <div class="team-card__actions">
-                                    <div style="display: flex; gap: 8px; align-items: center;">
+                                    <div class="div-002">
                                         {% if user.is_authenticated and user.is_participant and not user_team and user != team.captain %}
-                                        <form action="{% url 'team_join' pk=contest.pk ck=team.pk %}" method="post" style="margin: 0;">
+                                        <form action="{% url 'team_join' pk=contest.pk ck=team.pk %}" method="post" class="form-001">
                                             {% csrf_token %}
-                                            <button type="submit" class="btn-sm btn-primary" style="background: #2ecc71; color: white;">{% trans "Join" %}</button>
+                                            <button type="submit" class="btn-sm btn-primary button-003">{% trans "Join" %}</button>
                                         </form>
                                         {% endif %}
                                         <button type="button" class="btn-sm btn-secondary copy-team-btn"
@@ -95,14 +95,14 @@
                                 <span class="team-name">{{ app.team.name }}</span>
                                 <span class="team-meta">{% trans "Captain" %}: {{ app.user.username }}</span>
                             </div>
-                            <div class="team-card__actions" style="display: flex; gap: 10px;">
-                                <form action="{% url 'approve_application' app.pk %}" method="post" style="margin: 0;">
+                            <div class="team-card__actions div-001">
+                                <form action="{% url 'approve_application' app.pk %}" method="post" class="form-001">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-primary btn-sm" style="background: #2ecc71; border-color: #2ecc71;">{% trans "Approve" %}</button>
+                                    <button type="submit" class="btn btn-primary btn-sm button-001">{% trans "Approve" %}</button>
                                 </form>
-                                <form action="{% url 'reject_application' app.pk %}" method="post" style="margin: 0;">
+                                <form action="{% url 'reject_application' app.pk %}" method="post" class="form-001">
                                     {% csrf_token %}
-                                    <button type="submit" class="btn btn-secondary btn-sm" style="background: #e74c3c; border-color: #e74c3c; color: white;">{% trans "Reject" %}</button>
+                                    <button type="submit" class="btn btn-secondary btn-sm button-002">{% trans "Reject" %}</button>
                                 </form>
                             </div>
                         </div>

@@ -4,23 +4,24 @@
 {% block title %}{{ contest.name }} - Admin Leaderboard Dashboard{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/leaderboards/admin_leaderboard_dashboard.css' %}">
 <link rel="stylesheet" href="{% static 'css/core/nav.css' %}">
 {% endblock %}
 
 {% block content %}
-        <div class="detail-card" style="width:100%;">
-            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+        <div class="detail-card div-005">
+            <div class="detail-header div-003">
                 <div>
                     <h1 class="detail-title">{{ contest.name }} Evaluation Dashboard</h1>
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Admin controls and leaderboard preview.</p>
+                    <p class="p-001">Admin controls and leaderboard preview.</p>
                 </div>
-                <div style="display:flex; gap: 0.5rem;">
+                <div class="div-007">
                     <a href="{% url 'criterion_create' contest.pk %}" class="btn btn-tinted">Add Scoring Criterion</a>
                     <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">View Public Leaderboard</a>
                 </div>
             </div>
 
-            <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">
+            <div class="info-grid div-009">
                 <div class="info-item">
                     <h4>Evaluation status</h4>
                     <p>{{ phase.get_status_display }}</p>
@@ -43,18 +44,18 @@
                 </div>
             </div>
 
-            <section style="margin-top: 1.5rem;">
+            <section class="section-001">
                 <h4>Score submission progress</h4>
-                <div style="background: var(--border); border-radius: 999px; overflow: hidden; height: 16px; margin-bottom: 0.5rem;">
+                <div class="div-006">
                     <div style="width: {{ progress_percent }}%; background: var(--primary-color); height: 100%;"></div>
                 </div>
                 <p>{{ submitted }} of {{ expected }} expected jury scores submitted.</p>
             </section>
 
-            <section style="margin-top: 1.5rem;">
+            <section class="section-001">
                 <h4>Missing scores</h4>
                 {% if missing_scores %}
-                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+                    <div class="div-002"><table class="table table-001">
                         <thead>
                             <tr>
                                 <th>Team</th>
@@ -77,8 +78,8 @@
                 {% endif %}
             </section>
 
-            <section style="margin-top: 1.5rem;">
-                <div style="display:flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+            <section class="section-001">
+                <div class="div-008">
                     <form method="post" action="{% url 'admin_finish_evaluation' contest.pk %}">
                         {% csrf_token %}
                         <button type="submit" class="btn btn-primary">Finish Evaluation</button>
@@ -98,10 +99,10 @@
                 </div>
             </section>
 
-            <section style="margin-top: 1.5rem;">
+            <section class="section-001">
                 <h4>Current leaderboard preview</h4>
                 {% if entries %}
-                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+                    <div class="div-002"><table class="table table-001">
                         <thead>
                             <tr>
                                 <th>Rank</th>
@@ -110,9 +111,9 @@
                                 {% for criterion in criteria %}
                                     <th>
                                         {{ criterion.name }}
-                                        <div style="font-size: 0.7rem; font-weight: normal; margin-top: 0.25rem;">
-                                            <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" style="color: var(--primary-color);">Edit</a> |
-                                            <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" style="color: #e53e3e;">Del</a>
+                                        <div class="div-004">
+                                            <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" class="a-001">Edit</a> |
+                                            <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" class="a-002">Del</a>
                                         </div>
                                     </th>
                                 {% endfor %}
@@ -135,7 +136,7 @@
                     </table></div>
 
                     {% if entries.has_other_pages %}
-                    <div class="pagination" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+                    <div class="pagination div-001">
                         {% if entries.has_previous %}
                             <a href="?page=1" class="btn btn-secondary btn-sm">First</a>
                             <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">Previous</a>
@@ -143,7 +144,7 @@
                         
                         {% for num in entries.paginator.page_range %}
                             {% if entries.number == num %}
-                                <span class="btn btn-primary btn-sm" style="cursor: default;">{{ num }}</span>
+                                <span class="btn btn-primary btn-sm span-001">{{ num }}</span>
                             {% elif num > entries.number|add:-3 and num < entries.number|add:3 %}
                                 <a href="?page={{ num }}" class="btn btn-secondary btn-sm">{{ num }}</a>
                             {% endif %}

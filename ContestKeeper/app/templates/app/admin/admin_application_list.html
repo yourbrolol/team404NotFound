@@ -15,7 +15,7 @@
                 <h1 class="h2 font-weight-bold mb-0">Review Applications</h1>
                 <p class="text-muted small">Manage who joins your contest</p>
             </div>
-            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="width: auto;">← Back to Contest</a>
+            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary a-001">← Back to Contest</a>
         </div>
 
         <div class="tabs-nav" id="appTabs">
@@ -52,7 +52,7 @@
         </div>
 
         <!-- Participants Section -->
-        <div id="section-participants" class="tab-section" style="display:none;">
+        <div id="section-participants" class="tab-section div-001">
             {% for app in participant_apps %}
                 <div class="app-card">
                     <div class="user-info">
@@ -79,7 +79,7 @@
         </div>
 
         <!-- Jurors Section -->
-        <div id="section-jurors" class="tab-section" style="display:none;">
+        <div id="section-jurors" class="tab-section div-001">
             {% for app in jury_apps %}
                 <div class="app-card">
                     <div class="user-info">

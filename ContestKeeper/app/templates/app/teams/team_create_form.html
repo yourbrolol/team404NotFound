@@ -4,6 +4,7 @@
 {% block title %}{% trans "Create Team" %} – {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/teams/team_create_form.css' %}">
 <link rel="stylesheet" href="{% static 'css/teams/team.css' %}">
 {% endblock %}
 
@@ -23,12 +24,12 @@
                             <label for="{{ field.id_for_label }}" class="info-label">{{ field.label }}</label>
                             {{ field }}
                             {% if field.help_text %}
-                                <span class="help-text" style="display: block; font-size: 0.85rem; color: #a1a1aa; margin-top: 4px;">{{ field.help_text }}</span>
+                                <span class="help-text span-001">{{ field.help_text }}</span>
                             {% endif %}
                             {% if field.errors %}
                             <div class="field-errors">
                                 {% for error in field.errors %}
-                                <span class="error-text" style="color: #ef4444; font-size: 0.85rem;">{{ error }}</span>
+                                <span class="error-text span-002">{{ error }}</span>
                                 {% endfor %}
                             </div>
                             {% endif %}
@@ -36,7 +37,7 @@
                     {% endfor %}
                 </div>
 
-                <div class="actions-footer" style="margin-top: 2rem; justify-content: flex-end; gap: 1rem;">
+                <div class="actions-footer div-001">
                     <a href="{% url 'contest_detail' pk=contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
                     <button type="submit" class="btn btn-primary">{% trans "Create & Apply" %}</button>
                 </div>

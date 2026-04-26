@@ -101,3 +101,18 @@
 .type-WORKSHOP {
     color: var(--success);
 }
+
+/* --- Extracted from schedule.html --- */
+.div-005 { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem; }
+.h1-001 { font-size: 3rem; font-weight: 900; color: var(--text-main); margin: 0; }
+.p-001 { color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem; }
+.div-001 { display: flex; gap: 1rem; }
+.button-001 { border-radius: 12px; font-weight: 600; }
+.div-003 { display: flex; justify-content: space-between; align-items: flex-start; }
+.h2-001 { font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0; }
+.a-002 { color: var(--text-muted); transition: color 0.2s; }
+.p-002 { color: var(--text-muted); margin-top: 1rem; line-height: 1.6; }
+.div-004 { margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem; }
+.a-001 { font-size: 0.8rem; border-radius: 8px; }
+.div-002 { text-align: center; padding: 5rem 0; color: var(--text-muted); }
+.svg-001 { width: 64px; opacity: 0.3; margin-bottom: 2rem; }

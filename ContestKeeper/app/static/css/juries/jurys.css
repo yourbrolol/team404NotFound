@@ -1,0 +1,10 @@
+/* Styles for jurys.html */
+
+/* --- Extracted from jurys.html --- */
+.div-001 { margin-bottom: 2rem; }
+.form-001 { display: flex; gap: 1rem; align-items: center; }
+.div-004 { margin-bottom: 0; }
+.input-001 { width: 80px; }
+.div-002 { display: flex; justify-content: space-between; width: 100%; align-items: center; }
+.div-003 { font-size: 0.85rem; color: var(--text-muted); }
+.span-001 { background: var(--glass); padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem; }

@@ -317,3 +317,8 @@ main.dashboard-container.page-narrow {
     align-items: stretch;
   }
 }
+
+/* --- Extracted from settings.html --- */
+.div-001 { justify-content: flex-start; }
+.div-002 { margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.75; }
+.div-003 { justify-content: center; }

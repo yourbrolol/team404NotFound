@@ -1,0 +1,339 @@
+./ContestKeeper/app/templates/app/admin/admin_application_list.html:18:            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="width: auto;">← Back to Contest</a>
+./ContestKeeper/app/templates/app/admin/admin_application_list.html:55:        <div id="section-participants" class="tab-section" style="display:none;">
+./ContestKeeper/app/templates/app/admin/admin_application_list.html:82:        <div id="section-jurors" class="tab-section" style="display:none;">
+./ContestKeeper/app/templates/app/admin/analytics.html:14:        <p style="color: var(--text-muted);">Visual insights for "{{ contest.name }}"</p>
+./ContestKeeper/app/templates/app/admin/analytics.html:40:<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(450px, 1fr)); gap: 2rem;">
+./ContestKeeper/app/templates/app/admin/analytics.html:58:            <p style="color: var(--text-muted); font-size: 0.9rem;">No rounds defined yet.</p>
+./ContestKeeper/app/templates/app/admin/analytics.html:80:            <p style="color: var(--text-muted); font-size: 0.9rem;">No scoring criteria defined yet.</p>
+./ContestKeeper/app/templates/app/admin/analytics.html:96:                <div class="progress-fill" style="width: {{ jp.percent }}%;"></div>
+./ContestKeeper/app/templates/app/admin/analytics.html:101:        <p style="color: var(--text-muted); font-size: 0.9rem;">No jury members assigned yet.</p>
+./ContestKeeper/app/templates/app/admin/analytics.html:111:    <div style="display: flex; align-items: flex-end; gap: 0.5rem; height: 160px; margin-top: 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.5rem;">
+./ContestKeeper/app/templates/app/admin/analytics.html:115:        <div style="flex: 1; position: relative;">
+./ContestKeeper/app/templates/app/admin/analytics.html:116:            <div style="background: linear-gradient(to top, var(--primary), var(--secondary)); height: {{ h }}px; border-radius: 4px 4px 0 0; transition: height 0.5s ease-out;">
+./ContestKeeper/app/templates/app/admin/analytics.html:117:                <div style="position: absolute; top: -20px; left: 0; right: 0; text-align: center; font-size: 10px; color: var(--text-muted);">{{ count }}</div>
+./ContestKeeper/app/templates/app/admin/analytics.html:119:            <div style="position: absolute; bottom: -20px; left: 0; right: 0; text-align: center; font-size: 10px; color: var(--text-muted);">{{ forloop.counter0 }}0%</div>
+./ContestKeeper/app/templates/app/announcements/announcements.html:10:        <p style="color: var(--text-muted);">Important updates and news for "{{ contest.name }}".</p>
+./ContestKeeper/app/templates/app/announcements/announcements.html:19:    <article class="announcement-item {% if announcement.is_pinned %}pinned{% endif %}" style="margin-bottom: 2rem; padding-bottom: 2rem; border-bottom: 1px solid var(--border);">
+./ContestKeeper/app/templates/app/announcements/announcements.html:20:        <div style="display: flex; justify-content: space-between; align-items: center;">
+./ContestKeeper/app/templates/app/announcements/announcements.html:21:            <h3 style="font-size: 1.5rem; margin-bottom: 0.5rem;">
+./ContestKeeper/app/templates/app/announcements/announcements.html:23:                <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor" style="color: var(--secondary); margin-right: 0.5rem;">
+./ContestKeeper/app/templates/app/announcements/announcements.html:30:            <form action="{% url 'announcement_delete' contest.pk announcement.pk %}" method="get" style="display: inline;">
+./ContestKeeper/app/templates/app/announcements/announcements.html:31:                <button type="submit" class="btn btn-secondary btn-sm" style="color: #ef4444;">Delete</button>
+./ContestKeeper/app/templates/app/announcements/announcements.html:35:        <div style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+./ContestKeeper/app/templates/app/announcements/announcements.html:38:        <div class="announcement-content" style="line-height: 1.8;">
+./ContestKeeper/app/templates/app/announcements/announcements.html:49:<div class="actions-footer" style="margin-top: 2rem;">
+./ContestKeeper/app/templates/app/announcements/announcement_confirm_delete.html:9:        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+./ContestKeeper/app/templates/app/announcements/announcement_confirm_delete.html:10:            <button type="submit" class="btn btn-primary" style="background:#ef4444; flex:1;">Yes, delete it</button>
+./ContestKeeper/app/templates/app/announcements/announcement_form.html:8:    <h2 style="margin-bottom: 2rem;">Post New Announcement</h2>
+./ContestKeeper/app/templates/app/announcements/announcement_form.html:19:            <p style="font-size: 0.8rem; color: var(--text-muted); margin-top: 0.25rem;">{{ field.help_text }}</p>
+./ContestKeeper/app/templates/app/announcements/announcement_form.html:23:        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+./ContestKeeper/app/templates/app/announcements/announcement_form.html:24:            <button type="submit" class="btn btn-primary" style="flex:1;">Publish Announcement</button>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:17:    <div class="info-grid" style="margin-top: 2rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:28:    <h4 style="margin-top: 2rem;">{% trans "About the contest" %}</h4>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:29:    <div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 2rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:30:        <div class="description-box" style="margin: 0;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:36:            <div class="glass-panel" style="padding: 1.5rem; border: 1px solid rgba(var(--primary-rgb), 0.3); background: var(--bg-primary-tint);">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:37:                <div style="font-size: 0.7rem; font-weight: 800; color: #6366f1; text-transform: uppercase; margin-bottom: 0.5rem;">{% trans "Next Up" %}</div>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:38:                <h4 style="margin: 0 0 0.5rem 0; font-weight: 800;">{{ next_event.title }}</h4>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:39:                <div style="font-family: monospace; font-size: 0.85rem; color: #475569;">{{ next_event.start_time|date:"M d • H:i" }}</div>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:40:                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: #6366f1; text-decoration: none;">{% trans "Full Schedule" %} →</a>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:43:            <div class="glass-panel" style="padding: 1.5rem; border: 1px solid var(--border); opacity: 0.6;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:44:                <div style="font-size: 0.7rem; font-weight: 800; text-transform: uppercase; margin-bottom: 0.5rem;">{% trans "Timeline" %}</div>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:45:                <p style="margin: 0; font-size: 0.9rem;">{% trans "No upcoming events." %}</p>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:46:                <a href="{% url 'schedule' contest.pk %}" style="display: block; margin-top: 1rem; font-size: 0.8rem; font-weight: 700; color: var(--text-muted); text-decoration: none;">{% trans "View Schedule" %} →</a>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:53:    <div class="active-round-banner" style="background: linear-gradient(135deg, rgba(var(--success-rgb), 0.1), rgba(var(--success-rgb), 0.15)); border: 1px solid rgba(var(--success-rgb), 0.3); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:55:            <div style="font-size: 0.75rem; font-weight: 800; color: #10b981; text-transform: uppercase; margin-bottom: 0.5rem;">🔥 {% trans "Current Active Round" %}</div>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:56:            <h3 style="margin: 0; font-weight: 800;">{{ active_round.title }}</h3>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:57:            <p style="margin: 0.25rem 0 0; font-size: 0.9rem; color: #475569;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:58:                {% trans "Deadline" %}: <span style="font-weight: 600;">{{ active_round.deadline|date:"M d, H:i" }}</span>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:61:        <a href="{% if user == contest.organizer %}{% url 'contest_rounds' contest.pk %}{% else %}{% url 'round_detail_team' contest.pk active_round.pk %}{% endif %}" class="btn btn-primary" style="background: #10b981; border: none;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:69:            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--primary);">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:76:            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--secondary);">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:85:            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #f59e0b;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:93:            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #6366f1;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:102:            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: #10b981;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:114:        style="margin-bottom: 2rem; background: var(--glass); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border);">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:116:        <h4 style="margin-top: 0; color: #10b981;">{% trans "You registered already!" %}</h4>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:117:        <p style="margin-bottom: 0;">{% blocktrans with name=user_team.name %}- Your team is <strong>{{ name }}</strong>.{% endblocktrans %}</p>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:119:        <div style="display: flex; flex-direction: column; gap: 1rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:121:                <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" style="margin: 0;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:123:                    <button type="submit" class="btn btn-secondary" style="width: 100%;">{% trans "Register as Individual" %}</button>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:125:                <div style="display: flex; align-items: center; gap: 1rem; color: var(--text-muted); font-size: 0.9rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:126:                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:128:                    <div style="flex: 1; height: 1px; background: var(--border);"></div>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:130:                <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary" style="width: 100%; text-align: center; text-decoration: none;">{% trans "Create a Team" %}</a>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:132:                <div style="text-align: center; padding: 1rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:133:                    <h4 style="margin-top: 0; color: #ef4444;">{% trans "Registration Closed" %}</h4>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:149:                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:150:                <h4 style="margin: 0;">{% trans "Jury Panel" %}</h4>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:157:                style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:158:                <h4 style="margin: 0;">{% trans "Teams" %}</h4>
+./ContestKeeper/app/templates/app/contests/contest_detail.html:165:    <div class="contest-actions" style="margin-top: 2rem;">
+./ContestKeeper/app/templates/app/contests/contest_detail.html:172:            onsubmit="return confirm('{% trans "Are you sure you want to delete this contest? This action cannot be undone." %}');" style="display: inline;">
+./ContestKeeper/app/templates/app/contests/contest_form.html:40:                <div class="contest-actions" style="margin-top: 2rem;">
+./ContestKeeper/app/templates/app/contests/contest_rounds_team.html:12:        <h1 style="text-align: center; margin-bottom: 2rem;">{% trans "Contest Rounds" %}</h1>
+./ContestKeeper/app/templates/app/core/dashboard.html:65:                        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path><polyline points="14 2 14 8 20 8"></polyline><line x1="12" y1="18" x2="12" y2="12"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+./ContestKeeper/app/templates/app/core/index.html:97:                    stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.5;">
+./ContestKeeper/app/templates/app/core/nav.html:26:                <form action="{% url 'set_language' %}" method="post" style="display: inline;">
+./ContestKeeper/app/templates/app/core/nav.html:43:                <svg id="themeIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="margin-right: 0.75rem;">
+./ContestKeeper/app/templates/app/core/notifications.html:41:                            <form action="{% url 'notification_read' notification.pk %}" method="POST" style="display:inline;">
+./ContestKeeper/app/templates/app/core/notifications.html:46:                            <form action="{% url 'notification_read' notification.pk %}" method="POST" style="display:inline;">
+./ContestKeeper/app/templates/app/core/notifications.html:56:                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.3; margin-bottom: 1rem;">
+./ContestKeeper/app/templates/app/core/profile.html:50:                <div class="settings-avatar" style="justify-content: flex-start;">
+./ContestKeeper/app/templates/app/core/profile.html:64:                            <div class="form-input" id="profileUsernameValue" style="cursor:default; user-select:text;">{{ user.username }}</div>
+./ContestKeeper/app/templates/app/core/profile.html:72:                            <div class="form-input" id="profileEmailValue" style="cursor:default; user-select:text;">{{ user.email|default:"-" }}</div>
+./ContestKeeper/app/templates/app/core/profile.html:79:                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.first_name|default:"-" }}</div>
+./ContestKeeper/app/templates/app/core/profile.html:84:                        <div class="form-input" style="cursor:default; user-select:text;">{{ user.last_name|default:"-" }}</div>
+./ContestKeeper/app/templates/app/core/profile.html:92:                            <div class="settings-toolbar" style="margin-top: 0.5rem;">
+./ContestKeeper/app/templates/app/core/profile.html:101:                            <div class="settings-actions" style="justify-content: flex-start; margin-top: 1rem;">
+./ContestKeeper/app/templates/app/core/profile.html:124:                        aria-expanded="true" style="margin-left: auto;">
+./ContestKeeper/app/templates/app/core/profile.html:215:                    <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
+./ContestKeeper/app/templates/app/core/profile.html:298:                    <div style="overflow-x: auto; margin-top: 1.5rem;"><table class="profile-table" style="width:100%; min-width: 600px;">
+./ContestKeeper/app/templates/app/core/profile.html:366:            <div class="settings-actions settings-toolbar" style="justify-content: space-between;">
+./ContestKeeper/app/templates/app/core/settings.html:49:                <div class="settings-avatar" style="justify-content: flex-start;">
+./ContestKeeper/app/templates/app/core/settings.html:103:                        <div id="bioCounter" style="margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.75;"></div>
+./ContestKeeper/app/templates/app/core/settings.html:148:            <div class="settings-actions" style="justify-content: center;">
+./ContestKeeper/app/templates/app/juries/jurys.html:27:                <div class="actions-header" style="margin-bottom: 2rem;">
+./ContestKeeper/app/templates/app/juries/jurys.html:28:                    <form action="{% url 'assign_jury' pk=contest.pk %}" method="post" style="display: flex; gap: 1rem; align-items: center;">
+./ContestKeeper/app/templates/app/juries/jurys.html:30:                        <div class="form-group" style="margin-bottom: 0;">
+./ContestKeeper/app/templates/app/juries/jurys.html:32:                            <input type="number" name="min_reviews" value="2" min="1" max="{{ jurys.count }}" class="form-input" style="width: 80px;">
+./ContestKeeper/app/templates/app/juries/jurys.html:51:                            <div style="display: flex; justify-content: space-between; width: 100%; align-items: center;">
+./ContestKeeper/app/templates/app/juries/jurys.html:53:                                <div class="assigned-teams" style="font-size: 0.85rem; color: var(--text-muted);">
+./ContestKeeper/app/templates/app/juries/jurys.html:57:                                                <span class="badge" style="background: var(--glass); padding: 0.2rem 0.5rem; border-radius: 4px; margin-left: 0.5rem;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:14:    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:18:                <a href="{% url 'round_submissions' contest.pk submission.round.id %}" class="text-secondary" style="text-decoration: none; font-weight: 600;">{% trans "← Back to Submissions" %}</a>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:20:                <a href="{% url 'contest_detail' contest.pk %}" class="text-secondary" style="text-decoration: none; font-weight: 600;">{% trans "← Back to Contest" %}</a>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:23:            <h1 style="font-size: 2.5rem; font-weight: 900; color: var(--text-main); margin: 0;">{% blocktrans with name=team.name %}Evaluating {{ name }}{% endblocktrans %}</h1>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:24:            <p style="color: var(--text-muted); margin-top: 0.5rem;">{% blocktrans with name=contest.name %}Jury Assessment for {{ name }}{% endblocktrans %}</p>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:27:            <span style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">{% trans "Juror" %}</span>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:28:            <div style="font-weight: 700; color: var(--text-main);">{{ user.get_full_name|default:user.username }}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:36:                <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:42:                    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:43:                        <a href="{{ submission.github_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:44:                            <div style="color: var(--text-main); font-weight: 700; margin-bottom: 0.25rem;">{% trans "GitHub Repo ↗" %}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:45:                            <div style="font-size: 0.8rem; color: var(--text-muted);">{% trans "View source code" %}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:47:                        <a href="{{ submission.video_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:48:                            <div style="color: var(--error); font-weight: 700; margin-bottom: 0.25rem;">{% trans "Demo Video ↗" %}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:49:                            <div style="font-size: 0.8rem; color: var(--text-muted);">{% trans "Watch presentation" %}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:52:                        <a href="{{ submission.live_demo_url }}" target="_blank" class="artifact-card" style="text-decoration: none; display: block;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:53:                            <div style="color: var(--success); font-weight: 700; margin-bottom: 0.25rem;">{% trans "Live Demo ↗" %}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:54:                            <div style="font-size: 0.8rem; color: var(--text-muted);">{% trans "Open application" %}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:60:                        <h3 style="font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem;">{% trans "Implementation Details" %}</h3>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:61:                        <div style="white-space: pre-wrap; color: var(--text-main); line-height: 1.6;">{{ submission.description }}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:72:                <h2 style="font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem;">{% trans "Scoring Card" %}</h2>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:91:                                <div style="color: var(--error); font-size: 0.8rem; margin-top: 0.5rem;">{{ field.errors.0 }}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:97:                        <button type="submit" class="btn btn-primary w-100 py-3" style="font-weight: 800; border-radius: 12px; font-size: 1rem;">
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:108:                    <div style="font-size: 0.8rem; text-transform: uppercase; font-weight: 700; opacity: 0.8; margin-bottom: 0.25rem;">{% trans "Final Weighted Score" %}</div>
+./ContestKeeper/app/templates/app/juries/jury_evaluation.html:109:                    <div style="font-size: 2.25rem; font-weight: 900;" id="totalPreview">--</div>
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:11:        <div class="detail-card" style="width:100%;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:12:            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:15:                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Admin controls and leaderboard preview.</p>
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:17:                <div style="display:flex; gap: 0.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:23:            <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:46:            <section style="margin-top: 1.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:48:                <div style="background: var(--border); border-radius: 999px; overflow: hidden; height: 16px; margin-bottom: 0.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:49:                    <div style="width: {{ progress_percent }}%; background: var(--primary-color); height: 100%;"></div>
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:54:            <section style="margin-top: 1.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:57:                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:80:            <section style="margin-top: 1.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:81:                <div style="display:flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:101:            <section style="margin-top: 1.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:104:                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:113:                                        <div style="font-size: 0.7rem; font-weight: normal; margin-top: 0.25rem;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:114:                                            <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" style="color: var(--primary-color);">Edit</a> |
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:115:                                            <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" style="color: #e53e3e;">Del</a>
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:138:                    <div class="pagination" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+./ContestKeeper/app/templates/app/leaderboards/admin_leaderboard_dashboard.html:146:                                <span class="btn btn-primary btn-sm" style="cursor: default;">{{ num }}</span>
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:11:        <div class="detail-card" style="width:100%;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:12:            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:15:                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Final ranking table for contest participants.</p>
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:23:                <div class="info-grid" style="padding: 2rem; text-align: center;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:28:                <div style="overflow-x: auto; margin-top: 1.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:29:                    <table class="table" style="width:100%; min-width: 600px;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:56:                <div class="pagination" style="margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:64:                            <span class="btn btn-primary btn-sm" style="cursor: default;">{{ num }}</span>
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:78:                    <div class="info-grid" style="margin-top: 1.5rem; gap: 1rem;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:79:                        <div class="info-item" style="flex: 1; min-width: 220px;">
+./ContestKeeper/app/templates/app/leaderboards/leaderboard.html:83:                        <div class="info-item" style="flex: 1; min-width: 220px;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:11:        <div class="detail-card" style="max-width: 900px; margin: auto;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:12:            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:15:                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Team rank and criterion breakdown.</p>
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:21:                <div class="info-grid" style="padding: 2rem; text-align: center;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:26:                <div class="info-grid" style="margin-bottom: 1rem; gap: 1rem;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:37:                <section style="margin-bottom: 1.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:39:                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:59:                <section style="margin-bottom: 1.5rem;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:65:                            <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface);">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:66:                                <h5 style="margin-top:0;">{{ item.criterion.name }}</h5>
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:67:                                <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:89:                    <section style="padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface);">
+./ContestKeeper/app/templates/app/leaderboards/team_leaderboard_detail.html:93:                        <div style="margin-top: 1rem;">
+./ContestKeeper/app/templates/app/rounds/round_detail.html:16:            <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary" style="width: auto;">{% trans "← Back to Rounds List" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail.html:18:            <a href="{% url 'contest_rounds_team' contest.pk %}" class="btn btn-secondary" style="width: auto;">{% trans "← Back to Rounds List" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail.html:129:                            <span class="info-content" style="font-size: 1.5rem; font-weight: 700;">{{ submission_count }}</span>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:53:                    <small style="opacity: 0.8;">{% trans "Submit before deadline" %}</small>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:61:                    <p class="description-text" style="color: var(--text-muted); font-style: italic;">
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:66:                        <div style="margin-bottom: 1rem;">
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:68:                            <div class="meta-value" style="color: #28a745;">{% trans "✅ Submitted" %}</div>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:70:                        <div style="display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem;">
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:71:                            <a href="{{ user_submission.github_url }}" target="_blank" class="material-link" style="background: #24292e;">{% trans "GitHub Repository ↗" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:72:                            <a href="{{ user_submission.video_url }}" target="_blank" class="material-link" style="background: #ff0000;">{% trans "Video Presentation ↗" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:74:                                <a href="{{ user_submission.live_demo_url }}" target="_blank" class="material-link" style="background: #28a745;">{% trans "Live Demo ↗" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:77:                        <div style="display: flex; gap: 0.5rem;">
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:78:                            <a href="{% url 'submission_detail' round.contest.pk round.pk user_submission.pk %}" class="material-link" style="background: var(--secondary); flex: 1; text-align: center;">{% trans "View Full Details" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:80:                                <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="background: #6c757d; flex: 1; text-align: center;">{% trans "Edit Submission" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:84:                        <div style="margin-bottom: 1.5rem;">
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:86:                            <div class="meta-value" style="color: #dc3545;">{% trans "❌ Not Submitted" %}</div>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:89:                            <a href="{% url 'submission_create' round.contest.pk round.pk %}" class="material-link" style="width: 100%; text-align: center; padding: 1rem; font-size: 1.1rem; font-weight: bold;">{% trans "Submit Your Work Now →" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_detail_team.html:91:                            <p class="description-text" style="color: var(--text-muted); font-style: italic;">
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:71:        <div class="detail-header" style="border: none; margin-bottom: 1.5rem; padding-bottom: 0;">
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:73:                <h1 class="detail-title" style="font-size: 1.75rem;">{% trans "Extend Deadline" %}</h1>
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:74:                <p style="margin: 0.25rem 0 0; color: var(--header); font-weight: 500;">{{ round.title }}</p>
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:84:                <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">{% trans "Current Deadline" %}</div>
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:85:                <div style="font-size: 1.1rem; font-weight: 600;">{{ round.deadline|date:'M d, Y — H:i' }}</div>
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:100:        <form method="post" style="display: flex; flex-direction: column; gap: 1.5rem;">
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:108:                <p style="margin: 0.5rem 0 0; color: var(--header); font-size: 0.8rem; font-style: italic;">
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:113:            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:114:                <button type="submit" class="btn btn-primary" style="flex: 2; padding: 1rem;">{% trans "Confirm Extension" %}</button>
+./ContestKeeper/app/templates/app/rounds/round_extend_deadline.html:115:                <a href="{% url 'contest_rounds' round.contest.pk %}" class="btn btn-secondary" style="flex: 1; padding: 1rem;">{% trans "Cancel" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_form.html:12:        <div class="detail-card" style="max-width: 700px; margin: auto;">
+./ContestKeeper/app/templates/app/rounds/round_form.html:14:            <p style="margin: 0.5rem 0 1.5rem; color: var(--text-muted);">{{ contest.name }}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:17:                <div style="padding: 1rem; background: var(--bg-error-tint); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
+./ContestKeeper/app/templates/app/rounds/round_form.html:23:                <div style="padding: 1rem; background: var(--bg-error-tint); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
+./ContestKeeper/app/templates/app/rounds/round_form.html:28:            <form method="post" style="display: flex; flex-direction: column; gap: 1rem;">
+./ContestKeeper/app/templates/app/rounds/round_form.html:36:                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.title.errors.0 }}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:45:                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.description.errors.0 }}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:54:                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.tech_requirements.errors.0 }}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:61:                              class="form-input" style="font-family: monospace;">{% if round %}{{ round.must_have|join:'&#10;' }}{% endif %}</textarea>
+./ContestKeeper/app/templates/app/rounds/round_form.html:62:                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans "Enter each item on a separate line, e.g.: API endpoint, Database schema, Deployment" %}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:64:                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.must_have.errors.0 }}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:73:                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.start_time.errors.0 }}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:81:                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans "Must be after start time" %}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:83:                        <p style="color: var(--error); margin-top: 0.25rem;">{{ form.deadline.errors.0 }}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:90:                              class="form-input" style="font-family: monospace;">{% if round %}{{ round.materials|safe }}{% endif %}</textarea>
+./ContestKeeper/app/templates/app/rounds/round_form.html:91:                    <p style="margin: 0.5rem 0 0; color: var(--text-muted); font-size: 0.85rem;">{% trans 'Example: [{"label": "Docs", "url": "https://..."}, {"label": "API", "url": "https://..."}]' %}</p>
+./ContestKeeper/app/templates/app/rounds/round_form.html:94:                <div style="display: flex; gap: 0.75rem; margin-top: 1rem;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:11:        <div class="detail-card" style="width:100%;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:12:            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:15:                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">{% trans "Manage contest rounds and evaluations." %}</p>
+./ContestKeeper/app/templates/app/rounds/round_list.html:17:                <div style="display: flex; gap: 0.75rem; align-items: center;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:24:                <div style="margin-top: 1.5rem;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:26:                        <div style="padding: 1rem; border: 1px solid var(--border); border-radius: 8px; margin-bottom: 1rem; background: var(--surface);">
+./ContestKeeper/app/templates/app/rounds/round_list.html:27:                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.75rem;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:29:                                    <h3 style="margin: 0;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:30:                                        <a href="{% url 'round_detail' contest.pk round.id %}" style="text-decoration: none; color: inherit;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:34:                                    <p style="margin: 0.25rem 0 0; color: var(--text-muted); font-size: 0.9rem;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:41:                            <p style="margin: 0.5rem 0; font-size: 0.95rem;">{{ round.description|truncatewords:20 }}</p>
+./ContestKeeper/app/templates/app/rounds/round_list.html:43:                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; align-items: flex-end;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:45:                                    <div style="display: flex; gap: 1rem;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:46:                                        <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Edit" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_list.html:47:                                        <form action="{% url 'round_activate' contest.pk round.id %}" method="POST" style="display: inline;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:49:                                            <button type="submit" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Activate" %}</button>
+./ContestKeeper/app/templates/app/rounds/round_list.html:53:                                    <div style="display: flex; gap: 1rem; align-items: center;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:54:                                        <a href="{% url 'round_extend_deadline' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Extend Deadline" %}</a>
+./ContestKeeper/app/templates/app/rounds/round_list.html:55:                                        <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" style="display: inline;">
+./ContestKeeper/app/templates/app/rounds/round_list.html:57:                                            <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Close Submissions" %}</button>
+./ContestKeeper/app/templates/app/rounds/round_list.html:66:                <div style="padding: 2rem; text-align: center; color: var(--text-muted);">
+./ContestKeeper/app/templates/app/schedule/schedule.html:12:    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
+./ContestKeeper/app/templates/app/schedule/schedule.html:14:            <h1 style="font-size: 3rem; font-weight: 900; color: var(--text-main); margin: 0;">Tournament Schedule</h1>
+./ContestKeeper/app/templates/app/schedule/schedule.html:15:            <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem;">Follow the timeline of {{ contest.name }}
+./ContestKeeper/app/templates/app/schedule/schedule.html:19:        <div style="display: flex; gap: 1rem;">
+./ContestKeeper/app/templates/app/schedule/schedule.html:24:                    style="border-radius: 12px; font-weight: 600;">Regenerate</button>
+./ContestKeeper/app/templates/app/schedule/schedule.html:27:                style="border-radius: 12px; font-weight: 600;">+ Add Event</a>
+./ContestKeeper/app/templates/app/schedule/schedule.html:30:                style="border-radius: 12px; font-weight: 600;">Back</a>
+./ContestKeeper/app/templates/app/schedule/schedule.html:38:        <div class="timeline-item" style="animation-delay: {{ forloop.counter0|add:0.1 }}s">
+./ContestKeeper/app/templates/app/schedule/schedule.html:50:                <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+./ContestKeeper/app/templates/app/schedule/schedule.html:51:                    <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0;">{{ event.title }}</h2>
+./ContestKeeper/app/templates/app/schedule/schedule.html:54:                        style="color: var(--text-muted); transition: color 0.2s;" onmouseover="this.style.color='var(--error)'"
+./ContestKeeper/app/templates/app/schedule/schedule.html:66:                <p style="color: var(--text-muted); margin-top: 1rem; line-height: 1.6;">{{ event.description|linebreaksbr }}</p>
+./ContestKeeper/app/templates/app/schedule/schedule.html:70:                <div style="margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1rem;">
+./ContestKeeper/app/templates/app/schedule/schedule.html:72:                        class="btn btn-sm btn-primary" style="font-size: 0.8rem; border-radius: 8px;">
+./ContestKeeper/app/templates/app/schedule/schedule.html:84:        <div style="text-align: center; padding: 5rem 0; color: var(--text-muted);">
+./ContestKeeper/app/templates/app/schedule/schedule.html:85:            <svg style="width: 64px; opacity: 0.3; margin-bottom: 2rem;" fill="none" stroke="currentColor"
+./ContestKeeper/app/templates/app/schedule/schedule_event_confirm_delete.html:9:        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+./ContestKeeper/app/templates/app/schedule/schedule_event_confirm_delete.html:10:            <button type="submit" class="btn btn-primary" style="background:#ef4444; flex:1;">Yes, delete it</button>
+./ContestKeeper/app/templates/app/schedule/schedule_event_form.html:8:    <h2 style="margin-bottom: 2rem;">Add Schedule Event</h2>
+./ContestKeeper/app/templates/app/schedule/schedule_event_form.html:20:        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+./ContestKeeper/app/templates/app/schedule/schedule_event_form.html:21:            <button type="submit" class="btn btn-primary" style="flex:1;">Add Event</button>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:13:    <div style="max-width: 900px; margin: 0 auto;">
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:15:        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:16:            <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="background: none; border: none; font-weight: 600;">{% trans "← Back to Round" %}</a>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:18:                <a href="{% url 'submission_create' contest.pk round.pk %}" class="btn btn-primary" style="border-radius: 12px;">{% trans "Edit Submission" %}</a>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:23:            <div style="border-bottom: 1px solid var(--overlay-subtle); padding-bottom: 2rem; margin-bottom: 2.5rem;">
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:24:                <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:25:                    <span style="background: #6366f1; color: white; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">{% trans "Team Submission" %}</span>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:26:                    <span style="color: #6b7280; font-size: 0.85rem;">{% blocktrans with date=submission.submitted_at|date:"M d, Y • P" %}Submitted {{ date }}{% endblocktrans %}</span>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:28:                <h1 style="font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0;">{{ submission.team.name }}</h1>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:29:                <p style="color: #4b5563; font-size: 1.1rem; margin-top: 0.5rem;">{% trans "Round:" %} <strong>{{ round.title }}</strong></p>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:32:            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-bottom: 3rem;">
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:38:                        <div style="font-weight: 700; color: #111827;">{% trans "Source Code" %}</div>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:39:                        <div style="font-size: 0.8rem; color: #6366f1;">{% trans "View on GitHub ↗" %}</div>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:48:                        <div style="font-weight: 700; color: #111827;">{% trans "Demo Video" %}</div>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:49:                        <div style="font-size: 0.8rem; color: #ef4444;">{% trans "Watch Presentation ↗" %}</div>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:59:                        <div style="font-weight: 700; color: #111827;">{% trans "Live Demo" %}</div>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:60:                        <div style="font-size: 0.8rem; color: #10b981;">{% trans "Open Application ↗" %}</div>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:67:                <h3 style="font-size: 1.1rem; font-weight: 800; color: #111827; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:68:                    <svg style="width: 20px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:71:                <div style="white-space: pre-wrap; color: #374151; line-height: 1.7; font-size: 1rem;">{{ submission.description }}</div>
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:74:            <div style="margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid var(--overlay-subtle); padding-top: 2rem;">
+./ContestKeeper/app/templates/app/submissions/submission_detail.html:85:                    <span class="meta-value" style="color: #10b981;">{% trans "● Active" %}</span>
+./ContestKeeper/app/templates/app/submissions/submission_form.html:13:    <div style="max-width: 700px; margin: 0 auto;">
+./ContestKeeper/app/templates/app/submissions/submission_form.html:16:            <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="width: auto; background: none; border: none; font-weight: 600;">{% trans "← Cancel and Return" %}</a>
+./ContestKeeper/app/templates/app/submissions/submission_form.html:22:                <h1 style="font-size: 2rem; font-weight: 800; color: #111827; margin: 0;">
+./ContestKeeper/app/templates/app/submissions/submission_form.html:25:                <p style="color: #6b7280; margin-top: 0.5rem;">{% trans "Fill in the details below. You can update your submission anytime before the deadline." %}</p>
+./ContestKeeper/app/templates/app/submissions/submission_form.html:39:                        <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"></path></svg>
+./ContestKeeper/app/templates/app/submissions/submission_form.html:52:                            <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
+./ContestKeeper/app/templates/app/submissions/submission_form.html:63:                            <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"></path></svg>
+./ContestKeeper/app/templates/app/submissions/submission_form.html:75:                        <svg style="width: 16px; margin-right: 4px;" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path></svg>
+./ContestKeeper/app/templates/app/submissions/submission_form.html:85:                <div style="display: flex; gap: 1rem; margin-top: 2.5rem;">
+./ContestKeeper/app/templates/app/submissions/submission_form.html:86:                    <button type="submit" class="btn btn-primary" style="flex: 2; padding: 1rem;">
+./ContestKeeper/app/templates/app/submissions/submission_form.html:89:                    <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="flex: 1; padding: 1rem; border: none; background: var(--overlay-subtle);">{% trans "Cancel" %}</a>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:13:    <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem;">
+./ContestKeeper/app/templates/app/submissions/submission_list.html:15:            <span style="color: #6366f1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem;">{% trans "Organizer View" %}</span>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:16:            <h1 style="font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0;">{% trans "Submissions" %}</h1>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:17:            <p style="color: #4b5563; margin-top: 0.5rem;">{% blocktrans with title=round.title count=submissions.count %}{{ title }} • {{ count }} total teams{% endblocktrans %}</p>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:19:        <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="border-radius: 12px; font-weight: 600;">{% trans "← Back to Round" %}</a>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:22:    <div class="glass-card" style="background: var(--glass-medium); border: none; box-shadow: none; padding: 0;">
+./ContestKeeper/app/templates/app/submissions/submission_list.html:25:            <div style="display: flex; align-items: center; gap: 1.5rem;">
+./ContestKeeper/app/templates/app/submissions/submission_list.html:30:                    <div style="font-weight: 800; font-size: 1.15rem; color: #111827;">{{ submission.team.name }}</div>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:31:                    <div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.25rem;">
+./ContestKeeper/app/templates/app/submissions/submission_list.html:40:            <div style="display: flex; gap: 0.75rem;">
+./ContestKeeper/app/templates/app/submissions/submission_list.html:42:                    <a href="{% url 'jury_evaluate' contest.pk submission.team.id %}?round_id={{ round.id }}" class="btn btn-primary" style="padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; background: #10b981; border-color: #10b981;">{% trans "Evaluate" %}</a>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:44:                <a href="{{ submission.github_url }}" target="_blank" class="btn btn-secondary" title="{% trans 'GitHub' %}" style="padding: 0.6rem; min-width: unset; border-radius: 10px;">
+./ContestKeeper/app/templates/app/submissions/submission_list.html:47:                <a href="{% url 'submission_detail' contest.pk round.pk submission.pk %}" class="btn btn-primary" style="padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem;">{% trans "Details" %}</a>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:51:        <div class="glass-card" style="text-align: center; padding: 5rem 2rem;">
+./ContestKeeper/app/templates/app/submissions/submission_list.html:52:            <div style="font-size: 4rem; opacity: 0.5; margin-bottom: 1.5rem;">📁</div>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:53:            <h3 style="color: #111827; font-weight: 700;">{% trans "No Submissions Yet" %}</h3>
+./ContestKeeper/app/templates/app/submissions/submission_list.html:54:            <p style="color: #6b7280;">{% trans "Once teams submit their work, they will appear here." %}</p>
+./ContestKeeper/app/templates/app/teams/team.html:37:                <span class="info-value" style="display: flex; gap: 15px;">
+./ContestKeeper/app/templates/app/teams/team.html:39:                    <a href="{{ team.telegram_link }}" target="_blank" title="Telegram" style="color: #0088cc;">
+./ContestKeeper/app/templates/app/teams/team.html:44:                    <a href="{{ team.discord_link }}" target="_blank" title="Discord" style="color: #5865F2;">
+./ContestKeeper/app/templates/app/teams/team.html:49:                    <a href="{{ team.website_link }}" target="_blank" title="{% trans 'Website' %}" style="color: #ffffff;">
+./ContestKeeper/app/templates/app/teams/team.html:62:                    <a href="{% url 'team_edit' pk=contest.pk ck=team.pk %}" class="btn btn-primary" style="background: #3498db; color: white;">{% trans "Edit Team" %}</a>
+./ContestKeeper/app/templates/app/teams/team.html:90:                        style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--glass-light); border-radius: 8px; margin-bottom: 8px;">
+./ContestKeeper/app/templates/app/teams/team.html:91:                        <div style="display: flex; align-items: center; gap: 10px;">
+./ContestKeeper/app/templates/app/teams/team.html:98:                        <div style="display: flex; gap: 10px;">
+./ContestKeeper/app/templates/app/teams/team.html:101:                                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem;">{% trans "Kick" %}</button>
+./ContestKeeper/app/templates/app/teams/team.html:105:                                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem; background: #e74c3c; color: white;">{% trans "Block" %}</button>
+./ContestKeeper/app/templates/app/teams/team.html:122:            <div class="members-section" style="margin-top: 2rem;">
+./ContestKeeper/app/templates/app/teams/team.html:134:                    <li class="member-item searchable-item" data-search-text="{{ b_member.username|lower }}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--glass-light); border-radius: 8px; margin-bottom: 8px;">
+./ContestKeeper/app/templates/app/teams/team.html:135:                        <span class="member-name" style="color: #e74c3c;">{{ b_member.username }}</span>
+./ContestKeeper/app/templates/app/teams/team.html:138:                            <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem;">{% trans "Unblock" %}</button>
+./ContestKeeper/app/templates/app/teams/team.html:152:            <div class="members-section" style="margin-top: 2rem;">
+./ContestKeeper/app/templates/app/teams/team.html:164:                    <li class="member-item searchable-item" data-search-text="{{ app.user.username|lower }}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--glass-light); border-radius: 8px; margin-bottom: 8px;">
+./ContestKeeper/app/templates/app/teams/team.html:166:                        <div style="display: flex; gap: 10px;">
+./ContestKeeper/app/templates/app/teams/team.html:169:                                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem; background: #2ecc71; color: white;">{% trans "Approve" %}</button>
+./ContestKeeper/app/templates/app/teams/team.html:173:                                <button type="submit" class="btn btn-secondary btn-sm" style="padding: 4px 8px; font-size: 0.8rem; background: #e74c3c; color: white;">{% trans "Reject" %}</button>
+./ContestKeeper/app/templates/app/teams/teams.html:59:                                    <div style="display: flex; gap: 8px; align-items: center;">
+./ContestKeeper/app/templates/app/teams/teams.html:61:                                        <form action="{% url 'team_join' pk=contest.pk ck=team.pk %}" method="post" style="margin: 0;">
+./ContestKeeper/app/templates/app/teams/teams.html:63:                                            <button type="submit" class="btn-sm btn-primary" style="background: #2ecc71; color: white;">{% trans "Join" %}</button>
+./ContestKeeper/app/templates/app/teams/teams.html:98:                            <div class="team-card__actions" style="display: flex; gap: 10px;">
+./ContestKeeper/app/templates/app/teams/teams.html:99:                                <form action="{% url 'approve_application' app.pk %}" method="post" style="margin: 0;">
+./ContestKeeper/app/templates/app/teams/teams.html:101:                                    <button type="submit" class="btn btn-primary btn-sm" style="background: #2ecc71; border-color: #2ecc71;">{% trans "Approve" %}</button>
+./ContestKeeper/app/templates/app/teams/teams.html:103:                                <form action="{% url 'reject_application' app.pk %}" method="post" style="margin: 0;">
+./ContestKeeper/app/templates/app/teams/teams.html:105:                                    <button type="submit" class="btn btn-secondary btn-sm" style="background: #e74c3c; border-color: #e74c3c; color: white;">{% trans "Reject" %}</button>
+./ContestKeeper/app/templates/app/teams/team_create_form.html:26:                                <span class="help-text" style="display: block; font-size: 0.85rem; color: #a1a1aa; margin-top: 4px;">{{ field.help_text }}</span>
+./ContestKeeper/app/templates/app/teams/team_create_form.html:31:                                <span class="error-text" style="color: #ef4444; font-size: 0.85rem;">{{ error }}</span>
+./ContestKeeper/app/templates/app/teams/team_create_form.html:39:                <div class="actions-footer" style="margin-top: 2rem; justify-content: flex-end; gap: 1rem;">
+./ContestKeeper/app/templates/app/teams/team_form.html:38:                <div class="form-section" style="margin-top: 2rem;">
+./ContestKeeper/app/templates/app/teams/team_form.html:57:                <div class="actions-footer" style="margin-top: 2rem; justify-content: flex-end; gap: 1rem;">

@@ -4,26 +4,27 @@
 {% block title %}{{ team.name }} - Leaderboard Detail{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/leaderboards/team_leaderboard_detail.css' %}">
 <link rel="stylesheet" href="{% static 'css/core/nav.css' %}">
 {% endblock %}
 
 {% block content %}
-        <div class="detail-card" style="max-width: 900px; margin: auto;">
-            <div class="detail-header" style="justify-content: space-between; align-items: center;">
+        <div class="detail-card div-004">
+            <div class="detail-header div-002">
                 <div>
                     <h1 class="detail-title">{{ team.name }}</h1>
-                    <p style="margin: 0.5rem 0 0; color: var(--text-muted);">Team rank and criterion breakdown.</p>
+                    <p class="p-001">Team rank and criterion breakdown.</p>
                 </div>
                 <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">Back to leaderboard</a>
             </div>
 
             {% if not leaderboard_available %}
-                <div class="info-grid" style="padding: 2rem; text-align: center;">
+                <div class="info-grid div-007">
                     <h2>Leaderboard is not yet available.</h2>
                     <p>{{ not_available_message }}</p>
                 </div>
             {% else %}
-                <div class="info-grid" style="margin-bottom: 1rem; gap: 1rem;">
+                <div class="info-grid div-005">
                     <div class="info-item">
                         <h4>Rank</h4>
                         <p>{{ entry.rank }}{% if entry.is_tied %} (tied){% endif %}</p>
@@ -34,9 +35,9 @@
                     </div>
                 </div>
 
-                <section style="margin-bottom: 1.5rem;">
+                <section class="section-002">
                     <h4>Category breakdown</h4>
-                    <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+                    <div class="div-001"><table class="table table-001">
                         <thead>
                             <tr>
                                 <th>Criterion</th>
@@ -56,15 +57,15 @@
                     </table></div>
                 </section>
 
-                <section style="margin-bottom: 1.5rem;">
+                <section class="section-002">
                     <h4>Jury breakdown</h4>
                     {% if jury_breakdown_message %}
                         <p class="alert">{{ jury_breakdown_message }}</p>
                     {% elif show_jury_breakdown %}
                         {% for item in breakdown_by_criterion %}
-                            <div style="margin-bottom: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface);">
-                                <h5 style="margin-top:0;">{{ item.criterion.name }}</h5>
-                                <div style="overflow-x: auto; margin-top: 0.75rem;"><table class="table" style="width:100%; min-width: 600px;">
+                            <div class="div-003">
+                                <h5 class="h5-001">{{ item.criterion.name }}</h5>
+                                <div class="div-001"><table class="table table-001">
                                     <thead>
                                         <tr>
                                             <th>Jury</th>
@@ -86,11 +87,11 @@
                 </section>
 
                 {% if can_view_missing %}
-                    <section style="padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface);">
+                    <section class="section-001">
                         <h4>Computation status</h4>
                         <p>{{ 'Complete' if entry.computation_complete else 'Incomplete' }}</p>
                         {% if entry.missing_scores %}
-                        <div style="margin-top: 1rem;">
+                        <div class="div-006">
                             <h5>Missing scores</h5>
                             <ul>
                                 {% for missing in entry.missing_scores %}

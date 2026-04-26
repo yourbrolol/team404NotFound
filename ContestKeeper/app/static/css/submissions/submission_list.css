@@ -53,3 +53,22 @@ body {
 }
 .tag-demo { background: var(--bg-success-tint); color: var(--success); }
 .tag-time { color: var(--text-muted); font-weight: 500; font-size: 0.85rem; }
+
+/* --- Extracted from submission_list.html --- */
+.div-007 { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
+.span-001 { color: #6366f1; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; font-size: 0.85rem; }
+.h1-001 { font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0; }
+.p-002 { color: #4b5563; margin-top: 0.5rem; }
+.a-002 { border-radius: 12px; font-weight: 600; }
+.div-005 { background: var(--glass-medium); border: none; box-shadow: none; padding: 0; }
+.div-002 { display: flex; align-items: center; gap: 1.5rem; }
+.div-006 { font-weight: 800; font-size: 1.15rem; color: #111827; }
+.div-001 { display: flex; align-items: center; gap: 0.75rem; margin-top: 0.25rem; }
+.div-003 { display: flex; gap: 0.75rem; }
+.a-004 { padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; background: #10b981; border-color: #10b981; }
+.a-003 { padding: 0.6rem; min-width: unset; border-radius: 10px; }
+.a-001 { padding: 0.6rem 1.25rem; border-radius: 10px; font-weight: 700; font-size: 0.85rem; }
+.div-004 { text-align: center; padding: 5rem 2rem; }
+.div-008 { font-size: 4rem; opacity: 0.5; margin-bottom: 1.5rem; }
+.h3-001 { color: #111827; font-weight: 700; }
+.p-001 { color: #6b7280; }

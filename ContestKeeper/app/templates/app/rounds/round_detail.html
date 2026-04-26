@@ -13,9 +13,9 @@
     <!-- Back Link -->
     <nav class="mb-4">
         {% if is_organizer %}
-            <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary" style="width: auto;">{% trans "← Back to Rounds List" %}</a>
+            <a href="{% url 'contest_rounds' contest.pk %}" class="btn btn-secondary a-001">{% trans "← Back to Rounds List" %}</a>
         {% else %}
-            <a href="{% url 'contest_rounds_team' contest.pk %}" class="btn btn-secondary" style="width: auto;">{% trans "← Back to Rounds List" %}</a>
+            <a href="{% url 'contest_rounds_team' contest.pk %}" class="btn btn-secondary a-001">{% trans "← Back to Rounds List" %}</a>
         {% endif %}
     </nav>
 
@@ -126,7 +126,7 @@
                     <div class="management-panel">
                         <div class="info-group">
                             <span class="info-label">{% trans "Current Submissions" %}</span>
-                            <span class="info-content" style="font-size: 1.5rem; font-weight: 700;">{{ submission_count }}</span>
+                            <span class="info-content span-001">{{ submission_count }}</span>
                         </div>
                         <a href="{% url 'round_submissions' contest.pk round.id %}" class="action-button btn-secondary">{% trans "View All Submissions" %}</a>
                         

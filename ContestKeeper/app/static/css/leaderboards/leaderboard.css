@@ -1,0 +1,13 @@
+/* Styles for leaderboard.html */
+
+/* --- Extracted from leaderboard.html --- */
+.div-005 { width:100%; }
+.div-003 { justify-content: space-between; align-items: center; }
+.p-001 { margin: 0.5rem 0 0; color: var(--text-muted); }
+.div-006 { padding: 2rem; text-align: center; }
+.div-004 { overflow-x: auto; margin-top: 1.5rem; }
+.table-001 { width:100%; min-width: 600px; }
+.div-001 { margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
+.span-001 { cursor: default; }
+.div-007 { margin-top: 1.5rem; gap: 1rem; }
+.div-002 { flex: 1; min-width: 220px; }

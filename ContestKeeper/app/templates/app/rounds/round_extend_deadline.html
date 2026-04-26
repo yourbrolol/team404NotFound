@@ -5,6 +5,7 @@
 {% block title %}{% blocktrans with title=round.title %}Extend Deadline - {{ title }}{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/rounds/round_extend_deadline.css' %}">
 <link rel="stylesheet" href="{% static 'css/core/nav.css' %}">
 <style>
     .extension-container {
@@ -68,10 +69,10 @@
 {% block content %}
 <div class="extension-container">
     <div class="detail-card">
-        <div class="detail-header" style="border: none; margin-bottom: 1.5rem; padding-bottom: 0;">
+        <div class="detail-header div-001">
             <div>
-                <h1 class="detail-title" style="font-size: 1.75rem;">{% trans "Extend Deadline" %}</h1>
-                <p style="margin: 0.25rem 0 0; color: var(--header); font-weight: 500;">{{ round.title }}</p>
+                <h1 class="detail-title h1-001">{% trans "Extend Deadline" %}</h1>
+                <p class="p-001">{{ round.title }}</p>
             </div>
         </div>
 
@@ -81,8 +82,8 @@
                 <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
             <div>
-                <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">{% trans "Current Deadline" %}</div>
-                <div style="font-size: 1.1rem; font-weight: 600;">{{ round.deadline|date:'M d, Y — H:i' }}</div>
+                <div class="div-004">{% trans "Current Deadline" %}</div>
+                <div class="div-003">{{ round.deadline|date:'M d, Y — H:i' }}</div>
             </div>
         </div>
 
@@ -97,7 +98,7 @@
             </div>
         {% endif %}
 
-        <form method="post" style="display: flex; flex-direction: column; gap: 1.5rem;">
+        <form method="post" class="form-001">
             {% csrf_token %}
 
             <div>
@@ -105,14 +106,14 @@
                 <input type="datetime-local" id="new_deadline" name="new_deadline" required
                        min="{% now 'Y-m-d\TH:i' %}"
                        class="glass-input">
-                <p style="margin: 0.5rem 0 0; color: var(--header); font-size: 0.8rem; font-style: italic;">
+                <p class="p-002">
                     {% trans "The new deadline must be in the future." %}
                 </p>
             </div>
 
-            <div style="display: flex; gap: 1rem; margin-top: 1rem;">
-                <button type="submit" class="btn btn-primary" style="flex: 2; padding: 1rem;">{% trans "Confirm Extension" %}</button>
-                <a href="{% url 'contest_rounds' round.contest.pk %}" class="btn btn-secondary" style="flex: 1; padding: 1rem;">{% trans "Cancel" %}</a>
+            <div class="div-002">
+                <button type="submit" class="btn btn-primary button-001">{% trans "Confirm Extension" %}</button>
+                <a href="{% url 'contest_rounds' round.contest.pk %}" class="btn btn-secondary a-001">{% trans "Cancel" %}</a>
             </div>
         </form>
     </div>
