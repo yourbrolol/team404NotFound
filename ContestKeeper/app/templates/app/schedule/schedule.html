@@ -11,8 +11,8 @@
 <div class="container py-5">
     <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 4rem;">
         <div>
-            <h1 style="font-size: 3rem; font-weight: 900; color: #111827; margin: 0;">Tournament Schedule</h1>
-            <p style="color: #4b5563; font-size: 1.1rem; margin-top: 0.5rem;">Follow the timeline of {{ contest.name }}
+            <h1 style="font-size: 3rem; font-weight: 900; color: var(--text-main); margin: 0;">Tournament Schedule</h1>
+            <p style="color: var(--text-muted); font-size: 1.1rem; margin-top: 0.5rem;">Follow the timeline of {{ contest.name }}
             </p>
         </div>
 
@@ -48,11 +48,11 @@
                 </div>
 
                 <div style="display: flex; justify-content: space-between; align-items: flex-start;">
-                    <h2 style="font-size: 1.5rem; font-weight: 800; color: #111827; margin: 0;">{{ event.title }}</h2>
+                    <h2 style="font-size: 1.5rem; font-weight: 800; color: var(--text-main); margin: 0;">{{ event.title }}</h2>
                     {% if user == contest.organizer %}
                     <a href="{% url 'schedule_event_delete' contest.pk event.pk %}"
-                        style="color: #94a3b8; transition: color 0.2s;" onmouseover="this.style.color='#ef4444'"
-                        onmouseout="this.style.color='#94a3b8'">
+                        style="color: var(--text-muted); transition: color 0.2s;" onmouseover="this.style.color='#ef4444'"
+                        onmouseout="this.style.color='var(--text-muted)'">
                         <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16">
@@ -63,17 +63,17 @@
                 </div>
 
                 {% if event.description %}
-                <p style="color: #4b5563; margin-top: 1rem; line-height: 1.6;">{{ event.description|linebreaksbr }}</p>
+                <p style="color: var(--text-muted); margin-top: 1rem; line-height: 1.6;">{{ event.description|linebreaksbr }}</p>
                 {% endif %}
 
                 {% if event.round %}
                 <div style="margin-top: 1.5rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 1rem;">
-                    <a href="{% if user == contest.organizer %}{% url 'round_detail' contest.pk event.round.id %}{% else %}{% url 'round_detail_team' contest.pk event.round.id %}{% endif %}" 
-                       class="btn btn-sm btn-primary" style="font-size: 0.8rem; border-radius: 8px;">
+                    <a href="{% if user == contest.organizer %}{% url 'round_detail' contest.pk event.round.id %}{% else %}{% url 'round_detail_team' contest.pk event.round.id %}{% endif %}"
+                        class="btn btn-sm btn-primary" style="font-size: 0.8rem; border-radius: 8px;">
                         {% if event.event_type == 'DEADLINE' %}
-                            {% trans "Go to Submission" %}
+                        {% trans "Go to Submission" %}
                         {% else %}
-                            {% trans "View Round Details" %}
+                        {% trans "View Round Details" %}
                         {% endif %}
                     </a>
                 </div>
