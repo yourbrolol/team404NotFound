@@ -98,7 +98,7 @@ main.dashboard-container {
 }
 
 .nav-logo {
-    font-size: 1.75rem;
+    font-size: 1.2rem;
     font-weight: 800;
     color: white;
     text-decoration: none;
@@ -108,6 +108,7 @@ main.dashboard-container {
     background-clip: text;
     -webkit-text-fill-color: transparent;
     letter-spacing: -0.05em;
+    white-space: nowrap;
 }
 
 .nav-links {
@@ -199,25 +200,45 @@ main.dashboard-container {
 }
 
 .nav-lang-select {
-    background: var(--glass);
-    color: var(--text-main);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 4px 8px;
-    font-size: 0.85rem;
+    color: var(--text-muted);
+    text-decoration: none;
+    padding: clamp(0.75rem, 2vh, 1rem) 1.25rem;
+    border-radius: 0.75rem;
+    transition: all 0.2s ease;
+    font-size: 0.95rem;
+    font-weight: 500;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+    outline: none !important;
     cursor: pointer;
-    outline: none;
-    margin-right: 0.5rem;
+    width: 100%;
+    font-family: inherit;
+    min-height: 44px;
+    appearance: none !important;
+    -webkit-appearance: none !important;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%2394a3b8' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E") !important;
+    background-repeat: no-repeat !important;
+    background-position: right 1.25rem center !important;
 }
 
-.nav-lang-select:hover {
-    background: var(--glass-hover);
-    border-color: var(--accent);
+.nav-lang-select:hover, .nav-lang-select:focus {
+    color: var(--text-main);
+    background-color: var(--glass-hover) !important;
+    transform: translateX(4px);
 }
 
 .nav-lang-select option {
     background: #1e293b;
     color: #f8fafc;
+    padding: 1rem;
+}
+
+.nav-lang-switcher {
+    width: 100%;
+}
+.nav-lang-switcher form {
+    width: 100%;
 }
 
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
