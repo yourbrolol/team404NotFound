@@ -276,7 +276,7 @@
 .quick-link-card:hover {
     transform: translateY(-4px);
     border-color: rgba(var(--primary-rgb), 0.4);
-    background: rgba(30, 41, 59, 0.9);
+    background: var(--bg-card-hover);
 }
 
 .quick-link-card h4 {

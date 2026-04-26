@@ -12,6 +12,7 @@
   --border: rgba(255, 255, 255, 0.1);
   --glass: rgba(255, 255, 255, 0.05);
   --glass-hover: rgba(255, 255, 255, 0.1);
+  --bg-card-hover: rgba(30, 41, 59, 0.9);
   --input-bg: rgba(15, 23, 42, 0.6);
   --input-bg-focus: rgba(15, 23, 42, 0.8);
   --input-text: #ffffff;
@@ -22,6 +23,7 @@
   --error: #ef4444;
   --warning: #f59e0b;
   --info: #3b82f6;
+  --black: 0, 0, 0;
 }
 
 @media (max-width: 1200px) {
@@ -38,6 +40,7 @@
   --border: rgba(0, 0, 0, 0.1);
   --glass: rgba(0, 0, 0, 0.03);
   --glass-hover: rgba(0, 0, 0, 0.06);
+  --bg-card-hover: rgba(255, 255, 255, 0.95);
   --input-bg: rgba(0, 0, 0, 0.04);
   --input-bg-focus: rgba(0, 0, 0, 0.07);
   --input-text: #1e293b;
@@ -197,8 +200,8 @@ h3 {
 .glass-panel:hover,
 .contest-card:hover {
   transform: translateY(-4px);
-  border-color: rgba(99, 102, 241, 0.4);
-  background: rgba(30, 41, 59, 0.9);
+  border-color: rgba(var(--primary-rgb), 0.4);
+  background: var(--bg-card-hover);
 }
 
 /* Buttons */
