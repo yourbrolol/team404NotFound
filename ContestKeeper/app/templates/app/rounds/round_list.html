@@ -50,15 +50,8 @@
                                         </form>
                                     </div>
                                 {% elif round.status == 'ACTIVE' %}
-                                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
-                                        <label style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-left: 0.25rem;">{% trans "Extend To" %}</label>
-                                        <form action="{% url 'round_extend_deadline' contest.pk round.id %}" method="POST" style="display: flex; gap: 0.5rem; align-items: center;">
-                                            {% csrf_token %}
-                                            <input type="datetime-local" name="new_deadline" required style="padding: 0.7rem; border: 1px solid var(--border); border-radius: 10px; font-size: 0.85rem; background: var(--glass); color: var(--text-main); min-width: 220px;">
-                                            <button type="submit" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Extend Deadline" %}</button>
-                                        </form>
-                                    </div>
                                     <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <a href="{% url 'round_extend_deadline' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Extend Deadline" %}</a>
                                         <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" style="display: inline;">
                                             {% csrf_token %}
                                             <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Close Submissions" %}</button>
