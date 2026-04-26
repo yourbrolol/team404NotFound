@@ -117,13 +117,14 @@
 }
 
 .btn-primary {
-    background: #4f46e5;
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
     color: white;
 }
 
 .btn-secondary {
-    background: #f3f4f6;
-    color: #111827;
+    background: var(--glass);
+    color: var(--text-main);
+    border: 1px solid var(--border);
 }
 
 .sidebar-card {

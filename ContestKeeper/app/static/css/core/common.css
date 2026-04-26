@@ -20,9 +20,13 @@
 
   /* Semantic Colors */
   --success: #22c55e;
+  --success-rgb: 34, 197, 94;
   --error: #ef4444;
+  --error-rgb: 239, 68, 68;
   --warning: #f59e0b;
+  --warning-rgb: 245, 158, 11;
   --info: #3b82f6;
+  --info-rgb: 59, 130, 246;
   --black: 0, 0, 0;
 }
 
@@ -48,9 +52,13 @@
 
   /* Semantic Colors - Light adjustments */
   --success: #16a34a;
+  --success-rgb: 22, 163, 74;
   --error: #dc2626;
+  --error-rgb: 220, 38, 38;
   --warning: #d97706;
+  --warning-rgb: 217, 119, 6;
   --info: #2563eb;
+  --info-rgb: 37, 99, 235;
 }
 
 * {
@@ -234,13 +242,14 @@ h3 {
 }
 
 .btn-secondary {
-  background: rgba(255, 255, 255, 0.1);
-  color: white;
+  background: var(--glass);
+  color: var(--text-main);
+  border: 1px solid var(--border);
   backdrop-filter: blur(4px);
 }
 
 .btn-secondary:hover {
-  background: rgba(255, 255, 255, 0.15);
+  background: var(--glass-hover);
 }
 
 /* Badges */

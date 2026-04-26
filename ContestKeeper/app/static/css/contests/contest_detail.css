@@ -3,8 +3,6 @@
     --header: var(--text-muted);
     --tag: var(--primary-rgb);
     --tag-bg: var(--primary);
-    --success-rgb: 34, 197, 94;
-    --error-rgb: 239, 68, 68;
 }
 
 /* ── Card ── */
@@ -58,12 +56,13 @@
 
 /* ── Description ── */
 .description-box {
-    background: color-mix(in srgb, var(--bg-dark) 40%, transparent);
+    background: var(--glass);
+    border: 1px solid var(--border);
     border-radius: 1.5rem;
     padding: 2rem;
     margin-bottom: 2.5rem;
     line-height: 1.7;
-    color: #cbd5e1;
+    color: var(--text-main);
 }
 
 /* ── Roles section ── */
