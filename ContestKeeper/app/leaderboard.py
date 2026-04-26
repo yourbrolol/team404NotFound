@@ -8,6 +8,8 @@ from django.db import transaction
 from django.utils import timezone
 
 from app.models import ContestEvaluationPhase, JuryScore, LeaderboardEntry, ScoringCriterion
+from asgiref.sync import async_to_sync
+from channels.layers import get_channel_layer
 
 
 logger = logging.getLogger(__name__)
@@ -174,8 +176,20 @@ class LeaderboardComputer:
             phase.all_scores_complete,
             payload["teams_count"],
         )
+        
+        cls.broadcast_leaderboard_update(contest.id)
 
         return phase
+
+    @classmethod
+    def broadcast_leaderboard_update(cls, contest_id):
+        channel_layer = get_channel_layer()
+        async_to_sync(channel_layer.group_send)(
+            f'leaderboard_{contest_id}',
+            {
+                'type': 'leaderboard_update',
+            }
+        )
 
     @classmethod
     def compute_leaderboard(cls, contest, force_complete=False, trigger_type=None, preserve_completed_at=False):

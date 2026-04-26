@@ -90,3 +90,43 @@
             {% endif %}
         </div>
 {% endblock %}
+
+{% block extra_js %}
+<script>
+    const contestId = "{{ contest.pk }}";
+    const protocol = window.location.protocol === 'https:' ? 'wss://' : 'ws://';
+    const wsUrl = protocol + window.location.host + '/ws/leaderboard/' + contestId + '/';
+    
+    console.log('Connecting to WebSocket:', wsUrl);
+    
+    const socket = new WebSocket(wsUrl);
+    
+    socket.onmessage = function(e) {
+        const data = JSON.parse(e.data);
+        if (data.message === 'update') {
+            console.log('Leaderboard update received!');
+            // Show a temporary notification
+            const toast = document.createElement('div');
+            toast.style.position = 'fixed';
+            toast.style.bottom = '20px';
+            toast.style.right = '20px';
+            toast.style.backgroundColor = '#4a90e2';
+            toast.style.color = 'white';
+            toast.style.padding = '1rem 2rem';
+            toast.style.borderRadius = '8px';
+            toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
+            toast.style.zIndex = '9999';
+            toast.innerHTML = '<strong>Leaderboard Updated!</strong><br>Refreshing data...';
+            document.body.appendChild(toast);
+            
+            setTimeout(() => {
+                window.location.reload();
+            }, 1500);
+        }
+    };
+    
+    socket.onclose = function(e) {
+        console.error('Leaderboard socket closed unexpectedly');
+    };
+</script>
+{% endblock %}

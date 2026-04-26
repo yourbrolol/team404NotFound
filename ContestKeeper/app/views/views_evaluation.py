@@ -6,6 +6,7 @@ from django.http import HttpResponseForbidden
 
 from app.forms import JuryEvaluationForm
 from app.models import Contest, Team, ScoringCriterion, JuryScore, Submission, ContestEvaluationPhase, JuryAssignment
+from app.leaderboard import LeaderboardComputer
 from app.views.views_base import JuryRequiredMixin, OrganizerRequiredMixin
 from app.services import assign_jury_to_teams
 
@@ -99,6 +100,10 @@ class JuryEvaluationView(JuryRequiredMixin, View):
                         criterion=criterion,
                         defaults={'score': score_value}
                     )
+                
+                # Recalculate leaderboard and broadcast update
+                LeaderboardComputer.compute_leaderboard(contest, preserve_completed_at=True)
+                
             messages.success(request, f"Scores for {team.name} have been saved.")
             
             # Redirect to submission list of the same round
