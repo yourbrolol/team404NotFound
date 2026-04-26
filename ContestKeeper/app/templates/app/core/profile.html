@@ -268,7 +268,7 @@
                                 {% endfor %}
                             </p>
                         </div>
-                        <a href="{% url 'contest_leaderboard' review.contest.pk %}" class="btn btn-secondary">{% trans "Open Contest" %}</a>
+                        <a href="{% url 'jury_evaluate' review.contest.pk review.team.id %}" class="btn btn-secondary">{% trans "Evaluate" %}</a>
                     </article>
                     {% endfor %}
                 </div>

@@ -38,6 +38,9 @@
                             <div class="round-actions">
                                 <span class="status-badge status-active">{% trans "ACTIVE" %}</span>
                                 <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-primary">{% trans "View Details" %}</a>
+                                {% if user.is_jury %}
+                                <a href="{% url 'round_submissions' round.contest.pk round.pk %}" class="btn btn-secondary">{% trans "Evaluate" %}</a>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
@@ -60,6 +63,9 @@
                             <div class="round-actions">
                                 <span class="status-badge status-closed">{% trans "CLOSED" %}</span>
                                 <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">{% trans "View Details" %}</a>
+                                {% if user.is_jury %}
+                                <a href="{% url 'round_submissions' round.contest.pk round.pk %}" class="btn btn-secondary">{% trans "Evaluate" %}</a>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
@@ -82,6 +88,9 @@
                             <div class="round-actions">
                                 <span class="status-badge status-evaluated">{% trans "EVALUATED" %}</span>
                                 <a href="{% url 'round_detail_team' round.contest.pk round.pk %}" class="btn btn-secondary">{% trans "View Results" %}</a>
+                                {% if user.is_jury %}
+                                <a href="{% url 'round_submissions' round.contest.pk round.pk %}" class="btn btn-secondary">{% trans "Evaluate" %}</a>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}

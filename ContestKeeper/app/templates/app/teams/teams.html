@@ -63,6 +63,12 @@
                                             <button type="submit" class="btn-sm btn-primary button-003">{% trans "Join" %}</button>
                                         </form>
                                         {% endif %}
+                                        {% if user == contest.organizer %}
+                                        <form action="{% url 'team_delete' pk=contest.pk ck=team.pk %}" method="post" class="form-001" data-confirm="{% blocktrans with name=team.name %}Delete team '{{ name }}'? This cannot be undone.{% endblocktrans %}">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn-sm btn-danger button-004">{% trans "Delete" %}</button>
+                                        </form>
+                                        {% endif %}
                                         <button type="button" class="btn-sm btn-secondary copy-team-btn"
                                             data-team-name-copy="{{ team.name }}" aria-label="{% blocktrans with name=team.name %}Copy team name {{ name }}{% endblocktrans %}">
                                             {% trans "Copy" %}
@@ -132,4 +138,13 @@
 
 {% block extra_js %}
 <script src="{% static 'js/teams.js' %}"></script>
+<script>
+    document.querySelectorAll('form[data-confirm]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            if (!window.confirm(form.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 {% endblock %}

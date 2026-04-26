@@ -34,7 +34,7 @@ class JuryEvaluationView(JuryRequiredMixin, View):
         if not JuryAssignment.objects.filter(contest=contest, team=team, jury_member=self.request.user).exists():
             return None # Will trigger 403 in get/post
 
-        round_id = self.kwargs.get("round_id")
+        round_id = self.request.GET.get("round_id")
         
         # Get latest submission for reference
         submission = Submission.objects.filter(team=team, round_id=round_id).first()

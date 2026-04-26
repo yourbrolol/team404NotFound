@@ -17,6 +17,9 @@
             {% if user in submission.team.participants.all and round.is_open %}
                 <a href="{% url 'submission_create' contest.pk round.pk %}" class="btn btn-primary a-001">{% trans "Edit Submission" %}</a>
             {% endif %}
+            {% if user.is_jury or user.is_organizer %}
+                <a href="{% url 'jury_evaluate' contest.pk submission.team.id %}?round_id={{ round.pk }}" class="btn btn-primary a-001">{% trans "Evaluate" %}</a>
+            {% endif %}
         </div>
 
         <div class="glass-card">
@@ -85,6 +88,23 @@
                     <span class="meta-value span-001">{% trans "● Active" %}</span>
                 </div>
             </div>
+
+            {% if is_jury_member %}
+            <div class="rating-section">
+                <h3 class="h3-001">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="svg-001" style="width: 24px;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.382-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"></path></svg>
+                    {% trans "Submit Score" %}
+                </h3>
+                <form method="post" class="rating-form">
+                    {% csrf_token %}
+                    <div class="rating-input-group">
+                        <label class="rating-label">{% trans "Rating Score (0-100)" %}</label>
+                        <input type="number" name="score" class="rating-field" min="0" max="100" placeholder="Enter score..." value="{{ existing_score|default:'' }}" required>
+                    </div>
+                    <button type="submit" class="rating-submit">{% trans "Save Rating" %}</button>
+                </form>
+            </div>
+            {% endif %}
         </div>
     </div>
 </div>

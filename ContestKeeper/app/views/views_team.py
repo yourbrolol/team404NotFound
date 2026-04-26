@@ -7,6 +7,7 @@ from django.views import View
 from django.views.generic import DetailView, ListView, CreateView, UpdateView
 
 from app.models import Application, Contest, User, Team, JuryAssignment
+from django.contrib.auth import get_user_model
 from app.forms import TeamForm
 from app.views.views_base import RedirectToRegisterMixin
 
@@ -49,7 +50,14 @@ class ViewJurysView(RedirectToRegisterMixin, ListView):
 
     def get_context_data(self, **kwargs):
         assignments = JuryAssignment.objects.filter(contest=self.contest).select_related('team', 'jury_member')
-        return super().get_context_data(contest=self.contest, assignments=assignments, **kwargs)
+        jury_applications = None
+        if self.request.user.is_authenticated and self.request.user == self.contest.organizer:
+            jury_applications = Application.objects.filter(
+                contest=self.contest,
+                application_type=Application.Type.JURY,
+                status=Application.Status.PENDING
+            ).select_related('user')
+        return super().get_context_data(contest=self.contest, assignments=assignments, jury_applications=jury_applications, **kwargs)
 
 
 class TeamDetailView(RedirectToRegisterMixin, DetailView):
@@ -97,6 +105,51 @@ class TeamUnblockView(TeamActionMixin, View):
     def post(self, request, *args, **kwargs):
         self.team.blacklisted_members.remove(self.target_user)
         return redirect("team_detail", pk=self.contest.pk, ck=self.team.pk)
+
+
+class OrganizerOnlyMixin(RedirectToRegisterMixin):
+    """Mixin that restricts access to the contest organizer only."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        if request.user != self.contest.organizer:
+            return HttpResponseForbidden("Only the organizer can perform this action.")
+        return super().dispatch(request, *args, **kwargs)
+
+
+class TeamDeleteView(OrganizerOnlyMixin, View):
+    """Allows the contest organizer to delete a team from their contest."""
+
+    def post(self, request, *args, **kwargs):
+        team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
+        # Remove all applications associated with this team in this contest
+        Application.objects.filter(contest=self.contest, team=team).delete()
+        # Remove all jury assignments for this team
+        JuryAssignment.objects.filter(contest=self.contest, team=team).delete()
+        team.delete()
+        messages.success(request, f"Team deleted successfully.")
+        return redirect("contest_teams", pk=self.contest.pk)
+
+
+class JuryKickView(OrganizerOnlyMixin, View):
+    """Allows the contest organizer to remove a jury member from their contest."""
+
+    def post(self, request, *args, **kwargs):
+        jury_member = get_object_or_404(get_user_model(), pk=kwargs["user_id"])
+        # Remove all jury assignments for this member in this contest
+        JuryAssignment.objects.filter(contest=self.contest, jury_member=jury_member).delete()
+        # Remove from the contest's jury M2M relation
+        self.contest.jurys.remove(jury_member)
+        # Reject their outstanding jury application if any
+        Application.objects.filter(
+            contest=self.contest,
+            user=jury_member,
+            application_type=Application.Type.JURY,
+        ).update(status=Application.Status.REJECTED)
+        messages.success(request, f"Jury member '{jury_member.username}' removed from the contest.")
+        return redirect("contest_jurys", pk=self.contest.pk)
 
 
 class LeaderboardAccessMixin(RedirectToRegisterMixin):

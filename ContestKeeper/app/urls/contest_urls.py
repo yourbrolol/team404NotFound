@@ -25,6 +25,8 @@ urlpatterns = [
     path("<int:pk>/teams/<int:ck>/join/",       views.TeamJoinView.as_view(),      name="team_join"),
     path("<int:pk>/teams/<int:ck>/edit/",       views.TeamUpdateView.as_view(),    name="team_edit"),
     path("<int:pk>/teams/<int:ck>/kick/<int:user_id>/",     views.TeamKickView.as_view(),      name="team_kick"),
+    path("<int:pk>/teams/<int:ck>/delete/",                  views.TeamDeleteView.as_view(),    name="team_delete"),
+    path("<int:pk>/jurys/<int:user_id>/kick/",               views.JuryKickView.as_view(),      name="jury_kick"),
     
     # Announcements
     path("<int:pk>/announcements/",             views.AnnouncementListView.as_view(),   name="announcement_list"),

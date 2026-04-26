@@ -133,6 +133,32 @@
     </div>
     {% endif %}
 
+    {% if user.is_authenticated and user.is_jury %}
+    <div class="registration-block div-008">
+        {% if contest.jurys.all|length and user in contest.jurys.all %}
+        <h4 class="h4-003">{% trans "You are a Jury member!" %}</h4>
+        <p class="p-003">{% trans "You have been approved to judge this contest." %}</p>
+        {% elif has_pending_j_app %}
+        <h4 class="h4-003">{% trans "Application Pending" %}</h4>
+        <p class="p-003">{% trans "Your jury application is awaiting review by the organizer." %}</p>
+        {% else %}
+        <div class="div-015">
+            {% if contest.status != 'FINISHED' and contest.status != 'DRAFT' %}
+                <form action="{% url 'apply_to_contest' contest.pk 'jury' %}" method="POST">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-primary a-001">{% trans "Apply as Jury" %}</button>
+                </form>
+            {% else %}
+                <div class="div-002">
+                    <h4 class="h4-001">{% trans "Applications Closed" %}</h4>
+                    <p class="small text-muted">{% trans "This contest is no longer accepting jury applications." %}</p>
+                </div>
+            {% endif %}
+        </div>
+        {% endif %}
+    </div>
+    {% endif %}
+
     <div class="roles-section">
         <div>
             <div class="div-016">

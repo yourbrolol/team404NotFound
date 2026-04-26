@@ -83,9 +83,79 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context["contest"] = self.object.round.contest
-        context["round"] = self.object.round
+        submission = self.object
+        contest = submission.round.contest
+        user = self.request.user
+        context["contest"] = contest
+        context["round"] = submission.round
+        
+        is_jury = contest.jurys.filter(pk=user.pk).exists()
+        context["is_jury_member"] = is_jury
+        
+        # Get existing score if any
+        if user.is_authenticated:
+            # We assume if there are multiple criteria, we just show the first one or none
+            # for this simple quick-rating field.
+            first_score = JuryScore.objects.filter(
+                contest=contest,
+                team=submission.team,
+                jury_member=user
+            ).first()
+            if first_score:
+                context["existing_score"] = first_score.score
+                
         return context
+
+    def post(self, request, *args, **kwargs):
+        submission = self.get_object()
+        contest = submission.round.contest
+        user = request.user
+
+        if not contest.jurys.filter(pk=user.pk).exists():
+            return HttpResponseForbidden("Only assigned jurors can submit scores.")
+
+        # Check if evaluation is finished
+        from app.models import ContestEvaluationPhase, ScoringCriterion, JuryScore
+        from app.leaderboard import LeaderboardComputer
+        from django.db import transaction
+
+        phase = ContestEvaluationPhase.objects.filter(contest=contest).first()
+        if phase and phase.status == ContestEvaluationPhase.Status.COMPLETED:
+            messages.error(request, "Evaluation is already finalized.")
+            return redirect(request.path)
+
+        score_value = request.POST.get("score")
+        if not score_value:
+            messages.error(request, "Score is required.")
+            return redirect(request.path)
+
+        # Check criteria
+        criteria = contest.scoring_criteria.all()
+        if criteria.count() > 1:
+            # If there are multiple criteria, redirect to the full evaluation page
+            messages.info(request, "This contest has multiple scoring criteria. Please use the full evaluation form.")
+            return redirect("jury_evaluate", pk=contest.pk, team_pk=submission.team.id)
+        
+        criterion = criteria.first()
+        if not criterion:
+            messages.error(request, "No scoring criteria defined for this contest.")
+            return redirect(request.path)
+
+        try:
+            with transaction.atomic():
+                JuryScore.objects.update_or_create(
+                    contest=contest,
+                    team=submission.team,
+                    jury_member=user,
+                    criterion=criterion,
+                    defaults={'score': score_value}
+                )
+                LeaderboardComputer.compute_leaderboard(contest, preserve_completed_at=True)
+            messages.success(request, f"Score for {submission.team.name} updated successfully.")
+        except Exception as e:
+            messages.error(request, f"Error saving score: {str(e)}")
+
+        return redirect(request.path)
 
 
 class RoundSubmissionsListView(OrganizerRequiredMixin, ListView):

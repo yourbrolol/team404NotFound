@@ -92,22 +92,28 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
         if contest.status == Contest.Status.DRAFT:
             return HttpResponseForbidden("Cannot apply to a draft contest.")
 
-        from django.utils import timezone
-
-        now = timezone.now()
-        if contest.registration_start and now < contest.registration_start:
-            messages.error(request, "Registration for this contest has not started yet.")
-            return redirect("contest_detail", pk=pk)
-        if contest.registration_end and now >= contest.registration_end:
-            messages.error(request, "Registration for this contest has already closed.")
-            return redirect("contest_detail", pk=pk)
-
         if app_type == "participant":
             return HttpResponseForbidden("Individual registration is disabled. Please create or join a team.")
         elif app_type == "jury":
             role_type = Application.Type.JURY
+            # Jury applications are not bound by the participant registration window;
+            # they can apply any time the contest has not finished.
+            if contest.status == Contest.Status.FINISHED:
+                messages.error(request, "This contest has already finished.")
+                return redirect("contest_detail", pk=pk)
         else:
             return HttpResponseForbidden("Invalid application type.")
+
+        # Participant/team registration window check (jury bypasses this)
+        if role_type != Application.Type.JURY:
+            from django.utils import timezone
+            now = timezone.now()
+            if contest.registration_start and now < contest.registration_start:
+                messages.error(request, "Registration for this contest has not started yet.")
+                return redirect("contest_detail", pk=pk)
+            if contest.registration_end and now >= contest.registration_end:
+                messages.error(request, "Registration for this contest has already closed.")
+                return redirect("contest_detail", pk=pk)
 
         Application.objects.get_or_create(
             user=request.user,

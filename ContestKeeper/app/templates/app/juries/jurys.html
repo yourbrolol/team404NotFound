@@ -63,6 +63,12 @@
                                     {% endwith %}
                                 </div>
                             </div>
+                            {% if user == contest.organizer %}
+                            <form action="{% url 'jury_kick' pk=contest.pk user_id=jury.pk %}" method="post" class="form-001" data-confirm="{% blocktrans with name=jury.username %}Remove {{ name }} from the jury panel?{% endblocktrans %}">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger btn-sm">{% trans "Kick" %}</button>
+                            </form>
+                            {% endif %}
                         </div>
                     </li>
                     {% endfor %}
@@ -76,9 +82,35 @@
 
             {% if user == contest.organizer %}
             <div id="apps-panel" class="tab-panel">
+                <div class="teams-summary teams-summary--soft">{% trans "Pending jury applications." %}</div>
+                
+                {% if jury_applications %}
+                <ul class="teams-list">
+                    {% for app in jury_applications %}
+                    <li class="team-list-item">
+                        <div class="team-card">
+                            <div class="team-card__content">
+                                <span class="team-name">{{ app.user.username }}</span>
+                            </div>
+                            <div class="team-card__actions div-001">
+                                <form action="{% url 'approve_application' app.pk %}" method="post" class="form-001">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-primary btn-sm button-001">{% trans "Approve" %}</button>
+                                </form>
+                                <form action="{% url 'reject_application' app.pk %}" method="post" class="form-001">
+                                    {% csrf_token %}
+                                    <button type="submit" class="btn btn-secondary btn-sm button-002">{% trans "Reject" %}</button>
+                                </form>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                {% else %}
                 <div class="empty-state">
-                    <p>{% trans "Jury applications will appear here." %}</p>
+                    <p>{% trans "No pending jury applications." %}</p>
                 </div>
+                {% endif %}
             </div>
             {% endif %}
 
@@ -97,4 +129,13 @@
 
 {% block extra_js %}
 <script src="{% static 'js/teams.js' %}"></script>
+<script>
+    document.querySelectorAll('form[data-confirm]').forEach((form) => {
+        form.addEventListener('submit', (event) => {
+            if (!window.confirm(form.dataset.confirm)) {
+                event.preventDefault();
+            }
+        });
+    });
+</script>
 {% endblock %}

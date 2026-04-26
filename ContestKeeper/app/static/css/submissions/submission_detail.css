@@ -69,6 +69,78 @@ body {
     color: var(--bg-dark);
 }
 
+/* Juror Rating Section */
+.rating-section {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 2px solid var(--border);
+}
+
+.rating-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    background: var(--glass);
+    padding: 2rem;
+    border-radius: 16px;
+    border: 1px solid var(--border);
+}
+
+.rating-input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+}
+
+.rating-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+}
+
+.rating-field {
+    width: 100%;
+    max-width: 200px;
+    padding: 0.85rem 1rem;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    background: white;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: border-color 0.3s ease;
+    color: var(--bg-dark);
+}
+
+.rating-field:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 4px var(--overlay-subtle);
+}
+
+.rating-submit {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 0.85rem 2rem;
+    border-radius: 12px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    align-self: flex-start;
+}
+
+.rating-submit:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-sm, 0 4px 12px var(--overlay-medium));
+    filter: brightness(1.05);
+}
+
+.rating-submit:active {
+    transform: translateY(0);
+}
+
 /* --- Extracted from submission_detail.html --- */
 .h1-001 { font-size: 2.5rem; font-weight: 900; color: var(--bg-dark); margin: 0; }
 .h3-001 { font-size: 1.1rem; font-weight: 800; color: var(--bg-dark); margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem; }

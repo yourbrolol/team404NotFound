@@ -350,6 +350,17 @@ h3 {
   transform: translateY(-1px);
 }
 
+.btn-danger {
+  background: linear-gradient(135deg, var(--error) 0%, #b91c1c 100%);
+  color: white;
+  box-shadow: 0 4px 15px rgba(var(--error-rgb), 0.3);
+}
+
+.btn-danger:hover {
+  transform: scale(1.02);
+  box-shadow: 0 6px 20px rgba(var(--error-rgb), 0.45);
+}
+
 .btn-tinted {
   border: 1px solid transparent;
 }
