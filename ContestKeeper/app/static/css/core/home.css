@@ -122,7 +122,7 @@
 .quick-access__item {
     padding: 1rem;
     border-radius: 1rem;
-    background: rgba(15, 23, 42, 0.4);
+    background: var(--bg-navy-soft);
     border: 1px solid var(--border);
 }
 

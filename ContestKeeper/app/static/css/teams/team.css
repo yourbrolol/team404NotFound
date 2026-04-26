@@ -38,7 +38,7 @@
     background: var(--glass-hover);
     border-color: var(--primary);
     transform: translateY(-5px);
-    box-shadow: 0 10px 20px -10px rgba(99, 102, 241, 0.5);
+    box-shadow: 0 10px 20px -10px var(--primary-strong);
 }
 
 .team-name {
@@ -95,7 +95,7 @@
 }
 
 .member-item {
-    background: rgba(255, 255, 255, 0.03);
+    background: var(--white-alpha-03);
     border: 1px solid var(--border);
     border-radius: 0.75rem;
     padding: 1rem;
@@ -106,8 +106,8 @@
 }
 
 .member-item:hover {
-    background: rgba(255, 255, 255, 0.07);
-    border-color: rgba(255, 255, 255, 0.2);
+    background: var(--white-alpha-07);
+    border-color: var(--white-alpha-20);
 }
 
 .member-avatar {
@@ -132,7 +132,7 @@
     color: var(--text-muted);
     text-align: center;
     padding: 2rem;
-    background: rgba(255, 255, 255, 0.02);
+    background: var(--white-alpha-02);
     border-radius: 1rem;
     border: 1px dashed var(--border);
 }

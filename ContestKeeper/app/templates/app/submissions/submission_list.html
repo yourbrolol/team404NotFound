@@ -19,7 +19,7 @@
         <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="border-radius: 12px; font-weight: 600;">{% trans "← Back to Round" %}</a>
     </div>
 
-    <div class="glass-card" style="background: rgba(255,255,255,0.4); border: none; box-shadow: none; padding: 0;">
+    <div class="glass-card" style="background: var(--glass-medium); border: none; box-shadow: none; padding: 0;">
         {% for submission in submissions %}
         <div class="submission-row">
             <div style="display: flex; align-items: center; gap: 1.5rem;">

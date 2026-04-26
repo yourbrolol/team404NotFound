@@ -220,7 +220,7 @@ Lines 7-95:
         background: var(--glass, var(--glass-light));
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
-        border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+        border: 1px solid var(--border, var(--glass-border-light));
         border-radius: 1.25rem;
         box-shadow: 0 4px 6px -1px var(--overlay-medium);
         min-height: 120px;
@@ -511,7 +511,7 @@ Lines 11-108:
 - Line 66: h4 style="margin-top: 2rem;"
 - Line 67: div style="display: grid; grid-template-columns: 1fr 300px; gap: 2rem; margin-bottom: 2rem;"
 - Line 68: div style="margin: 0;"
-- Line 74: div style="padding: 1.5rem; border: 1px solid rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.05);"
+- Line 74: div style="padding: 1.5rem; border: 1px solid var(--primary-medium); background: rgba(99, 102, 241, 0.05);"
 - Line 75: div style="font-size: 0.7rem; font-weight: 800; color: #6366f1; text-transform: uppercase; margin-bottom: 0.5rem;"
 - Line 76: h4 style="margin: 0 0 0.5rem 0; font-weight: 800;"
 - Line 77: div style="font-family: monospace; font-size: 0.85rem; color: #475569;"
@@ -566,15 +566,15 @@ Lines 8-45:
             background: var(--glass, var(--glass-light));
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-            border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
+            border: 1px solid var(--border, var(--glass-border-light));
             border-radius: 1.25rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             box-shadow: 0 4px 6px -1px var(--overlay-medium);
         }
         .quick-link-card:hover {
             transform: translateY(-4px);
-            border-color: rgba(99, 102, 241, 0.4);
-            background: rgba(30, 41, 59, 0.9);
+            border-color: var(--primary-strong);
+            background: rgba(var(--bg-dark-rgb), 0.95);
         }
         .quick-link-card h4 {
             margin: 0;
@@ -633,7 +633,7 @@ Lines 11-38:
 - Line 72: h1 style="font-size: 2.5rem; font-weight: 900; color: #111827; margin: 0;"
 - Line 73: p style="color: #4b5563; margin-top: 0.5rem;"
 - Line 75: a style="border-radius: 12px; font-weight: 600;"
-- Line 78: div style="background: rgba(255,255,255,0.4); border: none; box-shadow: none; padding: 0;"
+- Line 78: div style="background: var(--glass-medium); border: none; box-shadow: none; padding: 0;"
 - Line 81: div style="display: flex; align-items: center; gap: 1.5rem;"
 - Line 86: div style="font-weight: 800; font-size: 1.15rem; color: #111827;"
 - Line 87: div style="display: flex; align-items: center; gap: 0.75rem; margin-top: 0.25rem;"
@@ -771,7 +771,7 @@ Lines 7-120:
 
     .app-card:hover { 
         transform: translateY(-2px); 
-        border-color: rgba(99, 102, 241, 0.4);
+        border-color: var(--primary-strong);
     }
 
     .user-info {
@@ -785,7 +785,7 @@ Lines 7-120:
         height: 40px;
         background: rgba(99, 102, 241, 0.15);
         color: var(--primary);
-        border: 1px solid rgba(99, 102, 241, 0.3);
+        border: 1px solid var(--primary-medium);
         border-radius: 50%;
         display: flex;
         align-items: center;
@@ -890,7 +890,7 @@ Lines 7-95:
         border-radius: 50%;
         transform: translate(-50%, -50%);
         z-index: 2;
-        box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+        box-shadow: 0 0 15px var(--primary-strong);
     }
     .dot-ROUND { border-color: #6366f1; }
     .dot-DEADLINE { border-color: #ef4444; }
@@ -908,7 +908,7 @@ Lines 7-95:
     }
     .glass-card:hover {
         transform: translateY(-5px);
-        background: rgba(255, 255, 255, 0.85);
+        background: var(--glass-solid-light);
     }
     .time-badge {
         display: inline-block;
@@ -990,7 +990,7 @@ Lines 11-103:
         }
         .notification-card.unread {
             border-left: 4px solid var(--primary);
-            background: rgba(99, 102, 241, 0.1);
+            background: var(--primary-subtle);
         }
         .notification-card:hover {
             transform: translateY(-2px);
@@ -1121,7 +1121,7 @@ Lines 12-188:
             font-size: 1.1rem;
         }
         .countdown-display {
-            background: rgba(255,255,255,0.2);
+            background: var(--white-alpha-20);
             padding: 1.5rem;
             border-radius: 4px;
             backdrop-filter: blur(4px);
@@ -1312,7 +1312,7 @@ Lines 8-75:
     .round-info-badge {
         display: inline-block;
         padding: 0.4rem 1rem;
-        background: rgba(99, 102, 241, 0.1);
+        background: var(--primary-subtle);
         color: #6366f1;
         border-radius: 99px;
         font-size: 0.85rem;
@@ -1338,7 +1338,7 @@ Lines 8-75:
     .form-input:focus {
         background: white;
         border-color: #6366f1;
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        box-shadow: 0 0 0 4px var(--primary-subtle);
         outline: none;
     }
     .field-error {
@@ -1434,7 +1434,7 @@ Lines 8-80:
     .icon-demo { background: #dcfce7; color: #10b981; }
 
     .description-box {
-        background: rgba(255, 255, 255, 0.4);
+        background: var(--glass-medium);
         border-radius: 16px;
         padding: 2rem;
         margin-top: 2rem;

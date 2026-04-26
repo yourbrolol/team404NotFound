@@ -9,14 +9,14 @@
   --bg-card: var(--glass-light);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
-  --border: rgba(255, 255, 255, 0.1);
+  --border: rgba(var(--white-rgb), 0.1);
   --glass: var(--glass-light);
-  --glass-hover: rgba(255, 255, 255, 0.1);
-  --bg-card-hover: rgba(30, 41, 59, 0.9);
-  --input-bg: rgba(15, 23, 42, 0.6);
-  --input-bg-focus: rgba(15, 23, 42, 0.8);
+  --glass-hover: rgba(var(--white-rgb), 0.1);
+  --bg-card-hover: rgba(var(--bg-dark-rgb), 0.95);
+  --input-bg: var(--bg-navy-medium);
+  --input-bg-focus: var(--bg-navy-solid);
   --input-text: #ffffff;
-  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.3), 0 8px 10px -6px rgba(0, 0, 0, 0.3);
+  --shadow-lg: 0 10px 25px -5px var(--shadow-intensity-dark), 0 8px 10px -6px var(--shadow-intensity-dark);
 
   /* Semantic Colors */
   --success: #22c55e;
@@ -44,7 +44,31 @@
   --overlay-medium: rgba(var(--black-rgb), 0.1);
   --glass-light: rgba(var(--white-rgb), 0.05);
   --glass-medium: rgba(var(--white-rgb), 0.3);
+  --glass-border-light: rgba(var(--white-rgb), 0.1);
   --shadow-brand: var(--shadow-brand);
+
+  /* Primary Brand Tints */
+  --primary-subtle: rgba(var(--primary-rgb), 0.1);
+  --primary-medium: rgba(var(--primary-rgb), 0.3);
+  --primary-strong: rgba(var(--primary-rgb), 0.4);
+
+  /* Navy Background Tints (Matches #0f172a) */
+  --bg-dark-rgb: 15, 23, 42;
+  --bg-navy-soft: rgba(var(--bg-dark-rgb), 0.4);
+  --bg-navy-medium: rgba(var(--bg-dark-rgb), 0.6);
+  --bg-navy-solid: rgba(var(--bg-dark-rgb), 0.8);
+
+  /* Aesthetic Tints & Micro-adjustments */
+  --shadow-intensity-dark: rgba(var(--black-rgb), 0.3);
+  --shadow-faint: rgba(var(--black-rgb), 0.06);
+  --glass-solid-light: rgba(var(--white-rgb), 0.85);
+  --glass-solid-ultra: rgba(var(--white-rgb), 0.95);
+  
+  /* Alpha Steps for fine-tuning */
+  --white-alpha-02: rgba(var(--white-rgb), 0.02);
+  --white-alpha-03: rgba(var(--white-rgb), 0.03);
+  --white-alpha-07: rgba(var(--white-rgb), 0.07);
+  --white-alpha-20: rgba(var(--white-rgb), 0.20);
 }
 
 @media (max-width: 1200px) {
@@ -55,17 +79,17 @@
 
 [data-theme="light"] {
   --bg-dark: #f8fafc;
-  --bg-card: rgba(255, 255, 255, 0.85);
+  --bg-card: var(--glass-solid-light);
   --text-main: #1e293b;
   --text-muted: #64748b;
   --border: var(--overlay-medium);
   --glass: rgba(0, 0, 0, 0.03);
-  --glass-hover: rgba(0, 0, 0, 0.06);
-  --bg-card-hover: rgba(255, 255, 255, 0.95);
+  --glass-hover: var(--shadow-faint);
+  --bg-card-hover: var(--glass-solid-ultra);
   --input-bg: rgba(0, 0, 0, 0.04);
   --input-bg-focus: rgba(0, 0, 0, 0.07);
   --input-text: #1e293b;
-  --shadow-lg: 0 10px 25px -5px rgba(0, 0, 0, 0.08), 0 8px 10px -6px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 10px 25px -5px var(--shadow-lg-detail), 0 8px 10px -6px var(--shadow-faint);
 
   /* Semantic Colors - Light adjustments */
   --success: #16a34a;
@@ -90,7 +114,30 @@
   --overlay-medium: rgba(var(--black-rgb), 0.06);
   --glass-light: rgba(var(--white-rgb), 0.4);
   --glass-medium: rgba(var(--white-rgb), 0.6);
+  --glass-border-light: rgba(var(--black-rgb), 0.1);
   --shadow-brand: var(--shadow-brand);
+
+  /* Primary Brand Tints */
+  --primary-subtle: rgba(var(--primary-rgb), 0.08);
+  --primary-medium: rgba(var(--primary-rgb), 0.15);
+  --primary-strong: rgba(var(--primary-rgb), 0.25);
+
+  /* Navy Background Tints (Light mode alternates to subtle greys/whites) */
+  --bg-navy-soft: rgba(var(--black-rgb), 0.04);
+  --bg-navy-medium: rgba(var(--black-rgb), 0.08);
+  --bg-navy-solid: rgba(var(--black-rgb), 0.12);
+
+  /* Aesthetic Tints & Micro-adjustments (Light mode) */
+  --shadow-intensity-dark: rgba(var(--black-rgb), 0.08);
+  --shadow-faint: rgba(var(--black-rgb), 0.06);
+  --glass-solid-light: rgba(var(--white-rgb), 0.9);
+  --glass-solid-ultra: rgba(var(--white-rgb), 0.98);
+
+  /* Alpha Steps (Flipped context for light mode) */
+  --white-alpha-02: rgba(var(--black-rgb), 0.02);
+  --white-alpha-03: rgba(var(--black-rgb), 0.03);
+  --white-alpha-07: rgba(var(--black-rgb), 0.07);
+  --white-alpha-20: rgba(var(--black-rgb), 0.15);
 }
 
 * {
@@ -265,12 +312,12 @@ h3 {
 .btn-primary {
   background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
   color: white;
-  box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 4px 15px var(--primary-medium);
 }
 
 .btn-primary:hover {
   transform: scale(1.02);
-  box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 6px 20px var(--primary-strong);
 }
 
 .btn-secondary {
@@ -376,7 +423,7 @@ select:focus {
   outline: none;
   border-color: var(--primary);
   background: var(--input-bg-focus);
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+  box-shadow: 0 0 0 4px var(--primary-subtle);
 }
 
 .field-error {
