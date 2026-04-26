@@ -14,7 +14,10 @@
                     <h1 class="detail-title">{{ contest.name }} - {% trans "Rounds" %}</h1>
                     <p style="margin: 0.5rem 0 0; color: var(--text-muted);">{% trans "Manage contest rounds and evaluations." %}</p>
                 </div>
-                <a href="{% url 'round_create' contest.pk %}" class="btn btn-primary">{% trans "New Round" %}</a>
+                <div style="display: flex; gap: 0.75rem; align-items: center;">
+                    <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">{% trans "Back" %}</a>
+                    <a href="{% url 'round_create' contest.pk %}" class="btn btn-primary">{% trans "New Round" %}</a>
+                </div>
             </div>
 
             {% if rounds %}
@@ -37,25 +40,31 @@
 
                             <p style="margin: 0.5rem 0; font-size: 0.95rem;">{{ round.description|truncatewords:20 }}</p>
 
-                            <div style="display: flex; gap: 0.75rem; flex-wrap: wrap; margin-top: 1rem;">
+                            <div style="display: flex; gap: 1.5rem; flex-wrap: wrap; margin-top: 1.5rem; align-items: flex-end;">
                                 {% if round.status == 'DRAFT' %}
-                                    <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem;">{% trans "Edit" %}</a>
-                                    <form action="{% url 'round_activate' contest.pk round.id %}" method="POST" style="display: inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-primary" style="font-size: 0.85rem;">{% trans "Activate" %}</button>
-                                    </form>
+                                    <div style="display: flex; gap: 1rem;">
+                                        <a href="{% url 'round_edit' contest.pk round.id %}" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Edit" %}</a>
+                                        <form action="{% url 'round_activate' contest.pk round.id %}" method="POST" style="display: inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-primary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Activate" %}</button>
+                                        </form>
+                                    </div>
                                 {% elif round.status == 'ACTIVE' %}
-                                    <form action="{% url 'round_extend_deadline' contest.pk round.id %}" method="POST" style="display: inline;">
-                                        {% csrf_token %}
-                                        <input type="datetime-local" name="new_deadline" required style="padding: 0.5rem; border: 1px solid var(--border); border-radius: 4px; font-size: 0.85rem;">
-                                        <button type="submit" class="btn btn-secondary" style="font-size: 0.85rem;">{% trans "Extend Deadline" %}</button>
-                                    </form>
-                                    <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" style="display: inline;">
-                                        {% csrf_token %}
-                                        <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem;">{% trans "Close Submissions" %}</button>
-                                    </form>
+                                    <div style="display: flex; flex-direction: column; gap: 0.5rem;">
+                                        <label style="font-size: 0.75rem; font-weight: 700; text-transform: uppercase; color: var(--text-muted); margin-left: 0.25rem;">{% trans "Extend To" %}</label>
+                                        <form action="{% url 'round_extend_deadline' contest.pk round.id %}" method="POST" style="display: flex; gap: 0.5rem; align-items: center;">
+                                            {% csrf_token %}
+                                            <input type="datetime-local" name="new_deadline" required style="padding: 0.7rem; border: 1px solid var(--border); border-radius: 10px; font-size: 0.85rem; background: var(--glass); color: var(--text-main); min-width: 220px;">
+                                            <button type="submit" class="btn btn-secondary" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Extend Deadline" %}</button>
+                                        </form>
+                                    </div>
+                                    <div style="display: flex; gap: 1rem; align-items: center;">
+                                        <form action="{% url 'round_close_submissions' contest.pk round.id %}" method="POST" style="display: inline;">
+                                            {% csrf_token %}
+                                            <button type="submit" class="btn btn-tinted" style="font-size: 0.85rem; padding: 0.7rem 1.4rem;">{% trans "Close Submissions" %}</button>
+                                        </form>
+                                    </div>
                                 {% endif %}
-                                <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary" style="font-size: 0.85rem;">{% trans "Back" %}</a>
                             </div>
                         </div>
                     {% endfor %}
