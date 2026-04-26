@@ -117,15 +117,6 @@
         {% else %}
         <div class="div-015">
             {% if contest.is_registration_open %}
-                <form action="{% url 'apply_to_contest' contest.pk 'participant' %}" method="post" class="div-014">
-                    {% csrf_token %}
-                    <button type="submit" class="btn btn-secondary button-001">{% trans "Register as Individual" %}</button>
-                </form>
-                <div class="div-006">
-                    <div class="div-005"></div>
-                    {% trans "OR" %}
-                    <div class="div-005"></div>
-                </div>
                 <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary a-001">{% trans "Create a Team" %}</a>
             {% else %}
                 <div class="div-002">

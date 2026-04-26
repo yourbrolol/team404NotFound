@@ -103,7 +103,7 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
             return redirect("contest_detail", pk=pk)
 
         if app_type == "participant":
-            role_type = Application.Type.PARTICIPANT
+            return HttpResponseForbidden("Individual registration is disabled. Please create or join a team.")
         elif app_type == "jury":
             role_type = Application.Type.JURY
         else:

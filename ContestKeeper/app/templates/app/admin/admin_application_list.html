@@ -20,7 +20,7 @@
 
         <div class="tabs-nav" id="appTabs">
             <a href="#teams" class="tab-link active" onclick="showTab('teams')">Teams ({{ team_apps.count }})</a>
-            <a href="#participants" class="tab-link" onclick="showTab('participants')">Individuals ({{ participant_apps.count }})</a>
+            <a href="#participants" class="tab-link" onclick="showTab('participants')">Join Requests ({{ participant_apps.count }})</a>
             <a href="#jurors" class="tab-link" onclick="showTab('jurors')">Jurors ({{ jury_apps.count }})</a>
         </div>
 
@@ -59,7 +59,7 @@
                         <div class="user-avatar">{{ app.user.username|slice:":1" }}</div>
                         <div class="user-details">
                             <h3>{{ app.user.username }}</h3>
-                            <p>Individual Participant • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
+                            <p>{% if app.team %}Wants to join <strong>{{ app.team.name }}</strong>{% else %}Individual Participant{% endif %} • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
                         </div>
                     </div>
                     <div class="actions-group">
@@ -74,7 +74,7 @@
                     </div>
                 </div>
             {% empty %}
-                <div class="empty-state">No pending individual applications.</div>
+                <div class="empty-state">No pending join requests.</div>
             {% endfor %}
         </div>
 
