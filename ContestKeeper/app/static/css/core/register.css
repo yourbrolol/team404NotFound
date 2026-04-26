@@ -1,6 +1,6 @@
 :root {
   --auth-bg-gradient: linear-gradient(135deg, var(--bg-dark) 0%, var(--primary-hover) 100%);
-  --auth-glass: var(--glass);
+  --auth-glass: rgba(27, 35, 53, 0.7);
   --auth-glass-border: var(--border);
   --auth-accent: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
@@ -388,7 +388,7 @@ body.auth-login .btn-auth {
 }
 
 .auth-footer a {
-  color: var(--bg-primary-tint);
+  color: var(--primary);
   text-decoration: none;
   font-weight: 600;
 }
