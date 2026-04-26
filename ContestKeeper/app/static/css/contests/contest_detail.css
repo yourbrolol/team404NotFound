@@ -232,19 +232,39 @@
 
 /* ── Quick Links ── */
 .quick-links {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    display: flex;
+    flex-wrap: nowrap;
     gap: 1rem;
     margin-bottom: 2rem;
+    overflow-x: auto;
+    padding-bottom: 0.5rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+}
+
+.quick-links::-webkit-scrollbar {
+    height: 6px;
+}
+
+.quick-links::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.quick-links::-webkit-scrollbar-thumb {
+    background-color: rgba(99, 102, 241, 0.5);
+    border-radius: 20px;
 }
 
 .quick-link-card {
+    flex: 1 1 0;
+    min-width: 140px;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 1.5rem;
+    padding: 1.5rem 1rem;
+    text-align: center;
     text-decoration: none !important;
     color: var(--text-main, #f8fafc) !important;
     background: var(--glass, rgba(255, 255, 255, 0.05));
@@ -264,8 +284,12 @@
 
 .quick-link-card h4 {
     margin: 0;
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: inherit;
+    width: 100%;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    word-break: break-word;
 }
 .quick-link-card svg {
     margin-bottom: 0.25rem;
