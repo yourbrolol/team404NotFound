@@ -5,9 +5,9 @@
 }
 
 .tab-btn {
-    background: rgba(255, 255, 255, 0.05);
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    color: rgba(255, 255, 255, 0.8);
+    background: var(--glass);
+    border: 1px solid var(--border);
+    color: var(--text-muted);
     padding: 0.5rem 1.5rem;
     border-radius: 8px;
     cursor: pointer;
@@ -18,15 +18,15 @@
 }
 
 .tab-btn:hover {
-    background: rgba(255, 255, 255, 0.15);
-    color: #fff;
+    background: var(--glass-hover);
+    color: var(--text-main);
 }
 
 .tab-btn.active {
-    background: rgba(255, 255, 255, 0.2);
-    border-color: rgba(255, 255, 255, 0.3);
-    color: #fff;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    background: var(--primary);
+    border-color: var(--primary);
+    color: white;
+    box-shadow: var(--shadow-sm, 0 4px 6px var(--overlay-medium));
 }
 
 .tab-panel {
@@ -103,8 +103,8 @@
 .team-match {
     padding: 0.05rem 0.2rem;
     border-radius: 0.35rem;
-    background: rgba(99, 102, 241, 0.28);
-    color: #e0e7ff;
+    background: var(--bg-primary-tint);
+    color: var(--primary);
 }
 
 .team-list-item[hidden] {

@@ -12,26 +12,26 @@ body {
     .evaluation-grid { grid-template-columns: 1fr; }
 }
 .glass-card {
-    background: rgba(255, 255, 255, 0.7);
+    background: var(--bg-card);
     backdrop-filter: blur(10px);
     -webkit-backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid var(--border);
     border-radius: 20px;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+    box-shadow: var(--shadow-lg, 0 8px 32px 0 var(--shadow-brand));
     padding: 2rem;
     margin-bottom: 2rem;
 }
 .artifact-card {
-    background: white;
+    background: var(--glass);
     border-radius: 16px;
     padding: 1.5rem;
     margin-bottom: 1.5rem;
-    border: 1px solid rgba(0,0,0,0.05);
+    border: 1px solid var(--border);
 }
 .criterion-item {
     margin-bottom: 2rem;
     padding-bottom: 1.5rem;
-    border-bottom: 1px solid rgba(0,0,0,0.05);
+    border-bottom: 1px solid var(--border);
 }
 .criterion-header {
     display: flex;

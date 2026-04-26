@@ -61,7 +61,7 @@ main.dashboard-container {
     pointer-events: none;
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.55);
+    background: rgba(var(--black-rgb), 0.55);
     z-index: 999;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -146,7 +146,7 @@ main.dashboard-container {
 .nav-link--active {
     color: white;
     background: var(--primary);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.2);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.2);
 }
 
 .nav-link--active:hover {
@@ -165,7 +165,7 @@ main.dashboard-container {
     top: 50%;
     right: 1.25rem;
     transform: translateY(-50%);
-    background: #ef4444;
+    background: var(--error);
     color: white;
     font-size: 0.7rem;
     font-weight: 700;
@@ -176,7 +176,7 @@ main.dashboard-container {
     align-items: center;
     justify-content: center;
     padding: 0 4px;
-    box-shadow: 0 2px 4px rgba(239, 68, 68, 0.3);
+    box-shadow: 0 2px 4px rgba(var(--error-rgb), 0.3);
 }
 
 .nav-auth-divider {

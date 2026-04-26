@@ -20,7 +20,7 @@
         </div>
 
         <div class="glass-card">
-            <div style="border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 2rem; margin-bottom: 2.5rem;">
+            <div style="border-bottom: 1px solid var(--overlay-subtle); padding-bottom: 2rem; margin-bottom: 2.5rem;">
                 <div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;">
                     <span style="background: #6366f1; color: white; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;">{% trans "Team Submission" %}</span>
                     <span style="color: #6b7280; font-size: 0.85rem;">{% blocktrans with date=submission.submitted_at|date:"M d, Y • P" %}Submitted {{ date }}{% endblocktrans %}</span>
@@ -71,7 +71,7 @@
                 <div style="white-space: pre-wrap; color: #374151; line-height: 1.7; font-size: 1rem;">{{ submission.description }}</div>
             </div>
 
-            <div style="margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 2rem;">
+            <div style="margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid var(--overlay-subtle); padding-top: 2rem;">
                 <div class="meta-item">
                     <span class="meta-label">{% trans "Captain" %}</span>
                     <span class="meta-value">{{ submission.team.captain.get_full_name|default:submission.team.captain.username }}</span>

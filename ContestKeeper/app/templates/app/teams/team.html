@@ -87,7 +87,7 @@
                 <ul class="members-grid">
                     {% for member in team.participants.all %}
                     <li class="member-item searchable-item" data-search-text="{{ member.username|lower }}"
-                        style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 8px;">
+                        style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--glass-light); border-radius: 8px; margin-bottom: 8px;">
                         <div style="display: flex; align-items: center; gap: 10px;">
                             <div class="member-avatar">
                                 {{ member.username|slice:":1"|upper }}
@@ -131,7 +131,7 @@
                 {% if team.blacklisted_members.all %}
                 <ul class="members-grid">
                     {% for b_member in team.blacklisted_members.all %}
-                    <li class="member-item searchable-item" data-search-text="{{ b_member.username|lower }}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 8px;">
+                    <li class="member-item searchable-item" data-search-text="{{ b_member.username|lower }}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--glass-light); border-radius: 8px; margin-bottom: 8px;">
                         <span class="member-name" style="color: #e74c3c;">{{ b_member.username }}</span>
                         <form method="POST" action="{% url 'team_unblock' pk=contest.pk ck=team.pk user_id=b_member.pk %}" data-confirm="{% blocktrans with name=b_member.username %}Unblock {{ name }}?{% endblocktrans %}">
                            {% csrf_token %}
@@ -161,7 +161,7 @@
                 {% if team_applications %}
                 <ul class="members-grid">
                     {% for app in team_applications %}
-                    <li class="member-item searchable-item" data-search-text="{{ app.user.username|lower }}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: rgba(255, 255, 255, 0.05); border-radius: 8px; margin-bottom: 8px;">
+                    <li class="member-item searchable-item" data-search-text="{{ app.user.username|lower }}" style="display: flex; justify-content: space-between; align-items: center; padding: 10px; background: var(--glass-light); border-radius: 8px; margin-bottom: 8px;">
                         <span class="member-name">{{ app.user.username }}</span>
                         <div style="display: flex; gap: 10px;">
                             <form method="POST" action="{% url 'approve_application' pk=app.pk %}">

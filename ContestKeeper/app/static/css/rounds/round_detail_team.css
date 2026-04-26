@@ -68,18 +68,18 @@
 }
 
 .status-active {
-    background: rgba(40, 167, 69, 0.2);
-    color: #c8e6c9;
+    background: var(--bg-success-tint);
+    color: var(--success);
 }
 
 .status-closed {
-    background: rgba(255, 193, 7, 0.2);
-    color: #ffe082;
+    background: var(--bg-warning-tint);
+    color: var(--warning);
 }
 
 .status-evaluated {
-    background: rgba(108, 117, 125, 0.2);
-    color: #cfd8dc;
+    background: var(--bg-slate-tint);
+    color: var(--text-muted);
 }
 
 .content-grid {
@@ -175,7 +175,7 @@
     background: var(--primary);
     border-color: var(--primary);
     transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 4px 12px rgba(var(--primary-rgb), 0.3);
 }
 
 .description-text {

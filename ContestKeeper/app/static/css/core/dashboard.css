@@ -39,27 +39,27 @@
 }
 
 .status-active, .status-running {
-    background: rgba(34, 197, 94, 0.15);
-    color: #4ade80;
-    border-color: rgba(34, 197, 94, 0.3);
+    background: var(--bg-success-tint);
+    color: var(--success);
+    border-color: rgba(var(--success-rgb), 0.3);
 }
 
 .status-draft {
-    background: rgba(148, 163, 184, 0.15);
-    color: #94a3b8;
-    border-color: rgba(148, 163, 184, 0.3);
+    background: var(--bg-slate-tint);
+    color: var(--text-muted);
+    border-color: rgba(var(--slate-rgb), 0.3);
 }
 
 .status-registration {
-    background: rgba(99, 102, 241, 0.15);
-    color: #818cf8;
-    border-color: rgba(99, 102, 241, 0.3);
+    background: var(--bg-primary-tint);
+    color: var(--primary);
+    border-color: rgba(var(--primary-rgb), 0.3);
 }
 
 .status-finished {
-    background: rgba(239, 68, 68, 0.15);
-    color: #f87171;
-    border-color: rgba(239, 68, 68, 0.3);
+    background: var(--bg-error-tint);
+    color: var(--error);
+    border-color: rgba(var(--error-rgb), 0.3);
 }
 
 .contest-details {

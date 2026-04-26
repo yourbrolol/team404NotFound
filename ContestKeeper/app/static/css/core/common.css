@@ -6,11 +6,11 @@
   --primary-hover: #4f46e5;
   --secondary: #a855f7;
   --bg-dark: #0f172a;
-  --bg-card: rgba(255, 255, 255, 0.05);
+  --bg-card: var(--glass-light);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --border: rgba(255, 255, 255, 0.1);
-  --glass: rgba(255, 255, 255, 0.05);
+  --glass: var(--glass-light);
   --glass-hover: rgba(255, 255, 255, 0.1);
   --bg-card-hover: rgba(30, 41, 59, 0.9);
   --input-bg: rgba(15, 23, 42, 0.6);
@@ -27,7 +27,24 @@
   --warning-rgb: 245, 158, 11;
   --info: #3b82f6;
   --info-rgb: 59, 130, 246;
-  --black: 0, 0, 0;
+  --slate-rgb: 148, 163, 184;
+  --white-rgb: 255, 255, 255;
+  --black-rgb: 0, 0, 0;
+
+  /* Semantic Tints - Backgrounds */
+  --bg-primary-tint: rgba(var(--primary-rgb), 0.1);
+  --bg-success-tint: rgba(var(--success-rgb), 0.15);
+  --bg-error-tint: rgba(var(--error-rgb), 0.15);
+  --bg-warning-tint: rgba(var(--warning-rgb), 0.15);
+  --bg-info-tint: rgba(var(--info-rgb), 0.15);
+  --bg-slate-tint: rgba(var(--slate-rgb), 0.15);
+
+  /* Consolidated Hardcoded Colors */
+  --overlay-subtle: rgba(var(--black-rgb), 0.05);
+  --overlay-medium: rgba(var(--black-rgb), 0.1);
+  --glass-light: rgba(var(--white-rgb), 0.05);
+  --glass-medium: rgba(var(--white-rgb), 0.3);
+  --shadow-brand: var(--shadow-brand);
 }
 
 @media (max-width: 1200px) {
@@ -41,7 +58,7 @@
   --bg-card: rgba(255, 255, 255, 0.85);
   --text-main: #1e293b;
   --text-muted: #64748b;
-  --border: rgba(0, 0, 0, 0.1);
+  --border: var(--overlay-medium);
   --glass: rgba(0, 0, 0, 0.03);
   --glass-hover: rgba(0, 0, 0, 0.06);
   --bg-card-hover: rgba(255, 255, 255, 0.95);
@@ -59,6 +76,21 @@
   --warning-rgb: 217, 119, 6;
   --info: #2563eb;
   --info-rgb: 37, 99, 235;
+  --slate-rgb: 71, 85, 105;
+
+  /* Semantic Tints - Backgrounds (Light adjust) */
+  --bg-primary-tint: rgba(var(--primary-rgb), 0.08); /* Indigo-50-ish */
+  --bg-success-tint: rgba(var(--success-rgb), 0.1);
+  --bg-error-tint: rgba(var(--error-rgb), 0.08);
+  --bg-warning-tint: rgba(var(--warning-rgb), 0.1);
+  --bg-info-tint: rgba(var(--info-rgb), 0.08);
+
+  /* Consolidated Hardcoded Colors (Light Theme Adjustments) */
+  --overlay-subtle: rgba(var(--black-rgb), 0.03);
+  --overlay-medium: rgba(var(--black-rgb), 0.06);
+  --glass-light: rgba(var(--white-rgb), 0.4);
+  --glass-medium: rgba(var(--white-rgb), 0.6);
+  --shadow-brand: var(--shadow-brand);
 }
 
 * {
@@ -242,15 +274,25 @@ h3 {
 }
 
 .btn-secondary {
-  background: var(--glass);
+  background: var(--bg-slate-tint);
   color: var(--text-main);
   border: 1px solid var(--border);
   backdrop-filter: blur(4px);
 }
 
 .btn-secondary:hover {
-  background: var(--glass-hover);
+  background: rgba(var(--slate-rgb), 0.25);
+  transform: translateY(-1px);
 }
+
+.btn-tinted {
+  border: 1px solid transparent;
+}
+
+.btn-tinted.btn-success { background: var(--bg-success-tint); color: var(--success); border-color: rgba(var(--success-rgb), 0.2); }
+.btn-tinted.btn-error   { background: var(--bg-error-tint);   color: var(--error);   border-color: rgba(var(--error-rgb), 0.2); }
+.btn-tinted.btn-warning { background: var(--bg-warning-tint); color: var(--warning); border-color: rgba(var(--warning-rgb), 0.2); }
+.btn-tinted.btn-primary { background: var(--bg-primary-tint); color: var(--primary); border-color: rgba(var(--primary-rgb), 0.2); }
 
 /* Badges */
 .role-badge {

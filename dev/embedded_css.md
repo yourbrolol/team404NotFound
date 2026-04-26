@@ -217,12 +217,12 @@ Lines 7-95:
         justify-content: center;
         text-align: center;
         padding: 1.5rem;
-        background: var(--glass, rgba(255, 255, 255, 0.05));
+        background: var(--glass, var(--glass-light));
         backdrop-filter: blur(12px);
         -webkit-backdrop-filter: blur(12px);
         border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
         border-radius: 1.25rem;
-        box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        box-shadow: 0 4px 6px -1px var(--overlay-medium);
         min-height: 120px;
     }
     .summary-value {
@@ -345,9 +345,9 @@ Lines 8-74:
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--glass-medium);
         border-radius: 20px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        box-shadow: 0 8px 32px 0 var(--shadow-brand);
         padding: 2rem;
         margin-bottom: 2rem;
     }
@@ -356,12 +356,12 @@ Lines 8-74:
         border-radius: 16px;
         padding: 1.5rem;
         margin-bottom: 1.5rem;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid var(--overlay-subtle);
     }
     .criterion-item {
         margin-bottom: 2rem;
         padding-bottom: 1.5rem;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
+        border-bottom: 1px solid var(--overlay-subtle);
     }
     .criterion-header {
         display: flex;
@@ -432,7 +432,7 @@ Lines 11-108:
             transition: box-shadow 0.2s;
         }
         .round-card:hover {
-            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            box-shadow: 0 2px 8px var(--overlay-medium);
         }
         .round-card.active {
             border-left: 4px solid #28a745;
@@ -563,13 +563,13 @@ Lines 8-45:
             padding: 1rem;
             text-decoration: none !important;
             color: var(--text-main, #f8fafc) !important;
-            background: var(--glass, rgba(255, 255, 255, 0.05));
+            background: var(--glass, var(--glass-light));
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
             border: 1px solid var(--border, rgba(255, 255, 255, 0.1));
             border-radius: 1.25rem;
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            box-shadow: 0 4px 6px -1px var(--overlay-medium);
         }
         .quick-link-card:hover {
             transform: translateY(-4px);
@@ -658,9 +658,9 @@ Lines 8-64:
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--glass-medium);
         border-radius: 20px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        box-shadow: 0 8px 32px 0 var(--shadow-brand);
         padding: 2rem;
         animation: fadeIn 0.6s ease-out;
     }
@@ -677,11 +677,11 @@ Lines 8-64:
         justify-content: space-between;
         align-items: center;
         transition: all 0.2s;
-        border: 1px solid rgba(0,0,0,0.05);
+        border: 1px solid var(--overlay-subtle);
     }
     .submission-row:hover {
         transform: scale(1.01);
-        box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+        box-shadow: 0 10px 15px -3px var(--overlay-medium);
         border-color: #6366f1;
     }
     .team-avatar {
@@ -900,9 +900,9 @@ Lines 7-95:
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--glass-medium);
         border-radius: 24px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.1);
+        box-shadow: 0 8px 32px 0 var(--shadow-brand);
         padding: 2rem;
         transition: transform 0.3s ease;
     }
@@ -1280,7 +1280,7 @@ Lines 12-188:
 - Line 142: svg style="width: 16px; margin-right: 4px;"
 - Line 152: div style="display: flex; gap: 1rem; margin-top: 2.5rem;"
 - Line 153: button style="flex: 2; padding: 1rem;"
-- Line 156: a style="flex: 1; padding: 1rem; border: none; background: rgba(0,0,0,0.05);"
+- Line 156: a style="flex: 1; padding: 1rem; border: none; background: var(--overlay-subtle);"
 
 ### Style Tags
 Lines 8-75:
@@ -1294,9 +1294,9 @@ Lines 8-75:
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--glass-medium);
         border-radius: 20px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        box-shadow: 0 8px 32px 0 var(--shadow-brand);
         padding: 2.5rem;
         animation: fadeIn 0.6s ease-out;
     }
@@ -1306,7 +1306,7 @@ Lines 8-75:
     }
     .form-header {
         margin-bottom: 2rem;
-        border-bottom: 1px solid rgba(0,0,0,0.05);
+        border-bottom: 1px solid var(--overlay-subtle);
         padding-bottom: 1.5rem;
     }
     .round-info-badge {
@@ -1330,7 +1330,7 @@ Lines 8-75:
         width: 100%;
         padding: 0.85rem 1.25rem;
         background: rgba(255, 255, 255, 0.5);
-        border: 1px solid rgba(0, 0, 0, 0.1);
+        border: 1px solid var(--overlay-medium);
         border-radius: 12px;
         transition: all 0.2s;
         font-size: 1rem;
@@ -1362,7 +1362,7 @@ Lines 8-75:
 - Line 87: div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;"
 - Line 88: a style="background: none; border: none; font-weight: 600;"
 - Line 90: a style="border-radius: 12px;"
-- Line 95: div style="border-bottom: 1px solid rgba(0,0,0,0.05); padding-bottom: 2rem; margin-bottom: 2.5rem;"
+- Line 95: div style="border-bottom: 1px solid var(--overlay-subtle); padding-bottom: 2rem; margin-bottom: 2.5rem;"
 - Line 96: div style="display: flex; align-items: center; gap: 1rem; margin-bottom: 0.5rem;"
 - Line 97: span style="background: #6366f1; color: white; padding: 0.25rem 0.75rem; border-radius: 99px; font-size: 0.75rem; font-weight: 700; text-transform: uppercase;"
 - Line 98: span style="color: #6b7280; font-size: 0.85rem;"
@@ -1378,7 +1378,7 @@ Lines 8-75:
 - Line 139: h3 style="font-size: 1.1rem; font-weight: 800; color: #111827; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;"
 - Line 140: svg style="width: 20px;"
 - Line 143: div style="white-space: pre-wrap; color: #374151; line-height: 1.7; font-size: 1rem;"
-- Line 146: div style="margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid rgba(0,0,0,0.05); padding-top: 2rem;"
+- Line 146: div style="margin-top: 3rem; display: flex; flex-wrap: wrap; gap: 2rem; border-top: 1px solid var(--overlay-subtle); padding-top: 2rem;"
 - Line 157: span style="color: #10b981;"
 
 ### Style Tags
@@ -1393,9 +1393,9 @@ Lines 8-80:
         background: rgba(255, 255, 255, 0.7);
         backdrop-filter: blur(10px);
         -webkit-backdrop-filter: blur(10px);
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--glass-medium);
         border-radius: 24px;
-        box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        box-shadow: 0 8px 32px 0 var(--shadow-brand);
         padding: 3rem;
         animation: fadeIn 0.6s ease-out;
     }
@@ -1412,12 +1412,12 @@ Lines 8-80:
         gap: 1.25rem;
         text-decoration: none;
         transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-        border: 1px solid rgba(0,0,0,0.05);
-        box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+        border: 1px solid var(--overlay-subtle);
+        box-shadow: 0 4px 6px -1px var(--overlay-subtle);
     }
     .link-card:hover {
         transform: translateY(-5px);
-        box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1);
+        box-shadow: 0 20px 25px -5px var(--overlay-medium);
         border-color: #6366f1;
     }
     .link-icon {
@@ -1438,7 +1438,7 @@ Lines 8-80:
         border-radius: 16px;
         padding: 2rem;
         margin-top: 2rem;
-        border: 1px solid rgba(255, 255, 255, 0.3);
+        border: 1px solid var(--glass-medium);
     }
     .meta-item {
         display: flex;
@@ -1470,8 +1470,8 @@ Lines 7-133:
 <style>
     :root {
         --glass-bg: rgba(255, 255, 255, 0.7);
-        --glass-border: rgba(255, 255, 255, 0.3);
-        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        --glass-border: var(--glass-medium);
+        --glass-shadow: 0 8px 32px 0 var(--shadow-brand);
     }
 
     body {
@@ -1609,8 +1609,8 @@ Lines 8-207:
 <style>
     :root {
         --glass-bg: rgba(255, 255, 255, 0.7);
-        --glass-border: rgba(255, 255, 255, 0.3);
-        --glass-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+        --glass-border: var(--glass-medium);
+        --glass-shadow: 0 8px 32px 0 var(--shadow-brand);
     }
 
     body {
@@ -1728,7 +1728,7 @@ Lines 8-207:
         background: rgba(255, 255, 255, 0.5);
         border-radius: 12px;
         margin-bottom: 0.75rem;
-        border: 1px solid rgba(0, 0, 0, 0.05);
+        border: 1px solid var(--overlay-subtle);
     }
 
     .checklist-icon {

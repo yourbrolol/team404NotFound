@@ -49,7 +49,7 @@
             <svg width="100%" height="{{ submission_svg_height|add:20 }}" viewBox="0 0 450 {{ submission_svg_height|add:20 }}">
                 {% for stat in submission_stats %}
                 <text x="130" y="{{ stat.bar_y|add:16 }}" text-anchor="end" fill="var(--text-muted)" font-size="12">{{ stat.name|truncatechars:18 }}</text>
-                <rect x="140" y="{{ stat.bar_y }}" width="280" height="20" rx="4" fill="rgba(255,255,255,0.05)"/>
+                <rect x="140" y="{{ stat.bar_y }}" width="280" height="20" rx="4" fill="var(--glass-light)"/>
                 <rect x="140" y="{{ stat.bar_y }}" width="{{ stat.bar_width }}" height="20" rx="4" fill="var(--primary)"/>
                 <text x="430" y="{{ stat.bar_y|add:16 }}" text-anchor="end" fill="var(--text-main)" font-size="11" font-weight="600">{{ stat.pct }}%</text>
                 {% endfor %}
@@ -71,7 +71,7 @@
             <svg width="100%" height="{{ score_svg_height|add:20 }}" viewBox="0 0 450 {{ score_svg_height|add:20 }}">
                 {% for stat in score_stats %}
                 <text x="130" y="{{ stat.bar_y|add:16 }}" text-anchor="end" fill="var(--text-muted)" font-size="12">{{ stat.name|truncatechars:18 }}</text>
-                <rect x="140" y="{{ stat.bar_y }}" width="280" height="20" rx="4" fill="rgba(255,255,255,0.05)"/>
+                <rect x="140" y="{{ stat.bar_y }}" width="280" height="20" rx="4" fill="var(--glass-light)"/>
                 <rect x="140" y="{{ stat.bar_y }}" width="{{ stat.bar_width }}" height="20" rx="4" fill="var(--secondary)"/>
                 <text x="430" y="{{ stat.bar_y|add:16 }}" text-anchor="end" fill="var(--text-main)" font-size="11" font-weight="600">{{ stat.avg }}/{{ stat.max }}</text>
                 {% endfor %}

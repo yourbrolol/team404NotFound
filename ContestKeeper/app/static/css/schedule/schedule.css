@@ -10,7 +10,7 @@
     top: 0;
     bottom: 0;
     width: 4px;
-    background: rgba(99, 102, 241, 0.2);
+    background: var(--bg-primary-tint);
     border-radius: 2px;
 }
 @media (max-width: 768px) {
@@ -47,11 +47,11 @@
     width: 24px;
     height: 24px;
     background: white;
-    border: 4px solid #6366f1;
+    border: 4px solid var(--primary);
     border-radius: 50%;
     transform: translate(-50%, -50%);
     z-index: 2;
-    box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
+    box-shadow: 0 0 15px rgba(var(--primary-rgb), 0.4);
 }
 .dot-ROUND {
     border-color: #6366f1;
@@ -75,7 +75,7 @@
 .glass-card:hover {
     transform: translateY(-5px);
     background: var(--glass-hover);
-    border-color: rgba(99, 102, 241, 0.4);
+    border-color: rgba(var(--primary-rgb), 0.4);
 }
 .time-badge {
     display: inline-block;
@@ -92,12 +92,12 @@
     font-weight: 800;
     text-transform: uppercase;
     letter-spacing: 1px;
-    color: #6366f1;
+    color: var(--primary);
     margin-bottom: 0.5rem;
 }
 .type-DEADLINE {
-    color: #ef4444;
+    color: var(--error);
 }
 .type-WORKSHOP {
-    color: #10b981;
+    color: var(--success);
 }

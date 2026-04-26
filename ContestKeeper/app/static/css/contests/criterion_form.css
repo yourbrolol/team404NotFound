@@ -111,14 +111,14 @@ body {
 }
 
 .btn-secondary {
-    background: var(--glass);
+    background: var(--bg-slate-tint);
     color: var(--text-main);
     border: 1px solid var(--border);
     backdrop-filter: blur(4px);
 }
 
 .btn-secondary:hover {
-    background: var(--glass-hover);
+    background: rgba(var(--slate-rgb), 0.25);
 }
 
 .error-text {

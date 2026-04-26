@@ -86,7 +86,7 @@
                     <button type="submit" class="btn btn-primary" style="flex: 2; padding: 1rem;">
                         {% if is_edit %}{% trans "Save Changes" %}{% else %}{% trans "Submit Work" %}{% endif %}
                     </button>
-                    <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="flex: 1; padding: 1rem; border: none; background: rgba(0,0,0,0.05);">{% trans "Cancel" %}</a>
+                    <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary" style="flex: 1; padding: 1rem; border: none; background: var(--overlay-subtle);">{% trans "Cancel" %}</a>
                 </div>
             </form>
         </div>

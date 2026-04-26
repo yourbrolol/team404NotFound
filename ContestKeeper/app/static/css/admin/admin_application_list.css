@@ -62,7 +62,7 @@
 .user-avatar {
     width: 40px;
     height: 40px;
-    background: rgba(var(--primary-rgb), 0.15);
+    background: var(--bg-primary-tint);
     color: var(--primary);
     border: 1px solid rgba(var(--primary-rgb), 0.3);
     border-radius: 50%;
@@ -101,7 +101,7 @@
 }
 
 .btn-approve { 
-    background: rgba(var(--primary-rgb), 0.1); 
+    background: var(--bg-success-tint, var(--bg-primary-tint)); 
     color: var(--success); 
     border: 1px solid var(--success); 
 }
@@ -110,7 +110,7 @@
     color: white; 
 }
 .btn-reject { 
-    background: rgba(var(--primary-rgb), 0.1); 
+    background: var(--bg-error-tint, var(--bg-primary-tint)); 
     color: var(--error); 
     border: 1px solid var(--error); 
 }

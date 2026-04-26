@@ -1,8 +1,8 @@
 :root {
   --auth-bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
-  --auth-glass: rgba(255, 255, 255, 0.03);
-  --auth-glass-border: rgba(255, 255, 255, 0.08);
-  --auth-accent: linear-gradient(135deg, #6366f1 0%, #a855f7 100%);
+  --auth-glass: var(--glass);
+  --auth-glass-border: var(--border);
+  --auth-accent: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
 
 body.auth-body {
@@ -72,7 +72,7 @@ body.auth-body {
   display: grid;
   grid-template-columns: 1fr 1.2fr;
   overflow: hidden;
-  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 25px 50px -12px rgba(var(--black-rgb), 0.5);
   animation: card-appear 0.8s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
@@ -270,7 +270,7 @@ body.auth-login .btn-auth {
 /* Left side - Branding/Welcome */
 .auth-info {
   padding: 4rem;
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(var(--white-rgb), 0.02);
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -331,7 +331,7 @@ body.auth-login .btn-auth {
 
 .auth-input {
   width: 100%;
-  background: rgba(15, 23, 42, 0.4);
+  background: var(--input-bg);
   border: 1px solid var(--auth-glass-border);
   border-radius: 1rem;
   padding: 1rem 1.25rem;
@@ -343,9 +343,9 @@ body.auth-login .btn-auth {
 
 .auth-input:focus {
   outline: none;
-  background: rgba(15, 23, 42, 0.6);
-  border-color: #6366f1;
-  box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.15);
+  background: var(--input-bg-focus);
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15);
   transform: translateY(-1px);
 }
 
@@ -368,12 +368,12 @@ body.auth-login .btn-auth {
   font-size: 1rem;
   cursor: pointer;
   transition: all 0.3s ease;
-  box-shadow: 0 10px 15px -3px rgba(99, 102, 241, 0.3);
+  box-shadow: 0 10px 15px -3px rgba(var(--primary-rgb), 0.3);
 }
 
 .btn-auth:hover {
   transform: translateY(-2px) scale(1.01);
-  box-shadow: 0 20px 25px -5px rgba(99, 102, 241, 0.4);
+  box-shadow: 0 20px 25px -5px rgba(var(--primary-rgb), 0.4);
 }
 
 .btn-auth:active {
@@ -398,8 +398,8 @@ body.auth-login .btn-auth {
 }
 
 .auth-error-msg {
-  background: rgba(239, 68, 68, 0.1);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: var(--bg-error-tint);
+  border: 1px solid rgba(var(--error-rgb), 0.2);
   color: #f87171;
   padding: 1rem;
   border-radius: 0.75rem;

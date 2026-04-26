@@ -14,13 +14,13 @@
             <p style="margin: 0.5rem 0 1.5rem; color: var(--text-muted);">{{ contest.name }}</p>
 
             {% if error %}
-                <div style="padding: 1rem; background: rgba(var(--error-rgb, 239, 68, 68), 0.1); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
+                <div style="padding: 1rem; background: var(--bg-error-tint); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
                     {{ error }}
                 </div>
             {% endif %}
 
             {% if form.non_field_errors %}
-                <div style="padding: 1rem; background: rgba(var(--error-rgb, 239, 68, 68), 0.1); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
+                <div style="padding: 1rem; background: var(--bg-error-tint); border: 1px solid var(--error); border-radius: 0.75rem; margin-bottom: 1rem; color: var(--error);">
                     {{ form.non_field_errors }}
                 </div>
             {% endif %}

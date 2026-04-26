@@ -33,7 +33,7 @@
         
         <div>
             {% if next_event %}
-            <div class="glass-panel" style="padding: 1.5rem; border: 1px solid rgba(99, 102, 241, 0.3); background: rgba(99, 102, 241, 0.05);">
+            <div class="glass-panel" style="padding: 1.5rem; border: 1px solid rgba(var(--primary-rgb), 0.3); background: var(--bg-primary-tint);">
                 <div style="font-size: 0.7rem; font-weight: 800; color: #6366f1; text-transform: uppercase; margin-bottom: 0.5rem;">{% trans "Next Up" %}</div>
                 <h4 style="margin: 0 0 0.5rem 0; font-weight: 800;">{{ next_event.title }}</h4>
                 <div style="font-family: monospace; font-size: 0.85rem; color: #475569;">{{ next_event.start_time|date:"M d • H:i" }}</div>
@@ -50,7 +50,7 @@
     </div>
 
     {% if active_round %}
-    <div class="active-round-banner" style="background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(5, 150, 105, 0.15)); border: 1px solid rgba(16, 185, 129, 0.3); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
+    <div class="active-round-banner" style="background: linear-gradient(135deg, rgba(var(--success-rgb), 0.1), rgba(var(--success-rgb), 0.15)); border: 1px solid rgba(var(--success-rgb), 0.3); border-radius: 1rem; padding: 1.5rem; margin-bottom: 2rem; display: flex; justify-content: space-between; align-items: center;">
         <div>
             <div style="font-size: 0.75rem; font-weight: 800; color: #10b981; text-transform: uppercase; margin-bottom: 0.5rem;">🔥 {% trans "Current Active Round" %}</div>
             <h3 style="margin: 0; font-weight: 800;">{{ active_round.title }}</h3>
@@ -171,7 +171,7 @@
         <form class="delete-form" action="{% url 'contest_delete' contest.pk %}" method="POST"
             onsubmit="return confirm('{% trans "Are you sure you want to delete this contest? This action cannot be undone." %}');" style="display: inline;">
             {% csrf_token %}
-            <button type="submit" class="btn btn-tinted btn-delete" style="background: rgba(239, 68, 68, 0.1); color: #ef4444; border-color: rgba(239, 68, 68, 0.2);">{% trans "Delete Contest" %}</button>
+            <button type="submit" class="btn btn-tinted btn-error">{% trans "Delete Contest" %}</button>
         </form>
         {% endif %}
     </div>

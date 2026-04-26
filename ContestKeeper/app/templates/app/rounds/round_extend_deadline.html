@@ -12,8 +12,8 @@
         margin: 2rem auto;
     }
     .current-deadline-info {
-        background: rgba(99, 102, 241, 0.1);
-        border: 1px solid rgba(99, 102, 241, 0.2);
+        background: var(--bg-primary-tint);
+        border: 1px solid rgba(var(--primary-rgb), 0.2);
         padding: 1.25rem;
         border-radius: 1rem;
         margin-bottom: 2rem;
@@ -22,13 +22,13 @@
         gap: 1rem;
     }
     .current-deadline-info svg {
-        color: #6366f1;
+        color: var(--primary);
     }
     .form-label {
         display: block;
         font-size: 0.8rem;
         font-weight: 800;
-        color: #64748b;
+        color: var(--text-muted);
         text-transform: uppercase;
         letter-spacing: 0.05em;
         margin-bottom: 0.5rem;
@@ -37,7 +37,7 @@
     .glass-input {
         width: 100%;
         padding: 0.8rem 1rem;
-        background: rgba(255, 255, 255, 0.03);
+        background: var(--glass);
         border: 1px solid var(--border);
         border-radius: 0.75rem;
         color: var(--white);
@@ -46,14 +46,14 @@
     }
     .glass-input:focus {
         outline: none;
-        border-color: #6366f1;
-        background: rgba(255, 255, 255, 0.05);
-        box-shadow: 0 0 0 4px rgba(99, 102, 241, 0.1);
+        border-color: var(--primary);
+        background: var(--glass-hover);
+        box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.1);
     }
     .error-msg {
-        background: rgba(239, 68, 68, 0.1);
-        border: 1px solid rgba(239, 68, 68, 0.2);
-        color: #f87171;
+        background: var(--bg-error-tint);
+        border: 1px solid rgba(var(--error-rgb), 0.2);
+        color: var(--error);
         padding: 1rem;
         border-radius: 0.75rem;
         margin-bottom: 1.5rem;
@@ -81,7 +81,7 @@
                 <polyline points="12 6 12 12 16 14"></polyline>
             </svg>
             <div>
-                <div style="font-size: 0.75rem; font-weight: 700; color: #6366f1; text-transform: uppercase;">{% trans "Current Deadline" %}</div>
+                <div style="font-size: 0.75rem; font-weight: 700; color: var(--primary); text-transform: uppercase;">{% trans "Current Deadline" %}</div>
                 <div style="font-size: 1.1rem; font-weight: 600;">{{ round.deadline|date:'M d, Y — H:i' }}</div>
             </div>
         </div>
