@@ -5,7 +5,7 @@
   --primary-hover: #4f46e5;
   --secondary: #a855f7;
   --bg-dark: #0f172a;
-  --bg-card: rgba(30, 41, 59, 0.7);
+  --bg-card: rgba(255, 255, 255, 0.05);
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --border: rgba(255, 255, 255, 0.1);
@@ -400,6 +400,7 @@ select:focus {
     padding: 0.4rem 1rem;
   }
 }
+
 /* Skip link for accessibility */
 .skip-link {
   position: absolute;
@@ -417,4 +418,8 @@ select:focus {
 .skip-link:focus {
   top: 0;
 }
-.btn:focus { outline: 2px solid var(--primary); outline-offset: 2px; }
+
+.btn:focus {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
