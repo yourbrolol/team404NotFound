@@ -67,11 +67,11 @@ body {
 }
 
 /* --- Extracted from submission_form.html --- */
-.div-002 { max-width: 700px; margin: 0 auto; }
-.a-002 { width: auto; background: none; border: none; font-weight: 600; }
 .h1-001 { font-size: 2rem; font-weight: 800; color: #111827; margin: 0; }
+.a-001 { flex: 1; padding: 1rem; border: none; background: var(--overlay-subtle); }
+.a-002 { width: auto; background: none; border: none; font-weight: 600; }
+.button-001 { flex: 2; padding: 1rem; }
+.div-001 { display: flex; gap: 1rem; margin-top: 2.5rem; }
+.div-002 { max-width: 700px; margin: 0 auto; }
 .p-001 { color: #6b7280; margin-top: 0.5rem; }
 .svg-001 { width: 16px; margin-right: 4px; }
-.div-001 { display: flex; gap: 1rem; margin-top: 2.5rem; }
-.button-001 { flex: 2; padding: 1rem; }
-.a-001 { flex: 1; padding: 1rem; border: none; background: var(--overlay-subtle); }

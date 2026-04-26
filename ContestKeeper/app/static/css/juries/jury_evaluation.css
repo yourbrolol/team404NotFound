@@ -65,23 +65,23 @@ body {
 .max-score-hint { color: #6b7280; font-weight: 600; font-size: 0.9rem; }
 
 /* --- Extracted from jury_evaluation.html --- */
-.div-007 { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
-.a-002 { text-decoration: none; font-weight: 600; }
 .h1-001 { font-size: 2.5rem; font-weight: 900; color: var(--text-main); margin: 0; }
-.p-001 { color: var(--text-muted); margin-top: 0.5rem; }
-.span-001 { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
-.div-002 { font-weight: 700; color: var(--text-main); }
+.h2-001 { font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; }
 .h2-002 { font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; display: flex; align-items: center; gap: 0.75rem; }
-.div-008 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
+.h3-001 { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
 .a-001 { text-decoration: none; display: block; }
+.a-002 { text-decoration: none; font-weight: 600; }
+.button-001 { font-weight: 800; border-radius: 12px; font-size: 1rem; }
+.div-001 { white-space: pre-wrap; color: var(--text-main); line-height: 1.6; }
+.div-002 { font-weight: 700; color: var(--text-main); }
 .div-003 { color: var(--text-main); font-weight: 700; margin-bottom: 0.25rem; }
 .div-004 { font-size: 0.8rem; color: var(--text-muted); }
-.div-006 { color: var(--error); font-weight: 700; margin-bottom: 0.25rem; }
-.div-010 { color: var(--success); font-weight: 700; margin-bottom: 0.25rem; }
-.h3-001 { font-size: 0.9rem; font-weight: 800; text-transform: uppercase; color: var(--text-muted); margin-bottom: 1rem; }
-.div-001 { white-space: pre-wrap; color: var(--text-main); line-height: 1.6; }
-.h2-001 { font-size: 1.25rem; font-weight: 800; margin-bottom: 1.5rem; }
-.div-011 { color: var(--error); font-size: 0.8rem; margin-top: 0.5rem; }
-.button-001 { font-weight: 800; border-radius: 12px; font-size: 1rem; }
 .div-005 { font-size: 0.8rem; text-transform: uppercase; font-weight: 700; opacity: 0.8; margin-bottom: 0.25rem; }
+.div-006 { color: var(--error); font-weight: 700; margin-bottom: 0.25rem; }
+.div-007 { display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: 2.5rem; }
+.div-008 { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem; margin-bottom: 2rem; }
 .div-009 { font-size: 2.25rem; font-weight: 900; }
+.div-010 { color: var(--success); font-weight: 700; margin-bottom: 0.25rem; }
+.div-011 { color: var(--error); font-size: 0.8rem; margin-top: 0.5rem; }
+.p-001 { color: var(--text-muted); margin-top: 0.5rem; }
+.span-001 { font-size: 0.85rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
