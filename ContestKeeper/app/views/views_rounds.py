@@ -297,11 +297,12 @@ class RoundDetailView(RedirectToRegisterMixin, ContestContextMixin, DetailView):
         is_organizer = contest.organizer == user
         is_jury = contest.jurys.filter(pk=user.pk).exists()
         is_participant = contest.participants.filter(pk=user.pk).exists()
+        is_team_member = contest.teams.filter(participants=user).exists()
 
         if round_obj.status == Round.Status.DRAFT and not (is_organizer or user.is_staff):
             raise Http404("This round is not available yet.")
 
-        if not (is_organizer or is_jury or is_participant or user.is_staff):
+        if not (is_organizer or is_jury or is_participant or is_team_member or user.is_staff):
             raise Http404("You do not have access to this contest.")
 
         return round_obj
