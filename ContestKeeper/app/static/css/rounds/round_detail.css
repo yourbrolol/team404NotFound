@@ -184,5 +184,11 @@
 }
 
 /* --- Extracted from round_detail.html --- */
-.a-001 { width: auto; }
-.span-001 { font-size: 1.5rem; font-weight: 700; }
+.a-001 {
+    width: auto;
+}
+
+.span-001 {
+    font-size: 1.5rem;
+    font-weight: 700;
+}

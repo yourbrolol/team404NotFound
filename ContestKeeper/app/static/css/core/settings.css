@@ -194,6 +194,7 @@ main.dashboard-container.page-narrow {
 
 /* On ultrawide screens / heavy zoom-out, keep cards readable instead of tiny center column */
 @media (min-width: 2200px) {
+
   .page-narrow .dashboard-header,
   .page-narrow .settings-layout,
   .page-narrow .settings-alert,
@@ -243,9 +244,9 @@ main.dashboard-container.page-narrow {
     align-items: stretch;
   }
 
-.settings-actions .btn {
-  justify-content: center;
-  width: 100%;
+  .settings-actions .btn {
+    justify-content: center;
+    width: 100%;
   }
 }
 
@@ -319,6 +320,16 @@ main.dashboard-container.page-narrow {
 }
 
 /* --- Extracted from settings.html --- */
-.div-001 { justify-content: flex-start; }
-.div-002 { margin-top: 0.4rem; font-size: 0.85rem; opacity: 0.75; }
-.div-003 { justify-content: center; }
+.div-001 {
+  justify-content: flex-start;
+}
+
+.div-002 {
+  margin-top: 0.4rem;
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+
+.div-003 {
+  justify-content: center;
+}

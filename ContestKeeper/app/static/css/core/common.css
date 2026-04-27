@@ -63,7 +63,7 @@
   --shadow-faint: rgba(var(--black-rgb), 0.06);
   --glass-solid-light: rgba(var(--white-rgb), 0.85);
   --glass-solid-ultra: rgba(var(--white-rgb), 0.95);
-  
+
   /* Alpha Steps for fine-tuning */
   --white-alpha-02: rgba(var(--white-rgb), 0.02);
   --white-alpha-03: rgba(var(--white-rgb), 0.03);
@@ -71,22 +71,34 @@
   --white-alpha-20: rgba(var(--white-rgb), 0.20);
 
   /* --- Phase 4 Hex Consolidations (Grouped Mappings) --- */
-  
+
   /* Primary & Brands */
-  --hex-primary-1: var(--primary); /* #6366f1 */
-  --hex-primary-2: var(--primary); /* #667eea */
-  --hex-indigo-alt: var(--primary); /* #5865f2 */
-  --hex-primary-light: var(--bg-primary-tint); /* #818cf8 */
-  --hex-primary-lightest: var(--bg-primary-tint); /* #eef2ff */
-  --hex-primary-dark: var(--primary-hover); /* #1e1b4b */
-  
+  --hex-primary-1: var(--primary);
+  /* #6366f1 */
+  --hex-primary-2: var(--primary);
+  /* #667eea */
+  --hex-indigo-alt: var(--primary);
+  /* #5865f2 */
+  --hex-primary-light: var(--bg-primary-tint);
+  /* #818cf8 */
+  --hex-primary-lightest: var(--bg-primary-tint);
+  /* #eef2ff */
+  --hex-primary-dark: var(--primary-hover);
+  /* #1e1b4b */
+
   /* Success & Greens */
-  --hex-success-1: var(--success); /* #10b981 */
-  --hex-success-2: var(--success); /* #2ecc71 */
-  --hex-success-3: var(--success); /* #4ade80 */
-  --hex-success-4: var(--success); /* #28a745 */
-  --hex-success-light: var(--bg-success-tint); /* #d1fae5 */
-  --hex-success-dark: var(--success); /* #065f46 */
+  --hex-success-1: var(--success);
+  /* #10b981 */
+  --hex-success-2: var(--success);
+  /* #2ecc71 */
+  --hex-success-3: var(--success);
+  /* #4ade80 */
+  --hex-success-4: var(--success);
+  /* #28a745 */
+  --hex-success-light: var(--bg-success-tint);
+  /* #d1fae5 */
+  --hex-success-dark: var(--success);
+  /* #065f46 */
 }
 
 @media (max-width: 1200px) {
@@ -121,7 +133,8 @@
   --slate-rgb: 71, 85, 105;
 
   /* Semantic Tints - Backgrounds (Light adjust) */
-  --bg-primary-tint: rgba(var(--primary-rgb), 0.08); /* Indigo-50-ish */
+  --bg-primary-tint: rgba(var(--primary-rgb), 0.08);
+  /* Indigo-50-ish */
   --bg-success-tint: rgba(var(--success-rgb), 0.1);
   --bg-error-tint: rgba(var(--error-rgb), 0.08);
   --bg-warning-tint: rgba(var(--warning-rgb), 0.1);
@@ -365,10 +378,29 @@ h3 {
   border: 1px solid transparent;
 }
 
-.btn-tinted.btn-success { background: var(--bg-success-tint); color: var(--success); border-color: rgba(var(--success-rgb), 0.2); }
-.btn-tinted.btn-error   { background: var(--bg-error-tint);   color: var(--error);   border-color: rgba(var(--error-rgb), 0.2); }
-.btn-tinted.btn-warning { background: var(--bg-warning-tint); color: var(--warning); border-color: rgba(var(--warning-rgb), 0.2); }
-.btn-tinted.btn-primary { background: var(--bg-primary-tint); color: var(--primary); border-color: rgba(var(--primary-rgb), 0.2); }
+.btn-tinted.btn-success {
+  background: var(--bg-success-tint);
+  color: var(--success);
+  border-color: rgba(var(--success-rgb), 0.2);
+}
+
+.btn-tinted.btn-error {
+  background: var(--bg-error-tint);
+  color: var(--error);
+  border-color: rgba(var(--error-rgb), 0.2);
+}
+
+.btn-tinted.btn-warning {
+  background: var(--bg-warning-tint);
+  color: var(--warning);
+  border-color: rgba(var(--warning-rgb), 0.2);
+}
+
+.btn-tinted.btn-primary {
+  background: var(--bg-primary-tint);
+  color: var(--primary);
+  border-color: rgba(var(--primary-rgb), 0.2);
+}
 
 /* Badges */
 .role-badge {

@@ -222,7 +222,8 @@ main.dashboard-container {
     background-position: right 1.25rem center !important;
 }
 
-.nav-lang-select:hover, .nav-lang-select:focus {
+.nav-lang-select:hover,
+.nav-lang-select:focus {
     color: var(--text-main);
     background-color: var(--glass-hover) !important;
     transform: translateX(4px);
@@ -237,6 +238,7 @@ main.dashboard-container {
 .nav-lang-switcher {
     width: 100%;
 }
+
 .nav-lang-switcher form {
     width: 100%;
 }
@@ -322,5 +324,10 @@ main.dashboard-container {
 }
 
 /* --- Extracted from nav.html --- */
-.form-001 { display: inline; }
-.svg-001 { margin-right: 0.75rem; }
+.form-001 {
+    display: inline;
+}
+
+.svg-001 {
+    margin-right: 0.75rem;
+}

@@ -48,8 +48,8 @@
     color: var(--text-main);
 }
 
-.app-card:hover { 
-    transform: translateY(-2px); 
+.app-card:hover {
+    transform: translateY(-2px);
     border-color: rgba(var(--primary-rgb), 0.4);
 }
 
@@ -100,23 +100,26 @@
     transition: all 0.2s;
 }
 
-.btn-approve { 
-    background: var(--bg-success-tint, var(--bg-primary-tint)); 
-    color: var(--success); 
-    border: 1px solid var(--success); 
+.btn-approve {
+    background: var(--bg-success-tint, var(--bg-primary-tint));
+    color: var(--success);
+    border: 1px solid var(--success);
 }
-.btn-approve:hover { 
-    background: var(--success); 
-    color: white; 
+
+.btn-approve:hover {
+    background: var(--success);
+    color: white;
 }
-.btn-reject { 
-    background: var(--bg-error-tint, var(--bg-primary-tint)); 
-    color: var(--error); 
-    border: 1px solid var(--error); 
+
+.btn-reject {
+    background: var(--bg-error-tint, var(--bg-primary-tint));
+    color: var(--error);
+    border: 1px solid var(--error);
 }
-.btn-reject:hover { 
-    background: var(--error); 
-    color: white; 
+
+.btn-reject:hover {
+    background: var(--error);
+    color: white;
 }
 
 .empty-state {
@@ -126,5 +129,10 @@
 }
 
 /* --- Extracted from admin_application_list.html --- */
-.a-001 { width: auto; }
-.div-001 { display:none; }
+.a-001 {
+    width: auto;
+}
+
+.div-001 {
+    display: none;
+}

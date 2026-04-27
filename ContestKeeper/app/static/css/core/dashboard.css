@@ -38,7 +38,8 @@
     border: 1px solid transparent;
 }
 
-.status-active, .status-running {
+.status-active,
+.status-running {
     background: var(--bg-success-tint);
     color: var(--success);
     border-color: rgba(var(--success-rgb), 0.3);
@@ -120,9 +121,17 @@
 
 /* 4K/8K readability */
 @media (min-width: 1600px) and (min-resolution: 1.5dppx) {
-    .section-title { font-size: 2.4rem; }
-    .contest-card h3 { font-size: 1.85rem; }
-    .contest-description { font-size: 1.1rem; }
+    .section-title {
+        font-size: 2.4rem;
+    }
+
+    .contest-card h3 {
+        font-size: 1.85rem;
+    }
+
+    .contest-description {
+        font-size: 1.1rem;
+    }
 }
 
 .section-title {
@@ -190,7 +199,8 @@
     }
 
     .contest-details {
-        grid-template-columns: 1fr 1fr;   /* keep 2-col dates */
+        grid-template-columns: 1fr 1fr;
+        /* keep 2-col dates */
         gap: 0.75rem;
         padding-top: 0.75rem;
     }
@@ -202,4 +212,6 @@
 }
 
 /* --- Extracted from dashboard.html --- */
-.svg-001 { opacity: 0.5; }
+.svg-001 {
+    opacity: 0.5;
+}

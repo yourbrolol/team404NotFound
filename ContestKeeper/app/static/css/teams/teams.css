@@ -123,9 +123,33 @@
 }
 
 /* --- Extracted from teams.html --- */
-.button-001 { background: var(--success); border-color: var(--success); }
-.button-002 { background: var(--error); border-color: var(--error); color: white; }
-.button-003 { background: var(--success); color: white; }
-.div-001 { display: flex; gap: 10px; }
-.div-002 { display: flex; gap: 8px; align-items: center; }
-.form-001 { margin: 0; }
+.button-001 {
+    background: var(--success);
+    border-color: var(--success);
+}
+
+.button-002 {
+    background: var(--error);
+    border-color: var(--error);
+    color: white;
+}
+
+.button-003 {
+    background: var(--success);
+    color: white;
+}
+
+.div-001 {
+    display: flex;
+    gap: 10px;
+}
+
+.div-002 {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+}
+
+.form-001 {
+    margin: 0;
+}

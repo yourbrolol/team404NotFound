@@ -1,18 +1,82 @@
 /* Styles for admin_leaderboard_dashboard.html */
 
 /* --- Extracted from admin_leaderboard_dashboard.html --- */
-.a-001 { color: var(--primary-color); }
-.a-002 { color: var(--error); }
-.div-001 { margin-top: 2rem; display: flex; justify-content: center; gap: 0.5rem; flex-wrap: wrap; }
-.div-002 { overflow-x: auto; margin-top: 0.75rem; }
-.div-003 { justify-content: space-between; align-items: center; }
-.div-004 { font-size: 0.7rem; font-weight: normal; margin-top: 0.25rem; }
-.div-005 { width:100%; }
-.div-006 { background: var(--border); border-radius: 999px; overflow: hidden; height: 16px; margin-bottom: 0.5rem; }
-.div-007 { display:flex; gap: 0.5rem; }
-.div-008 { display:flex; flex-wrap: wrap; gap: 1rem; align-items: center; margin-bottom: 1rem; }
-.div-009 { margin-top: 1.5rem; gap: 1rem; }
-.p-001 { margin: 0.5rem 0 0; color: var(--text-muted); }
-.section-001 { margin-top: 1.5rem; }
-.span-001 { cursor: default; }
-.table-001 { width:100%; min-width: 600px; }
+.a-001 {
+    color: var(--primary-color);
+}
+
+.a-002 {
+    color: var(--error);
+}
+
+.div-001 {
+    margin-top: 2rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+}
+
+.div-002 {
+    overflow-x: auto;
+    margin-top: 0.75rem;
+}
+
+.div-003 {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.div-004 {
+    font-size: 0.7rem;
+    font-weight: normal;
+    margin-top: 0.25rem;
+}
+
+.div-005 {
+    width: 100%;
+}
+
+.div-006 {
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    height: 16px;
+    margin-bottom: 0.5rem;
+}
+
+.div-007 {
+    display: flex;
+    gap: 0.5rem;
+}
+
+.div-008 {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.div-009 {
+    margin-top: 1.5rem;
+    gap: 1rem;
+}
+
+.p-001 {
+    margin: 0.5rem 0 0;
+    color: var(--text-muted);
+}
+
+.section-001 {
+    margin-top: 1.5rem;
+}
+
+.span-001 {
+    cursor: default;
+}
+
+.table-001 {
+    width: 100%;
+    min-width: 600px;
+}

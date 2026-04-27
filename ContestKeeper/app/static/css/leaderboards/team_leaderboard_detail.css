@@ -1,15 +1,64 @@
 /* Styles for team_leaderboard_detail.html */
 
 /* --- Extracted from team_leaderboard_detail.html --- */
-.h5-001 { margin-top:0; }
-.div-001 { overflow-x: auto; margin-top: 0.75rem; }
-.div-002 { justify-content: space-between; align-items: center; }
-.div-003 { margin-bottom: 1rem; padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
-.div-004 { max-width: 900px; margin: auto; }
-.div-005 { margin-bottom: 1rem; gap: 1rem; }
-.div-006 { margin-top: 1rem; }
-.div-007 { padding: 2rem; text-align: center; }
-.p-001 { margin: 0.5rem 0 0; color: var(--text-muted); }
-.section-001 { padding: 1rem; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
-.section-002 { margin-bottom: 1.5rem; }
-.table-001 { width:100%; min-width: 600px; }
+.h5-001 {
+    margin-top: 0;
+}
+
+.div-001 {
+    overflow-x: auto;
+    margin-top: 0.75rem;
+}
+
+.div-002 {
+    justify-content: space-between;
+    align-items: center;
+}
+
+.div-003 {
+    margin-bottom: 1rem;
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.div-004 {
+    max-width: 900px;
+    margin: auto;
+}
+
+.div-005 {
+    margin-bottom: 1rem;
+    gap: 1rem;
+}
+
+.div-006 {
+    margin-top: 1rem;
+}
+
+.div-007 {
+    padding: 2rem;
+    text-align: center;
+}
+
+.p-001 {
+    margin: 0.5rem 0 0;
+    color: var(--text-muted);
+}
+
+.section-001 {
+    padding: 1rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    background: var(--surface);
+}
+
+.section-002 {
+    margin-bottom: 1.5rem;
+}
+
+.table-001 {
+    width: 100%;
+    min-width: 600px;
+}

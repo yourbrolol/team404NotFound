@@ -123,4 +123,7 @@
 }
 
 /* --- Extracted from contest_rounds_team.html --- */
-.h1-001 { text-align: center; margin-bottom: 2rem; }
+.h1-001 {
+    text-align: center;
+    margin-bottom: 2rem;
+}

@@ -1,6 +1,20 @@
 /* Styles for team_create_form.html */
 
 /* --- Extracted from team_create_form.html --- */
-.div-001 { margin-top: 2rem; justify-content: flex-end; gap: 1rem; }
-.span-001 { display: block; font-size: 0.85rem; color: var(--text-muted); margin-top: 4px; }
-.span-002 { color: var(--error); font-size: 0.85rem; }
+.div-001 {
+    margin-top: 2rem;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.span-001 {
+    display: block;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+    margin-top: 4px;
+}
+
+.span-002 {
+    color: var(--error);
+    font-size: 0.85rem;
+}
