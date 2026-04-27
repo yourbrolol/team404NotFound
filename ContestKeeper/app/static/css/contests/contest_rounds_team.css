@@ -74,7 +74,9 @@
 }
 
 .status-badge {
-    display: inline-block;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0.35rem 0.75rem;
     border-radius: 12px;
     font-size: 0.8rem;
@@ -82,7 +84,6 @@
 }
 
 .status-active {
-    display: flex;
     align-items: center;
     justify-content: center;
     background: var(--bg-success-tint);

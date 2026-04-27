@@ -5,7 +5,7 @@ from django.views import View
 from django.views.generic import DetailView, ListView
 
 from app.forms import SubmissionForm
-from app.models import Contest, Round, Submission, JuryAssignment
+from app.models import Contest, Round, Submission, JuryAssignment, JuryScore, ContestEvaluationPhase, ScoringCriterion
 from app.views.views_base import RedirectToRegisterMixin
 from app.views.views_base import OrganizerRequiredMixin
 
@@ -115,7 +115,6 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
             return HttpResponseForbidden("Only assigned jurors can submit scores.")
 
         # Check if evaluation is finished
-        from app.models import ContestEvaluationPhase, ScoringCriterion, JuryScore
         from app.leaderboard import LeaderboardComputer
         from django.db import transaction
 
