@@ -16,6 +16,7 @@
                     <p class="p-001">Admin controls and leaderboard preview.</p>
                 </div>
                 <div class="div-007">
+                    <a href="{% url 'organizer_analytics' contest.pk %}" class="btn btn-secondary">Detailed Analytics</a>
                     <a href="{% url 'criterion_create' contest.pk %}" class="btn btn-tinted">Add Scoring Criterion</a>
                     <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">View Public Leaderboard</a>
                 </div>
