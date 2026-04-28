@@ -1,82 +1,196 @@
 /* Styles for admin_leaderboard_dashboard.html */
 
-/* --- Extracted from admin_leaderboard_dashboard.html --- */
-.a-001 {
-    color: var(--primary-color);
+.admin-dashboard-card {
+    width: 100%;
 }
 
-.a-002 {
+.dashboard-header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2.5rem;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+}
+
+.header-actions {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.dashboard-subtitle {
+    margin: 0.5rem 0 0;
+    color: var(--text-muted);
+    font-size: 1.1rem;
+}
+
+.status-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    margin-bottom: 2.5rem;
+}
+
+.status-card {
+    background: var(--bg-navy-soft);
+    padding: 1.25rem;
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+    transition: all 0.3s ease;
+}
+
+.status-card:hover {
+    border-color: var(--primary-medium);
+    background: var(--bg-navy-medium);
+}
+
+.status-card h4 {
+    color: var(--text-muted);
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+}
+
+.status-card p {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text-main);
+}
+
+.progress-section {
+    margin-top: 2.5rem;
+    padding: 2rem;
+    background: var(--bg-navy-soft);
+    border-radius: 1.25rem;
+    border: 1px solid var(--border);
+}
+
+.progress-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.progress-bar-container {
+    background: var(--border);
+    border-radius: 999px;
+    overflow: hidden;
+    height: 12px;
+    width: 100%;
+    margin-bottom: 0.75rem;
+    box-shadow: inset 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, var(--primary), var(--secondary));
+    height: 100%;
+    border-radius: 999px;
+    transition: width 0.5s ease-out;
+}
+
+.content-section {
+    margin-top: 3rem;
+}
+
+.content-section h4 {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-top: 0.75rem;
+    background: var(--bg-navy-soft);
+    border-radius: 1rem;
+    border: 1px solid var(--border);
+}
+
+.admin-table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 800px;
+}
+
+.admin-table th {
+    text-align: left;
+    padding: 1rem 1.5rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    border-bottom: 1px solid var(--border);
+}
+
+.admin-table td {
+    padding: 1.25rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+.admin-table tr:last-child td {
+    border-bottom: none;
+}
+
+.admin-table tr:hover td {
+    background: var(--white-alpha-02);
+}
+
+.criterion-actions {
+    font-size: 0.8rem;
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 0.5rem;
+}
+
+.action-edit {
+    color: var(--primary);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.action-delete {
     color: var(--error);
+    text-decoration: none;
+    font-weight: 600;
 }
 
-.div-001 {
+.action-buttons-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
     margin-top: 2rem;
+}
+
+.pagination-container {
+    margin-top: 2.5rem;
     display: flex;
     justify-content: center;
     gap: 0.5rem;
     flex-wrap: wrap;
 }
 
-.div-002 {
-    overflow-x: auto;
-    margin-top: 0.75rem;
-}
-
-.div-003 {
-    justify-content: space-between;
-    align-items: center;
-}
-
-.div-004 {
-    font-size: 0.7rem;
-    font-weight: normal;
-    margin-top: 0.25rem;
-}
-
-.div-005 {
-    width: 100%;
-}
-
-.div-006 {
-    background: var(--border);
-    border-radius: 999px;
-    overflow: hidden;
-    height: 16px;
-    margin-bottom: 0.5rem;
-}
-
-.div-007 {
-    display: flex;
-    gap: 0.5rem;
-}
-
-.div-008 {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    align-items: center;
-    margin-bottom: 1rem;
-}
-
-.div-009 {
-    margin-top: 1.5rem;
-    gap: 1rem;
-}
-
-.p-001 {
-    margin: 0.5rem 0 0;
-    color: var(--text-muted);
-}
-
-.section-001 {
-    margin-top: 1.5rem;
-}
-
-.span-001 {
-    cursor: default;
-}
-
-.table-001 {
-    width: 100%;
-    min-width: 600px;
+@media (max-width: 768px) {
+    .dashboard-header-section {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .header-actions {
+        width: 100%;
+    }
+    
+    .header-actions .btn {
+        flex: 1;
+        min-width: fit-content;
+    }
 }

@@ -9,158 +9,165 @@
 {% endblock %}
 
 {% block content %}
-        <div class="detail-card div-005">
-            <div class="detail-header div-003">
-                <div>
-                    <h1 class="detail-title">{{ contest.name }} Evaluation Dashboard</h1>
-                    <p class="p-001">Admin controls and leaderboard preview.</p>
-                </div>
-                <div class="div-007">
-                    <a href="{% url 'organizer_analytics' contest.pk %}" class="btn btn-secondary">Detailed Analytics</a>
-                    <a href="{% url 'criterion_create' contest.pk %}" class="btn btn-tinted">Add Scoring Criterion</a>
-                    <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">View Public Leaderboard</a>
-                </div>
-            </div>
-
-            <div class="info-grid div-009">
-                <div class="info-item">
-                    <h4>Evaluation status</h4>
-                    <p>{{ phase.get_status_display }}</p>
-                </div>
-                <div class="info-item">
-                    <h4>Trigger type</h4>
-                    <p>{{ phase.get_trigger_type_display }}</p>
-                </div>
-                <div class="info-item">
-                    <h4>All scores complete</h4>
-                    <p>{{ phase.all_scores_complete|yesno:"Yes,No" }}</p>
-                </div>
-                <div class="info-item">
-                    <h4>Participant breakdown</h4>
-                    <p>{{ phase.show_jury_breakdown_to_participants|yesno:"Visible,Hidden" }}</p>
-                </div>
-                <div class="info-item">
-                    <h4>Completed at</h4>
-                    <p>{{ phase.completed_at|date:"M d, Y H:i"|default:'Not completed yet' }}</p>
-                </div>
-            </div>
-
-            <section class="section-001">
-                <h4>Score submission progress</h4>
-                <div class="div-006">
-                    <div style="width: {{ progress_percent }}%; background: var(--primary-color); height: 100%;"></div>
-                </div>
-                <p>{{ submitted }} of {{ expected }} expected jury scores submitted.</p>
-            </section>
-
-            <section class="section-001">
-                <h4>Missing scores</h4>
-                {% if missing_scores %}
-                    <div class="div-002"><table class="table table-001">
-                        <thead>
-                            <tr>
-                                <th>Team</th>
-                                <th>Criterion</th>
-                                <th>Jury member</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for missing in missing_scores %}
-                            <tr>
-                                <td>{{ missing.team_name }}</td>
-                                <td>{{ missing.criterion_name }}</td>
-                                <td>{{ missing.jury_username }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table></div>
-                {% else %}
-                    <p>No missing scores detected.</p>
-                {% endif %}
-            </section>
-
-            <section class="section-001">
-                <div class="div-008">
-                    <form method="post" action="{% url 'admin_finish_evaluation' contest.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-primary">Finish Evaluation</button>
-                    </form>
-                    <form method="post" action="{% url 'admin_recalculate_leaderboard' contest.pk %}">
-                        {% csrf_token %}
-                        <button type="submit" class="btn btn-secondary">Recalculate Leaderboard</button>
-                    </form>
-                    <form method="post" action="{% url 'admin_toggle_jury_breakdown' contest.pk %}">
-                        {% csrf_token %}
-                        <input type="hidden" name="action" value="{% if phase.show_jury_breakdown_to_participants %}hide{% else %}show{% endif %}">
-                        <button type="submit" class="btn btn-tinted">{% if phase.show_jury_breakdown_to_participants %}Hide{% else %}Show{% endif %} jury breakdown to participants</button>
-                    </form>
-                    <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=json" class="btn btn-secondary">Export JSON</a>
-                    <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=csv" class="btn btn-secondary">Export CSV</a>
-                    <a href="{% url 'export_evaluations_csv' contest.pk %}" class="btn btn-secondary">Export Evaluations</a>
-                </div>
-            </section>
-
-            <section class="section-001">
-                <h4>Current leaderboard preview</h4>
-                {% if entries %}
-                    <div class="div-002"><table class="table table-001">
-                        <thead>
-                            <tr>
-                                <th>Rank</th>
-                                <th>Team</th>
-                                <th>Total score</th>
-                                {% for criterion in criteria %}
-                                    <th>
-                                        {{ criterion.name }}
-                                        <div class="div-004">
-                                            <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" class="a-001">Edit</a> |
-                                            <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" class="a-002">Del</a>
-                                        </div>
-                                    </th>
-                                {% endfor %}
-                                <th>Complete</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {% for item in entries %}
-                            <tr>
-                                <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
-                                <td>{{ item.entry.team.name }}</td>
-                                <td>{{ item.entry.total_score }}</td>
-                                {% for score in item.category_values %}
-                                    <td>{{ score }}</td>
-                                {% endfor %}
-                                <td>{{ item.entry.computation_complete|yesno:"Yes,No" }}</td>
-                            </tr>
-                            {% endfor %}
-                        </tbody>
-                    </table></div>
-
-                    {% if entries.has_other_pages %}
-                    <div class="pagination div-001">
-                        {% if entries.has_previous %}
-                            <a href="?page=1" class="btn btn-secondary btn-sm">First</a>
-                            <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">Previous</a>
-                        {% endif %}
-                        
-                        {% for num in entries.paginator.page_range %}
-                            {% if entries.number == num %}
-                                <span class="btn btn-primary btn-sm span-001">{{ num }}</span>
-                            {% elif num > entries.number|add:-3 and num < entries.number|add:3 %}
-                                <a href="?page={{ num }}" class="btn btn-secondary btn-sm">{{ num }}</a>
-                            {% endif %}
-                        {% endfor %}
-                        
-                        {% if entries.has_next %}
-                            <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">Next</a>
-                            <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">Last</a>
-                        {% endif %}
+            <div class="glass-panel admin-dashboard-card">
+                <div class="dashboard-header-section">
+                    <div>
+                        <h1 id="h1">{{ contest.name }} Evaluation Dashboard</h1>
+                        <p class="dashboard-subtitle">Admin controls and leaderboard preview.</p>
                     </div>
-                    {% endif %}
+                    <div class="header-actions">
+                        <a href="{% url 'organizer_analytics' contest.pk %}" class="btn btn-secondary">Detailed Analytics</a>
+                        <a href="{% url 'criterion_create' contest.pk %}" class="btn btn-tinted btn-primary">Add Scoring Criterion</a>
+                        <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">View Public Leaderboard</a>
+                    </div>
+                </div>
 
-                {% else %}
-                    <p>No leaderboard entries available yet.</p>
-                {% endif %}
-            </section>
-        </div>
+                <div class="status-grid">
+                    <div class="status-card">
+                        <h4>Evaluation Status</h4>
+                        <p>{{ phase.get_status_display }}</p>
+                    </div>
+                    <div class="status-card">
+                        <h4>Trigger Type</h4>
+                        <p>{{ phase.get_trigger_type_display }}</p>
+                    </div>
+                    <div class="status-card">
+                        <h4>All Scores Complete</h4>
+                        <p>{{ phase.all_scores_complete|yesno:"Yes,No" }}</p>
+                    </div>
+                    <div class="status-card">
+                        <h4>Participant Breakdown</h4>
+                        <p>{{ phase.show_jury_breakdown_to_participants|yesno:"Visible,Hidden" }}</p>
+                    </div>
+                    <div class="status-card">
+                        <h4>Completed At</h4>
+                        <p>{{ phase.completed_at|date:"M d, Y H:i"|default:'In Progress' }}</p>
+                    </div>
+                </div>
+
+                <section class="progress-section">
+                    <div class="progress-header">
+                        <h4>Score Submission Progress</h4>
+                        <span>{{ progress_percent }}%</span>
+                    </div>
+                    <div class="progress-bar-container">
+                        <div class="progress-bar" style="width: {{ progress_percent }}%;"></div>
+                    </div>
+                    <p class="dashboard-subtitle">{{ submitted }} of {{ expected }} expected jury scores submitted.</p>
+                </section>
+
+                <section class="content-section">
+                    <h4>Missing scores</h4>
+                    {% if missing_scores %}
+                        <div class="table-wrapper">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Team</th>
+                                        <th>Criterion</th>
+                                        <th>Jury member</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for missing in missing_scores %}
+                                    <tr>
+                                        <td>{{ missing.team_name }}</td>
+                                        <td>{{ missing.criterion_name }}</td>
+                                        <td>{{ missing.jury_username }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    {% else %}
+                        <p class="dashboard-subtitle">No missing scores detected.</p>
+                    {% endif %}
+                </section>
+
+                <section class="content-section">
+                    <div class="action-buttons-group">
+                        <form method="post" action="{% url 'admin_finish_evaluation' contest.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-primary">Finish Evaluation</button>
+                        </form>
+                        <form method="post" action="{% url 'admin_recalculate_leaderboard' contest.pk %}">
+                            {% csrf_token %}
+                            <button type="submit" class="btn btn-secondary">Recalculate Leaderboard</button>
+                        </form>
+                        <form method="post" action="{% url 'admin_toggle_jury_breakdown' contest.pk %}">
+                            {% csrf_token %}
+                            <input type="hidden" name="action" value="{% if phase.show_jury_breakdown_to_participants %}hide{% else %}show{% endif %}">
+                            <button type="submit" class="btn btn-tinted btn-primary">{% if phase.show_jury_breakdown_to_participants %}Hide{% else %}Show{% endif %} jury breakdown to participants</button>
+                        </form>
+                        <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=json" class="btn btn-secondary">Export JSON</a>
+                        <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=csv" class="btn btn-secondary">Export CSV</a>
+                        <a href="{% url 'export_evaluations_csv' contest.pk %}" class="btn btn-secondary">Export Evaluations</a>
+                    </div>
+                </section>
+
+                <section class="content-section">
+                    <h4>Current Leaderboard Preview</h4>
+                    {% if entries %}
+                        <div class="table-wrapper">
+                            <table class="admin-table">
+                                <thead>
+                                    <tr>
+                                        <th>Rank</th>
+                                        <th>Team</th>
+                                        <th>Total Score</th>
+                                        {% for criterion in criteria %}
+                                            <th>
+                                                {{ criterion.name }}
+                                                <div class="criterion-actions">
+                                                    <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" class="action-edit">Edit</a> |
+                                                    <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" class="action-delete">Del</a>
+                                                </div>
+                                            </th>
+                                        {% endfor %}
+                                        <th>Complete</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for item in entries %}
+                                    <tr>
+                                        <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
+                                        <td>{{ item.entry.team.name }}</td>
+                                        <td><strong>{{ item.entry.total_score }}</strong></td>
+                                        {% for score in item.category_values %}
+                                            <td>{{ score }}</td>
+                                        {% endfor %}
+                                        <td>{{ item.entry.computation_complete|yesno:"Yes,No" }}</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+
+                        {% if entries.has_other_pages %}
+                        <div class="pagination-container">
+                            {% if entries.has_previous %}
+                                <a href="?page=1" class="btn btn-secondary btn-sm">First</a>
+                                <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">Previous</a>
+                            {% endif %}
+                            
+                            {% for num in entries.paginator.page_range %}
+                                {% if entries.number == num %}
+                                    <span class="btn btn-primary btn-sm">{{ num }}</span>
+                                {% elif num > entries.number|add:-3 and num < entries.number|add:3 %}
+                                    <a href="?page={{ num }}" class="btn btn-secondary btn-sm">{{ num }}</a>
+                                {% endif %}
+                            {% endfor %}
+                            
+                            {% if entries.has_next %}
+                                <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">Next</a>
+                                <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">Last</a>
+                            {% endif %}
+                        </div>
+                        {% endif %}
+
+                    {% else %}
+                        <p class="dashboard-subtitle">No leaderboard entries available yet.</p>
+                    {% endif %}
+                </section>
+            </div>
 {% endblock %}
