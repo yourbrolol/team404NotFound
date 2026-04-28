@@ -52,3 +52,7 @@
     color: var(--text-muted);
     font-size: 0.9rem;
 }
+
+.dashboard-header {
+    margin-bottom: 1.5rem;
+}

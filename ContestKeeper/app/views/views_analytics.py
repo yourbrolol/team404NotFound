@@ -66,7 +66,7 @@ class OrganizerAnalyticsView(OrganizerRequiredMixin, TemplateView):
             })
 
         distribution = [0] * 10
-        max_possible = sum(c.max_score * c.weight for c in criteria)
+        max_possible = sum(float(c.max_score) * float(c.weight) for c in criteria)
         for entry in entries:
             score = float(entry.total_score)
             if max_possible > 0:
