@@ -8,10 +8,10 @@
 
 - Page not found (404) at contests/14/announcements/3/delete/? FIXED!!!
 - Page not found (404) at contests/14/schedule/7/delete/ FIXED!!!
-- @team_leaderboard_detail.html is not mapped to any url patters and button
+- @team_leaderboard_detail.html is not mapped to any url patters and button FIXED!!!
 - Admins / staff cannot manage / delete contests (manage button is visible, but after clicking it, it shows 403 forbidden error, delete button is not visible) FIXED!!!
-- In teams tab, admins see the join button
-- Anyone can see teams assigned to to juries to rate (only organizers and juries should see that)
+- In teams tab, admins see the join button FIXED!!!
+- Anyone can see teams assigned to to juries to rate (only organizers and juries should see that) FIXED!!!
 
 **Additional:**
 
