@@ -23,8 +23,15 @@ class ViewTeamsView(RedirectToRegisterMixin, ListView):
     def get_context_data(self, **kwargs):
         user_team = None
         team_applications = None
+        has_pending_application = False
         if self.request.user.is_authenticated:
             user_team = self.contest.teams.filter(participants=self.request.user).first()
+            has_pending_application = Application.objects.filter(
+                user=self.request.user,
+                contest=self.contest,
+                application_type=Application.Type.PARTICIPANT,
+                status=Application.Status.PENDING
+            ).exists()
             if self.request.user == self.contest.organizer:
                 team_applications = Application.objects.filter(
                     contest=self.contest,
@@ -36,6 +43,7 @@ class ViewTeamsView(RedirectToRegisterMixin, ListView):
             contest=self.contest, 
             user_team=user_team, 
             team_applications=team_applications,
+            has_pending_application=has_pending_application,
             **kwargs
         )
 

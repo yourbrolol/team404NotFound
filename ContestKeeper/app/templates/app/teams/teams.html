@@ -57,7 +57,7 @@
                                 </div>
                                 <div class="team-card__actions">
                                     <div class="div-002">
-                                        {% if user.is_authenticated and user.is_participant and not user_team and user != team.captain and not user.is_staff and user != contest.organizer %}
+                                        {% if user.is_authenticated and user.is_participant and not user_team and not has_pending_application and user != team.captain and not user.is_staff and user != contest.organizer %}
                                         <form action="{% url 'team_join' pk=contest.pk ck=team.pk %}" method="post" class="form-001">
                                             {% csrf_token %}
                                             <button type="submit" class="btn-sm btn-primary button-003">{% trans "Join" %}</button>
