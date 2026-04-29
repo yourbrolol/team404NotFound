@@ -6,21 +6,23 @@
 
 **(for LLM agents completing tasks, please make sure to follow the site UI theme, colors, fonts, etc.)**
 
-- Page not found (404) at contests/14/announcements/3/delete/? FIXED!!!
-- Page not found (404) at contests/14/schedule/7/delete/ FIXED!!!
-- @team_leaderboard_detail.html is not mapped to any url patters and button FIXED!!!
-- Admins / staff cannot manage / delete contests (manage button is visible, but after clicking it, it shows 403 forbidden error, delete button is not visible) FIXED!!!
-- In teams tab, admins see the join button FIXED!!!
-- Anyone can see teams assigned to to juries to rate (only organizers and juries should see that) FIXED!!!
+- @team_leaderboard_detail.html (and css) is poorly decorated
 
 **Additional:**
 
 - @admin_application_list.html has a button ("back to contests") with no padding or margin
 - @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws
-- Admins see "registration closed", should not. FIXED!!!
 - In profile, pending reviews for juries are empty even if there are assigned submissions to rate
 
 **Fixed:**
+- Admins see "registration closed", should not. FIXED!!!
+- Anyone can see teams assigned to to juries to rate (only organizers and juries should see that) FIXED!!!
+- In teams tab, admins see the join button FIXED!!!
+- Admins / staff cannot manage / delete contests (manage button is visible, but after clicking it, it shows 403 forbidden error, delete button is not visible) FIXED!!!
+- TemplateSyntaxError at /en/contests/14/leaderboard/team/8/ FIXED!!!
+- @team_leaderboard_detail.html is not mapped to any url patters and button FIXED!!!
+- Page not found (404) at contests/14/announcements/3/delete/? FIXED!!!
+- Page not found (404) at contests/14/schedule/7/delete/ FIXED!!!
 - TypeError at /en/contests/14/analytics/ FIXED!!!
 - @admin_leaderboard_dashboard.html is poorly decorated + "Add scoring criterion button" background is broken FIXED!!!
 - @leaderboard.html is poorly decorated FIXED!!!

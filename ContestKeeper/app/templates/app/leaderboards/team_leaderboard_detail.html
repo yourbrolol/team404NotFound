@@ -89,7 +89,7 @@
                 {% if can_view_missing %}
                     <section class="section-001">
                         <h4>Computation status</h4>
-                        <p>{{ 'Complete' if entry.computation_complete else 'Incomplete' }}</p>
+                        <p>{% if entry.computation_complete %}Complete{% else %}Incomplete{% endif %}</p>
                         {% if entry.missing_scores %}
                         <div class="div-006">
                             <h5>Missing scores</h5>
