@@ -29,7 +29,7 @@ class OrganizerRequiredMixin(RedirectToRegisterMixin, ContestContextMixin):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         if not request.user.is_authenticated:
             return self.handle_no_permission()
-        if self.contest.organizer != request.user:
+        if self.contest.organizer != request.user and not request.user.is_staff:
             return HttpResponseForbidden("You are not the organizer of this contest.")
         return super().dispatch(request, *args, **kwargs)
 

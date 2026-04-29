@@ -109,7 +109,7 @@
         {% endif %}
     </div>
 
-    {% if user.is_authenticated and user.is_participant %}
+    {% if user.is_authenticated and user.is_participant and not user.is_staff and user != contest.organizer %}
     <div class="registration-block div-008">
         {% if user_team %}
         <h4 class="h4-003">{% trans "You registered already!" %}</h4>
@@ -181,7 +181,7 @@
         {% if user == contest.organizer or user.is_staff %}
         <a href="{% url 'contest_edit' contest.pk %}" class="btn btn-primary">{% trans "Manage Contest" %}</a>
         {% endif %}
-        {% if user == contest.organizer %}
+        {% if user == contest.organizer or user.is_staff %}
         <form class="delete-form form-001" action="{% url 'contest_delete' contest.pk %}" method="POST" onsubmit="return confirm('{% trans "Are you sure you want to delete this contest? This action cannot be undone." %}');">
             {% csrf_token %}
             <button type="submit" class="btn btn-tinted btn-error">{% trans "Delete Contest" %}</button>

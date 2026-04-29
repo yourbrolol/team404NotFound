@@ -8,6 +8,7 @@ urlpatterns = [
     path("<int:pk>/teams/",                     views.ViewTeamsView.as_view(),     name="contest_teams"),
     path("<int:pk>/jurys/",                     views.ViewJurysView.as_view(),     name="contest_jurys"),
     path("<int:pk>/leaderboard/",                views.ContestLeaderboardView.as_view(), name="contest_leaderboard"),
+    path("<int:pk>/leaderboard/team/<int:team_pk>/", views.TeamDetailLeaderboardView.as_view(), name="team_leaderboard_detail"),
     path("<int:pk>/leaderboard/api/",            views.LeaderboardAPIView.as_view(), name="contest_leaderboard_api"),
     path("<int:pk>/board/",                      views.AdminLeaderboardDashboardView.as_view(), name="admin_leaderboard_dashboard"),
     path("<int:pk>/leaderboard/finish/",         views.AdminFinishEvaluationView.as_view(), name="admin_finish_evaluation"),

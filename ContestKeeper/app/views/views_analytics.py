@@ -116,6 +116,7 @@ class ScheduleEventCreateView(OrganizerRequiredMixin, CreateView):
 class ScheduleEventDeleteView(OrganizerRequiredMixin, DeleteView):
     model = ScheduleEvent
     template_name = "app/schedule/schedule_event_confirm_delete.html"
+    pk_url_kwarg = "eck"
 
     def get_success_url(self):
         return reverse("schedule", kwargs={"pk": self.contest.pk})

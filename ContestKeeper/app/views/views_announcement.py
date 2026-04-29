@@ -45,6 +45,7 @@ class AnnouncementCreateView(OrganizerRequiredMixin, CreateView):
 class AnnouncementDeleteView(OrganizerRequiredMixin, DeleteView):
     model = Announcement
     template_name = "app/announcements/announcement_confirm_delete.html"
+    pk_url_kwarg = "ack"
 
     def get_success_url(self):
         return reverse("announcement_list", kwargs={"pk": self.contest.pk})

@@ -89,7 +89,7 @@ class ContestFormView(RedirectToRegisterMixin, View):
         if pk is None:
             return None, False
         contest = get_object_or_404(Contest, pk=pk)
-        return contest, contest.organizer != self.request.user
+        return contest, contest.organizer != self.request.user and not self.request.user.is_staff
 
     def get(self, request, *args, **kwargs):
         contest, forbidden = self._get_contest()

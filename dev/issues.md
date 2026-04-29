@@ -17,7 +17,7 @@
 
 - @admin_application_list.html has a button ("back to contests") with no padding or margin
 - @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws
-- Admins see "registration closed", should not.
+- Admins see "registration closed", should not. FIXED!!!
 - In profile, pending reviews for juries are empty even if there are assigned submissions to rate
 
 **Fixed:**

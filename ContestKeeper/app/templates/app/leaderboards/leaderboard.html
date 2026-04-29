@@ -42,7 +42,7 @@
                             {% for item in entries %}
                             <tr{% if item.entry.is_tied %} class="highlight"{% endif %}>
                                 <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
-                                <td><strong>{{ item.entry.team.name }}</strong></td>
+                                <td><strong><a href="{% url 'team_leaderboard_detail' contest.pk item.entry.team.pk %}" style="text-decoration: none; color: inherit;">{{ item.entry.team.name }}</a></strong></td>
                                 <td><strong>{{ item.entry.total_score }}</strong></td>
                                 {% for score in item.category_values %}
                                     <td>{{ score }}</td>
