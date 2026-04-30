@@ -20,10 +20,34 @@
         {% else %}
             <a href="{% url 'contest_rounds_team' contest.pk %}" class="back-link">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-                {% trans "Back to Rounds List" %}
+                {% trans "Back to All Rounds" %}
             </a>
         {% endif %}
     </nav>
+
+    {% if round.status == 'SUBMISSION_CLOSED' %}
+        <div class="status-alert warning mb-4">
+            <div class="alert-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+            </div>
+            <div class="alert-content">
+                <strong>{% trans "Submissions Closed" %}</strong>
+                <span>{% trans "This round is no longer accepting submissions. Results will be published after jury evaluation." %}</span>
+            </div>
+        </div>
+    {% endif %}
+
+    {% if round.status == 'EVALUATED' %}
+        <div class="status-alert success mb-4">
+            <div class="alert-icon">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline></svg>
+            </div>
+            <div class="alert-content">
+                <strong>{% trans "Evaluation Complete" %}</strong>
+                <span>{% trans "Check the leaderboard to see the final results and rankings." %}</span>
+            </div>
+        </div>
+    {% endif %}
 
     <!-- Round Header -->
     <div class="round-hero-card">
@@ -111,7 +135,7 @@
             <!-- Submission Status Card -->
             {% if not is_organizer and not is_jury %}
                 <div class="sidebar-card highlight">
-                    <h3 class="sidebar-title">{% trans "Submission Status" %}</h3>
+                    <h3 class="sidebar-title">{% trans "Your Submission" %}</h3}
                     
                     {% if is_active %}
                         <div class="timer-display">
@@ -149,7 +173,7 @@
                                     </div>
                                 </div>
                                 {% if is_open %}
-                                    <a href="{% url 'submission_create' contest.pk round.pk %}" class="btn-sidebar primary">{% trans "Submit Now" %}</a>
+                                    <a href="{% url 'submission_create' contest.pk round.pk %}" class="btn-sidebar primary">{% trans "Submit Your Work Now →" %}</a>
                                 {% else %}
                                     <p class="deadline-note">{% trans "Submissions are currently closed." %}</p>
                                 {% endif %}

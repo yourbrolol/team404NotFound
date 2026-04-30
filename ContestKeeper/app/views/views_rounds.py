@@ -251,36 +251,51 @@ class ContestRoundsTeamView(RedirectToRegisterMixin, TemplateView):
         )
 
 
-class RoundDetailTeamView(RedirectToRegisterMixin, TemplateView):
-    template_name = "app/rounds/round_detail_team.html"
+class RoundDetailTeamView(RedirectToRegisterMixin, DetailView):
+    """Legacy view - now uses the same template as RoundDetailView.
+    This view is maintained for backward compatibility but delegates to the same template."""
+    model = Round
+    template_name = "app/rounds/round_detail.html"
+    context_object_name = "round"
+    pk_url_kwarg = "round_id"
 
-    def get_context_data(self, **kwargs):
-        from django.utils import timezone as _timezone
-
+    def get_object(self, queryset=None):
         contest = get_object_or_404(Contest, pk=self.kwargs["pk"])
         round_obj = get_object_or_404(Round, pk=self.kwargs["round_id"], contest=contest)
+        
         if round_obj.status == Round.Status.DRAFT:
             raise Http404("This round is not available yet.")
+        
+        return round_obj
 
-        now = _timezone.now()
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        round_obj = self.object
+        user = self.request.user
+        contest = round_obj.contest
+
+        now = timezone.now()
         is_active = round_obj.status == Round.Status.ACTIVE and round_obj.start_time <= now
         is_open = is_active and round_obj.deadline > now
         time_remaining = round_obj.time_remaining() if is_active else None
 
-        user_team = contest.teams.filter(participants=self.request.user).first()
+        user_team = contest.teams.filter(participants=user).first()
         user_submission = None
         if user_team:
             user_submission = Submission.objects.filter(round=round_obj, team=user_team).first()
 
-        return super().get_context_data(
-            contest=contest,
-            round=round_obj,
-            is_active=is_active,
-            is_open=is_open,
-            time_remaining=time_remaining,
-            user_submission=user_submission,
-            user_team=user_team,
-        )
+        context.update({
+            "contest": contest,
+            "is_organizer": False,  # Team view is never for organizer
+            "is_jury": contest.jurys.filter(pk=user.pk).exists(),
+            "is_active": is_active,
+            "is_open": is_open,
+            "time_remaining": time_remaining,
+            "user_submission": user_submission,
+            "user_team": user_team,
+            "submission_count": 0,  # Not shown to team members
+        })
+        return context
 
 
 class RoundDetailView(RedirectToRegisterMixin, ContestContextMixin, DetailView):
