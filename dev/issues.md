@@ -15,7 +15,6 @@
 
 **Additional:**
 
-- The Cancel button at contests/16/rounds/4/submit/ looks strange (most likely doesn't use default buttons)
 - /teams/new needs more vertical padding & margin (just a little more)
 - @admin_application_list.html has a button ("back to contests") with no padding or margin
 - @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws

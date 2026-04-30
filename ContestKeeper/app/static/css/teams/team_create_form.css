@@ -1,10 +1,34 @@
 /* Styles for team_create_form.html */
 
+/* Page layout adjustments */
+main {
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+}
+
+.dashboard-header {
+    margin-bottom: 2rem;
+}
+
+.glass-panel {
+    padding: 3rem;
+}
+
+.form-section {
+    margin-bottom: 2rem;
+}
+
+.settings-field {
+    margin-bottom: 1.75rem;
+}
+
 /* --- Extracted from team_create_form.html --- */
 .div-001 {
-    margin-top: 2rem;
+    margin-top: 3rem;
     justify-content: flex-end;
     gap: 1rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--border);
 }
 
 .span-001 {
