@@ -138,7 +138,11 @@ class ProfileView(RedirectToRegisterMixin, View):
                     if JuryAssignment.objects.filter(contest=contest).exists():
                         teams_to_evaluate = []
                     else:
-                        teams_to_evaluate = contest.teams.order_by("name")
+                        # Get teams that have actually submitted work in this contest's rounds
+                        teams_with_submissions = Team.objects.filter(
+                            submissions__round__contest=contest
+                        ).distinct().order_by("name")
+                        teams_to_evaluate = list(teams_with_submissions)
                 
                 for team in teams_to_evaluate:
                     missing = [
