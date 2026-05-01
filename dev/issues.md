@@ -6,14 +6,22 @@
 
 **(for LLM agents completing tasks, please make sure to follow the site UI theme, colors, fonts, etc.)**
 
-none.
+- (contest-idx)/leaderboard should be shown to participants as a card at contest_detail.html but only after the contest is finished. Before that, it cannot be accessed neither like described, neither through URL (/leaderboard)
 
 **Additional:**
 
+- At contest_detail.html, when there is an active round, jurors see "View & Submit" instead of "Judge" (and the button should send them to /rounds/team)
+- There is /rounds template for organizers, /rounds/team template for teams and jurors. How about renaming it to /rounds/teams
 - /teams/new needs more vertical padding & margin (just a little more)
 - @admin_application_list.html has a button ("back to contests") with no padding or margin
 - @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws
 - In profile, pending reviews for juries are empty even if there are assigned submissions to rate
+
+**Probing**
+
+**(here lie issues that weren't been proven true / their behaviour wasn't studied yet, do not fix until studied & moved out)**
+
+- /evaluate/(idx)?round_id=(id) shows "Evaluation phase is closed" for jurors who are not assigned to the team, should be "You're not assigned to evaluate this team" (reason: finish evaluation contest button might start this issue to happen)
 
 **Fixed:**
 
