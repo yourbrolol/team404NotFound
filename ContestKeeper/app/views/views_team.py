@@ -127,11 +127,20 @@ class OrganizerOnlyMixin(RedirectToRegisterMixin):
         return super().dispatch(request, *args, **kwargs)
 
 
-class TeamDeleteView(OrganizerOnlyMixin, View):
-    """Allows the contest organizer to delete a team from their contest."""
+class TeamDeleteView(RedirectToRegisterMixin, View):
+    """Allows the contest organizer or team captain to delete a team from their contest."""
+
+    def dispatch(self, request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+        self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        self.team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
+        if request.user != self.contest.organizer and request.user != self.team.captain:
+            return HttpResponseForbidden("Only the organizer or team captain can delete this team.")
+        return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
+        team = self.team
         # Remove all applications associated with this team in this contest
         Application.objects.filter(contest=self.contest, team=team).delete()
         # Remove all jury assignments for this team
@@ -199,8 +208,8 @@ class TeamUpdateView(RedirectToRegisterMixin, UpdateView):
     def dispatch(self, request, *args, **kwargs):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
-        if request.user != team.captain:
-            return HttpResponseForbidden("You are not the captain of this team.")
+        if request.user != team.captain and request.user != self.contest.organizer:
+            return HttpResponseForbidden("You are not authorized to edit this team.")
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -318,3 +327,28 @@ class TeamJoinView(RedirectToRegisterMixin, View):
         )
         messages.success(request, f"Application to join '{team.name}' submitted!")
         return redirect("contest_teams", pk=pk)
+
+
+class TeamLeaveView(RedirectToRegisterMixin, View):
+    def post(self, request, pk, ck):
+        if not request.user.is_authenticated:
+            return self.handle_no_permission()
+
+        contest = get_object_or_404(Contest, pk=pk)
+        team = get_object_or_404(contest.teams, pk=ck)
+
+        if request.user == team.captain:
+            return HttpResponseForbidden("Team captain cannot leave the team.")
+        if not team.participants.filter(pk=request.user.pk).exists():
+            return HttpResponseForbidden("You are not a member of this team.")
+
+        team.participants.remove(request.user)
+        Application.objects.filter(
+            user=request.user,
+            contest=contest,
+            team=team,
+            application_type=Application.Type.PARTICIPANT,
+        ).delete()
+
+        messages.success(request, "You have left the team.")
+        return redirect("contest_detail", pk=contest.pk)

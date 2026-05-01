@@ -24,6 +24,7 @@ urlpatterns = [
     path("<int:pk>/teams/new/",                 views.TeamCreateView.as_view(),    name="team_create"),
     path("<int:pk>/teams/<int:ck>/",            views.TeamDetailView.as_view(),    name="team_detail"),
     path("<int:pk>/teams/<int:ck>/join/",       views.TeamJoinView.as_view(),      name="team_join"),
+    path("<int:pk>/teams/<int:ck>/leave/",      views.TeamLeaveView.as_view(),     name="team_leave"),
     path("<int:pk>/teams/<int:ck>/edit/",       views.TeamUpdateView.as_view(),    name="team_edit"),
     path("<int:pk>/teams/<int:ck>/kick/<int:user_id>/",     views.TeamKickView.as_view(),      name="team_kick"),
     path("<int:pk>/teams/<int:ck>/delete/",                  views.TeamDeleteView.as_view(),    name="team_delete"),

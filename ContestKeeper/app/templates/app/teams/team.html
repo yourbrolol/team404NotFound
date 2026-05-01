@@ -61,6 +61,12 @@
                     {% if request.user == team.captain %}
                     <a href="{% url 'team_edit' pk=contest.pk ck=team.pk %}" class="btn btn-primary a-003">{% trans "Edit Team" %}</a>
                     {% endif %}
+                    {% if request.user.is_authenticated and request.user != team.captain and request.user in team.participants.all %}
+                    <form method="POST" action="{% url 'team_leave' pk=contest.pk ck=team.pk %}" data-confirm="{% trans "Leave this team?" %}">
+                        {% csrf_token %}
+                        <button type="submit" class="btn btn-danger">{% trans "Leave Team" %}</button>
+                    </form>
+                    {% endif %}
                     <button type="button" class="btn btn-secondary" id="copyTeamNameBtn">{% trans "Copy Team Name" %}</button>
                     <button type="button" class="btn btn-secondary" id="expandAllSectionsBtn">{% trans "Expand All" %}</button>
                 </div>

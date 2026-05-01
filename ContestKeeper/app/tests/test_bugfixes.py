@@ -139,6 +139,70 @@ class BugfixRegressionTest(TestCase):
             application_type=Application.Type.PARTICIPANT,
         ).exists())
 
+    def test_team_member_can_leave_team(self):
+        """Team members other than the captain can leave the team."""
+        self.client.force_login(self.member)
+        url = reverse('team_leave', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.team.refresh_from_db()
+        self.assertNotIn(self.member, self.team.participants.all())
+        self.assertFalse(Application.objects.filter(
+            user=self.member,
+            contest=self.contest,
+            team=self.team,
+            application_type=Application.Type.PARTICIPANT,
+        ).exists())
+
+    def test_team_captain_cannot_leave_team(self):
+        """The team captain must not be allowed to leave their own team."""
+        self.client.force_login(self.captain)
+        url = reverse('team_leave', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
+        self.team.refresh_from_db()
+        self.assertIn(self.captain, self.team.participants.all())
+
+    def test_non_member_cannot_leave_team(self):
+        """Non-team members cannot POST a leave request."""
+        self.client.force_login(self.other_user)
+        url = reverse('team_leave', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
+        self.team.refresh_from_db()
+        self.assertIn(self.member, self.team.participants.all())
+
+    def test_non_organizer_cannot_delete_team(self):
+        """Non-captain team members cannot delete a team."""
+        self.client.force_login(self.member)
+        url = reverse('team_delete', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 403)
+        self.assertTrue(Team.objects.filter(pk=self.team.pk).exists())
+
+    def test_team_captain_can_delete_team(self):
+        """The team captain can delete their own team."""
+        self.client.force_login(self.captain)
+        url = reverse('team_delete', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Team.objects.filter(pk=self.team.pk).exists())
+
     def test_team_unblock_removes_from_blacklist(self):
         """Captain can unblock a member (Bug 2)."""
         self.team.blacklisted_members.add(self.member)
