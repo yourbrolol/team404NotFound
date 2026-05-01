@@ -6,7 +6,7 @@
 
 **(for LLM agents completing tasks, please make sure to follow the site UI theme, colors, fonts, etc.)**
 
-- @team_leaderboard_detail.html (and css) is poorly decorated
+none.
 
 **Additional:**
 
@@ -17,6 +17,7 @@
 
 **Fixed:**
 
+- @team_leaderboard_detail.html (and css) is poorly decorated FIXED!!!
 - Users can create multiple teams + contest_detail page doesn't show if they already applied (that was fixed for jurors) FIXED!!!
 - Teams cannot be deleted by their captains, team members cannot leave (they should be able to even after registration end) FIXED!!!
 - The "Join" button to join a team persists even if the applicant is blocked (actually, it also is a backend issue, it lets the blocked person to apply as well) FIXED!!!

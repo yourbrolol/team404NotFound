@@ -9,99 +9,175 @@
 {% endblock %}
 
 {% block content %}
-        <div class="detail-card div-004">
-            <div class="detail-header div-002">
-                <div>
-                    <h1 class="detail-title">{{ team.name }}</h1>
-                    <p class="p-001">Team rank and criterion breakdown.</p>
+<div class="leaderboard-detail-container">
+    <!-- Back Navigation -->
+    <nav class="breadcrumb-nav">
+        <a href="{% url 'contest_leaderboard' contest.pk %}" class="breadcrumb-link">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
+            <span>Back to leaderboard</span>
+        </a>
+    </nav>
+
+    <div class="leaderboard-detail-card">
+        {% if not leaderboard_available %}
+            <!-- Not Available State -->
+            <div class="empty-state">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="9" x2="15" y2="9"></line><line x1="9" y1="15" x2="15" y2="15"></line></svg>
+                <h2>Leaderboard is not yet available.</h2>
+                <p>{{ not_available_message }}</p>
+            </div>
+        {% else %}
+            <!-- Hero Section -->
+            <div class="leaderboard-detail-hero">
+                <div class="hero-content">
+                    <h1 class="hero-title">{{ team.name }}</h1>
+                    <p class="hero-subtitle">Team rank and criterion breakdown.</p>
                 </div>
-                <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">Back to leaderboard</a>
+                <div class="hero-visual">
+                    <div class="visual-circle"></div>
+                    <div class="visual-circle-alt"></div>
+                </div>
             </div>
 
-            {% if not leaderboard_available %}
-                <div class="info-grid div-007">
-                    <h2>Leaderboard is not yet available.</h2>
-                    <p>{{ not_available_message }}</p>
-                </div>
-            {% else %}
-                <div class="info-grid div-005">
-                    <div class="info-item">
-                        <h4>Rank</h4>
-                        <p>{{ entry.rank }}{% if entry.is_tied %} (tied){% endif %}</p>
+            <!-- Key Stats Section -->
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
                     </div>
-                    <div class="info-item">
-                        <h4>Total Score</h4>
-                        <p>{{ entry.total_score }}</p>
+                    <div class="stat-content">
+                        <h4 class="stat-label">Rank</h4>
+                        <p class="stat-value">{{ entry.rank }}{% if entry.is_tied %}<span class="rank-tied">(tied)</span>{% endif %}</p>
                     </div>
                 </div>
 
-                <section class="section-002">
-                    <h4>Category breakdown</h4>
-                    <div class="div-001"><table class="table table-001">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="19" cy="4" r="1"></circle><circle cx="5" cy="20" r="1"></circle><line x1="12" y1="12" x2="19" y2="4"></line><line x1="12" y1="12" x2="5" y2="20"></line></svg>
+                    </div>
+                    <div class="stat-content">
+                        <h4 class="stat-label">Total Score</h4>
+                        <p class="stat-value">{{ entry.total_score }}</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Category Breakdown Section -->
+            <section class="leaderboard-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"></rect><rect x="14" y="3" width="7" height="7"></rect><rect x="14" y="14" width="7" height="7"></rect><rect x="3" y="14" width="7" height="7"></rect></svg>
+                    </div>
+                    <h2 class="section-title">Category Breakdown</h2>
+                </div>
+                <div class="table-wrapper">
+                    <table class="criterion-table">
                         <thead>
                             <tr>
                                 <th>Criterion</th>
                                 <th>Score</th>
-                                <th>Aggregation</th>
+                                <th>Aggregation Method</th>
                             </tr>
                         </thead>
                         <tbody>
                             {% for item in category_breakdown %}
                                 <tr>
-                                    <td>{{ item.criterion.name }}</td>
-                                    <td>{{ item.score }}</td>
-                                    <td>{{ item.criterion.get_aggregation_type_display }}</td>
+                                    <td class="criterion-name">{{ item.criterion.name }}</td>
+                                    <td class="criterion-score">{{ item.score }}</td>
+                                    <td class="criterion-method">{{ item.criterion.get_aggregation_type_display }}</td>
                                 </tr>
                             {% endfor %}
                         </tbody>
-                    </table></div>
-                </section>
+                    </table>
+                </div>
+            </section>
 
-                <section class="section-002">
-                    <h4>Jury breakdown</h4>
-                    {% if jury_breakdown_message %}
-                        <p class="alert">{{ jury_breakdown_message }}</p>
-                    {% elif show_jury_breakdown %}
+            <!-- Jury Breakdown Section -->
+            <section class="leaderboard-section">
+                <div class="section-header">
+                    <div class="section-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+                    </div>
+                    <h2 class="section-title">Jury Breakdown</h2>
+                </div>
+
+                {% if jury_breakdown_message %}
+                    <div class="alert-box alert-info">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="16" x2="12" y2="12"></line><line x1="12" y1="8" x2="12.01" y2="8"></line></svg>
+                        <p>{{ jury_breakdown_message }}</p>
+                    </div>
+                {% elif show_jury_breakdown %}
+                    <div class="jury-breakdown-grid">
                         {% for item in breakdown_by_criterion %}
-                            <div class="div-003">
-                                <h5 class="h5-001">{{ item.criterion.name }}</h5>
-                                <div class="div-001"><table class="table table-001">
-                                    <thead>
-                                        <tr>
-                                            <th>Jury</th>
-                                            <th>Score</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {% for jury_item in item.rows %}
+                            <div class="criterion-card">
+                                <div class="criterion-card-header">
+                                    <h3 class="criterion-card-title">{{ item.criterion.name }}</h3>
+                                </div>
+                                <div class="table-wrapper">
+                                    <table class="jury-table">
+                                        <thead>
                                             <tr>
-                                                <td>{{ jury_item.jury_username }}</td>
-                                                <td>{% if jury_item.score is not None %}{{ jury_item.score }}{% else %}<span class="text-muted">Missing</span>{% endif %}</td>
+                                                <th>Jury Member</th>
+                                                <th>Score</th>
                                             </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table></div>
+                                        </thead>
+                                        <tbody>
+                                            {% for jury_item in item.rows %}
+                                                <tr>
+                                                    <td class="jury-username">{{ jury_item.jury_username }}</td>
+                                                    <td class="jury-score">
+                                                        {% if jury_item.score is not None %}
+                                                            <span class="score-badge">{{ jury_item.score }}</span>
+                                                        {% else %}
+                                                            <span class="score-missing">Missing</span>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         {% endfor %}
-                    {% endif %}
-                </section>
-
-                {% if can_view_missing %}
-                    <section class="section-001">
-                        <h4>Computation status</h4>
-                        <p>{% if entry.computation_complete %}Complete{% else %}Incomplete{% endif %}</p>
-                        {% if entry.missing_scores %}
-                        <div class="div-006">
-                            <h5>Missing scores</h5>
-                            <ul>
-                                {% for missing in entry.missing_scores %}
-                                    <li>{{ missing.jury_username }} × {{ missing.criterion_name }}</li>
-                                {% endfor %}
-                            </ul>
-                        </div>
-                        {% endif %}
-                    </section>
+                    </div>
                 {% endif %}
+            </section>
+
+            <!-- Computation Status Section (for admins) -->
+            {% if can_view_missing %}
+                <section class="leaderboard-section status-section">
+                    <div class="section-header">
+                        <div class="section-icon">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+                        </div>
+                        <h2 class="section-title">Computation Status</h2>
+                    </div>
+
+                    <div class="status-content">
+                        <div class="status-indicator">
+                            <span class="status-label">Status:</span>
+                            <span class="status-badge {% if entry.computation_complete %}complete{% else %}incomplete{% endif %}">
+                                {% if entry.computation_complete %}Complete{% else %}Incomplete{% endif %}
+                            </span>
+                        </div>
+
+                        {% if entry.missing_scores %}
+                            <div class="missing-scores-box">
+                                <h4 class="missing-title">Missing Scores:</h4>
+                                <ul class="missing-list">
+                                    {% for missing in entry.missing_scores %}
+                                        <li class="missing-item">
+                                            <span class="missing-badge">×</span>
+                                            <span>{{ missing.jury_username }} — {{ missing.criterion_name }}</span>
+                                        </li>
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                        {% endif %}
+                    </div>
+                </section>
             {% endif %}
-        </div>
+        {% endif %}
+    </div>
+</div>
 {% endblock %}
