@@ -8,7 +8,7 @@ from app.models import Contest
 
 class RedirectToRegisterMixin(LoginRequiredMixin):
     """Redirect unauthenticated users to the register page."""
-    login_url = "register"
+    login_url = "accounts/login"
     raise_exception = False
 
 
