@@ -271,7 +271,12 @@ class TeamCreateView(RedirectToRegisterMixin, CreateView):
 class TeamJoinView(RedirectToRegisterMixin, View):
     def post(self, request, pk, ck):
         contest = get_object_or_404(Contest, pk=pk)
-        team = get_object_or_404(Team, pk=ck)
+        team = get_object_or_404(contest.teams, pk=ck)
+        
+        # Prevent blocked users from applying to this team
+        if team.blacklisted_members.filter(pk=request.user.pk).exists():
+            messages.error(request, "You are blocked from joining this team.")
+            return redirect("contest_teams", pk=pk)
         
         # Prevent double application or joining if already in a team
         if contest.teams.filter(participants=request.user).exists():

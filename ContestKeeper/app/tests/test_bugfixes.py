@@ -122,6 +122,23 @@ class BugfixRegressionTest(TestCase):
         app = Application.objects.get(user=self.member, team=self.team)
         self.assertEqual(app.status, Application.Status.REJECTED)
 
+    def test_blocked_user_cannot_join_team(self):
+        """Blocked users may not submit a join application for that team."""
+        self.team.blacklisted_members.add(self.other_user)
+        self.client.force_login(self.other_user)
+        url = reverse('team_join', kwargs={
+            'pk': self.contest.pk,
+            'ck': self.team.pk,
+        })
+        response = self.client.post(url)
+        self.assertEqual(response.status_code, 302)
+        self.assertFalse(Application.objects.filter(
+            user=self.other_user,
+            contest=self.contest,
+            team=self.team,
+            application_type=Application.Type.PARTICIPANT,
+        ).exists())
+
     def test_team_unblock_removes_from_blacklist(self):
         """Captain can unblock a member (Bug 2)."""
         self.team.blacklisted_members.add(self.member)
