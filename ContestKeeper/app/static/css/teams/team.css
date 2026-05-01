@@ -206,6 +206,24 @@
         width: 100%;
         justify-content: center;
     }
+
+    .member-item {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .div-001,
+    .div-002 {
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .div-001 form,
+    .div-001 button,
+    .div-001 .btn {
+        min-width: 80px;
+        flex: 1 1 auto;
+    }
 }
 
 /* Animations */
@@ -256,19 +274,19 @@
 }
 
 .button-001 {
-    padding: 4px 8px;
+    padding: 6px 12px;
     font-size: 0.8rem;
     background: var(--error);
     color: white;
 }
 
 .button-002 {
-    padding: 4px 8px;
+    padding: 6px 12px;
     font-size: 0.8rem;
 }
 
 .button-003 {
-    padding: 4px 8px;
+    padding: 6px 12px;
     font-size: 0.8rem;
     background: var(--success);
     color: white;
@@ -276,13 +294,16 @@
 
 .div-001 {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .div-002 {
     display: flex;
+    flex-wrap: wrap;
     align-items: center;
-    gap: 10px;
+    gap: 0.5rem;
 }
 
 .div-003 {
@@ -291,12 +312,14 @@
 
 .li-001 {
     display: flex;
+    flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     padding: 10px;
     background: var(--glass-light);
     border-radius: 8px;
     margin-bottom: 8px;
+    gap: 0.5rem;
 }
 
 .span-001 {

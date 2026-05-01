@@ -120,33 +120,65 @@
     #clearTeamSearchBtn {
         width: 100%;
     }
+
+    .team-card {
+        flex-direction: column;
+    }
+
+    .team-card__actions {
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .div-001,
+    .div-002 {
+        width: 100%;
+        gap: 0.5rem;
+    }
+
+    .div-001 form,
+    .div-001 button,
+    .div-002 form,
+    .div-002 button {
+        min-width: 70px;
+        flex: 1 1 auto;
+    }
 }
 
 /* --- Extracted from teams.html --- */
 .button-001 {
     background: var(--success);
     border-color: var(--success);
+    padding: 6px 12px;
+    font-size: 0.85rem;
 }
 
 .button-002 {
     background: var(--error);
     border-color: var(--error);
     color: white;
+    padding: 6px 12px;
+    font-size: 0.85rem;
 }
 
 .button-003 {
     background: var(--success);
     color: white;
+    padding: 6px 12px;
+    font-size: 0.85rem;
 }
 
 .div-001 {
     display: flex;
-    gap: 10px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    align-items: center;
 }
 
 .div-002 {
     display: flex;
-    gap: 8px;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     align-items: center;
 }
 
