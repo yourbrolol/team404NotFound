@@ -55,6 +55,14 @@ class RoundCreateView(OrganizerRequiredMixin, CreateView):
         obj.order = (last_round.order + 1) if last_round else 1
         obj.created_by = self.request.user
         obj.status = Round.Status.DRAFT
+        materials_str = self.request.POST.get("materials", "").strip()
+        if materials_str:
+            try:
+                obj.materials = json.loads(materials_str)
+            except json.JSONDecodeError:
+                obj.materials = []
+        else:
+            obj.materials = []
         obj.save()
 
         return redirect("contest_rounds", pk=obj.contest.pk)

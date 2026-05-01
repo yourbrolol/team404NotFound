@@ -288,7 +288,7 @@ class Round(models.Model):
     must_have = models.JSONField(default=list, help_text="List of required checklist items")
     start_time = models.DateTimeField()
     deadline = models.DateTimeField()
-    materials = models.JSONField(default=list, blank=True, help_text="List of {label, url}")
+    materials = models.JSONField(default=list, blank=True, null=True, help_text="List of {label, url}")
     status = models.CharField(max_length=20, choices=Status.choices, default=Status.DRAFT)
     order = models.PositiveIntegerField(default=0, help_text="Round number within contest")
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="created_rounds")
