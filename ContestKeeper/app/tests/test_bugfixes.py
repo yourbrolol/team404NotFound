@@ -259,6 +259,22 @@ class BugfixRegressionTest(TestCase):
         status_display = self.contest.get_status_display()
         self.assertIn(status_display, content)
 
+    def test_contest_detail_hides_team_create_when_team_application_pending(self):
+        """Contest detail should not show Create a Team when a team application is pending."""
+        Application.objects.create(
+            user=self.other_user,
+            contest=self.contest,
+            application_type=Application.Type.TEAM,
+            status=Application.Status.PENDING,
+        )
+        self.client.force_login(self.other_user)
+        url = reverse('contest_detail', kwargs={'pk': self.contest.pk})
+        response = self.client.get(url)
+        self.assertEqual(response.status_code, 200)
+        content = response.content.decode()
+        self.assertNotIn('Create a Team', content)
+        self.assertIn('Your team application is awaiting review by the organizer.', content)
+
     def test_contest_create_view_renders_form_on_get(self):
         """GET /contests/new/ should render the contest creation form."""
         self.client.force_login(self.organizer)

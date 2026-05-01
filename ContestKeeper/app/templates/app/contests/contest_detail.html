@@ -117,7 +117,14 @@
         {% else %}
         <div class="div-015">
             {% if contest.is_registration_open %}
-                <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary a-001">{% trans "Create a Team" %}</a>
+                {% if has_pending_p_app %}
+                    <div class="div-002">
+                        <h4 class="h4-001">{% trans "Application Pending" %}</h4>
+                        <p class="small text-muted">{% trans "Your team application is awaiting review by the organizer." %}</p>
+                    </div>
+                {% else %}
+                    <a href="{% url 'team_create' contest.pk %}" class="btn btn-primary a-001">{% trans "Create a Team" %}</a>
+                {% endif %}
             {% else %}
                 <div class="div-002">
                     <h4 class="h4-001">{% trans "Registration Closed" %}</h4>

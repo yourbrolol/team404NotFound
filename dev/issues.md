@@ -6,7 +6,6 @@
 
 **(for LLM agents completing tasks, please make sure to follow the site UI theme, colors, fonts, etc.)**
 
-- Users can create multiple teams + contest_detail page doesn't show if they already applied (that was fixed for jurors)
 - @team_leaderboard_detail.html (and css) is poorly decorated
 
 **Additional:**
@@ -17,6 +16,8 @@
 - In profile, pending reviews for juries are empty even if there are assigned submissions to rate
 
 **Fixed:**
+
+- Users can create multiple teams + contest_detail page doesn't show if they already applied (that was fixed for jurors) FIXED!!!
 - Teams cannot be deleted by their captains, team members cannot leave (they should be able to even after registration end) FIXED!!!
 - The "Join" button to join a team persists even if the applicant is blocked (actually, it also is a backend issue, it lets the blocked person to apply as well) FIXED!!!
 - At teams list and team detail view (template), the buttons inside the cards of teams / members don't fit (ex. Kick and Block buttons not fitting for a member card) FIXED!!!
