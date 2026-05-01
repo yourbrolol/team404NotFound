@@ -31,8 +31,7 @@
             <p class="quick-access__eyebrow">{% trans "Quick Access" %}</p>
             <h2>{% trans "Your current contest" %}</h2>
         </div>
-        <span class="status-indicator status-{{ user_contest.status|lower }}">{{ user_contest.get_status_display
-            }}</span>
+        <span class="status-indicator status-{{ user_contest.status|lower }}">{{ user_contest.get_status_display }}</span>
     </div>
     <div class="quick-access__grid">
         <div class="quick-access__item">
