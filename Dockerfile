@@ -17,6 +17,6 @@ COPY ContestKeeper/ .
 
 EXPOSE 8000
 
-RUN python manage.py collectstatic --noinput
+RUN SECRET_KEY=dummy python manage.py collectstatic --noinput
 
 CMD ["sh", "-c", "python manage.py migrate && daphne -b 0.0.0.0 -p 8000 ContestKeeper.asgi:application"]

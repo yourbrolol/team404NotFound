@@ -1,0 +1,18 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: contest_keeper_web
+    ports:
+      - "8000:8000"
+    env_file:
+      - ./ContestKeeper/.env
+    command: python manage.py runserver 0.0.0.0:8000
+    volumes:
+      - ./ContestKeeper:/app
+    develop:
+      watch:
+        - action: rebuild
+          path: ./ContestKeeper/requirements.txt
+    restart: unless-stopped

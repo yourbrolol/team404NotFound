@@ -16,9 +16,17 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    cd team404NotFound
    ```
 
-**There are 2 ways to run the app: The default way and the Docker way**
+**There are 3 ways to run the app:**
 
-**Default way:**
+1. **Manual way**
+
+2. **Docker Compose way**
+
+3. **Docker way (may not work)**
+
+**Manual way:**
+
+**You need to install Python 3.13 first (other versions may not work)**
 
 1. **Create a virtual environment:**
    ```bash
@@ -49,7 +57,18 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    python manage.py runserver
    ```
 
-**Docker way**
+**Docker Compose way:**
+
+1. **Install Docker Compose (is usually bundled with Docker)**
+
+2. **Build and run the Docker image**
+   ```bash
+   docker compose up --build
+   ```
+
+**Docker way (may not work)**
+
+**You need to install Docker first**
 
 1. **Build the Docker image**
    ```bash
