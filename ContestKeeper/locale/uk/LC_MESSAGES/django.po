@@ -168,28 +168,10 @@ msgstr "Вебінар"
 msgid "Other"
 msgstr "Інше"
 
-#: app/templates/app/admin/admin_application_list.html:16
-#, fuzzy
-#| msgid "Applications"
-msgid "Review Applications"
-msgstr "Заявки"
-
-#: app/templates/app/admin/admin_application_list.html:17
-#, fuzzy
-#| msgid "Manage Contest"
-msgid "Manage who joins your contest"
-msgstr "Керувати конкурсом"
-
 #: app/templates/app/admin/admin_application_list.html:19
 #: app/templates/app/juries/jury_evaluation.html:20
 msgid "← Back to Contest"
 msgstr "← Назад до конкурсу"
-
-#: app/templates/app/admin/admin_application_list.html:42
-#, fuzzy
-#| msgid "Approve"
-msgid "Approve Team"
-msgstr "Схвалити"
 
 #: app/templates/app/admin/admin_application_list.html:46
 #: app/templates/app/admin/admin_application_list.html:73
@@ -199,49 +181,11 @@ msgstr "Схвалити"
 msgid "Reject"
 msgstr "Відхилити"
 
-#: app/templates/app/admin/admin_application_list.html:51
-#: app/templates/app/teams/teams.html:120
-#, fuzzy
-#| msgid "No pending applications."
-msgid "No pending team applications."
-msgstr "Немає заявок, що очікують розгляду."
-
 #: app/templates/app/admin/admin_application_list.html:69
 #: app/templates/app/juries/jurys.html:100
 #: app/templates/app/teams/team.html:174 app/templates/app/teams/teams.html:107
 msgid "Approve"
 msgstr "Схвалити"
-
-#: app/templates/app/admin/admin_application_list.html:78
-#, fuzzy
-#| msgid "No pending applications."
-msgid "No pending join requests."
-msgstr "Немає заявок, що очікують розгляду."
-
-#: app/templates/app/admin/admin_application_list.html:96
-#, fuzzy
-#| msgid "Approve"
-msgid "Approve Jury"
-msgstr "Схвалити"
-
-#: app/templates/app/admin/admin_application_list.html:105
-#: app/templates/app/juries/jurys.html:113
-#, fuzzy
-#| msgid "No pending applications."
-msgid "No pending jury applications."
-msgstr "Немає заявок, що очікують розгляду."
-
-#: app/templates/app/admin/analytics.html:15
-#, fuzzy
-#| msgid "Analytics"
-msgid "Contest Analytics"
-msgstr "Аналітика"
-
-#: app/templates/app/admin/analytics.html:19
-#, fuzzy
-#| msgid "Back to Dashboard"
-msgid "Back to Board"
-msgstr "Назад до панелі керування"
 
 #: app/templates/app/admin/analytics.html:26
 #: app/templates/app/contests/contest_detail.html:179
@@ -255,66 +199,27 @@ msgstr "Команди"
 msgid "Submissions"
 msgstr "Подання"
 
-#: app/templates/app/admin/analytics.html:38
-#, fuzzy
-#| msgid "Save Evaluation"
-msgid "Evaluations"
-msgstr "Зберегти оцінку"
-
-#: app/templates/app/admin/analytics.html:47
-#, fuzzy
-#| msgid "Submissions are closed for this round."
-msgid "Submission Rate per Round"
-msgstr "Прийом робіт на цей раунд завершено."
-
 #: app/templates/app/admin/analytics.html:60
 msgid "No rounds defined yet."
-msgstr ""
+msgstr "Поки що не вказано жодного раунду."
 
 #: app/templates/app/admin/analytics.html:69
 msgid "Average Scores per Criterion"
-msgstr ""
+msgstr "Середні бали за критеріями"
 
 #: app/templates/app/admin/analytics.html:82
 msgid "No scoring criteria defined yet."
-msgstr ""
-
-#: app/templates/app/admin/analytics.html:91
-#, fuzzy
-#| msgid "In progress"
-msgid "Jury Progress"
-msgstr "В процесі"
-
-#: app/templates/app/admin/analytics.html:103
-#, fuzzy
-#| msgid "No jurys assigned to this contest yet."
-msgid "No jury members assigned yet."
-msgstr "До цього конкурсу ще не призначено жодного судді."
-
-#: app/templates/app/admin/analytics.html:111
-#, fuzzy
-#| msgid "Registration"
-msgid "Score Distribution"
-msgstr "Реєстрація"
+msgstr "Критерії оцінки ще не вказані."
 
 #: app/templates/app/announcements/announcement_confirm_delete.html:12
 #: app/templates/app/schedule/schedule_event_confirm_delete.html:12
 msgid "Confirm Deletion"
-msgstr ""
-
-#: app/templates/app/announcements/announcement_confirm_delete.html:13
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete this contest? This action cannot be "
-#| "undone."
-msgid "Are you sure you want to delete the announcement: \""
-msgstr ""
-"Ви впевнені, що хочете видалити цей конкурс? Цю дію неможливо буде скасувати."
+msgstr "Підтвердіть видалення"
 
 #: app/templates/app/announcements/announcement_confirm_delete.html:17
 #: app/templates/app/schedule/schedule_event_confirm_delete.html:17
 msgid "Yes, delete it"
-msgstr ""
+msgstr "Так, видалити"
 
 #: app/templates/app/announcements/announcement_confirm_delete.html:18
 #: app/templates/app/announcements/announcement_form.html:31
@@ -331,39 +236,15 @@ msgstr ""
 msgid "Cancel"
 msgstr "Скасувати"
 
-#: app/templates/app/announcements/announcement_form.html:14
-#, fuzzy
-#| msgid "Announcement"
-msgid "Post New Announcement"
-msgstr "Оголошення"
-
-#: app/templates/app/announcements/announcement_form.html:30
-#, fuzzy
-#| msgid "Announcement"
-msgid "Publish Announcement"
-msgstr "Оголошення"
-
 #: app/templates/app/announcements/announcements.html:15
 #: app/templates/app/contests/contest_detail.html:73
 msgid "Announcements"
 msgstr "Оголошення"
 
-#: app/templates/app/announcements/announcements.html:19
-#, fuzzy
-#| msgid "Announcement"
-msgid "Post Announcement"
-msgstr "Оголошення"
-
 #: app/templates/app/announcements/announcements.html:37
 #: app/templates/app/teams/teams.html:69
 msgid "Delete"
-msgstr ""
-
-#: app/templates/app/announcements/announcements.html:50
-#, fuzzy
-#| msgid "Announcements"
-msgid "No announcements yet."
-msgstr "Оголошення"
+msgstr "Видалити"
 
 #: app/templates/app/announcements/announcements.html:56
 #: app/templates/app/juries/jurys.html:126
@@ -406,24 +287,6 @@ msgstr "Немає запланованих подій."
 msgid "View Schedule"
 msgstr "Переглянути розклад"
 
-#: app/templates/app/contests/contest_detail.html:55
-#, fuzzy
-#| msgid "Active Rounds"
-msgid "Current Active Round"
-msgstr "Активні раунди"
-
-#: app/templates/app/contests/contest_detail.html:62
-#, fuzzy
-#| msgid "Manage Contest"
-msgid "Manage Round"
-msgstr "Керувати конкурсом"
-
-#: app/templates/app/contests/contest_detail.html:62
-#, fuzzy
-#| msgid "View Your Submission"
-msgid "View & Submit"
-msgstr "Переглянути ваше подання"
-
 #: app/templates/app/contests/contest_detail.html:82
 msgid "Schedule"
 msgstr "Розклад"
@@ -441,7 +304,7 @@ msgstr "Заявки на розгляд"
 
 #: app/templates/app/contests/contest_detail.html:107
 msgid "Board"
-msgstr ""
+msgstr "Дошка"
 
 #: app/templates/app/contests/contest_detail.html:115
 msgid "You registered already!"
@@ -452,16 +315,9 @@ msgstr "Ви вже зареєстровані!"
 msgid "- Your team is <strong>%(name)s</strong>."
 msgstr "- Ваша команда <strong>%(name)s</strong>."
 
-#: app/templates/app/contests/contest_detail.html:122
-#: app/templates/app/contests/contest_detail.html:149
-#, fuzzy
-#| msgid "Applications"
-msgid "Application Pending"
-msgstr "Заявки"
-
 #: app/templates/app/contests/contest_detail.html:123
 msgid "Your team application is awaiting review by the organizer."
-msgstr ""
+msgstr "Заявка вашої команди очікує на розгляд організатора."
 
 #: app/templates/app/contests/contest_detail.html:126
 msgid "Create a Team"
@@ -482,31 +338,19 @@ msgstr "Період реєстрації завершився."
 
 #: app/templates/app/contests/contest_detail.html:146
 msgid "You are a Jury member!"
-msgstr ""
-
-#: app/templates/app/contests/contest_detail.html:147
-#, fuzzy
-#| msgid "You have not created any contests yet."
-msgid "You have been approved to judge this contest."
-msgstr "Ви ще не створили жодного конкурсу."
+msgstr "Ви вже є журі!"
 
 #: app/templates/app/contests/contest_detail.html:150
 msgid "Your jury application is awaiting review by the organizer."
-msgstr ""
+msgstr "Ваша заявка на участь як журі очікує на розгляд організатора."
 
 #: app/templates/app/contests/contest_detail.html:156
 msgid "Apply as Jury"
-msgstr ""
-
-#: app/templates/app/contests/contest_detail.html:160
-#, fuzzy
-#| msgid "Applications"
-msgid "Applications Closed"
-msgstr "Заявки"
+msgstr "Подати заявку як журі"
 
 #: app/templates/app/contests/contest_detail.html:161
 msgid "This contest is no longer accepting jury applications."
-msgstr ""
+msgstr "На цей конкурс більше не приймаються заявки для журі."
 
 #: app/templates/app/contests/contest_detail.html:172
 #: app/templates/app/juries/jurys.html:19
@@ -537,7 +381,7 @@ msgstr "Керувати конкурсом"
 #: app/templates/app/contests/contest_detail.html:192
 msgid ""
 "Are you sure you want to delete this contest? This action cannot be undone."
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити цей конкурс? Цю дію не можна скасувати."
 "Ви впевнені, що хочете видалити цей конкурс? Цю дію неможливо буде скасувати."
 
 #: app/templates/app/contests/contest_detail.html:194
@@ -694,7 +538,7 @@ msgstr "Ласкаво просимо до ContestKeeper"
 msgid ""
 "The ultimate platform for organizing, participating, and judging contests "
 "with ease and style."
-msgstr ""
+msgstr "Ідеальна платформа для організації, участі та оцінювання конкурсів із легкістю та стилем."
 "Найкраща платформа для організації, участі та оцінювання конкурсів з "
 "легкістю та стилем."
 
@@ -752,14 +596,6 @@ msgstr "Немає конкурсів, що відповідають цьому 
 #: app/templates/app/core/index.html:103
 msgid "No contests available yet."
 msgstr "Немає доступних конкурсів."
-
-#: app/templates/app/core/nav.html:5 app/templates/app/core/nav.html:18
-#: app/templates/registration/login.html:22
-#: app/templates/registration/register.html:22
-#, fuzzy
-#| msgid "%(name)s - ContestKeeper"
-msgid "ContestKeeper"
-msgstr "%(name)s - ContestKeeper"
 
 #: app/templates/app/core/nav.html:6
 msgid "Toggle navigation"
@@ -1184,12 +1020,6 @@ msgstr "Рецензій на команду:"
 msgid "Run Random Assignment"
 msgstr "Запустити випадковий розподіл"
 
-#: app/templates/app/juries/jurys.html:69
-#, fuzzy, python-format
-#| msgid "Kick %(name)s from the team?"
-msgid "Remove %(name)s from the jury panel?"
-msgstr "Вигнати %(name)s з команди?"
-
 #: app/templates/app/juries/jurys.html:71 app/templates/app/teams/team.html:106
 msgid "Kick"
 msgstr "Вигнати"
@@ -1198,279 +1028,71 @@ msgstr "Вигнати"
 msgid "No jurys assigned to this contest yet."
 msgstr "До цього конкурсу ще не призначено жодного судді."
 
-#: app/templates/app/juries/jurys.html:87
-#, fuzzy
-#| msgid "Pending Applications"
-msgid "Pending jury applications."
-msgstr "Заявки, що очікують розгляду"
-
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:17
 msgid "Admin controls and leaderboard preview."
-msgstr ""
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:20
-#, fuzzy
-#| msgid "Analytics"
-msgid "Detailed Analytics"
-msgstr "Аналітика"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:21
-#, fuzzy
-#| msgid "Edit Criterion"
-msgid "Add Scoring Criterion"
-msgstr "Редагувати критерій"
+msgstr "Елементи керування адміністратора та попередній перегляд таблиці лідерів."
 
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:22
 msgid "View Public Leaderboard"
-msgstr ""
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:28
-#, fuzzy
-#| msgid "Evaluation Complete"
-msgid "Evaluation Status"
-msgstr "Оцінка завершена"
+msgstr "Перегляд публічної таблиці лідерів"
 
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:32
 msgid "Trigger Type"
-msgstr ""
+msgstr "Тип тригера"
 
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:36
 msgid "All Scores Complete"
-msgstr ""
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:40
-#, fuzzy
-#| msgid "Participant"
-msgid "Participant Breakdown"
-msgstr "Учасник"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:44
-#, fuzzy
-#| msgid "Completed"
-msgid "Completed At"
-msgstr "Завершено"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:51
-#, fuzzy
-#| msgid "Close Submissions"
-msgid "Score Submission Progress"
-msgstr "Закрити прийом робіт"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:61
-#, fuzzy
-#| msgid "Missing criteria:"
-msgid "Missing scores"
-msgstr "Відсутні критерії:"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:69
-#, fuzzy
-#| msgid "Search members"
-msgid "Jury member"
-msgstr "Шукати учасників"
+msgstr "Усі оцінки завершено"
 
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:84
 msgid "No missing scores detected."
-msgstr ""
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:92
-#, fuzzy
-#| msgid "Save Evaluation"
-msgid "Finish Evaluation"
-msgstr "Зберегти оцінку"
+msgstr "Пропущених балів не виявлено."
 
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:96
 msgid "Recalculate Leaderboard"
-msgstr ""
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:103
-#, fuzzy
-#| msgid "Export Teams"
-msgid "Export JSON"
-msgstr "Експортувати команди"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:104
-#, fuzzy
-#| msgid "Export Teams"
-msgid "Export CSV"
-msgstr "Експортувати команди"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:105
-#, fuzzy
-#| msgid "Save Evaluation"
-msgid "Export Evaluations"
-msgstr "Зберегти оцінку"
+msgstr "Перерахувати таблицю лідерів"
 
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:110
 msgid "Current Leaderboard Preview"
-msgstr ""
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:118
-#: app/templates/app/leaderboards/leaderboard.html:36
-#: app/templates/app/leaderboards/team_leaderboard_detail.html:60
-#, fuzzy
-#| msgid "Total score"
-msgid "Total Score"
-msgstr "Загальний бал"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:124
-#, fuzzy
-#| msgid "Details"
-msgid "Del"
-msgstr "Деталі"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:128
-#, fuzzy
-#| msgid "Completed"
-msgid "Complete"
-msgstr "Завершено"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:150
-#: app/templates/app/leaderboards/leaderboard.html:60
-#, fuzzy
-#| msgid "First Name"
-msgid "First"
-msgstr "Ім'я"
+msgstr "Попередній перегляд поточної таблиці лідерів"
 
 #: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:151
 #: app/templates/app/leaderboards/leaderboard.html:61
 msgid "Previous"
-msgstr ""
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:163
-#: app/templates/app/leaderboards/leaderboard.html:73
-#, fuzzy
-#| msgid "Next Up"
-msgid "Next"
-msgstr "Наступні події"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:164
-#: app/templates/app/leaderboards/leaderboard.html:74
-#, fuzzy
-#| msgid "Last Name"
-msgid "Last"
-msgstr "Прізвище"
-
-#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:170
-#, fuzzy
-#| msgid "No leaderboard results available yet."
-msgid "No leaderboard entries available yet."
-msgstr "Результатів лідерборду поки немає."
+msgstr "Попередній"
 
 #: app/templates/app/leaderboards/leaderboard.html:17
 msgid "Final ranking table for contest participants."
-msgstr ""
-
-#: app/templates/app/leaderboards/leaderboard.html:20
-#, fuzzy
-#| msgid "Back to Dashboard"
-msgid "Evaluation Dashboard"
-msgstr "Назад до панелі керування"
-
-#: app/templates/app/leaderboards/leaderboard.html:26
-#: app/templates/app/leaderboards/team_leaderboard_detail.html:27
-#, fuzzy
-#| msgid "No leaderboard results available yet."
-msgid "Leaderboard is not yet available."
-msgstr "Результатів лідерборду поки немає."
-
-#: app/templates/app/leaderboards/leaderboard.html:82
-#, fuzzy
-#| msgid "Missing criteria:"
-msgid "Missing Scores"
-msgstr "Відсутні критерії:"
-
-#: app/templates/app/leaderboards/leaderboard.html:86
-#: app/templates/app/leaderboards/team_leaderboard_detail.html:154
-#, fuzzy
-#| msgid "Implementation Details"
-msgid "Computation Status"
-msgstr "Деталі реалізації"
-
-#: app/templates/app/leaderboards/team_leaderboard_detail.html:18
-#, fuzzy
-#| msgid "Back to Dashboard"
-msgid "Back to leaderboard"
-msgstr "Назад до панелі керування"
+msgstr "Підсумкова рейтингова таблиця учасників конкурсу."
 
 #: app/templates/app/leaderboards/team_leaderboard_detail.html:35
 msgid "Team rank and criterion breakdown."
-msgstr ""
+msgstr "Ранг команди та розбивка критеріїв."
 
 #: app/templates/app/leaderboards/team_leaderboard_detail.html:51
 msgid "(tied)"
-msgstr ""
+msgstr "(зрівняний)"
 
 #: app/templates/app/leaderboards/team_leaderboard_detail.html:72
 msgid "Category Breakdown"
-msgstr ""
+msgstr "Пояснення категорій"
 
 #: app/templates/app/leaderboards/team_leaderboard_detail.html:80
 msgid "Aggregation Method"
-msgstr ""
+msgstr "Метод агрегації"
 
 #: app/templates/app/leaderboards/team_leaderboard_detail.html:102
 msgid "Jury Breakdown"
-msgstr ""
-
-#: app/templates/app/leaderboards/team_leaderboard_detail.html:121
-#, fuzzy
-#| msgid "Member"
-msgid "Jury Member"
-msgstr "Учасник"
+msgstr "Пояснення журі"
 
 #: app/templates/app/leaderboards/team_leaderboard_detail.html:133
 msgid "Missing"
-msgstr ""
-
-#: app/templates/app/leaderboards/team_leaderboard_detail.html:159
-#, fuzzy
-#| msgid "Status"
-msgid "Status:"
-msgstr "Статус"
-
-#: app/templates/app/leaderboards/team_leaderboard_detail.html:167
-#, fuzzy
-#| msgid "Missing criteria:"
-msgid "Missing Scores:"
-msgstr "Відсутні критерії:"
+msgstr "Відсутня"
 
 #: app/templates/app/rounds/round_detail.html:5
 #, python-format
 msgid "%(title)s - Round Detail"
 msgstr "%(title)s - Деталі раунду"
-
-#: app/templates/app/rounds/round_detail.html:18
-#, fuzzy
-#| msgid "← Back to Rounds List"
-msgid "Back to Rounds List"
-msgstr "← Назад до списку раундів"
-
-#: app/templates/app/rounds/round_detail.html:23
-#: app/templates/app/rounds/round_detail_team.html:17
-#, fuzzy
-#| msgid "← Back to All Rounds"
-msgid "Back to All Rounds"
-msgstr "← Назад до всіх раундів"
-
-#: app/templates/app/rounds/round_detail.html:35
-#: app/templates/app/rounds/round_detail_team.html:28
-#, fuzzy
-#| msgid ""
-#| "- This round is no longer accepting submissions. Results will be "
-#| "published after evaluation."
-msgid ""
-"This round is no longer accepting submissions. Results will be published "
-"after jury evaluation."
-msgstr ""
-"- Цей раунд більше не приймає подань. Результати будуть опубліковані після "
-"оцінювання."
-
-#: app/templates/app/rounds/round_detail.html:47
-#: app/templates/app/rounds/round_detail_team.html:40
-#, fuzzy
-#| msgid "- Check the leaderboard to see results and rankings."
-msgid "Check the leaderboard to see the final results and rankings."
-msgstr "- Перевірте лідерборд, щоб побачити результати та рейтинги."
 
 #: app/templates/app/rounds/round_detail.html:56
 #: app/templates/app/rounds/round_detail_team.html:49
@@ -1498,13 +1120,6 @@ msgstr "Контрольний список"
 msgid "No checklist items provided."
 msgstr "Контрольний список не надано."
 
-#: app/templates/app/rounds/round_detail.html:138
-#: app/templates/app/rounds/round_detail_team.html:130
-#, fuzzy
-#| msgid "View Your Submission"
-msgid "Your Submission"
-msgstr "Переглянути ваше подання"
-
 #: app/templates/app/rounds/round_detail.html:142
 #: app/templates/app/rounds/round_detail_team.html:134
 msgid "Time Remaining"
@@ -1512,7 +1127,7 @@ msgstr "Часу залишилося"
 
 #: app/templates/app/rounds/round_detail.html:155
 msgid "Successfully Submitted"
-msgstr ""
+msgstr "Успішно надіслано"
 
 #: app/templates/app/rounds/round_detail.html:156
 #: app/templates/app/rounds/round_detail_team.html:153
@@ -1520,22 +1135,9 @@ msgstr ""
 msgid "at %(date)s"
 msgstr "о %(date)s"
 
-#: app/templates/app/rounds/round_detail.html:160
-#, fuzzy
-#| msgid "View Your Submission"
-msgid "View Submission"
-msgstr "Переглянути ваше подання"
-
 #: app/templates/app/rounds/round_detail.html:162
 msgid "Update Submission"
 msgstr "Оновити подання"
-
-#: app/templates/app/rounds/round_detail.html:171
-#: app/templates/app/rounds/round_detail_team.html:182
-#, fuzzy
-#| msgid "❌ Not Submitted"
-msgid "Not Submitted Yet"
-msgstr "❌ Не подано"
 
 #: app/templates/app/rounds/round_detail.html:172
 #: app/templates/app/rounds/round_detail_team.html:183
@@ -1548,44 +1150,13 @@ msgstr "Команда: %(name)s"
 msgid "Submit Your Work Now →"
 msgstr "Подати роботу зараз →"
 
-#: app/templates/app/rounds/round_detail.html:178
-#, fuzzy
-#| msgid "Submissions are closed."
-msgid "Submissions are currently closed."
-msgstr "Прийом робіт завершено."
-
-#: app/templates/app/rounds/round_detail.html:184
-#: app/templates/app/rounds/round_detail_team.html:143
-#, fuzzy
-#| msgid "You must be in a team to submit."
-msgid "You must be in a team to participate."
-msgstr "Ви повинні бути в команді, щоб подати роботу."
-
 #: app/templates/app/rounds/round_detail.html:194
 msgid "Management"
 msgstr "Керування"
 
-#: app/templates/app/rounds/round_detail.html:204
-#, fuzzy
-#| msgid "View All Submissions"
-msgid "Review Submissions"
-msgstr "Переглянути всі подання"
-
 #: app/templates/app/rounds/round_detail.html:212
 msgid "Activate Round"
 msgstr "Активувати раунд"
-
-#: app/templates/app/rounds/round_detail.html:214
-#, fuzzy
-#| msgid "Edit Criterion"
-msgid "Edit Configuration"
-msgstr "Редагувати критерій"
-
-#: app/templates/app/rounds/round_detail.html:218
-#, fuzzy
-#| msgid "Contest Rounds"
-msgid "Close Round"
-msgstr "Раунди конкурсу"
 
 #: app/templates/app/rounds/round_detail.html:220
 #: app/templates/app/rounds/round_extend_deadline.html:74
@@ -1598,13 +1169,6 @@ msgstr "Продовжити дедлайн"
 msgid "Materials"
 msgstr "Матеріали"
 
-#: app/templates/app/rounds/round_detail.html:241
-#: app/templates/app/rounds/round_detail_team.html:211
-#, fuzzy
-#| msgid "No materials uploaded."
-msgid "No materials available."
-msgstr "Матеріали не завантажено."
-
 #: app/templates/app/rounds/round_detail.html:257
 #: app/templates/app/rounds/round_detail_team.html:227
 msgid "EXPIRED"
@@ -1615,29 +1179,11 @@ msgstr "ТЕРМІН ДІЇ ВИЙШОВ"
 msgid "%(title)s - %(contest_name)s"
 msgstr "%(title)s - %(contest_name)s"
 
-#: app/templates/app/rounds/round_detail_team.html:152
-#, fuzzy
-#| msgid "✅ Submitted"
-msgid "✅ Submitted Work"
-msgstr "✅ Подано"
-
-#: app/templates/app/rounds/round_detail_team.html:160
-#, fuzzy
-#| msgid "GitHub Repository ↗"
-msgid "Repository"
-msgstr "Репозиторій GitHub ↗"
-
 #: app/templates/app/rounds/round_detail_team.html:165
 #: app/templates/app/submissions/submission_detail.html:62
 #: app/templates/app/submissions/submission_list.html:34
 msgid "Live Demo"
 msgstr "Демо наживо"
-
-#: app/templates/app/rounds/round_detail_team.html:171
-#, fuzzy
-#| msgid "View All Submissions"
-msgid "View Full Submission"
-msgstr "Переглянути всі подання"
 
 #: app/templates/app/rounds/round_detail_team.html:173
 #: app/templates/app/submissions/submission_detail.html:18
@@ -1653,25 +1199,13 @@ msgstr "Прийом робіт завершено."
 msgid "Extend Deadline - %(title)s"
 msgstr "Продовжити дедлайн - %(title)s"
 
-#: app/templates/app/rounds/round_extend_deadline.html:85
-#, fuzzy
-#| msgid "Current Deadline:"
-msgid "Current Deadline"
-msgstr "Поточний дедлайн:"
-
-#: app/templates/app/rounds/round_extend_deadline.html:105
-#, fuzzy
-#| msgid "New Deadline *"
-msgid "New Deadline"
-msgstr "Новий дедлайн *"
-
 #: app/templates/app/rounds/round_extend_deadline.html:110
 msgid "The new deadline must be in the future."
-msgstr ""
+msgstr "Новий дедлайн має бути в майбутньому."
 
 #: app/templates/app/rounds/round_extend_deadline.html:115
 msgid "Confirm Extension"
-msgstr ""
+msgstr "Підтвердити розширення"
 
 #: app/templates/app/rounds/round_form.html:5
 #: app/templates/app/submissions/submission_form.html:5
@@ -1706,7 +1240,7 @@ msgstr "Контрольний список (JSON масив, по одному 
 msgid ""
 "Enter each item on a separate line, e.g.: API endpoint, Database schema, "
 "Deployment"
-msgstr ""
+msgstr "Введіть кожен елемент в окремому рядку, наприклад: Кінцева точка API, Схема бази даних, Розгортання"
 "Введіть кожен пункт у новому рядку, наприклад: API endpoint, Схема бази "
 "даних, Деплой"
 
@@ -1730,9 +1264,7 @@ msgstr "Матеріали (JSON масив з об'єктами {label, url}, �
 msgid ""
 "Example: [{\"label\": \"Docs\", \"url\": \"https://...\"}, {\"label\": "
 "\"API\", \"url\": \"https://...\"}]"
-msgstr ""
-"Приклад: [{\"label\": \"Docs\", \"url\": \"https://...\"}, {\"label\": "
-"\"API\", \"url\": \"https://...\"}]"
+msgstr "Приклад: [{\"label\": \"Docs\", \"url\": \"https://...\"}, {\"label\": \"API\", \"url\": \"https://...\"}]"
 
 #: app/templates/app/rounds/round_form.html:94
 msgid "Update Round"
@@ -1782,56 +1314,17 @@ msgstr "Закрити прийом робіт"
 msgid "No rounds created yet. <a href=\"%(url)s\">Create the first round</a>"
 msgstr "Раундів ще не створено. <a href=\"%(url)s\">Створіть перший раунд</a>"
 
-#: app/templates/app/schedule/schedule.html:14
-#, fuzzy
-#| msgid "Full Schedule"
-msgid "Tournament Schedule"
-msgstr "Повний розклад"
-
 #: app/templates/app/schedule/schedule.html:23
 msgid "Regenerate"
-msgstr ""
+msgstr "Регенерувати"
 
 #: app/templates/app/schedule/schedule.html:25
 msgid "+ Add Event"
-msgstr ""
-
-#: app/templates/app/schedule/schedule.html:68
-#, fuzzy
-#| msgid "Edit Submission"
-msgid "Go to Submission"
-msgstr "Редагувати подання"
-
-#: app/templates/app/schedule/schedule.html:70
-#, fuzzy
-#| msgid "View Details"
-msgid "View Round Details"
-msgstr "Детальніше"
-
-#: app/templates/app/schedule/schedule.html:83
-#, fuzzy
-#| msgid "No members joined this team yet."
-msgid "No events listed yet."
-msgstr "До цієї команди ще не приєднався жоден учасник."
-
-#: app/templates/app/schedule/schedule_event_confirm_delete.html:13
-#, fuzzy
-#| msgid ""
-#| "Are you sure you want to delete this contest? This action cannot be "
-#| "undone."
-msgid "Are you sure you want to delete the event: \""
-msgstr ""
-"Ви впевнені, що хочете видалити цей конкурс? Цю дію неможливо буде скасувати."
-
-#: app/templates/app/schedule/schedule_event_form.html:14
-#, fuzzy
-#| msgid "Schedule"
-msgid "Add Schedule Event"
-msgstr "Розклад"
+msgstr "+ Додати подію"
 
 #: app/templates/app/schedule/schedule_event_form.html:27
 msgid "Add Event"
-msgstr ""
+msgstr "Додати подію"
 
 #: app/templates/app/submissions/submission_detail.html:5
 #, python-format
@@ -1908,7 +1401,7 @@ msgstr "Подати свою роботу"
 msgid ""
 "Fill in the details below. You can update your submission anytime before the "
 "deadline."
-msgstr ""
+msgstr "Заповніть дані нижче. Ви можете оновити свою заявку в будь-який час до кінцевого терміну."
 "Заповніть деталі нижче. Ви можете оновити своє подання в будь-який час до "
 "дедлайну."
 
@@ -1918,7 +1411,7 @@ msgstr "URL репозиторію GitHub *"
 
 #: app/templates/app/submissions/submission_form.html:46
 msgid "Link to the source code repository (Public or shared with reviewers)."
-msgstr ""
+msgstr "Посилання на репозиторій вихідного коду (загальнодоступний або доступний рецензентам)."
 "Посилання на репозиторій вихідного коду (публічне або доступне для "
 "рецензентів)."
 
@@ -1940,7 +1433,7 @@ msgstr "Деталі реалізації *"
 
 #: app/templates/app/submissions/submission_form.html:82
 msgid "Briefly describe what your team built, tech stack, and how to test it."
-msgstr ""
+msgstr "Коротко опишіть, що створила ваша команда, стек технологій і як його перевірити."
 "Коротко опишіть, що побудувала ваша команда, технологічний стек і як це "
 "протестувати."
 
@@ -1984,11 +1477,11 @@ msgstr "Посилання"
 
 #: app/templates/app/teams/team.html:39
 msgid "Telegram"
-msgstr ""
+msgstr "Телеграм"
 
 #: app/templates/app/teams/team.html:44
 msgid "Discord"
-msgstr ""
+msgstr "Діскорд"
 
 #: app/templates/app/teams/team.html:49
 msgid "Website"
@@ -2010,13 +1503,7 @@ msgstr "Редагувати команду"
 
 #: app/templates/app/teams/team.html:65
 msgid "Leave this team?"
-msgstr ""
-
-#: app/templates/app/teams/team.html:67
-#, fuzzy
-#| msgid "Create Team"
-msgid "Leave Team"
-msgstr "Створити команду"
+msgstr "Покинути цю команду?"
 
 #: app/templates/app/teams/team.html:70
 msgid "Copy Team Name"
@@ -2133,13 +1620,7 @@ msgstr "Соціальні посилання"
 #: app/templates/app/teams/teams.html:67
 #, python-format
 msgid "Delete team '%(name)s'? This cannot be undone."
-msgstr ""
-
-#: app/templates/app/teams/team_form.html:67
-#, fuzzy
-#| msgid "Create Team"
-msgid "Delete Team"
-msgstr "Створити команду"
+msgstr "Видалити команду \"%(name)s\"? Це неможливо скасувати."
 
 #: app/templates/app/teams/teams.html:13
 #, python-format
@@ -2176,7 +1657,7 @@ msgstr "Найменше учасників"
 
 #: app/templates/app/teams/teams.html:37
 msgid "Clear"
-msgstr ""
+msgstr "Очистити"
 
 #: app/templates/app/teams/teams.html:39
 msgid "Export Teams"
@@ -2210,131 +1691,84 @@ msgstr "На цей конкурс ще не зареєстровано жодн
 
 #: app/templates/app/teams/teams.html:93
 msgid "Pending team registration requests."
-msgstr ""
-
-#: app/templates/registration/login.html:8
-#, fuzzy
-#| msgid "Welcome to ContestKeeper"
-msgid "Welcome Back – ContestKeeper"
-msgstr "Ласкаво просимо до ContestKeeper"
+msgstr "Заявки на реєстрацію команд, очікучі на розгляд."
 
 #: app/templates/registration/login.html:23
 msgid "Welcome Back."
-msgstr ""
+msgstr "Ласкаво просимо."
 
 #: app/templates/registration/login.html:24
 msgid ""
 "Ready to tackle the next challenge? Sign in to access your dashboard, teams, "
 "and active competitions."
-msgstr ""
-
-#: app/templates/registration/login.html:29
-#, fuzzy
-#| msgid "Log in"
-msgid "Log In"
-msgstr "Увійти"
+msgstr "Готові впоратися з наступним викликом? Увійдіть, щоб отримати доступ до інформаційної панелі, команд і активних змагань."
 
 #: app/templates/registration/login.html:33
 msgid "Invalid username or password. Please try again."
-msgstr ""
+msgstr "Недійсне ім'я користувача або пароль. Спробуйте ще раз."
 
 #: app/templates/registration/login.html:43
 msgid "Enter your username"
-msgstr ""
+msgstr "Введіть своє ім'я користувача"
 
 #: app/templates/registration/login.html:47
 #: app/templates/registration/register.html:81
 msgid "Password"
-msgstr ""
+msgstr "Пароль"
 
 #: app/templates/registration/login.html:49
 msgid "Enter your password"
-msgstr ""
+msgstr "Введіть свій пароль"
 
 #: app/templates/registration/login.html:54
 msgid "Sign In"
-msgstr ""
+msgstr "Увійти"
 
 #: app/templates/registration/login.html:58
 msgid "Don\\"
-msgstr ""
-
-#: app/templates/registration/login.html:58
-#, fuzzy
-#| msgid "Create Contest"
-msgid "Create one today"
-msgstr "Створити конкурс"
-
-#: app/templates/registration/register.html:8
-#, fuzzy
-#| msgid "Welcome to ContestKeeper"
-msgid "Join the Competition – ContestKeeper"
-msgstr "Ласкаво просимо до ContestKeeper"
+msgstr "Дон\\"
 
 #: app/templates/registration/register.html:23
 msgid "Elevate Your Coding Journey."
-msgstr ""
+msgstr "Розвивайте свою подорож програмування."
 
 #: app/templates/registration/register.html:24
 msgid ""
 "Join a community of top developers, compete in high-stakes tournaments, and "
 "showcase your skills to the world."
-msgstr ""
-
-#: app/templates/registration/register.html:29
-#, fuzzy
-#| msgid "Create Round"
-msgid "Create Account"
-msgstr "Створити раунд"
+msgstr "Приєднуйтеся до спільноти найкращих розробників, змагайтеся в турнірах із високими ставками та демонструйте свої навички світові."
 
 #: app/templates/registration/register.html:33
 msgid "Please correct the details below to continue."
-msgstr ""
+msgstr "Будь ласка, виправте деталі нижче, щоб продовжити."
 
 #: app/templates/registration/register.html:52
 msgid "e.g. coder_pro"
-msgstr ""
+msgstr "напр. coder_pro"
 
 #: app/templates/registration/register.html:57
 msgid "Email Address"
-msgstr ""
+msgstr "Адреса електронної пошти"
 
 #: app/templates/registration/register.html:59
 msgid "you@example.com"
-msgstr ""
+msgstr "you@example.com"
 
 #: app/templates/registration/register.html:68
 msgid "John"
-msgstr ""
+msgstr "Іван"
 
 #: app/templates/registration/register.html:74
 msgid "Doe"
-msgstr ""
-
-#: app/templates/registration/register.html:83
-#: app/templates/registration/register.html:89
-msgid "••••••••"
-msgstr ""
+msgstr "Мазепа"
 
 #: app/templates/registration/register.html:87
 msgid "Repeat Password"
-msgstr ""
-
-#: app/templates/registration/register.html:94
-#, fuzzy
-#| msgid "Register"
-msgid "Register Now"
-msgstr "Зареєструватися"
+msgstr "Повторіть пароль"
 
 #: app/templates/registration/register.html:98
 msgid "Already have an account?"
-msgstr ""
-
-#: app/templates/registration/register.html:98
-#, fuzzy
-#| msgid "Log in"
-msgid "Log in here"
-msgstr "Увійти"
+msgstr "Вже маєте акаунт?"
 
 #~ msgid "Register as Individual"
 #~ msgstr "Зареєструватися як учасник"
@@ -2369,13 +1803,6 @@ msgstr "Увійти"
 #~ msgid "🚀 Your Submission"
 #~ msgstr "🚀 Ваше подання"
 
-#~ msgid ""
-#~ "You are not part of a team in this contest. You must be in a team to "
-#~ "submit work."
-#~ msgstr ""
-#~ "Ви не є частиною команди в цьому конкурсі. Ви повинні бути в команді, щоб "
-#~ "подати роботу."
-
 #~ msgid "Video Presentation ↗"
 #~ msgstr "Відеопрезентація ↗"
 
@@ -2391,14 +1818,500 @@ msgstr "Увійти"
 #~ msgid "e.g., Extended due to infrastructure issues"
 #~ msgstr "наприклад, Продовжено через технічні проблеми"
 
-#~ msgid "Organizer tools tab. The active tab is remembered on this device."
-#~ msgstr ""
-#~ "Вкладка інструментів організатора. Активна вкладка запам'ятовується на "
-#~ "цьому пристрої."
-
 #~ msgid "Team applications will appear here."
 #~ msgstr "Заявки команд з'являться тут."
 
 #~ msgctxt "Task"
 #~ msgid "Running"
 #~ msgstr "Активна"
+
+#~ msgid "Organizer tools tab. The active tab is remembered on this device."
+#~ msgstr "Вкладка інструментів органайзера. Активна вкладка запам'ятовується на цьому пристрої."
+#~ "Вкладка інструментів організатора. Активна вкладка запам'ятовується на "
+#~ "цьому пристрої."
+
+
+#: app/templates/app/admin/admin_application_list.html:16
+#| msgid "Applications"
+msgid "Review Applications"
+msgstr "Додатки"
+
+#: app/templates/app/admin/admin_application_list.html:17
+#| msgid "Manage Contest"
+msgid "Manage who joins your contest"
+msgstr "Керувати конкурсом"
+
+#: app/templates/app/admin/admin_application_list.html:42
+#| msgid "Approve"
+msgid "Approve Team"
+msgstr "Затвердити"
+
+#: app/templates/app/admin/admin_application_list.html:51
+#: app/templates/app/teams/teams.html:120
+#| msgid "No pending applications."
+msgid "No pending team applications."
+msgstr "Немає незавершених заявок."
+
+#: app/templates/app/admin/admin_application_list.html:78
+#| msgid "No pending applications."
+msgid "No pending join requests."
+msgstr "Немає незавершених заявок."
+
+#: app/templates/app/admin/admin_application_list.html:96
+#| msgid "Approve"
+msgid "Approve Jury"
+msgstr "Затвердити"
+
+#: app/templates/app/admin/admin_application_list.html:105
+#: app/templates/app/juries/jurys.html:113
+#| msgid "No pending applications."
+msgid "No pending jury applications."
+msgstr "Немає незавершених заявок."
+
+#: app/templates/app/admin/analytics.html:15
+#| msgid "Analytics"
+msgid "Contest Analytics"
+msgstr "Аналітика"
+
+#: app/templates/app/admin/analytics.html:19
+#| msgid "Back to Dashboard"
+msgid "Back to Board"
+msgstr "Назад до інформаційної панелі"
+
+#: app/templates/app/admin/analytics.html:38
+#| msgid "Save Evaluation"
+msgid "Evaluations"
+msgstr "Зберегти оцінку"
+
+#: app/templates/app/admin/analytics.html:47
+#| msgid "Submissions are closed for this round."
+msgid "Submission Rate per Round"
+msgstr "Подання на цей раунд закрито."
+
+#: app/templates/app/admin/analytics.html:91
+#| msgid "In progress"
+msgid "Jury Progress"
+msgstr "В роботі"
+
+#: app/templates/app/admin/analytics.html:103
+#| msgid "No jurys assigned to this contest yet."
+msgid "No jury members assigned yet."
+msgstr "Для цього конкурсу ще не призначено журі."
+
+#: app/templates/app/admin/analytics.html:111
+#| msgid "Registration"
+msgid "Score Distribution"
+msgstr "Реєстрація"
+
+#: app/templates/app/announcements/announcement_confirm_delete.html:13
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to delete this contest? This action cannot be "
+#| "undone."
+msgid "Are you sure you want to delete the announcement: \""
+msgstr "Ви впевнені, що бажаєте видалити оголошення: \""
+
+#: app/templates/app/announcements/announcement_form.html:14
+#| msgid "Announcement"
+msgid "Post New Announcement"
+msgstr "Оголошення"
+
+#: app/templates/app/announcements/announcement_form.html:30
+#| msgid "Announcement"
+msgid "Publish Announcement"
+msgstr "Оголошення"
+
+#: app/templates/app/announcements/announcements.html:19
+#| msgid "Announcement"
+msgid "Post Announcement"
+msgstr "Оголошення"
+
+#: app/templates/app/announcements/announcements.html:50
+#| msgid "Announcements"
+msgid "No announcements yet."
+msgstr "Оголошення"
+
+#: app/templates/app/contests/contest_detail.html:55
+#| msgid "Active Rounds"
+msgid "Current Active Round"
+msgstr "Активні раунди"
+
+#: app/templates/app/contests/contest_detail.html:62
+#| msgid "Manage Contest"
+msgid "Manage Round"
+msgstr "Керувати конкурсом"
+
+#: app/templates/app/contests/contest_detail.html:62
+#| msgid "View Your Submission"
+msgid "View & Submit"
+msgstr "Перегляньте свою заявку"
+
+#: app/templates/app/contests/contest_detail.html:122
+#: app/templates/app/contests/contest_detail.html:149
+#| msgid "Applications"
+msgid "Application Pending"
+msgstr "Додатки"
+
+#: app/templates/app/contests/contest_detail.html:147
+#| msgid "You have not created any contests yet."
+msgid "You have been approved to judge this contest."
+msgstr "Ви ще не створили жодного конкурсу."
+
+#: app/templates/app/contests/contest_detail.html:160
+#| msgid "Applications"
+msgid "Applications Closed"
+msgstr "Додатки"
+
+#: app/templates/app/core/nav.html:5 app/templates/app/core/nav.html:18
+#: app/templates/registration/login.html:22
+#: app/templates/registration/register.html:22
+#| msgid "%(name)s - ContestKeeper"
+msgid "ContestKeeper"
+msgstr "%(name)s - ContestKeeper"
+
+#: app/templates/app/juries/jurys.html:69
+#, python-format
+#| msgid "Kick %(name)s from the team?"
+msgid "Remove %(name)s from the jury panel?"
+msgstr "Вигнати%(name)s з команди?"
+
+#: app/templates/app/juries/jurys.html:87
+#| msgid "Pending Applications"
+msgid "Pending jury applications."
+msgstr "Заявки, що очікують на розгляд"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:20
+#| msgid "Analytics"
+msgid "Detailed Analytics"
+msgstr "Аналітика"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:21
+#| msgid "Edit Criterion"
+msgid "Add Scoring Criterion"
+msgstr "Редагувати критерій"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:28
+#| msgid "Evaluation Complete"
+msgid "Evaluation Status"
+msgstr "Оцінювання завершено"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:40
+#| msgid "Participant"
+msgid "Participant Breakdown"
+msgstr "Учасник"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:44
+#| msgid "Completed"
+msgid "Completed At"
+msgstr "Виконано"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:51
+#| msgid "Close Submissions"
+msgid "Score Submission Progress"
+msgstr "Закрити подання"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:61
+#| msgid "Missing criteria:"
+msgid "Missing scores"
+msgstr "Відсутні критерії:"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:69
+#| msgid "Search members"
+msgid "Jury member"
+msgstr "Пошук учасників"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:92
+#| msgid "Save Evaluation"
+msgid "Finish Evaluation"
+msgstr "Зберегти оцінку"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:103
+#| msgid "Export Teams"
+msgid "Export JSON"
+msgstr "Команди експорту"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:104
+#| msgid "Export Teams"
+msgid "Export CSV"
+msgstr "Команди експорту"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:105
+#| msgid "Save Evaluation"
+msgid "Export Evaluations"
+msgstr "Зберегти оцінку"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:118
+#: app/templates/app/leaderboards/leaderboard.html:36
+#: app/templates/app/leaderboards/team_leaderboard_detail.html:60
+#| msgid "Total score"
+msgid "Total Score"
+msgstr "Загальний бал"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:124
+#| msgid "Details"
+msgid "Del"
+msgstr "Подробиці"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:128
+#| msgid "Completed"
+msgid "Complete"
+msgstr "Виконано"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:150
+#: app/templates/app/leaderboards/leaderboard.html:60
+#| msgid "First Name"
+msgid "First"
+msgstr "Ім'я"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:163
+#: app/templates/app/leaderboards/leaderboard.html:73
+#| msgid "Next Up"
+msgid "Next"
+msgstr "Далі"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:164
+#: app/templates/app/leaderboards/leaderboard.html:74
+#| msgid "Last Name"
+msgid "Last"
+msgstr "Прізвище"
+
+#: app/templates/app/leaderboards/admin_leaderboard_dashboard.html:170
+#| msgid "No leaderboard results available yet."
+msgid "No leaderboard entries available yet."
+msgstr "Результатів таблиці лідерів ще немає."
+
+#: app/templates/app/leaderboards/leaderboard.html:20
+#| msgid "Back to Dashboard"
+msgid "Evaluation Dashboard"
+msgstr "Назад до інформаційної панелі"
+
+#: app/templates/app/leaderboards/leaderboard.html:26
+#: app/templates/app/leaderboards/team_leaderboard_detail.html:27
+#| msgid "No leaderboard results available yet."
+msgid "Leaderboard is not yet available."
+msgstr "Результатів таблиці лідерів ще немає."
+
+#: app/templates/app/leaderboards/leaderboard.html:82
+#| msgid "Missing criteria:"
+msgid "Missing Scores"
+msgstr "Відсутні критерії:"
+
+#: app/templates/app/leaderboards/leaderboard.html:86
+#: app/templates/app/leaderboards/team_leaderboard_detail.html:154
+#| msgid "Implementation Details"
+msgid "Computation Status"
+msgstr "Деталі реалізації"
+
+#: app/templates/app/leaderboards/team_leaderboard_detail.html:18
+#| msgid "Back to Dashboard"
+msgid "Back to leaderboard"
+msgstr "Назад до інформаційної панелі"
+
+#: app/templates/app/leaderboards/team_leaderboard_detail.html:121
+#| msgid "Member"
+msgid "Jury Member"
+msgstr "Член"
+
+#: app/templates/app/leaderboards/team_leaderboard_detail.html:159
+#| msgid "Status"
+msgid "Status:"
+msgstr "Статус"
+
+#: app/templates/app/leaderboards/team_leaderboard_detail.html:167
+#| msgid "Missing criteria:"
+msgid "Missing Scores:"
+msgstr "Відсутні критерії:"
+
+#: app/templates/app/rounds/round_detail.html:18
+#| msgid "← Back to Rounds List"
+msgid "Back to Rounds List"
+msgstr "← Назад до списку раундів"
+
+#: app/templates/app/rounds/round_detail.html:23
+#: app/templates/app/rounds/round_detail_team.html:17
+#| msgid "← Back to All Rounds"
+msgid "Back to All Rounds"
+msgstr "← Назад до Усі раунди"
+
+#: app/templates/app/rounds/round_detail.html:35
+#: app/templates/app/rounds/round_detail_team.html:28
+#, fuzzy
+#| msgid ""
+#| "- This round is no longer accepting submissions. Results will be "
+#| "published after evaluation."
+msgid ""
+"This round is no longer accepting submissions. Results will be published "
+"after jury evaluation."
+msgstr "У цьому раунді заявки більше не приймаються. Результати будуть опубліковані після оцінки журі."
+"- Цей раунд більше не приймає подань. Результати будуть опубліковані після "
+"оцінювання."
+
+#: app/templates/app/rounds/round_detail.html:47
+#: app/templates/app/rounds/round_detail_team.html:40
+#| msgid "- Check the leaderboard to see results and rankings."
+msgid "Check the leaderboard to see the final results and rankings."
+msgstr "- Перевірте таблицю лідерів, щоб побачити результати та рейтинги."
+
+#: app/templates/app/rounds/round_detail.html:138
+#: app/templates/app/rounds/round_detail_team.html:130
+#| msgid "View Your Submission"
+msgid "Your Submission"
+msgstr "Перегляньте свою заявку"
+
+#: app/templates/app/rounds/round_detail.html:160
+#| msgid "View Your Submission"
+msgid "View Submission"
+msgstr "Перегляньте свою заявку"
+
+#: app/templates/app/rounds/round_detail.html:171
+#: app/templates/app/rounds/round_detail_team.html:182
+#| msgid "❌ Not Submitted"
+msgid "Not Submitted Yet"
+msgstr "❌ Не надіслано"
+
+#: app/templates/app/rounds/round_detail.html:178
+#| msgid "Submissions are closed."
+msgid "Submissions are currently closed."
+msgstr "Подання закрито."
+
+#: app/templates/app/rounds/round_detail.html:184
+#: app/templates/app/rounds/round_detail_team.html:143
+#| msgid "You must be in a team to submit."
+msgid "You must be in a team to participate."
+msgstr "Ви повинні бути в команді, щоб подати."
+
+#: app/templates/app/rounds/round_detail.html:204
+#| msgid "View All Submissions"
+msgid "Review Submissions"
+msgstr "Переглянути всі подання"
+
+#: app/templates/app/rounds/round_detail.html:214
+#| msgid "Edit Criterion"
+msgid "Edit Configuration"
+msgstr "Редагувати критерій"
+
+#: app/templates/app/rounds/round_detail.html:218
+#| msgid "Contest Rounds"
+msgid "Close Round"
+msgstr "Раунди конкурсу"
+
+#: app/templates/app/rounds/round_detail.html:241
+#: app/templates/app/rounds/round_detail_team.html:211
+#| msgid "No materials uploaded."
+msgid "No materials available."
+msgstr "Матеріали не завантажені."
+
+#: app/templates/app/rounds/round_detail_team.html:152
+#| msgid "✅ Submitted"
+msgid "✅ Submitted Work"
+msgstr "✅ Надіслано"
+
+#: app/templates/app/rounds/round_detail_team.html:160
+#| msgid "GitHub Repository ↗"
+msgid "Repository"
+msgstr "Репозиторій GitHub ↗"
+
+#: app/templates/app/rounds/round_detail_team.html:171
+#| msgid "View All Submissions"
+msgid "View Full Submission"
+msgstr "Переглянути всі подання"
+
+#: app/templates/app/rounds/round_extend_deadline.html:85
+#| msgid "Current Deadline:"
+msgid "Current Deadline"
+msgstr "Поточний термін:"
+
+#: app/templates/app/rounds/round_extend_deadline.html:105
+#| msgid "New Deadline *"
+msgid "New Deadline"
+msgstr "Новий термін *"
+
+#: app/templates/app/schedule/schedule.html:14
+#| msgid "Full Schedule"
+msgid "Tournament Schedule"
+msgstr "Повний розклад"
+
+#: app/templates/app/schedule/schedule.html:68
+#| msgid "Edit Submission"
+msgid "Go to Submission"
+msgstr "Редагувати подання"
+
+#: app/templates/app/schedule/schedule.html:70
+#| msgid "View Details"
+msgid "View Round Details"
+msgstr "Переглянути деталі"
+
+#: app/templates/app/schedule/schedule.html:83
+#| msgid "No members joined this team yet."
+msgid "No events listed yet."
+msgstr "До цієї команди ще не приєднався жоден член."
+
+#: app/templates/app/schedule/schedule_event_confirm_delete.html:13
+#, fuzzy
+#| msgid ""
+#| "Are you sure you want to delete this contest? This action cannot be "
+#| "undone."
+msgid "Are you sure you want to delete the event: \""
+msgstr "Ви впевнені, що бажаєте видалити цю подію: \""
+
+#: app/templates/app/schedule/schedule_event_form.html:14
+#| msgid "Schedule"
+msgid "Add Schedule Event"
+msgstr "розклад"
+
+#: app/templates/app/teams/team.html:67
+#| msgid "Create Team"
+msgid "Leave Team"
+msgstr "Створити команду"
+
+#: app/templates/app/teams/team_form.html:67
+#| msgid "Create Team"
+msgid "Delete Team"
+msgstr "Створити команду"
+
+#: app/templates/registration/login.html:8
+#| msgid "Welcome to ContestKeeper"
+msgid "Welcome Back – ContestKeeper"
+msgstr "Ласкаво просимо до ContestKeeper"
+
+#: app/templates/registration/login.html:29
+#| msgid "Log in"
+msgid "Log In"
+msgstr "авторизуватися"
+
+#: app/templates/registration/login.html:58
+#| msgid "Create Contest"
+msgid "Create one today"
+msgstr "Створити конкурс"
+
+#: app/templates/registration/register.html:8
+#| msgid "Welcome to ContestKeeper"
+msgid "Join the Competition – ContestKeeper"
+msgstr "Ласкаво просимо до ContestKeeper"
+
+#: app/templates/registration/register.html:29
+#| msgid "Create Round"
+msgid "Create Account"
+msgstr "Створити раунд"
+
+#: app/templates/registration/register.html:83
+#: app/templates/registration/register.html:89
+msgid "••••••••"
+msgstr ""
+
+#: app/templates/registration/register.html:94
+#| msgid "Register"
+msgid "Register Now"
+msgstr "зареєструватися"
+
+#: app/templates/registration/register.html:98
+#| msgid "Log in"
+msgid "Log in here"
+msgstr "авторизуватися"
+
+#~ msgid ""
+#~ "You are not part of a team in this contest. You must be in a team to "
+#~ "submit work."
+#~ msgstr ""
+#~ "Ви не є частиною команди в цьому конкурсі. Ви повинні бути в команді, щоб "
+#~ "подати роботу."

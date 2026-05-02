@@ -1,5 +1,4 @@
 {% extends 'app/core/base.html' %}
-{% load i18n %}
 {% load static %}
 
 {% block title %}Manage Applications - {{ contest.name }}{% endblock %}
@@ -9,6 +8,7 @@
 {% endblock %}
 
 {% block content %}
+{% load i18n %}
 <div class="container py-5">
     <div class="glass-card">
         <div class="d-flex justify-content-between align-items-center mb-4">
