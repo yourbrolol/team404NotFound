@@ -1,4 +1,5 @@
 {% extends 'app/core/base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block title %}Manage Applications - {{ contest.name }}{% endblock %}
@@ -12,10 +13,10 @@
     <div class="glass-card">
         <div class="d-flex justify-content-between align-items-center mb-4">
             <div>
-                <h1 class="h2 font-weight-bold mb-0">Review Applications</h1>
-                <p class="text-muted small">Manage who joins your contest</p>
+                <h1 class="h2 font-weight-bold mb-0">{% trans 'Review Applications' %}</h1>
+                <p class="text-muted small">{% trans 'Manage who joins your contest' %}</p>
             </div>
-            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary a-001">← Back to Contest</a>
+            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary a-001">{% trans '← Back to Contest' %}</a>
         </div>
 
         <div class="tabs-nav" id="appTabs">
@@ -38,16 +39,16 @@
                     <div class="actions-group">
                         <form action="{% url 'approve_application' app.pk %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn-action btn-approve">Approve Team</button>
+                            <button type="submit" class="btn-action btn-approve">{% trans 'Approve Team' %}</button>
                         </form>
                         <form action="{% url 'reject_application' app.pk %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn-action btn-reject">Reject</button>
+                            <button type="submit" class="btn-action btn-reject">{% trans 'Reject' %}</button>
                         </form>
                     </div>
                 </div>
             {% empty %}
-                <div class="empty-state">No pending team applications.</div>
+                <div class="empty-state">{% trans 'No pending team applications.' %}</div>
             {% endfor %}
         </div>
 
@@ -65,16 +66,16 @@
                     <div class="actions-group">
                         <form action="{% url 'approve_application' app.pk %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn-action btn-approve">Approve</button>
+                            <button type="submit" class="btn-action btn-approve">{% trans 'Approve' %}</button>
                         </form>
                         <form action="{% url 'reject_application' app.pk %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn-action btn-reject">Reject</button>
+                            <button type="submit" class="btn-action btn-reject">{% trans 'Reject' %}</button>
                         </form>
                     </div>
                 </div>
             {% empty %}
-                <div class="empty-state">No pending join requests.</div>
+                <div class="empty-state">{% trans 'No pending join requests.' %}</div>
             {% endfor %}
         </div>
 
@@ -92,16 +93,16 @@
                     <div class="actions-group">
                         <form action="{% url 'approve_application' app.pk %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn-action btn-approve">Approve Jury</button>
+                            <button type="submit" class="btn-action btn-approve">{% trans 'Approve Jury' %}</button>
                         </form>
                         <form action="{% url 'reject_application' app.pk %}" method="post">
                             {% csrf_token %}
-                            <button type="submit" class="btn-action btn-reject">Reject</button>
+                            <button type="submit" class="btn-action btn-reject">{% trans 'Reject' %}</button>
                         </form>
                     </div>
                 </div>
             {% empty %}
-                <div class="empty-state">No pending jury applications.</div>
+                <div class="empty-state">{% trans 'No pending jury applications.' %}</div>
             {% endfor %}
         </div>
     </div>

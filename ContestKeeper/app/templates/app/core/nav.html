@@ -2,7 +2,7 @@
 
 <!-- Mobile top bar (hidden on desktop) -->
 <div class="nav-topbar">
-    <a href="{% url 'home' %}" class="nav-topbar-logo">ContestKeeper</a>
+    <a href="{% url 'home' %}" class="nav-topbar-logo">{% trans 'ContestKeeper' %}</a>
     <button class="nav-hamburger" id="navHamburger" aria-label="{% trans 'Toggle navigation' %}" aria-expanded="false">
         <span></span>
         <span></span>
@@ -15,7 +15,7 @@
 
 <nav id="nav">
     <div class="nav-container">
-        <a href="{% url 'home' %}" class="nav-logo">ContestKeeper</a>
+        <a href="{% url 'home' %}" class="nav-logo">{% trans 'ContestKeeper' %}</a>
         <div class="nav-links">
             <button data-url="{% url 'home' %}" class="nav-link" id="homeBtn">{% trans "Home" %}</button>
             <button data-url="{% url 'dashboard' %}" class="nav-link" id="dashboardBtn">{% trans "Dashboard" %}</button>

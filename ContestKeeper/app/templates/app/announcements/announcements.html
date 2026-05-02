@@ -1,4 +1,5 @@
 {% extends 'app/core/base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block extra_css %}
@@ -11,11 +12,11 @@
 {% block content %}
 <header class="dashboard-header">
     <div class="header-left">
-        <h1 id="h1">Announcements</h1>
+        <h1 id="h1">{% trans 'Announcements' %}</h1>
         <p class="p-001">Important updates and news for "{{ contest.name }}".</p>
     </div>
     {% if user == contest.organizer %}
-    <a href="{% url 'announcement_create' contest.pk %}" class="btn btn-primary">Post Announcement</a>
+    <a href="{% url 'announcement_create' contest.pk %}" class="btn btn-primary">{% trans 'Post Announcement' %}</a>
     {% endif %}
 </header>
 
@@ -33,7 +34,7 @@
             </h3>
             {% if user == contest.organizer %}
             <form action="{% url 'announcement_delete' contest.pk announcement.pk %}" method="get" class="form-001">
-                <button type="submit" class="btn btn-secondary btn-sm button-001">Delete</button>
+                <button type="submit" class="btn btn-secondary btn-sm button-001">{% trans 'Delete' %}</button>
             </form>
             {% endif %}
         </div>
@@ -46,12 +47,12 @@
     </article>
     {% empty %}
     <div class="empty-state">
-        <p>No announcements yet.</p>
+        <p>{% trans 'No announcements yet.' %}</p>
     </div>
     {% endfor %}
 </div>
 
 <div class="actions-footer div-003">
-    <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">Back to Contest</a>
+    <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">{% trans 'Back to Contest' %}</a>
 </div>
 {% endblock %}

@@ -1,4 +1,5 @@
 {% extends 'app/core/base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block extra_css %}
@@ -8,13 +9,13 @@
 {% block title %}Delete Announcement{% endblock %}
 {% block content %}
 <div class="form-card">
-    <h2>Confirm Deletion</h2>
-    <p>Are you sure you want to delete the announcement: "<strong>{{ object.title }}</strong>"?</p>
+    <h2>{% trans 'Confirm Deletion' %}</h2>
+    <p>{% trans 'Are you sure you want to delete the announcement: "' %}<strong>{{ object.title }}</strong>"?</p>
     <form method="post">
         {% csrf_token %}
         <div class="div-001">
-            <button type="submit" class="btn btn-primary button-001">Yes, delete it</button>
-            <a href="{% url 'announcement_list' contest.pk %}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary button-001">{% trans 'Yes, delete it' %}</button>
+            <a href="{% url 'announcement_list' contest.pk %}" class="btn btn-secondary">{% trans 'Cancel' %}</a>
         </div>
     </form>
 </div>

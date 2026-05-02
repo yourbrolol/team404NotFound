@@ -11,7 +11,7 @@
 <div class="container py-5">
     <div class="div-005">
         <div>
-            <h1 class="h1-001">Tournament Schedule</h1>
+            <h1 class="h1-001">{% trans 'Tournament Schedule' %}</h1>
             <p class="p-001">Follow the timeline of {{ contest.name }}
             </p>
         </div>
@@ -20,11 +20,11 @@
             {% if user == contest.organizer %}
             <form action="{% url 'schedule_regenerate' contest.pk %}" method="post">
                 {% csrf_token %}
-                <button type="submit" class="btn btn-secondary button-001">Regenerate</button>
+                <button type="submit" class="btn btn-secondary button-001">{% trans 'Regenerate' %}</button>
             </form>
-            <a href="{% url 'schedule_event_create' contest.pk %}" class="btn btn-primary button-001">+ Add Event</a>
+            <a href="{% url 'schedule_event_create' contest.pk %}" class="btn btn-primary button-001">{% trans '+ Add Event' %}</a>
             {% endif %}
-            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary button-001">Back</a>
+            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary button-001">{% trans 'Back' %}</a>
         </div>
     </div>
 
@@ -80,7 +80,7 @@
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                     d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
             </svg>
-            <h3>No events listed yet.</h3>
+            <h3>{% trans 'No events listed yet.' %}</h3>
         </div>
         {% endfor %}
     </div>

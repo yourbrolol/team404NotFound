@@ -1,4 +1,5 @@
 {% extends 'app/core/base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block title %}{{ contest.name }} Leaderboard{% endblock %}
@@ -13,16 +14,16 @@
             <div class="leaderboard-header">
                 <div>
                     <h1 id="h1">{{ contest.name }} Leaderboard</h1>
-                    <p class="leaderboard-subtitle">Final ranking table for contest participants.</p>
+                    <p class="leaderboard-subtitle">{% trans 'Final ranking table for contest participants.' %}</p>
                 </div>
                 {% if can_view_missing %}
-                <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">Evaluation Dashboard</a>
+                <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">{% trans 'Evaluation Dashboard' %}</a>
                 {% endif %}
             </div>
 
             {% if not leaderboard_available %}
                 <div class="empty-leaderboard">
-                    <h2>Leaderboard is not yet available.</h2>
+                    <h2>{% trans 'Leaderboard is not yet available.' %}</h2>
                     <p class="leaderboard-subtitle">{{ not_available_message }}</p>
                 </div>
             {% else %}
@@ -30,9 +31,9 @@
                     <table class="leaderboard-table">
                         <thead>
                             <tr>
-                                <th>Rank</th>
-                                <th>Team</th>
-                                <th>Total Score</th>
+                                <th>{% trans 'Rank' %}</th>
+                                <th>{% trans 'Team' %}</th>
+                                <th>{% trans 'Total Score' %}</th>
                                 {% for criterion in criteria %}
                                     <th>{{ criterion.name }}</th>
                                 {% endfor %}
@@ -56,8 +57,8 @@
                 {% if entries.has_other_pages %}
                 <div class="pagination-group">
                     {% if entries.has_previous %}
-                        <a href="?page=1" class="btn btn-secondary btn-sm">First</a>
-                        <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">Previous</a>
+                        <a href="?page=1" class="btn btn-secondary btn-sm">{% trans 'First' %}</a>
+                        <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans 'Previous' %}</a>
                     {% endif %}
                     
                     {% for num in entries.paginator.page_range %}
@@ -69,8 +70,8 @@
                     {% endfor %}
                     
                     {% if entries.has_next %}
-                        <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">Next</a>
-                        <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">Last</a>
+                        <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">{% trans 'Next' %}</a>
+                        <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">{% trans 'Last' %}</a>
                     {% endif %}
                 </div>
                 {% endif %}
@@ -78,11 +79,11 @@
                 {% if can_view_missing %}
                     <div class="leaderboard-stats">
                         <div class="stat-box">
-                            <h4>Missing Scores</h4>
+                            <h4>{% trans 'Missing Scores' %}</h4>
                             <p>{{ overall_missing|length }} unresolved entries</p>
                         </div>
                         <div class="stat-box">
-                            <h4>Computation Status</h4>
+                            <h4>{% trans 'Computation Status' %}</h4>
                             <p>{% if entries and entries.0.entry.computation_complete %}Complete{% else %}Incomplete{% endif %}</p>
                         </div>
                     </div>

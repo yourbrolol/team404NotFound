@@ -1,4 +1,5 @@
 {% extends 'app/core/base.html' %}
+{% load i18n %}
 {% load static %}
 
 {% block extra_css %}
@@ -10,7 +11,7 @@
 
 {% block content %}
 <div class="form-card">
-    <h2 class="h2-001">Add Schedule Event</h2>
+    <h2 class="h2-001">{% trans 'Add Schedule Event' %}</h2>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -23,8 +24,8 @@
         </div>
         {% endfor %}
         <div class="div-001">
-            <button type="submit" class="btn btn-primary button-001">Add Event</button>
-            <a href="{% url 'schedule' contest.pk %}" class="btn btn-secondary">Cancel</a>
+            <button type="submit" class="btn btn-primary button-001">{% trans 'Add Event' %}</button>
+            <a href="{% url 'schedule' contest.pk %}" class="btn btn-secondary">{% trans 'Cancel' %}</a>
         </div>
     </form>
 </div>

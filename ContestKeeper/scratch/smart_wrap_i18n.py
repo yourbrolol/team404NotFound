@@ -96,7 +96,7 @@ if __name__ == "__main__":
     templates_path = os.path.join(base_dir, 'app', 'templates')
     
     print("--- DRY RUN: Smart i18n Wrapping (Strictly Safe) ---\n")
-    changes = smart_wrap(templates_path, apply_changes=False)
+    changes = smart_wrap(templates_path, apply_changes=True)
     
     print(f"Total potential line changes: {changes}")
     if changes > 0:

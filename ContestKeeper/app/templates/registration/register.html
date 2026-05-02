@@ -1,10 +1,11 @@
+{% load i18n %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Join the Competition – ContestKeeper</title>
+    <title>{% trans 'Join the Competition – ContestKeeper' %}</title>
     <link rel="stylesheet" href="{% static 'fonts/origin.css' %}">
     <link rel="stylesheet" href="{% static 'css/core/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/core/register.css' %}">
@@ -18,18 +19,18 @@
     <main class="auth-card">
         <!-- Left Column: Branding -->
         <section class="auth-info">
-            <div class="auth-logo">ContestKeeper</div>
-            <h2>Elevate Your Coding Journey.</h2>
-            <p>Join a community of top developers, compete in high-stakes tournaments, and showcase your skills to the world.</p>
+            <div class="auth-logo">{% trans 'ContestKeeper' %}</div>
+            <h2>{% trans 'Elevate Your Coding Journey.' %}</h2>
+            <p>{% trans 'Join a community of top developers, compete in high-stakes tournaments, and showcase your skills to the world.' %}</p>
         </section>
 
         <!-- Right Column: Form -->
         <section class="auth-form-container">
-            <h1>Create Account</h1>
+            <h1>{% trans 'Create Account' %}</h1>
             
             {% if form.errors and not form.non_field_errors %}
             <div class="auth-error-msg">
-                Please correct the details below to continue.
+                {% trans 'Please correct the details below to continue.' %}
             </div>
             {% endif %}
 
@@ -46,55 +47,55 @@
                 
                 <div class="auth-form-grid">
                     <div class="form-group">
-                        <label for="id_username" class="form-label">Username</label>
+                        <label for="id_username" class="form-label">{% trans 'Username' %}</label>
                         <input type="text" name="username" id="id_username" class="auth-input" 
-                               placeholder="e.g. coder_pro" value="{{ form.username.value|default:'' }}" 
+                               placeholder="{% trans 'e.g. coder_pro' %}" value="{{ form.username.value|default:'' }}" 
                                maxlength="150" required autofocus>
                         {% if form.username.errors %}<span class="field-error">{{ form.username.errors.0 }}</span>{% endif %}
                     </div>
                     <div class="form-group">
-                        <label for="id_email" class="form-label">Email Address</label>
+                        <label for="id_email" class="form-label">{% trans 'Email Address' %}</label>
                         <input type="email" name="email" id="id_email" class="auth-input" 
-                               placeholder="you@example.com" value="{{ form.email.value|default:'' }}" required>
+                               placeholder="{% trans 'you@example.com' %}" value="{{ form.email.value|default:'' }}" required>
                         {% if form.email.errors %}<span class="field-error">{{ form.email.errors.0 }}</span>{% endif %}
                     </div>
                 </div>
 
                 <div class="auth-form-grid">
                     <div class="form-group">
-                        <label for="id_first_name" class="form-label">First Name</label>
+                        <label for="id_first_name" class="form-label">{% trans 'First Name' %}</label>
                         <input type="text" name="first_name" id="id_first_name" class="auth-input" 
-                               placeholder="John" value="{{ form.first_name.value|default:'' }}" required>
+                               placeholder="{% trans 'John' %}" value="{{ form.first_name.value|default:'' }}" required>
                         {% if form.first_name.errors %}<span class="field-error">{{ form.first_name.errors.0 }}</span>{% endif %}
                     </div>
                     <div class="form-group">
-                        <label for="id_last_name" class="form-label">Last Name</label>
+                        <label for="id_last_name" class="form-label">{% trans 'Last Name' %}</label>
                         <input type="text" name="last_name" id="id_last_name" class="auth-input" 
-                               placeholder="Doe" value="{{ form.last_name.value|default:'' }}" required>
+                               placeholder="{% trans 'Doe' %}" value="{{ form.last_name.value|default:'' }}" required>
                         {% if form.last_name.errors %}<span class="field-error">{{ form.last_name.errors.0 }}</span>{% endif %}
                     </div>
                 </div>
 
                 <div class="auth-form-grid">
                     <div class="form-group">
-                        <label for="id_password1" class="form-label">Password</label>
+                        <label for="id_password1" class="form-label">{% trans 'Password' %}</label>
                         <input type="password" name="password1" id="id_password1" class="auth-input" 
-                               placeholder="••••••••" required>
+                               placeholder="{% trans '••••••••' %}" required>
                         {% if form.password1.errors %}<span class="field-error">{{ form.password1.errors.0 }}</span>{% endif %}
                     </div>
                     <div class="form-group">
-                        <label for="id_password2" class="form-label">Repeat Password</label>
+                        <label for="id_password2" class="form-label">{% trans 'Repeat Password' %}</label>
                         <input type="password" name="password2" id="id_password2" class="auth-input" 
-                               placeholder="••••••••" required>
+                               placeholder="{% trans '••••••••' %}" required>
                         {% if form.password2.errors %}<span class="field-error">{{ form.password2.errors.0 }}</span>{% endif %}
                     </div>
                 </div>
 
-                <button type="submit" class="btn-auth">Register Now</button>
+                <button type="submit" class="btn-auth">{% trans 'Register Now' %}</button>
             </form>
 
             <p class="auth-footer">
-                Already have an account? <a href="{% url 'login' %}">Log in here</a>
+                {% trans 'Already have an account?' %} <a href="{% url 'login' %}">{% trans 'Log in here' %}</a>
             </p>
         </section>
     </main>
