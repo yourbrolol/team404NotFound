@@ -8,13 +8,13 @@ def smart_wrap(templates_dir, apply_changes=False):
     # Regex for text nodes: >Text<
     text_node_pattern = re.compile(r'(>)([^<>{%]+)(<)')
 
-    # Regex to identify blocks we should NEVER touch
-    # 1. Django Template Tags: {% ... %}
-    # 2. Django Variables: {{ ... }}
-    # 3. Scripts: <script>...</script>
-    # 4. Styles: <style>...</style>
+    # 1. Django blocktrans blocks: {% blocktrans %}...{% endblocktrans %}
+    # 2. Other Template Tags: {% ... %}
+    # 3. Django Variables: {{ ... }}
+    # 4. Scripts: <script>...</script>
+    # 5. Styles: <style>...</style>
     unsafe_blocks_pattern = re.compile(
-        r'(\{%.*?%\}|\{\{.*?\}\}|<script.*?>.*?</script>|<style.*?>.*?</style>)', 
+        r'(\{%\s*blocktrans.*?%\}.*?\{%\s*endblocktrans\s*%\}|\{%.*?%\}|\{\{.*?\}\}|<script.*?>.*?</script>|<style.*?>.*?</style>)', 
         re.DOTALL | re.IGNORECASE
     )
 
