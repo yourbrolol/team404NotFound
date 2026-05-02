@@ -6,8 +6,7 @@ from django.views.generic import DetailView, ListView
 
 from app.forms import SubmissionForm
 from app.models import Contest, Round, Submission, JuryAssignment, JuryScore, ContestEvaluationPhase, ScoringCriterion
-from app.views.views_base import RedirectToRegisterMixin
-from app.views.views_base import OrganizerRequiredMixin
+from app.views.views_base import RedirectToRegisterMixin, OrganizerRequiredMixin, OrganizerOrJuryMixin
 
 
 class SubmissionCreateEditView(RedirectToRegisterMixin, View):
@@ -157,20 +156,14 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
         return redirect(request.path)
 
 
-class RoundSubmissionsListView(OrganizerRequiredMixin, ListView):
+class RoundSubmissionsListView(OrganizerOrJuryMixin, ListView):
     template_name = "app/submissions/submission_list.html"
     context_object_name = "submissions"
 
     def dispatch(self, request, *args, **kwargs):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         self.round = get_object_or_404(Round, pk=kwargs["round_id"], contest=self.contest)
-        if not request.user.is_authenticated:
-            return self.handle_no_permission()
-        is_organizer = self.contest.organizer == request.user
-        is_jury = self.contest.jurys.filter(pk=request.user.pk).exists()
-        if not (is_organizer or is_jury or request.user.is_staff):
-            return HttpResponseForbidden("You do not have access to this page.")
-        return super(OrganizerRequiredMixin, self).dispatch(request, *args, **kwargs)
+        return super().dispatch(request, *args, **kwargs)
 
     def get_queryset(self):
         qs = Submission.objects.filter(round=self.round)
