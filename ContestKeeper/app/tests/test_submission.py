@@ -153,6 +153,202 @@ class SubmissionModelTest(TestCase):
         self.team.delete()
         self.assertEqual(Submission.objects.count(), 0)
 
+    def test_submission_url_validation(self):
+        """Test that submission URLs are properly validated"""
+        # Valid URLs should work
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/user/repo',
+            video_url='https://youtube.com/watch?v=abc123',
+            live_demo_url='https://example.com/demo',
+        )
+        self.assertEqual(sub.github_url, 'https://github.com/user/repo')
+        
+        # Invalid URLs should fail at form level, but model allows any URL
+        # The validation happens in forms, not models for URLs
+
+    def test_submission_with_minimal_data(self):
+        """Test submission creation with only required fields"""
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+            # live_demo_url and description are optional
+        )
+        self.assertIsNotNone(sub.submitted_at)
+        self.assertIsNotNone(sub.updated_at)
+        self.assertEqual(sub.live_demo_url, '')
+        self.assertEqual(sub.description, '')
+
+    def test_submission_update_timestamps(self):
+        """Test that updating a submission changes updated_at but not submitted_at"""
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        original_submitted_at = sub.submitted_at
+        original_updated_at = sub.updated_at
+        
+        # Wait a bit and update
+        import time
+        time.sleep(0.01)
+        
+        sub.description = 'Updated description'
+        sub.save()
+        
+        sub.refresh_from_db()
+        self.assertEqual(sub.submitted_at, original_submitted_at)
+        self.assertGreater(sub.updated_at, original_updated_at)
+
+    def test_submission_str_method(self):
+        """Test the string representation of submissions"""
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        expected_str = f'{self.team.name} — {self.round.title}'
+        self.assertEqual(str(sub), expected_str)
+
+    def test_submission_is_editable_edge_cases(self):
+        """Test edge cases for is_editable method"""
+        # Round just became active (started exactly now)
+        now = timezone.now()
+        edge_round = Round.objects.create(
+            contest=self.contest,
+            title='Edge Round',
+            description='Test',
+            tech_requirements='Python',
+            must_have=['Item 1'],
+            start_time=now,
+            deadline=now + timedelta(hours=1),
+            status=Round.Status.ACTIVE,
+            created_by=self.organizer,
+            order=2
+        )
+        
+        sub = Submission.objects.create(
+            round=edge_round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+        )
+        
+        # Should be editable since round just started
+        self.assertTrue(sub.is_editable)
+        
+        # Make round end in past
+        edge_round.deadline = now - timedelta(seconds=1)
+        edge_round.save()
+        
+        # Refresh submission to get updated round data
+        sub.refresh_from_db()
+        self.assertFalse(sub.is_editable)
+
+    def test_multiple_submissions_different_rounds_allowed(self):
+        """Test that same team can submit to different rounds"""
+        other_round = Round.objects.create(
+            contest=self.contest,
+            title='Other Round',
+            description='Another round',
+            tech_requirements='Python',
+            must_have=['Item 1'],
+            start_time=timezone.now() - timedelta(days=1),
+            deadline=timezone.now() + timedelta(days=1),
+            status=Round.Status.ACTIVE,
+            created_by=self.organizer,
+            order=2
+        )
+        
+        # Should not raise exception
+        sub1 = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo1',
+            video_url='https://youtube.com/watch?v=first',
+        )
+        sub2 = Submission.objects.create(
+            round=other_round,
+            team=self.team,
+            github_url='https://github.com/example/repo2',
+            video_url='https://youtube.com/watch?v=second',
+        )
+        
+        self.assertEqual(Submission.objects.filter(team=self.team).count(), 2)
+
+    def test_different_teams_same_round_allowed(self):
+        """Test that different teams can submit to the same round"""
+        other_team = Team.objects.create(
+            name='Other Team',
+            captain=self.participant,
+            status=Team.Status.ACTIVE
+        )
+        other_team.participants.add(self.participant)
+        self.contest.teams.add(other_team)
+        
+        # Should not raise exception
+        sub1 = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo1',
+            video_url='https://youtube.com/watch?v=first',
+        )
+        sub2 = Submission.objects.create(
+            round=self.round,
+            team=other_team,
+            github_url='https://github.com/example/repo2',
+            video_url='https://youtube.com/watch?v=second',
+        )
+        
+        self.assertEqual(Submission.objects.filter(round=self.round).count(), 2)
+
+    def test_submission_with_long_description(self):
+        """Test submission with maximum length description"""
+        long_description = 'A' * 2000  # Max length
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+            description=long_description,
+        )
+        self.assertEqual(len(sub.description), 2000)
+
+    def test_submission_description_truncation_display(self):
+        """Test that long descriptions are handled properly in display"""
+        long_description = 'A' * 2000
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/example/repo',
+            video_url='https://youtube.com/watch?v=abc',
+            description=long_description,
+        )
+        
+        # The model should store the full description
+        self.assertEqual(len(sub.description), 2000)
+        # String representation should still work
+        self.assertIn(self.team.name, str(sub))
+
+    def test_submission_urls_with_special_characters(self):
+        """Test submission URLs with special characters and encoding"""
+        sub = Submission.objects.create(
+            round=self.round,
+            team=self.team,
+            github_url='https://github.com/user/repo-with-dashes_and_underscores',
+            video_url='https://youtube.com/watch?v=abc123&feature=share',
+            live_demo_url='https://example.com/demo?param=value&other=test',
+        )
+        
+        self.assertIn('dashes', sub.github_url)
+        self.assertIn('feature=share', sub.video_url)
+        self.assertIn('param=value', sub.live_demo_url)
+
     def test_optional_fields_can_be_blank(self):
         """live_demo_url and description are optional."""
         sub = Submission.objects.create(

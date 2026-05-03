@@ -1,4 +1,3 @@
-
 from datetime import timedelta
 from django.test import TestCase, Client
 from django.urls import reverse
@@ -34,17 +33,22 @@ class FullWorkflowIntegrationTest(TestCase):
         self.participant2 = User.objects.create_user(
             username='p2_member', email='p2@test.com', password='password', role=User.Role.PARTICIPANT
         )
+        self.participant3 = User.objects.create_user(
+            username='p3_captain', email='p3@test.com', password='password', role=User.Role.PARTICIPANT
+        )
 
         # Clients for each user
         self.org_client = Client()
         self.jury_client = Client()
         self.p1_client = Client()
         self.p2_client = Client()
+        self.p3_client = Client()
 
         self.org_client.login(username='org_admin', password='password')
         self.jury_client.login(username='jury_member', password='password')
         self.p1_client.login(username='p1_captain', password='password')
         self.p2_client.login(username='p2_member', password='password')
+        self.p3_client.login(username='p3_captain', password='password')
 
     def test_complete_contest_workflow(self):
         # 1. Organizer creates a contest
@@ -109,6 +113,16 @@ class FullWorkflowIntegrationTest(TestCase):
         response = self.p1_client.post(reverse('approve_application', kwargs={'pk': join_app.pk}))
         self.assertEqual(response.status_code, 302)
         self.assertTrue(team.participants.filter(pk=self.participant2.pk).exists())
+
+        # 9. Participant 3 creates a team
+        response = self.p3_client.post(reverse('team_create', kwargs={'pk': contest.pk}), {
+            'name': 'Coders Ununited',
+            'description': 'The best team',
+            'organization': 'Open Source'
+        })
+        self.assertEqual(response.status_code, 302)
+        team3 = Team.objects.get(name='Coders Ununited')
+        self.assertEqual(team3.captain, self.participant3)
         
         # 9. Organizer activates the round
         response = self.org_client.post(reverse('round_activate', kwargs={'pk': contest.pk, 'round_id': round_obj.pk}))
@@ -150,6 +164,10 @@ class FullWorkflowIntegrationTest(TestCase):
         # 14. Organizer recalculates leaderboard
         response = self.org_client.post(reverse('admin_recalculate_leaderboard', kwargs={'pk': contest.pk}))
         self.assertEqual(response.status_code, 302)
+
+        team3_app = Application.objects.get(team=team3, contest=contest, application_type=Application.Type.TEAM)
+        self.org_client.post(reverse('approve_application', kwargs={'pk': team3_app.pk}))
+        self.assertTrue(contest.teams.filter(pk=team3.pk).exists())
         
         # Leaderboard computer usually runs on Recalculate or Finish
         # Let's hit finish to be sure it's public

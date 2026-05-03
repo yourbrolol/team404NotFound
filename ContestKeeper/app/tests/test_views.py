@@ -199,6 +199,252 @@ class ProfileViewTaskTest(TestCase):
         self.assertContains(response, "Completed Reviews")
         self.assertContains(response, "88.00")
 
+    def test_home_page_pagination_with_many_contests(self):
+        """Test home page handles many contests properly"""
+        # Create many contests to test pagination/display
+        for i in range(20):
+            Contest.objects.create(
+                name=f'Contest {i}',
+                description=f'Description {i}',
+                start_date=timezone.now() + timedelta(days=i),
+                end_date=timezone.now() + timedelta(days=i+1),
+                organizer=self.organizer,
+                is_draft=False,
+            )
+        
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"))
+        
+        self.assertEqual(response.status_code, 200)
+        # Should contain some contests but not necessarily all
+        self.assertContains(response, "Contest")
+
+    def test_home_page_with_no_contests(self):
+        """Test home page when no contests exist"""
+        # Delete all contests
+        Contest.objects.all().delete()
+        
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "No contests available")
+
+    def test_contest_detail_draft_contest_hidden_from_participants(self):
+        """Test that draft contests are not accessible to participants"""
+        draft_contest = Contest.objects.create(
+            name='Secret Draft',
+            description='Hidden contest',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timedelta(days=1),
+            organizer=self.organizer,
+            is_draft=True,
+        )
+        
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse('contest_detail', kwargs={'pk': draft_contest.pk}))
+        
+        self.assertEqual(response.status_code, 404)
+
+    def test_contest_detail_organizer_can_see_draft(self):
+        """Test that organizers can see their own draft contests"""
+        draft_contest = Contest.objects.create(
+            name='My Draft',
+            description='Visible to organizer',
+            start_date=timezone.now(),
+            end_date=timezone.now() + timedelta(days=1),
+            organizer=self.organizer,
+            is_draft=True,
+        )
+        
+        self.client.force_login(self.organizer)
+        response = self.client.get(reverse('contest_detail', kwargs={'pk': draft_contest.pk}))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'My Draft')
+
+    def test_apply_to_nonexistent_contest_returns_404(self):
+        """Test applying to a contest that doesn't exist"""
+        self.client.force_login(self.participant)
+        response = self.client.post(reverse('apply_to_contest', kwargs={'pk': 99999, 'app_type': 'participant'}))
+        
+        self.assertEqual(response.status_code, 404)
+
+    def test_apply_as_wrong_role_fails(self):
+        """Test that participants cannot apply as jury and vice versa"""
+        # Participant trying to apply as jury
+        self.client.force_login(self.participant)
+        response = self.client.post(reverse('apply_to_contest', kwargs={'pk': self.contest.pk, 'app_type': 'jury'}))
+        
+        self.assertEqual(response.status_code, 403)
+        
+        # Jury trying to apply as participant
+        self.client.force_login(self.jury)
+        response = self.client.post(reverse('apply_to_contest', kwargs={'pk': self.contest.pk, 'app_type': 'participant'}))
+        
+        self.assertEqual(response.status_code, 403)
+
+    def test_team_creation_requires_captain(self):
+        """Test that team creation fails without a captain"""
+        self.client.force_login(self.participant)
+        response = self.client.post(reverse('team_create'), {
+            'name': 'Captainless Team',
+            'description': 'This should fail',
+        })
+        
+        # Should fail because captain is required
+        self.assertEqual(Team.objects.filter(name='Captainless Team').count(), 0)
+
+    def test_round_creation_requires_organizer_permission(self):
+        """Test that only organizers can create rounds"""
+        self.client.force_login(self.participant)
+        future_start = timezone.now() + timedelta(days=1)
+        future_end = timezone.now() + timedelta(days=2)
+        
+        response = self.client.post(
+            reverse('round_create', kwargs={'pk': self.contest.pk}),
+            {
+                'title': 'Unauthorized Round',
+                'description': 'Should not be created',
+                'tech_requirements': 'Python',
+                'must_have': '["Item 1"]',
+                'start_time': future_start.strftime('%Y-%m-%dT%H:%M'),
+                'deadline': future_end.strftime('%Y-%m-%dT%H:%M'),
+                'materials': '[]'
+            }
+        )
+        
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(Round.objects.filter(title='Unauthorized Round').count(), 0)
+
+    def test_submission_creation_requires_team_membership(self):
+        """Test that only team members can create submissions"""
+        other_participant = User.objects.create_user(username='other_part', password='password', role=User.Role.PARTICIPANT)
+        
+        self.client.force_login(other_participant)
+        response = self.client.post(
+            reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': 1}),
+            {
+                'github_url': 'https://github.com/example/repo',
+                'video_url': 'https://youtube.com/watch?v=abc',
+                'description': 'Should not work',
+            }
+        )
+        
+        self.assertEqual(response.status_code, 403)
+
+    def test_leaderboard_view_before_evaluation_complete(self):
+        """Test leaderboard view shows appropriate message before evaluation"""
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse('contest_leaderboard', kwargs={'pk': self.contest.pk}))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'not yet available')
+
+    def test_profile_view_for_organizer_shows_organized_contests(self):
+        """Test that organizers see their organized contests in profile"""
+        self.client.force_login(self.organizer)
+        response = self.client.get(reverse('profile'))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Organized Contests')
+        self.assertContains(response, 'Profile Contest')
+
+    def test_contest_status_filter_edge_cases(self):
+        """Test contest status filtering with edge cases"""
+        self.client.force_login(self.participant)
+        
+        # Test with empty status
+        response = self.client.get(reverse("home"), {"status": ""})
+        self.assertEqual(response.status_code, 200)
+        
+        # Test with status that has no matches
+        finished_contest = Contest.objects.create(
+            name='Finished Long Ago',
+            description='Old contest',
+            start_date=timezone.now() - timedelta(days=10),
+            end_date=timezone.now() - timedelta(days=5),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        
+        response = self.client.get(reverse("home"), {"status": "registration"})
+        self.assertNotContains(response, 'Finished Long Ago')
+
+    def test_home_quick_access_with_multiple_active_contests(self):
+        """Test quick access when participant has multiple active contests"""
+        # Create another contest with the participant
+        other_contest = Contest.objects.create(
+            name='Second Contest',
+            description='Another active contest',
+            start_date=timezone.now() - timedelta(days=1),
+            end_date=timezone.now() + timedelta(days=2),
+            organizer=self.organizer,
+            is_draft=False,
+        )
+        
+        other_team = Team.objects.create(name="Second Team", captain=self.participant, status=Team.Status.ACTIVE)
+        other_team.participants.add(self.participant)
+        other_contest.teams.add(other_team)
+        
+        Round.objects.create(
+            contest=other_contest,
+            title="Second Round",
+            description="Another round",
+            tech_requirements="Python",
+            must_have=["API"],
+            start_time=timezone.now() - timedelta(hours=1),
+            deadline=timezone.now() + timedelta(hours=5),
+            status=Round.Status.ACTIVE,
+            order=1,
+            created_by=self.organizer,
+        )
+        
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse("home"))
+        
+        # Should show some quick access, but may prioritize one contest
+        self.assertContains(response, "Your current contest")
+
+    def test_invalid_form_data_handling(self):
+        """Test that invalid form data is handled gracefully"""
+        self.client.force_login(self.organizer)
+        
+        # Try to create contest with invalid dates
+        response = self.client.post(reverse('contest_create'), {
+            'name': 'Invalid Contest',
+            'description': 'Should fail validation',
+            'start_date': '2023-01-01T10:00',
+            'end_date': '2023-01-01T09:00',  # End before start
+            'is_draft': 'on',
+        })
+        
+        # Should return to form with errors
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'error')
+
+    def test_permission_denied_redirects_appropriately(self):
+        """Test that permission denied responses redirect or show appropriate messages"""
+        self.client.force_login(self.participant)
+        
+        # Try to access organizer-only view
+        response = self.client.get(reverse('admin_finish_evaluation', kwargs={'pk': self.contest.pk}))
+        
+        # Should redirect or show permission denied
+        self.assertIn(response.status_code, [302, 403])
+
+    def test_empty_team_profile_view(self):
+        """Test profile view for user with no teams"""
+        lonely_participant = User.objects.create_user(username='lonely', password='password', role=User.Role.PARTICIPANT)
+        
+        self.client.force_login(lonely_participant)
+        response = self.client.get(reverse('profile'))
+        
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'My Teams')
+        # Should show empty or no teams message
+        self.assertNotContains(response, 'Captain')  # No captaincy
+
     def test_profile_for_organizer_shows_managed_contests(self):
         self.client.force_login(self.organizer)
         response = self.client.get(reverse("profile"))
