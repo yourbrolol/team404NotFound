@@ -1967,13 +1967,13 @@ msgstr "Додатки"
 #: app/templates/registration/register.html:22
 #| msgid "%(name)s - ContestKeeper"
 msgid "ContestKeeper"
-msgstr "%(name)s - ContestKeeper"
+msgstr "ContestKeeper"
 
 #: app/templates/app/juries/jurys.html:69
 #, python-format
 #| msgid "Kick %(name)s from the team?"
 msgid "Remove %(name)s from the jury panel?"
-msgstr "Вигнати%(name)s з команди?"
+msgstr "Вигнати %(name) з команди?"
 
 #: app/templates/app/juries/jurys.html:87
 #| msgid "Pending Applications"
