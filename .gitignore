@@ -27,7 +27,8 @@ media/
 *.swp
 *.swo
 
-# dev/
-
 # Project specific
 ContestKeeper/db.sqlite3
+
+# Local dev plans
+**/localdev/
