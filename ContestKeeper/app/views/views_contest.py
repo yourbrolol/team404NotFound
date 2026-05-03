@@ -4,6 +4,7 @@ from django.views import View
 from django.views.generic import DetailView, ListView
 
 from django.utils import timezone
+from django.utils.translation import gettext as _
 
 from app.forms import ContestForm
 from app.models import Application, Contest
@@ -29,7 +30,7 @@ class ContestDetailView(DetailView):
     def get_object(self, queryset=None):
         contest = super().get_object(queryset)
         if contest.status == Contest.Status.DRAFT and contest.organizer != self.request.user:
-            raise Http404("Contest is in draft or you don't have access.")
+            raise Http404(_("Contest is in draft or you don't have access."))
         return contest
 
     def get_context_data(self, **kwargs):
@@ -94,14 +95,14 @@ class ContestFormView(RedirectToRegisterMixin, View):
     def get(self, request, *args, **kwargs):
         contest, forbidden = self._get_contest()
         if forbidden:
-            return HttpResponseForbidden("You are not the organizer of this contest.")
+            return HttpResponseForbidden(_("You are not the organizer of this contest."))
         form = ContestForm(instance=contest)
         return render(request, self.template_name, {"form": form, "is_edit": contest is not None})
 
     def post(self, request, *args, **kwargs):
         contest, forbidden = self._get_contest()
         if forbidden:
-            return HttpResponseForbidden("You are not the organizer of this contest.")
+            return HttpResponseForbidden(_("You are not the organizer of this contest."))
         form = ContestForm(request.POST, request.FILES, instance=contest)
         if form.is_valid():
             obj = form.save(commit=False)

@@ -201,16 +201,16 @@ class JuryScore(models.Model):
         errors = {}
 
         if self.criterion_id and self.contest_id and self.criterion.contest_id != self.contest_id:
-            errors["criterion"] = "Criterion must belong to the same contest."
+            errors["criterion"] = _("Criterion must belong to the same contest.")
 
         if self.team_id and self.contest_id and not self.contest.teams.filter(pk=self.team_id).exists():
-            errors["team"] = "Team must belong to the selected contest."
+            errors["team"] = _("Team must belong to the selected contest.")
 
         if self.jury_member_id and self.contest_id and not self.contest.jurys.filter(pk=self.jury_member_id).exists():
-            errors["jury_member"] = "Jury member must be assigned to the selected contest."
+            errors["jury_member"] = _("Jury member must be assigned to the selected contest.")
 
         if self.criterion_id and self.score is not None and self.score > Decimal(str(self.criterion.max_score)):
-            errors["score"] = f"Score cannot exceed the criterion maximum of {self.criterion.max_score}."
+            errors["score"] = _("Score cannot exceed the criterion maximum of %(max)s.") % {'max': self.criterion.max_score}
 
         if self.jury_member_id and self.team_id and self.contest_id:
             # Check if there's a JuryAssignment for this jury member, team, and contest
@@ -219,7 +219,7 @@ class JuryScore(models.Model):
                 team=self.team,
                 contest=self.contest
             ).exists():
-                errors["jury_member"] = "Jury member is not assigned to this team for this contest."
+                errors["jury_member"] = _("Jury member is not assigned to this team for this contest.")
 
         if errors:
             raise ValidationError(errors)
@@ -250,7 +250,7 @@ class ContestEvaluationPhase(models.Model):
     completed_at = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
-        return f"Evaluation phase for {self.contest.name}"
+        return _("Evaluation phase for %(name)s") % {'name': self.contest.name}
 
 
 class LeaderboardEntry(models.Model):
@@ -274,7 +274,8 @@ class LeaderboardEntry(models.Model):
 
     @property
     def rank_display(self):
-        return f"{self.rank}{' (tied)' if self.is_tied else ''}"
+        tied_str = _(" (tied)") if self.is_tied else ""
+        return f"{self.rank}{tied_str}"
 
 
 class Round(models.Model):
@@ -302,7 +303,11 @@ class Round(models.Model):
         unique_together = ("contest", "order")
 
     def __str__(self):
-        return f"{self.contest.name} - Round {self.order}: {self.title}"
+        return _("%(name)s - Round %(order)s: %(title)s") % {
+            'name': self.contest.name,
+            'order': self.order,
+            'title': self.title
+        }
 
     def is_active(self):
         from django.utils import timezone
@@ -339,7 +344,7 @@ class Submission(models.Model):
         unique_together = ('round', 'team')  # one submission per team per round
 
     def __str__(self):
-        return f"{self.team.name} — {self.round.title}"
+        return _("%(team)s — %(round)s") % {'team': self.team.name, 'round': self.round.title}
 
     @property
     def is_editable(self):

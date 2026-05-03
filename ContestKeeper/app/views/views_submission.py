@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.http import Http404, HttpResponseForbidden
+from django.utils.translation import gettext as _
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.views.generic import DetailView, ListView
@@ -23,10 +24,10 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
     def get(self, request, pk, round_id):
         contest, round_obj, team = self.get_round_and_team(request, pk, round_id)
         if not team:
-            raise Http404("You are not part of any team in this contest.")
+            raise Http404(_("You are not part of any team in this contest."))
             
         if not round_obj.is_open():
-            return HttpResponseForbidden("This round is not currently open for submissions.")
+            return HttpResponseForbidden(_("This round is not currently open for submissions."))
         submission = Submission.objects.filter(round=round_obj, team=team).first()
         form = SubmissionForm(instance=submission)
         return render(request, self.template_name, {
@@ -40,10 +41,10 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
     def post(self, request, pk, round_id):
         contest, round_obj, team = self.get_round_and_team(request, pk, round_id)
         if not team:
-            raise Http404("You are not part of any team in this contest.")
+            raise Http404(_("You are not part of any team in this contest."))
             
         if not round_obj.is_open():
-            return HttpResponseForbidden("This round is not currently open for submissions.")
+            return HttpResponseForbidden(_("This round is not currently open for submissions."))
             
         submission = Submission.objects.filter(round=round_obj, team=team).first()
         form = SubmissionForm(request.POST, instance=submission)
@@ -52,7 +53,7 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
             obj.round = round_obj
             obj.team = team
             obj.save()
-            messages.success(request, "Your submission has been saved successfully.")
+            messages.success(request, _("Your submission has been saved successfully."))
             return redirect("round_detail", pk=contest.pk, round_pk=round_obj.pk)
         return render(request, self.template_name, {
             "contest": contest,
@@ -77,7 +78,7 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
         is_organizer = contest.organizer == user
         is_jury = contest.jurys.filter(pk=user.pk).exists()
         if not (is_member or is_organizer or is_jury or user.is_staff):
-            raise Http404("You do not have access to this submission.")
+            raise Http404(_("You do not have access to this submission."))
         return submission
 
     def get_context_data(self, **kwargs):
@@ -111,7 +112,7 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
         user = request.user
 
         if not contest.jurys.filter(pk=user.pk).exists():
-            return HttpResponseForbidden("Only assigned jurors can submit scores.")
+            return HttpResponseForbidden(_("Only assigned jurors can submit scores."))
 
         # Check if evaluation is finished
         from app.leaderboard import LeaderboardComputer
@@ -119,24 +120,24 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
 
         phase = ContestEvaluationPhase.objects.filter(contest=contest).first()
         if phase and phase.status == ContestEvaluationPhase.Status.COMPLETED:
-            messages.error(request, "Evaluation is already finalized.")
+            messages.error(request, _("Evaluation is already finalized."))
             return redirect(request.path)
 
         score_value = request.POST.get("score")
         if not score_value:
-            messages.error(request, "Score is required.")
+            messages.error(request, _("Score is required."))
             return redirect(request.path)
 
         # Check criteria
         criteria = contest.scoring_criteria.all()
         if criteria.count() > 1:
             # If there are multiple criteria, redirect to the full evaluation page
-            messages.info(request, "This contest has multiple scoring criteria. Please use the full evaluation form.")
+            messages.info(request, _("This contest has multiple scoring criteria. Please use the full evaluation form."))
             return redirect("jury_evaluate", pk=contest.pk, team_pk=submission.team.id)
         
         criterion = criteria.first()
         if not criterion:
-            messages.error(request, "No scoring criteria defined for this contest.")
+            messages.error(request, _("No scoring criteria defined for this contest."))
             return redirect(request.path)
 
         try:
@@ -149,9 +150,9 @@ class SubmissionDetailView(RedirectToRegisterMixin, DetailView):
                     defaults={'score': score_value}
                 )
                 LeaderboardComputer.compute_leaderboard(contest, preserve_completed_at=True)
-            messages.success(request, f"Score for {submission.team.name} updated successfully.")
+            messages.success(request, _("Score for %(name)s updated successfully.") % {'name': submission.team.name})
         except Exception as e:
-            messages.error(request, f"Error saving score: {str(e)}")
+            messages.error(request, _("Error saving score: %(error)s") % {'error': str(e)})
 
         return redirect(request.path)
 

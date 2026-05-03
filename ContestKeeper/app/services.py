@@ -1,4 +1,5 @@
 import random
+from django.utils.translation import gettext as _
 from app.models import Notification, JuryAssignment
 
 def assign_jury_to_teams(contest, min_reviews_per_team=2):
@@ -112,7 +113,7 @@ def generate_schedule_from_rounds(contest):
         # Start event
         events.append(ScheduleEvent(
             contest=contest,
-            title=f"Start: {rnd.title}",
+            title=_("Start: %(title)s") % {'title': rnd.title},
             description=rnd.description,
             start_time=rnd.start_time,
             end_time=rnd.start_time,
@@ -124,8 +125,8 @@ def generate_schedule_from_rounds(contest):
         # Deadline event
         events.append(ScheduleEvent(
             contest=contest,
-            title=f"Deadline: {rnd.title}",
-            description=f"Submission deadline for {rnd.title}.",
+            title=_("Deadline: %(title)s") % {'title': rnd.title},
+            description=_("Submission deadline for %(title)s.") % {'title': rnd.title},
             start_time=rnd.deadline,
             end_time=rnd.deadline,
             event_type=ScheduleEvent.EventType.DEADLINE,

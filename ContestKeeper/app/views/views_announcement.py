@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.urls import reverse
+from django.utils.translation import gettext as _
 from django.views.generic import CreateView, DeleteView, ListView
 
 from app.forms import AnnouncementForm
@@ -31,11 +32,11 @@ class AnnouncementCreateView(OrganizerRequiredMixin, CreateView):
             notify_contest_participants(
                 self.contest,
                 Notification.Type.ANNOUNCEMENT,
-                f"New announcement: {form.instance.title}",
+                _("New announcement: %(title)s") % {'title': form.instance.title},
                 form.instance.content[:200] + "...",
                 link=reverse("announcement_list", kwargs={"pk": self.contest.pk})
             )
-        messages.success(self.request, "Announcement published successfully.")
+        messages.success(self.request, _("Announcement published successfully."))
         return response
 
     def get_success_url(self):

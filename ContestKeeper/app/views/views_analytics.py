@@ -3,6 +3,7 @@ from django.shortcuts import redirect
 from django.urls import reverse
 from django.views import View
 from django.views.generic import CreateView, DeleteView, ListView, TemplateView
+from django.utils.translation import gettext as _
 
 from app.forms import ScheduleEventForm
 from app.models import JuryScore, LeaderboardEntry, ScheduleEvent, Submission
@@ -125,5 +126,5 @@ class ScheduleEventDeleteView(OrganizerRequiredMixin, DeleteView):
 class RegenerateScheduleView(OrganizerRequiredMixin, View):
     def post(self, request, *args, **kwargs):
         count = generate_schedule_from_rounds(self.contest)
-        messages.success(request, f"Schedule regenerated from {count} round events.")
+        messages.success(request, _("Schedule regenerated from %(count)s round events.") % {'count': count})
         return redirect("schedule", pk=self.contest.pk)

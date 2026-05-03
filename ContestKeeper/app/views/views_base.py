@@ -30,7 +30,7 @@ class OrganizerRequiredMixin(RedirectToRegisterMixin, ContestContextMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         if self.contest.organizer != request.user and not request.user.is_staff:
-            return HttpResponseForbidden("You are not the organizer of this contest.")
+            return HttpResponseForbidden(_("You are not the organizer of this contest."))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -41,7 +41,7 @@ class JuryRequiredMixin(RedirectToRegisterMixin, ContestContextMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         if not self.contest.jurys.filter(pk=request.user.pk).exists():
-            return HttpResponseForbidden("You are not a Jury member for this contest.")
+            return HttpResponseForbidden(_("You are not a Jury member for this contest."))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -54,7 +54,7 @@ class OrganizerOrJuryMixin(RedirectToRegisterMixin, ContestContextMixin):
         is_organizer = self.contest.organizer == request.user
         is_jury = self.contest.jurys.filter(pk=request.user.pk).exists()
         if not (is_organizer or is_jury or request.user.is_staff):
-            return HttpResponseForbidden("You do not have access to this page.")
+            return HttpResponseForbidden(_("You do not have access to this page."))
         return super().dispatch(request, *args, **kwargs)
 
 

@@ -4,6 +4,7 @@ from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy
+from django.utils.translation import gettext as _
 from django.views import View
 from django.views.generic import TemplateView, CreateView, UpdateView, DeleteView
 
@@ -39,7 +40,7 @@ class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
                 contest=self.contest,
                 phase=phase,
                 leaderboard_available=False,
-                not_available_message="Leaderboard is not yet available. Evaluation is still in progress.",
+                not_available_message=_("Leaderboard is not yet available. Evaluation is still in progress."),
             )
 
         raw_entries = LeaderboardEntry.objects.filter(contest=self.contest).select_related("team").order_by("rank", "team__name")
@@ -107,7 +108,7 @@ class TeamDetailLeaderboardView(LeaderboardAccessMixin, TemplateView):
                 team=self.team,
                 phase=phase,
                 leaderboard_available=False,
-                not_available_message="Leaderboard is not yet available. Evaluation is still in progress.",
+                not_available_message=_("Leaderboard is not yet available. Evaluation is still in progress."),
             )
 
         entry = LeaderboardEntry.objects.filter(contest=self.contest, team=self.team).first()
@@ -117,7 +118,7 @@ class TeamDetailLeaderboardView(LeaderboardAccessMixin, TemplateView):
                 team=self.team,
                 phase=phase,
                 leaderboard_available=False,
-                not_available_message="Leaderboard is not yet available. Evaluation is still in progress.",
+                not_available_message=_("Leaderboard is not yet available. Evaluation is still in progress."),
             )
 
         criteria = ScoringCriterion.objects.filter(contest=self.contest).order_by("order")
@@ -137,7 +138,7 @@ class TeamDetailLeaderboardView(LeaderboardAccessMixin, TemplateView):
         )
         jury_breakdown_message = None
         if self.request.user.is_participant() and not phase.show_jury_breakdown_to_participants:
-            jury_breakdown_message = "Jury breakdown is not available for participants at this time."
+            jury_breakdown_message = _("Jury breakdown is not available for participants at this time.")
 
         return super().get_context_data(
             contest=self.contest,
@@ -169,7 +170,7 @@ class LeaderboardAPIView(LeaderboardAccessMixin, View):
                 phase.refresh_from_db()
 
         if phase.status != ContestEvaluationPhase.Status.COMPLETED:
-            return JsonResponse({"detail": "Leaderboard is not yet available. Evaluation is still in progress."}, status=400)
+            return JsonResponse({"detail": _("Leaderboard is not yet available. Evaluation is still in progress.")}, status=400)
 
         entries = LeaderboardEntry.objects.filter(contest=self.contest).select_related("team").order_by("rank", "team__name")
         response_data = []
@@ -321,7 +322,7 @@ class CriterionCreateView(AdminPermissionMixin, CreateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["contest"] = self.contest
-        context["title"] = "Create Scoring Criterion"
+        context["title"] = _("Create Scoring Criterion")
         return context
 
     def form_valid(self, form):
@@ -341,7 +342,7 @@ class CriterionUpdateView(AdminPermissionMixin, UpdateView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["contest"] = self.contest
-        context["title"] = f"Edit Criterion: {self.object.name}"
+        context["title"] = _("Edit Criterion: %(name)s") % {'name': self.object.name}
         return context
 
     def get_success_url(self):
@@ -356,7 +357,7 @@ class CriterionDeleteView(AdminPermissionMixin, DeleteView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["contest"] = self.contest
-        context["object_name"] = f"Scoring Criterion: {self.object.name}"
+        context["object_name"] = _("Scoring Criterion: %(name)s") % {'name': self.object.name}
         context["cancel_url"] = reverse_lazy("admin_leaderboard_dashboard", kwargs={"pk": self.contest.pk})
         return context
 

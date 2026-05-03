@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponseForbidden
+from django.utils.translation import gettext as _
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
 from django.views import View
@@ -30,7 +31,10 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
                         if application.contest.max_teams and application.contest.teams.count() >= application.contest.max_teams:
                             messages.error(
                                 request,
-                                f"Cannot approve: Contest '{application.contest.name}' has reached its maximum of {application.contest.max_teams} teams."
+                                _("Cannot approve: Contest '%(name)s' has reached its maximum of %(max)s teams.") % {
+                                    'name': application.contest.name,
+                                    'max': application.contest.max_teams
+                                }
                             )
                             return redirect("contest_detail", pk=application.contest.pk)
                         application.contest.teams.add(application.team)
@@ -45,12 +49,15 @@ class ApplicationActionView(RedirectToRegisterMixin, View):
                 application.status = Application.Status.REJECTED
                 application.save()
 
-            status_text = "approved" if action == "approve" else "rejected"
+            status_text = _("approved") if action == "approve" else _("rejected")
             notify_user(
                 application.user,
                 Notification.Type.APPLICATION_UPDATE,
-                f"Application {status_text}",
-                f"Your application for '{application.contest.name}' has been {status_text}.",
+                _("Application %(status)s") % {'status': status_text},
+                _("Your application for '%(name)s' has been %(status)s.") % {
+                    'name': application.contest.name,
+                    'status': status_text
+                },
                 link=reverse("contest_detail", kwargs={"pk": application.contest.pk})
             )
 
@@ -90,29 +97,29 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
     def post(self, request, pk, app_type):
         contest = get_object_or_404(Contest, pk=pk)
         if contest.status == Contest.Status.DRAFT:
-            return HttpResponseForbidden("Cannot apply to a draft contest.")
+            return HttpResponseForbidden(_("Cannot apply to a draft contest."))
 
         if app_type == "participant":
-            return HttpResponseForbidden("Individual registration is disabled. Please create or join a team.")
+            return HttpResponseForbidden(_("Individual registration is disabled. Please create or join a team."))
         elif app_type == "jury":
             role_type = Application.Type.JURY
             # Jury applications are not bound by the participant registration window;
             # they can apply any time the contest has not finished.
             if contest.status == Contest.Status.FINISHED:
-                messages.error(request, "This contest has already finished.")
+                messages.error(request, _("This contest has already finished."))
                 return redirect("contest_detail", pk=pk)
         else:
-            return HttpResponseForbidden("Invalid application type.")
+            return HttpResponseForbidden(_("Invalid application type."))
 
         # Participant/team registration window check (jury bypasses this)
         if role_type != Application.Type.JURY:
             from django.utils import timezone
             now = timezone.now()
             if contest.registration_start and now < contest.registration_start:
-                messages.error(request, "Registration for this contest has not started yet.")
+                messages.error(request, _("Registration for this contest has not started yet."))
                 return redirect("contest_detail", pk=pk)
             if contest.registration_end and now >= contest.registration_end:
-                messages.error(request, "Registration for this contest has already closed.")
+                messages.error(request, _("Registration for this contest has already closed."))
                 return redirect("contest_detail", pk=pk)
 
         Application.objects.get_or_create(

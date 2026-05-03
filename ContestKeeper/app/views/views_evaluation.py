@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from django.db import transaction
 from django.http import HttpResponseForbidden
+from django.utils.translation import gettext as _
 
 from app.forms import JuryEvaluationForm
 from app.models import Contest, Team, ScoringCriterion, JuryScore, Submission, ContestEvaluationPhase, JuryAssignment
@@ -20,7 +21,10 @@ class AssignJuryView(OrganizerRequiredMixin, View):
             k = 2
             
         num = assign_jury_to_teams(contest, min_reviews_per_team=k)
-        messages.success(request, f"Successfully created {num} jury assignments for {contest.teams.count()} teams.")
+        messages.success(request, _("Successfully created %(num)s jury assignments for %(count)s teams.") % {
+            'num': num,
+            'count': contest.teams.count()
+        })
         return redirect("contest_jurys", pk=contest.pk)
 
 class JuryEvaluationView(JuryRequiredMixin, View):
@@ -70,13 +74,13 @@ class JuryEvaluationView(JuryRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
         if context is None:
-            return HttpResponseForbidden("You are not assigned to evaluate this team.")
+            return HttpResponseForbidden(_("You are not assigned to evaluate this team."))
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         if context is None:
-            return HttpResponseForbidden("You are not assigned to evaluate this team.")
+            return HttpResponseForbidden(_("You are not assigned to evaluate this team."))
             
         contest = self.contest
         team = get_object_or_404(Team, pk=self.kwargs["team_pk"])
@@ -85,7 +89,7 @@ class JuryEvaluationView(JuryRequiredMixin, View):
         # Block edits if evaluation is finished
         phase = ContestEvaluationPhase.objects.filter(contest=contest).first()
         if phase and phase.status == ContestEvaluationPhase.Status.COMPLETED:
-            messages.error(request, "Evaluation is already finalized and cannot be edited.")
+            messages.error(request, _("Evaluation is already finalized and cannot be edited."))
             return redirect("round_submissions", pk=contest.pk, round_id=self.kwargs.get("round_id"))
 
         form = JuryEvaluationForm(request.POST, criteria=criteria)
@@ -104,7 +108,7 @@ class JuryEvaluationView(JuryRequiredMixin, View):
                 # Recalculate leaderboard and broadcast update
                 LeaderboardComputer.compute_leaderboard(contest, preserve_completed_at=True)
                 
-            messages.success(request, f"Scores for {team.name} have been saved.")
+            messages.success(request, _("Scores for %(name)s have been saved.") % {'name': team.name})
             
             # Redirect to submission list of the same round
             round_id = request.POST.get("round_id") or request.GET.get("round_id")

@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.http import HttpResponseForbidden
+from django.utils.translation import gettext as _
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy
 from django.utils import timezone
@@ -88,7 +89,7 @@ class TeamActionMixin(RedirectToRegisterMixin):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         self.team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
         if request.user != self.team.captain:
-            return HttpResponseForbidden("You are not the captain of this team.")
+            return HttpResponseForbidden(_("You are not the captain of this team."))
         self.target_user = get_object_or_404(User, pk=kwargs["user_id"])
         return super().dispatch(request, *args, **kwargs)
 
@@ -123,7 +124,7 @@ class OrganizerOnlyMixin(RedirectToRegisterMixin):
             return self.handle_no_permission()
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         if request.user != self.contest.organizer:
-            return HttpResponseForbidden("Only the organizer can perform this action.")
+            return HttpResponseForbidden(_("Only the organizer can perform this action."))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -136,7 +137,7 @@ class TeamDeleteView(RedirectToRegisterMixin, View):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         self.team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
         if request.user != self.contest.organizer and request.user != self.team.captain:
-            return HttpResponseForbidden("Only the organizer or team captain can delete this team.")
+            return HttpResponseForbidden(_("Only the organizer or team captain can delete this team."))
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
@@ -146,7 +147,7 @@ class TeamDeleteView(RedirectToRegisterMixin, View):
         # Remove all jury assignments for this team
         JuryAssignment.objects.filter(contest=self.contest, team=team).delete()
         team.delete()
-        messages.success(request, f"Team deleted successfully.")
+        messages.success(request, _("Team deleted successfully."))
         return redirect("contest_teams", pk=self.contest.pk)
 
 
@@ -165,7 +166,7 @@ class JuryKickView(OrganizerOnlyMixin, View):
             user=jury_member,
             application_type=Application.Type.JURY,
         ).update(status=Application.Status.REJECTED)
-        messages.success(request, f"Jury member '{jury_member.username}' removed from the contest.")
+        messages.success(request, _("Jury member '%(username)s' removed from the contest.") % {'username': jury_member.username})
         return redirect("contest_jurys", pk=self.contest.pk)
 
 
@@ -179,7 +180,7 @@ class AdminPermissionMixin(LeaderboardAccessMixin):
     def dispatch(self, request, *args, **kwargs):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         if request.user.is_authenticated and request.user != self.contest.organizer and not request.user.is_staff:
-            return HttpResponseForbidden("You do not have admin access to this contest.")
+            return HttpResponseForbidden(_("You do not have admin access to this contest."))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -209,7 +210,7 @@ class TeamUpdateView(RedirectToRegisterMixin, UpdateView):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         team = get_object_or_404(self.contest.teams, pk=kwargs["ck"])
         if request.user != team.captain and request.user != self.contest.organizer:
-            return HttpResponseForbidden("You are not authorized to edit this team.")
+            return HttpResponseForbidden(_("You are not authorized to edit this team."))
         return super().dispatch(request, *args, **kwargs)
 
 
@@ -227,15 +228,15 @@ class TeamCreateView(RedirectToRegisterMixin, CreateView):
         # Check registration dates
         now = timezone.now()
         if contest.registration_start and now < contest.registration_start:
-            messages.error(self.request, "Registration for this contest has not started yet.")
+            messages.error(self.request, _("Registration for this contest has not started yet."))
             return redirect("contest_detail", pk=contest.pk)
         if contest.registration_end and now >= contest.registration_end:
-            messages.error(self.request, "Registration for this contest has closed.")
+            messages.error(self.request, _("Registration for this contest has closed."))
             return redirect("contest_detail", pk=contest.pk)
 
         # Check if user already in a team for this contest
         if contest.teams.filter(participants=self.request.user).exists():
-            messages.error(self.request, "You are already a member of a team in this contest.")
+            messages.error(self.request, _("You are already a member of a team in this contest."))
             return redirect("contest_detail", pk=contest.pk)
 
         # Check for existing application of type TEAM for this contest
@@ -247,7 +248,7 @@ class TeamCreateView(RedirectToRegisterMixin, CreateView):
         ).first()
 
         if existing_app and existing_app.status != Application.Status.REJECTED:
-            messages.error(self.request, "You already have a team application for this contest.")
+            messages.error(self.request, _("You already have a team application for this contest."))
             return redirect("contest_detail", pk=contest.pk)
 
         team = form.save()
@@ -268,7 +269,7 @@ class TeamCreateView(RedirectToRegisterMixin, CreateView):
             app.status = Application.Status.PENDING
             app.save()
         
-        messages.success(self.request, f"Team '{team.name}' created! Approval from organizer is pending.")
+        messages.success(self.request, _("Team '%(name)s' created! Approval from organizer is pending.") % {'name': team.name})
         return redirect("contest_detail", pk=contest.pk)
 
     def get_context_data(self, **kwargs):
@@ -284,12 +285,12 @@ class TeamJoinView(RedirectToRegisterMixin, View):
         
         # Prevent blocked users from applying to this team
         if team.blacklisted_members.filter(pk=request.user.pk).exists():
-            messages.error(request, "You are blocked from joining this team.")
+            messages.error(request, _("You are blocked from joining this team."))
             return redirect("contest_teams", pk=pk)
         
         # Prevent double application or joining if already in a team
         if contest.teams.filter(participants=request.user).exists():
-            messages.error(request, "You are already in a team for this contest.")
+            messages.error(request, _("You are already in a team for this contest."))
             return redirect("contest_teams", pk=pk)
 
         # Check for existing application of type PARTICIPANT to avoid IntegrityError
@@ -302,20 +303,20 @@ class TeamJoinView(RedirectToRegisterMixin, View):
         if existing_app:
             if existing_app.team == team:
                 if existing_app.status == Application.Status.PENDING:
-                    messages.info(request, "You have already applied to this team.")
+                    messages.info(request, _("You have already applied to this team."))
                 else:
                     # If was rejected or approved (shouldn't be here if approved due to line 191), try again
                     existing_app.status = Application.Status.PENDING
                     existing_app.save()
-                    messages.success(request, f"Application to join '{team.name}' submitted!")
+                    messages.success(request, _("Application to join '%(name)s' submitted!") % {'name': team.name})
             elif existing_app.status != Application.Status.REJECTED:
-                 messages.error(request, "You already have a pending application for another team in this contest.")
+                 messages.error(request, _("You already have a pending application for another team in this contest."))
             else:
                 # Switching team application after rejection
                 existing_app.team = team
                 existing_app.status = Application.Status.PENDING
                 existing_app.save()
-                messages.success(request, f"Application to join '{team.name}' submitted!")
+                messages.success(request, _("Application to join '%(name)s' submitted!") % {'name': team.name})
             return redirect("contest_teams", pk=pk)
         
         Application.objects.create(
@@ -325,7 +326,7 @@ class TeamJoinView(RedirectToRegisterMixin, View):
             application_type=Application.Type.PARTICIPANT,
             status=Application.Status.PENDING
         )
-        messages.success(request, f"Application to join '{team.name}' submitted!")
+        messages.success(request, _("Application to join '%(name)s' submitted!") % {'name': team.name})
         return redirect("contest_teams", pk=pk)
 
 
@@ -338,9 +339,9 @@ class TeamLeaveView(RedirectToRegisterMixin, View):
         team = get_object_or_404(contest.teams, pk=ck)
 
         if request.user == team.captain:
-            return HttpResponseForbidden("Team captain cannot leave the team.")
+            return HttpResponseForbidden(_("Team captain cannot leave the team."))
         if not team.participants.filter(pk=request.user.pk).exists():
-            return HttpResponseForbidden("You are not a member of this team.")
+            return HttpResponseForbidden(_("You are not a member of this team."))
 
         team.participants.remove(request.user)
         Application.objects.filter(
@@ -350,5 +351,5 @@ class TeamLeaveView(RedirectToRegisterMixin, View):
             application_type=Application.Type.PARTICIPANT,
         ).delete()
 
-        messages.success(request, "You have left the team.")
+        messages.success(request, _("You have left the team."))
         return redirect("contest_detail", pk=contest.pk)

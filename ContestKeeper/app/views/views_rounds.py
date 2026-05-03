@@ -9,6 +9,7 @@ from django.utils.dateparse import parse_datetime
 from django.views import View
 from django.views.generic import CreateView, ListView, TemplateView, DetailView
 
+from django.utils.translation import gettext as _
 from app.models import Contest, Notification, Round, Submission
 from app.services import notify_contest_jury, notify_contest_participants
 from app.views.views_base import OrganizerRequiredMixin, RedirectToRegisterMixin, ContestContextMixin
@@ -40,15 +41,15 @@ class RoundCreateView(OrganizerRequiredMixin, CreateView):
         obj.contest_id = self.kwargs["pk"]
 
         if obj.deadline <= obj.start_time:
-            form.add_error("deadline", "Deadline must be after start time.")
+            form.add_error("deadline", _("Deadline must be after start time."))
             return self.form_invalid(form)
 
         if obj.deadline < timezone.now():
-            form.add_error("deadline", "Deadline cannot be in the past.")
+            form.add_error("deadline", _("Deadline cannot be in the past."))
             return self.form_invalid(form)
 
-        if not obj.must_have or len(obj.must_have) == 0:
-            form.add_error("must_have", "Must have at least one checklist item.")
+        if not isinstance(obj.must_have, list) or len(obj.must_have) == 0:
+            form.add_error("must_have", _("Must have at least one checklist item."))
             return self.form_invalid(form)
 
         last_round = Round.objects.filter(contest=obj.contest).order_by("-order").first()
@@ -74,7 +75,7 @@ class RoundEditView(OrganizerRequiredMixin, View):
         round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
 
         if round_obj.status != Round.Status.DRAFT:
-            return HttpResponseForbidden("Cannot edit a round that is not in DRAFT status.")
+            return HttpResponseForbidden(_("Cannot edit a round that is not in DRAFT status."))
 
         return render(request, "app/rounds/round_form.html", {"contest": contest, "round": round_obj})
 
@@ -83,7 +84,7 @@ class RoundEditView(OrganizerRequiredMixin, View):
         round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
 
         if round_obj.status != Round.Status.DRAFT:
-            return HttpResponseForbidden("Cannot edit a round that is not in DRAFT status.")
+            return HttpResponseForbidden(_("Cannot edit a round that is not in DRAFT status."))
 
         round_obj.title = request.POST.get("title", round_obj.title)
         round_obj.description = request.POST.get("description", round_obj.description)
@@ -95,14 +96,14 @@ class RoundEditView(OrganizerRequiredMixin, View):
                 return render(request, "app/rounds/round_form.html", {
                     "contest": contest,
                     "round": round_obj,
-                    "error": "Must have at least one checklist item.",
+                    "error": _("Must have at least one checklist item."),
                 })
             round_obj.must_have = must_have
         except json.JSONDecodeError:
             return render(request, "app/rounds/round_form.html", {
                 "contest": contest,
                 "round": round_obj,
-                "error": "Invalid must_have format.",
+                "error": _("Invalid must_have format."),
             })
 
         if request.POST.get("start_time"):
@@ -121,13 +122,13 @@ class RoundEditView(OrganizerRequiredMixin, View):
                     return render(request, "app/rounds/round_form.html", {
                         "contest": contest,
                         "round": round_obj,
-                        "error": "Deadline must be after start time.",
+                        "error": _("Deadline must be after start time."),
                     })
                 if deadline < timezone.now():
                     return render(request, "app/rounds/round_form.html", {
                         "contest": contest,
                         "round": round_obj,
-                        "error": "Deadline cannot be in the past.",
+                        "error": _("Deadline cannot be in the past."),
                     })
                 round_obj.deadline = deadline
 
@@ -147,7 +148,7 @@ class RoundActivateView(OrganizerRequiredMixin, View):
         round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
 
         if round_obj.status != Round.Status.DRAFT:
-            return HttpResponseForbidden(f"Can only activate DRAFT rounds. Current status: {round_obj.status}")
+            return HttpResponseForbidden(_("Can only activate DRAFT rounds. Current status: %(status)s") % {'status': round_obj.status})
 
         round_obj.status = Round.Status.ACTIVE
         round_obj.save()
@@ -162,8 +163,12 @@ class RoundActivateView(OrganizerRequiredMixin, View):
         notify_contest_participants(
             contest,
             Notification.Type.ROUND_STARTED,
-            f"Round started: {round_obj.title}",
-            f"New round '{round_obj.title}' is now active in '{contest.name}'. Deadline: {round_obj.deadline.strftime('%b %d, %H:%M')}",
+            _("Round started: %(title)s") % {'title': round_obj.title},
+            _("New round '%(title)s' is now active in '%(contest)s'. Deadline: %(deadline)s") % {
+                'title': round_obj.title,
+                'contest': contest.name,
+                'deadline': round_obj.deadline.strftime('%b %d, %H:%M')
+            },
             link=reverse("round_detail_team", kwargs={"pk": contest.pk, "round_id": round_obj.pk}),
         )
         return redirect("contest_rounds", pk=contest.pk)
@@ -175,7 +180,7 @@ class RoundCloseSubmissionsView(OrganizerRequiredMixin, View):
         round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
 
         if round_obj.status != Round.Status.ACTIVE:
-            return HttpResponseForbidden("Can only close submissions for ACTIVE rounds.")
+            return HttpResponseForbidden(_("Can only close submissions for ACTIVE rounds."))
 
         round_obj.status = Round.Status.SUBMISSION_CLOSED
         round_obj.save()
@@ -184,15 +189,21 @@ class RoundCloseSubmissionsView(OrganizerRequiredMixin, View):
         notify_contest_participants(
             contest,
             Notification.Type.SUBMISSIONS_CLOSED,
-            f"Submissions closed: {round_obj.title}",
-            f"Submissions for round '{round_obj.title}' in '{contest.name}' are now closed.",
+            _("Submissions closed: %(title)s") % {'title': round_obj.title},
+            _("Submissions for round '%(title)s' in '%(contest)s' are now closed.") % {
+                'title': round_obj.title,
+                'contest': contest.name
+            },
             link=reverse("round_detail_team", kwargs={"pk": contest.pk, "round_id": round_obj.pk}),
         )
         notify_contest_jury(
             contest,
             Notification.Type.SUBMISSIONS_CLOSED,
-            f"Submissions closed: {round_obj.title}",
-            f"Submissions for round '{round_obj.title}' in '{contest.name}' are closed. You can now start evaluations.",
+            _("Submissions closed: %(title)s") % {'title': round_obj.title},
+            _("Submissions for round '%(title)s' in '%(contest)s' are closed. You can now start evaluations.") % {
+                'title': round_obj.title,
+                'contest': contest.name
+            },
             link=reverse("dashboard"),
         )
         return redirect("contest_rounds", pk=contest.pk)
@@ -214,19 +225,19 @@ class RoundExtendDeadlineView(OrganizerRequiredMixin, View):
         round_obj = get_object_or_404(Round, pk=kwargs["round_id"], contest=contest)
 
         if round_obj.status != Round.Status.ACTIVE:
-            return HttpResponseForbidden("Can only extend deadline for ACTIVE rounds.")
+            return HttpResponseForbidden(_("Can only extend deadline for ACTIVE rounds."))
 
         new_deadline_str = request.POST.get("new_deadline")
         if not new_deadline_str:
-            return self.get(request, *args, error="New deadline is required.", **kwargs)
+            return self.get(request, *args, error=_("New deadline is required."), **kwargs)
 
         new_deadline = parse_datetime(new_deadline_str)
         if not new_deadline:
-            return self.get(request, *args, error="Invalid datetime format.", **kwargs)
+            return self.get(request, *args, error=_("Invalid datetime format."), **kwargs)
         if timezone.is_naive(new_deadline):
             new_deadline = timezone.make_aware(new_deadline)
         if new_deadline < timezone.now():
-            return self.get(request, *args, error="New deadline cannot be in the past.", **kwargs)
+            return self.get(request, *args, error=_("New deadline cannot be in the past."), **kwargs)
 
         old_deadline = round_obj.deadline
         round_obj.deadline = new_deadline
@@ -272,7 +283,7 @@ class RoundDetailTeamView(RedirectToRegisterMixin, DetailView):
         round_obj = get_object_or_404(Round, pk=self.kwargs["round_id"], contest=contest)
         
         if round_obj.status == Round.Status.DRAFT:
-            raise Http404("This round is not available yet.")
+            raise Http404(_("This round is not available yet."))
         
         return round_obj
 
@@ -323,10 +334,10 @@ class RoundDetailView(RedirectToRegisterMixin, ContestContextMixin, DetailView):
         is_team_member = contest.teams.filter(participants=user).exists()
 
         if round_obj.status == Round.Status.DRAFT and not (is_organizer or user.is_staff):
-            raise Http404("This round is not available yet.")
+            raise Http404(_("This round is not available yet."))
 
         if not (is_organizer or is_jury or is_participant or is_team_member or user.is_staff):
-            raise Http404("You do not have access to this contest.")
+            raise Http404(_("You do not have access to this contest."))
 
         return round_obj
 
