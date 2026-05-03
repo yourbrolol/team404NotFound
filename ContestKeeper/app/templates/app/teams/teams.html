@@ -147,4 +147,17 @@
         });
     });
 </script>
+
+<div id="teams-i18n" hidden
+    data-no-teams="{% trans 'No teams available yet.' %}"
+    data-teams-summary="{% trans '{visibleCount} of {totalCount} teams' %}"
+    data-shown-in="{% trans 'shown in {tab}' %}"
+    data-available-in="{% trans 'available in {tab}' %}"
+    data-no-match="{% trans 'No teams match \"{query}\".' %}"
+    data-no-match-filters="{% trans 'No teams available with the current filters.' %}"
+    data-search-cleared="{% trans 'Search cleared' %}"
+    data-copied="{% trans 'Copied \"{name}\"' %}"
+    data-copy-failed="{% trans 'Copy failed' %}"
+    data-switched-tab="{% trans 'Switched to {tab} tab' %}">
+</div>
 {% endblock %}

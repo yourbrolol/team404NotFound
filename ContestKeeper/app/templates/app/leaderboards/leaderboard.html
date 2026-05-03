@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{{ contest.name }} Leaderboard{% endblock %}
+{% block title %}{% blocktrans with name=contest.name %}{{ name }} Leaderboard{% endblocktrans %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/leaderboards/leaderboard.css' %}">
@@ -13,7 +13,7 @@
         <div class="glass-panel leaderboard-card">
             <div class="leaderboard-header">
                 <div>
-                    <h1 id="h1">{{ contest.name }} Leaderboard</h1>
+                    <h1 id="h1">{% blocktrans with name=contest.name %}{{ name }} Leaderboard{% endblocktrans %}</h1>
                     <p class="leaderboard-subtitle">{% trans 'Final ranking table for contest participants.' %}</p>
                 </div>
                 {% if can_view_missing %}
@@ -42,7 +42,7 @@
                         <tbody>
                             {% for item in entries %}
                             <tr{% if item.entry.is_tied %} class="highlight"{% endif %}>
-                                <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
+                                <td>{{ item.entry.rank }}{% if item.entry.is_tied %} ({% trans 'tied' %}){% endif %}</td>
                                 <td><strong><a href="{% url 'team_leaderboard_detail' contest.pk item.entry.team.pk %}" style="text-decoration: none; color: inherit;">{{ item.entry.team.name }}</a></strong></td>
                                 <td><strong>{{ item.entry.total_score }}</strong></td>
                                 {% for score in item.category_values %}
@@ -80,11 +80,11 @@
                     <div class="leaderboard-stats">
                         <div class="stat-box">
                             <h4>{% trans 'Missing Scores' %}</h4>
-                            <p>{{ overall_missing|length }} unresolved entries</p>
+                            <p>{% blocktrans with count=overall_missing|length %}{{ count }} unresolved entries{% endblocktrans %}</p>
                         </div>
                         <div class="stat-box">
                             <h4>{% trans 'Computation Status' %}</h4>
-                            <p>{% if entries and entries.0.entry.computation_complete %}Complete{% else %}Incomplete{% endif %}</p>
+                            <p>{% if entries and entries.0.entry.computation_complete %}{% trans 'Complete' %}{% else %}{% trans 'Incomplete' %}{% endif %}</p>
                         </div>
                     </div>
                 {% endif %}
@@ -117,7 +117,7 @@
             toast.style.borderRadius = '8px';
             toast.style.boxShadow = '0 4px 12px rgba(0,0,0,0.3)';
             toast.style.zIndex = '9999';
-            toast.innerHTML = '<strong>Leaderboard Updated!</strong><br>Refreshing data...';
+            toast.innerHTML = '<strong>{% trans "Leaderboard Updated!" %}</strong><br>{% trans "Refreshing data..." %}';
             document.body.appendChild(toast);
             
             setTimeout(() => {

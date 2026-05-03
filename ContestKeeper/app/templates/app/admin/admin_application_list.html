@@ -20,9 +20,9 @@
         </div>
 
         <div class="tabs-nav" id="appTabs">
-            <a href="#teams" class="tab-link active" onclick="showTab('teams')">Teams ({{ team_apps.count }})</a>
-            <a href="#participants" class="tab-link" onclick="showTab('participants')">Join Requests ({{ participant_apps.count }})</a>
-            <a href="#jurors" class="tab-link" onclick="showTab('jurors')">Jurors ({{ jury_apps.count }})</a>
+            <a href="#teams" class="tab-link active" onclick="showTab('teams')">{% trans 'Teams' %} ({{ team_apps.count }})</a>
+            <a href="#participants" class="tab-link" onclick="showTab('participants')">{% trans 'Join Requests' %} ({{ participant_apps.count }})</a>
+            <a href="#jurors" class="tab-link" onclick="showTab('jurors')">{% trans 'Jurors' %} ({{ jury_apps.count }})</a>
         </div>
 
         <!-- Teams Section -->
@@ -33,7 +33,7 @@
                         <div class="user-avatar">{{ app.team.name|slice:":1" }}</div>
                         <div class="user-details">
                             <h3>{{ app.team.name }}</h3>
-                            <p>Captain: {{ app.user.username }} • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
+                            <p>{% trans 'Captain' %}: {{ app.user.username }} • {% trans 'Applied' %}: {{ app.created_at|date:"M d, H:i" }}</p>
                         </div>
                     </div>
                     <div class="actions-group">
@@ -60,7 +60,7 @@
                         <div class="user-avatar">{{ app.user.username|slice:":1" }}</div>
                         <div class="user-details">
                             <h3>{{ app.user.username }}</h3>
-                            <p>{% if app.team %}Wants to join <strong>{{ app.team.name }}</strong>{% else %}Individual Participant{% endif %} • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
+                            <p>{% if app.team %}{% blocktrans with team_name=app.team.name %}Wants to join <strong>{{ team_name }}</strong>{% endblocktrans %}{% else %}{% trans 'Individual Participant' %}{% endif %} • {% trans 'Applied' %}: {{ app.created_at|date:"M d, H:i" }}</p>
                         </div>
                     </div>
                     <div class="actions-group">
@@ -87,7 +87,7 @@
                         <div class="user-avatar">{{ app.user.username|slice:":1" }}</div>
                         <div class="user-details">
                             <h3>{{ app.user.username }}</h3>
-                            <p>Jury Member • Applied: {{ app.created_at|date:"M d, H:i" }}</p>
+                            <p>{% trans 'Jury Member' %} • {% trans 'Applied' %}: {{ app.created_at|date:"M d, H:i" }}</p>
                         </div>
                     </div>
                     <div class="actions-group">

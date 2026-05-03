@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}Organizer Analytics - {{ contest.name }}{% endblock %}
+{% block title %}{% trans 'Organizer Analytics' %} - {{ contest.name }}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/admin/analytics.css' %}">
@@ -13,7 +13,7 @@
 <header class="dashboard-header">
     <div class="header-left">
         <h1>{% trans 'Contest Analytics' %}</h1>
-        <p class="p-001">Visual insights for "{{ contest.name }}"</p>
+        <p class="p-001">{% blocktrans with name=contest.name %}Visual insights for "{{ name }}"{% endblocktrans %}</p>
     </div>
     <div class="header-right">
         <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">{% trans 'Back to Board' %}</a>

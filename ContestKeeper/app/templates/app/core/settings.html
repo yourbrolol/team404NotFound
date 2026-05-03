@@ -204,7 +204,7 @@
             updateBioCounter();
             bioInput.addEventListener('input', updateBioCounter);
         }
-...
+
         if (form && saveButton) {
             const fields = Array.from(form.querySelectorAll('input, textarea, select'))
                 .filter((field) => field.type !== 'hidden' && field.type !== 'submit');

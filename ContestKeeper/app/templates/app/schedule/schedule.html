@@ -12,7 +12,7 @@
     <div class="div-005">
         <div>
             <h1 class="h1-001">{% trans 'Tournament Schedule' %}</h1>
-            <p class="p-001">Follow the timeline of {{ contest.name }}
+            <p class="p-001">{% blocktrans with name=contest.name %}Follow the timeline of {{ name }}{% endblocktrans %}
             </p>
         </div>
 

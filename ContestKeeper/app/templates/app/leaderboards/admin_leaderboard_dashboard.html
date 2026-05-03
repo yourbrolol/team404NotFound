@@ -2,7 +2,7 @@
 {% load i18n %}
 {% load static %}
 
-{% block title %}{{ contest.name }} - Admin Leaderboard Dashboard{% endblock %}
+{% block title %}{{ contest.name }} - {% trans 'Admin Leaderboard Dashboard' %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/leaderboards/admin_leaderboard_dashboard.css' %}">
@@ -13,7 +13,7 @@
             <div class="glass-panel admin-dashboard-card">
                 <div class="dashboard-header-section">
                     <div>
-                        <h1 id="h1">{{ contest.name }} Evaluation Dashboard</h1>
+                        <h1 id="h1">{% blocktrans with name=contest.name %}{{ name }} Evaluation Dashboard{% endblocktrans %}</h1>
                         <p class="dashboard-subtitle">{% trans 'Admin controls and leaderboard preview.' %}</p>
                     </div>
                     <div class="header-actions">
@@ -34,15 +34,15 @@
                     </div>
                     <div class="status-card">
                         <h4>{% trans 'All Scores Complete' %}</h4>
-                        <p>{{ phase.all_scores_complete|yesno:"Yes,No" }}</p>
+                        <p>{{ phase.all_scores_complete|yesno:_("Yes,No") }}</p>
                     </div>
                     <div class="status-card">
                         <h4>{% trans 'Participant Breakdown' %}</h4>
-                        <p>{{ phase.show_jury_breakdown_to_participants|yesno:"Visible,Hidden" }}</p>
+                        <p>{{ phase.show_jury_breakdown_to_participants|yesno:_("Visible,Hidden") }}</p>
                     </div>
                     <div class="status-card">
                         <h4>{% trans 'Completed At' %}</h4>
-                        <p>{{ phase.completed_at|date:"M d, Y H:i"|default:'In Progress' }}</p>
+                        <p>{{ phase.completed_at|date:"M d, Y H:i"|default:_('In Progress') }}</p>
                     </div>
                 </div>
 
@@ -54,7 +54,7 @@
                     <div class="progress-bar-container">
                         <div class="progress-bar" style="width: {{ progress_percent }}%;"></div>
                     </div>
-                    <p class="dashboard-subtitle">{{ submitted }} of {{ expected }} expected jury scores submitted.</p>
+                    <p class="dashboard-subtitle">{% blocktrans %}{{ submitted }} of {{ expected }} expected jury scores submitted.{% endblocktrans %}</p>
                 </section>
 
                 <section class="content-section">
@@ -98,7 +98,7 @@
                         <form method="post" action="{% url 'admin_toggle_jury_breakdown' contest.pk %}">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="{% if phase.show_jury_breakdown_to_participants %}hide{% else %}show{% endif %}">
-                            <button type="submit" class="btn btn-tinted btn-primary">{% if phase.show_jury_breakdown_to_participants %}Hide{% else %}Show{% endif %} jury breakdown to participants</button>
+                            <button type="submit" class="btn btn-tinted btn-primary">{% if phase.show_jury_breakdown_to_participants %}{% trans 'Hide' %}{% else %}{% trans 'Show' %}{% endif %} {% trans 'jury breakdown to participants' %}</button>
                         </form>
                         <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=json" class="btn btn-secondary">{% trans 'Export JSON' %}</a>
                         <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=csv" class="btn btn-secondary">{% trans 'Export CSV' %}</a>
@@ -121,7 +121,7 @@
                                                 {{ criterion.name }}
                                                 <div class="criterion-actions">
                                                     <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" class="action-edit">{% trans 'Edit' %}</a> |
-                                                    <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" class="action-delete">{% trans 'Del' %}</a>
+                                                    <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" class="action-delete">{% trans 'Delete' %}</a>
                                                 </div>
                                             </th>
                                         {% endfor %}
@@ -131,13 +131,13 @@
                                 <tbody>
                                     {% for item in entries %}
                                     <tr>
-                                        <td>{{ item.entry.rank }}{% if item.entry.is_tied %} (tied){% endif %}</td>
+                                        <td>{{ item.entry.rank }}{% if item.entry.is_tied %} ({% trans 'tied' %}){% endif %}</td>
                                         <td>{{ item.entry.team.name }}</td>
                                         <td><strong>{{ item.entry.total_score }}</strong></td>
                                         {% for score in item.category_values %}
                                             <td>{{ score }}</td>
                                         {% endfor %}
-                                        <td>{{ item.entry.computation_complete|yesno:"Yes,No" }}</td>
+                                        <td>{{ item.entry.computation_complete|yesno:_("Yes,No") }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>

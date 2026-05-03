@@ -67,6 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const feedback = document.getElementById('teamsFeedback');
     const emptyFiltered = document.getElementById('filteredTeamsEmpty');
     const emptyFilteredText = document.getElementById('filteredTeamsEmptyText');
+    const i18n = document.getElementById('teams-i18n')?.dataset || {};
 
     const escapeHtml = (value) => value
         .replaceAll('&', '&amp;')
@@ -147,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const updateList = () => {
         if (!searchInput || !sortSelect || !teamItems.length) {
             if (summary) {
-                summary.textContent = 'No teams available yet.';
+                summary.textContent = i18n.noTeams || 'No teams available yet.';
             }
             return;
         }
@@ -176,10 +177,13 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         if (summary) {
-            const base = `${visibleCount} of ${teamItems.length} teams`;
-            summary.textContent = query
-                ? `${base} shown in ${activeTab}`
-                : `${base} available in ${activeTab}`;
+            const base = (i18n.teamsSummary || '{visibleCount} of {totalCount} teams')
+                .replace('{visibleCount}', visibleCount)
+                .replace('{totalCount}', teamItems.length);
+            const context = query
+                ? (i18n.shownIn || 'shown in {tab}').replace('{tab}', activeTab)
+                : (i18n.availableIn || 'available in {tab}').replace('{tab}', activeTab);
+            summary.textContent = `${base} ${context}`;
         }
 
         if (emptyFiltered) {
@@ -188,8 +192,8 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (emptyFilteredText) {
             emptyFilteredText.textContent = query
-                ? `No teams match "${searchInput.value.trim()}".`
-                : 'No teams available with the current filters.';
+                ? (i18n.noMatch || 'No teams match \"{query}\".').replace('{query}', searchInput.value.trim())
+                : (i18n.noMatchFilters || 'No teams available with the current filters.');
         }
 
         if (clearButton) {
@@ -239,7 +243,7 @@ document.addEventListener('DOMContentLoaded', () => {
         searchInput.value = '';
         updateList();
         focusSearch();
-        showFeedback('Search cleared');
+        showFeedback(i18n.searchCleared || 'Search cleared');
     };
 
     const moveTab = (direction) => {
@@ -298,9 +302,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 try {
                     await navigator.clipboard.writeText(teamName);
-                    showFeedback(`Copied "${teamName}"`);
+                    showFeedback((i18n.copied || 'Copied \"{name}\"').replace('{name}', teamName));
                 } catch (error) {
-                    showFeedback('Copy failed');
+                    showFeedback(i18n.copyFailed || 'Copy failed');
                 }
             });
         });
@@ -325,7 +329,7 @@ document.addEventListener('DOMContentLoaded', () => {
     tabButtons.forEach((button) => {
         button.addEventListener('click', () => {
             updateList();
-            showFeedback(`Switched to ${button.dataset.tabId} tab`);
+            showFeedback((i18n.switchedTab || 'Switched to {tab} tab').replace('{tab}', button.dataset.tabId));
         });
     });
 
