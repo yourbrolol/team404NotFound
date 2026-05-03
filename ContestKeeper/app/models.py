@@ -33,17 +33,17 @@ class Team(models.Model):
         DRAFT = "DRAFT", _("Draft")
         ACTIVE = "ACTIVE", _("Active")
     
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=200, blank=True)
-    status = models.CharField(choices=Status.choices, default=Status.DRAFT)
-    participants = models.ManyToManyField(User, related_name="participated_teams")
-    captain = models.ForeignKey(User, on_delete=models.CASCADE, related_name="captained_teams", null=True, blank=True)
-    blacklisted_members = models.ManyToManyField(User, related_name="blacklisted_from_teams", blank=True)
+    name = models.CharField(_("Name"), max_length=100)
+    description = models.TextField(_("Description"), max_length=200, blank=True)
+    status = models.CharField(_("Status"), choices=Status.choices, default=Status.DRAFT)
+    participants = models.ManyToManyField(User, related_name="participated_teams", verbose_name=_("Participants"))
+    captain = models.ForeignKey(User, on_delete=models.CASCADE, related_name="captained_teams", null=True, blank=True, verbose_name=_("Captain"))
+    blacklisted_members = models.ManyToManyField(User, related_name="blacklisted_from_teams", blank=True, verbose_name=_("Blacklisted Members"))
     
-    organization = models.CharField(max_length=100, blank=True)
-    telegram_link = models.URLField(blank=True)
-    discord_link = models.URLField(blank=True)
-    website_link = models.URLField(blank=True)
+    organization = models.CharField(_("Organization"), max_length=100, blank=True)
+    telegram_link = models.URLField(_("Telegram Link"), blank=True)
+    discord_link = models.URLField(_("Discord Link"), blank=True)
+    website_link = models.URLField(_("Website Link"), blank=True)
     
     def __str__(self):
         return f"Team {self.name}."
@@ -74,17 +74,17 @@ class Contest(models.Model):
         RUNNING = "RUNNING", _("Running")
         FINISHED = "FINISHED", _("Finished")
 
-    name = models.CharField(max_length=100)
-    description = models.TextField(max_length=500)
-    registration_start = models.DateTimeField(null=True, blank=True)
-    registration_end = models.DateTimeField(null=True, blank=True)
-    start_date = models.DateTimeField()
-    end_date = models.DateTimeField()
-    max_teams = models.PositiveIntegerField(null=True, blank=True)
-    format = models.CharField(max_length=50, blank=True, help_text="e.g. Online, Onsite, Hybrid")
-    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_contests", null=True, blank=True)
-    status = models.CharField(choices=Status.choices, default=Status.DRAFT)
-    is_draft = models.BooleanField(default=True)
+    name = models.CharField(_("Name"), max_length=100)
+    description = models.TextField(_("Description"), max_length=500)
+    registration_start = models.DateTimeField(_("Registration Start"), null=True, blank=True)
+    registration_end = models.DateTimeField(_("Registration End"), null=True, blank=True)
+    start_date = models.DateTimeField(_("Start Date"))
+    end_date = models.DateTimeField(_("End Date"))
+    max_teams = models.PositiveIntegerField(_("Max Teams"), null=True, blank=True)
+    format = models.CharField(_("Format"), max_length=50, blank=True, help_text=_("e.g. Online, Onsite, Hybrid"))
+    organizer = models.ForeignKey(User, on_delete=models.CASCADE, related_name="organized_contests", null=True, blank=True, verbose_name=_("Organizer"))
+    status = models.CharField(_("Status"), choices=Status.choices, default=Status.DRAFT)
+    is_draft = models.BooleanField(_("Is Draft"), default=True)
     jurys = models.ManyToManyField(User, related_name="judged_contests", blank=True)
     participants = models.ManyToManyField(User, related_name="participated_contests", blank=True)
     teams = models.ManyToManyField(Team, related_name="teams_in_contests", blank=True)
@@ -134,24 +134,27 @@ class ScoringCriterion(models.Model):
         SUM = "SUM", _("Sum")
         AVERAGE = "AVERAGE", _("Average")
 
-    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="scoring_criteria")
-    name = models.CharField(max_length=100)
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="scoring_criteria", verbose_name=_("Contest"))
+    name = models.CharField(_("Name"), max_length=100)
     max_score = models.PositiveIntegerField(
+        _("Max Score"),
         default=100,
         validators=[MinValueValidator(1)],
     )
     weight = models.DecimalField(
+        _("Weight"),
         max_digits=6,
         decimal_places=2,
         default=Decimal("1.00"),
         validators=[MinValueValidator(Decimal("0.01"))],
     )
     aggregation_type = models.CharField(
+        _("Aggregation Type"),
         max_length=10,
         choices=AggregationType.choices,
         default=AggregationType.AVERAGE,
     )
-    order = models.PositiveIntegerField(default=0)
+    order = models.PositiveIntegerField(_("Order"), default=0)
 
     class Meta:
         ordering = ["order", "id"]
@@ -281,16 +284,16 @@ class Round(models.Model):
         SUBMISSION_CLOSED = "SUBMISSION_CLOSED", _("Submission Closed")
         EVALUATED = "EVALUATED", _("Evaluated")
 
-    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="rounds")
-    title = models.CharField(max_length=200)
-    description = models.TextField()
-    tech_requirements = models.TextField()
-    must_have = models.JSONField(default=list, help_text="List of required checklist items")
-    start_time = models.DateTimeField()
-    deadline = models.DateTimeField()
-    materials = models.JSONField(default=list, blank=True, null=True, help_text="List of {label, url}")
-    status = models.CharField(max_length=20, choices=Status.choices, default=Status.DRAFT)
-    order = models.PositiveIntegerField(default=0, help_text="Round number within contest")
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="rounds", verbose_name=_("Contest"))
+    title = models.CharField(_("Title"), max_length=200)
+    description = models.TextField(_("Description"))
+    tech_requirements = models.TextField(_("Technical Requirements"))
+    must_have = models.JSONField(_("Must-Have Checklist"), default=list, help_text=_("List of required checklist items"))
+    start_time = models.DateTimeField(_("Start Time"))
+    deadline = models.DateTimeField(_("Deadline"))
+    materials = models.JSONField(_("Materials"), default=list, blank=True, null=True, help_text=_("List of {label, url}"))
+    status = models.CharField(_("Status"), max_length=20, choices=Status.choices, default=Status.DRAFT)
+    order = models.PositiveIntegerField(_("Order"), default=0, help_text=_("Round number within contest"))
     created_by = models.ForeignKey(User, on_delete=models.SET_NULL, null=True, related_name="created_rounds")
     created_at = models.DateTimeField(auto_now_add=True)
 
@@ -323,12 +326,12 @@ class Round(models.Model):
 
 
 class Submission(models.Model):
-    round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="submissions")
-    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="submissions")
-    github_url = models.URLField(help_text="Link to GitHub repository")
-    video_url = models.URLField(help_text="Link to video demo (YouTube, Drive, etc.)")
-    live_demo_url = models.URLField(blank=True, help_text="Link to live demo (optional)")
-    description = models.TextField(max_length=2000, blank=True, help_text="Short description: what was done, how to run")
+    round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="submissions", verbose_name=_("Round"))
+    team = models.ForeignKey(Team, on_delete=models.CASCADE, related_name="submissions", verbose_name=_("Team"))
+    github_url = models.URLField(_("GitHub Repository URL"), help_text=_("Link to GitHub repository"))
+    video_url = models.URLField(_("Presentation Video URL"), help_text=_("Link to video demo (YouTube, Drive, etc.)"))
+    live_demo_url = models.URLField(_("Live Demo URL"), blank=True, help_text=_("Link to live demo (optional)"))
+    description = models.TextField(_("Implementation Details"), max_length=2000, blank=True, help_text=_("Short description: what was done, how to run"))
     submitted_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -370,11 +373,11 @@ class Notification(models.Model):
 
 
 class Announcement(models.Model):
-    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="announcements")
-    title = models.CharField(max_length=200)
-    content = models.TextField()
-    is_pinned = models.BooleanField(default=False)
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authored_announcements")
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="announcements", verbose_name=_("Contest"))
+    title = models.CharField(_("Title"), max_length=200)
+    content = models.TextField(_("Content"))
+    is_pinned = models.BooleanField(_("Is Pinned"), default=False)
+    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name="authored_announcements", verbose_name=_("Author"))
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
@@ -391,13 +394,13 @@ class ScheduleEvent(models.Model):
         WORKSHOP = "WORKSHOP", _("Workshop")
         OTHER = "OTHER", _("Other")
 
-    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="schedule_events")
-    title = models.CharField(max_length=200)
-    description = models.TextField(blank=True)
-    start_time = models.DateTimeField()
-    end_time = models.DateTimeField(null=True, blank=True)
-    event_type = models.CharField(max_length=20, choices=EventType.choices, default=EventType.ROUND)
-    round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="schedule_events", null=True, blank=True)
+    contest = models.ForeignKey(Contest, on_delete=models.CASCADE, related_name="schedule_events", verbose_name=_("Contest"))
+    title = models.CharField(_("Title"), max_length=200)
+    description = models.TextField(_("Description"), blank=True)
+    start_time = models.DateTimeField(_("Start Time"))
+    end_time = models.DateTimeField(_("End Time"), null=True, blank=True)
+    event_type = models.CharField(_("Event Type"), max_length=20, choices=EventType.choices, default=EventType.ROUND)
+    round = models.ForeignKey(Round, on_delete=models.CASCADE, related_name="schedule_events", null=True, blank=True, verbose_name=_("Round"))
     order = models.PositiveIntegerField(default=0)
 
     class Meta:

@@ -7,7 +7,7 @@
 {% endblock %}
 
 
-{% block title %}Post Announcement - {{ contest.name }}{% endblock %}
+{% block title %}{% blocktrans with name=contest.name %}Post Announcement - {{ name }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
 <div class="form-card">

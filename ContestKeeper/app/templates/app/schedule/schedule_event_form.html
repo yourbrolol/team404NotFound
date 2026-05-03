@@ -7,7 +7,7 @@
 {% endblock %}
 
 
-{% block title %}Add Schedule Event - {{ contest.name }}{% endblock %}
+{% block title %}{% blocktrans with name=contest.name %}Add Schedule Event - {{ name }}{% endblocktrans %}{% endblock %}
 
 {% block content %}
 <div class="form-card">
