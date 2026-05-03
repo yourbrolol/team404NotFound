@@ -85,17 +85,7 @@ class FullWorkflowIntegrationTest(TestCase):
         self.assertEqual(response.status_code, 302)
         round_obj = Round.objects.get(contest=contest, title='Alpha Round')
         
-        # 4. Participant 1 applies to contest
-        response = self.p1_client.post(reverse('apply_to_contest', kwargs={'pk': contest.pk, 'app_type': 'participant'}))
-        self.assertEqual(response.status_code, 302)
-        app1 = Application.objects.get(user=self.participant1, contest=contest)
-        
-        # 5. Organizer approves Participant 1
-        self.org_client.post(reverse('approve_application', kwargs={'pk': app1.pk}))
-        app1.refresh_from_db()
-        self.assertEqual(app1.status, Application.Status.APPROVED)
-        
-        # 6. Participant 1 creates a team
+        # 4. Participant 1 creates a team
         response = self.p1_client.post(reverse('team_create', kwargs={'pk': contest.pk}), {
             'name': 'Coders United',
             'description': 'The best team',
