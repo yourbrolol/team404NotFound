@@ -1,0 +1,395 @@
+python manage.py test app --verbosity 2 --traceback > test_traceback.txt
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+test_apply_as_jury_when_already_participant_fails (app.tests.test_application.ApplicationLogicTest.test_apply_as_jury_when_already_participant_fails)
+Test that participant applications are disabled but jury applications work ... /mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/core/handlers/base.py:62: UserWarning: No directory at: /mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/staticfiles/
+  mw_instance = middleware(adapted_handler)
+ERROR
+test_apply_as_organizer_fails (app.tests.test_application.ApplicationLogicTest.test_apply_as_organizer_fails)
+Test that organizers cannot apply to their own contests ... ok
+test_apply_as_participant_when_already_jury_fails (app.tests.test_application.ApplicationLogicTest.test_apply_as_participant_when_already_jury_fails)
+Test that a user cannot apply as participant if already applied as jury ... ok
+test_apply_invalid_type_fails (app.tests.test_application.ApplicationLogicTest.test_apply_invalid_type_fails) ... ok
+test_apply_jury_twice_fails (app.tests.test_application.ApplicationLogicTest.test_apply_jury_twice_fails)
+Test that applying as jury twice gets the existing application ... ERROR
+test_apply_participant_twice_fails (app.tests.test_application.ApplicationLogicTest.test_apply_participant_twice_fails)
+Test that participant applications are disabled ... ok
+test_apply_to_draft_contest_fails (app.tests.test_application.ApplicationLogicTest.test_apply_to_draft_contest_fails)
+Test that applications to draft contests are not allowed ... ok
+test_apply_with_invalid_contest_id_fails (app.tests.test_application.ApplicationLogicTest.test_apply_with_invalid_contest_id_fails)
+Test that applying to non-existent contest fails ... ok
+test_approve_already_approved_application_no_change (app.tests.test_application.ApplicationLogicTest.test_approve_already_approved_application_no_change)
+Test that approving an already approved application doesn't change anything ... ok
+test_approve_application_wrong_organizer_fails (app.tests.test_application.ApplicationLogicTest.test_approve_application_wrong_organizer_fails)
+Test that only the contest organizer can approve applications ... ok
+test_approve_participant_application (app.tests.test_application.ApplicationLogicTest.test_approve_participant_application) ... ok
+test_approve_rejected_application_no_change (app.tests.test_application.ApplicationLogicTest.test_approve_rejected_application_no_change)
+Test that approving a rejected application changes status to approved ... ok
+test_create_scoring_models (app.tests.test_evaluation.EvaluationModelsTest.test_create_scoring_models) ... ok
+test_jury_assignment_different_teams_same_jury_allowed (app.tests.test_evaluation.EvaluationModelsTest.test_jury_assignment_different_teams_same_jury_allowed)
+Test that same jury can be assigned to different teams ... ok
+test_jury_assignment_unique_constraint (app.tests.test_evaluation.EvaluationModelsTest.test_jury_assignment_unique_constraint)
+Test that jury assignments are unique per contest/team/jury ... ok
+test_score_validation_allows_decimal_scores (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_allows_decimal_scores)
+Test that decimal scores are allowed ... ok
+test_score_validation_allows_zero_score (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_allows_zero_score)
+Test that zero scores are allowed ... ok
+test_score_validation_rejects_criterion_from_different_contest (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_rejects_criterion_from_different_contest)
+Test that criteria from other contests are rejected ... ok
+test_score_validation_rejects_jury_not_assigned_to_team (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_rejects_jury_not_assigned_to_team)
+Test that scores cannot be given by jury members not assigned to the team ... ok
+test_score_validation_rejects_jury_not_in_contest (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_rejects_jury_not_in_contest)
+Test that jury members not assigned to the contest are rejected ... ok
+test_score_validation_rejects_negative_score (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_rejects_negative_score)
+Test that negative scores are rejected ... ok
+test_score_validation_rejects_score_above_maximum (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_rejects_score_above_maximum) ... ok
+test_score_validation_rejects_score_exactly_at_max_plus_epsilon (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_rejects_score_exactly_at_max_plus_epsilon)
+Test that scores slightly above max are rejected ... ok
+test_score_validation_rejects_team_outside_contest (app.tests.test_evaluation.EvaluationModelsTest.test_score_validation_rejects_team_outside_contest) ... ok
+test_scoring_criterion_same_name_different_contest_allowed (app.tests.test_evaluation.EvaluationModelsTest.test_scoring_criterion_same_name_different_contest_allowed)
+Test that same criterion name can exist in different contests ... ok
+test_scoring_criterion_unique_name_per_contest (app.tests.test_evaluation.EvaluationModelsTest.test_scoring_criterion_unique_name_per_contest)
+Test that criterion names must be unique within a contest ... ok
+test_complete_contest_workflow (app.tests.test_full_workflow.FullWorkflowIntegrationTest.test_complete_contest_workflow) ... ok
+test_non_captain_cannot_kick (app.tests.test_integration.TestAccessControl.test_non_captain_cannot_kick)
+Non-captain POST to team_kick should return 403. ... ok
+test_non_jury_cannot_access_evaluation (app.tests.test_integration.TestAccessControl.test_non_jury_cannot_access_evaluation)
+Non-jury GET on jury_evaluate should return 403. ... ok
+test_non_organizer_cannot_activate_round (app.tests.test_integration.TestAccessControl.test_non_organizer_cannot_activate_round)
+Non-organizer POST to round_activate should return 403. ... ok
+test_unauthenticated_redirect_to_login (app.tests.test_integration.TestAccessControl.test_unauthenticated_redirect_to_login)
+Unauthenticated POST should redirect, no DB mutation. ... ok
+test_jury_evaluation_workflow (app.tests.test_integration.TestJuryEvaluationFlow.test_jury_evaluation_workflow)
+Jury logs in, evaluates team, submits scores. ... ok
+test_application_approval_notification (app.tests.test_integration.TestNotificationPipeline.test_application_approval_notification)
+Applicant receives notification when application is approved. ... ok
+test_round_started_notification (app.tests.test_integration.TestNotificationPipeline.test_round_started_notification)
+Participants receive notification when round starts. ... ok
+test_contest_lifecycle (app.tests.test_integration.TestOrganizerContestLifecycle.test_contest_lifecycle)
+Create draft → edit → publish → move through statuses → add criteria. ... ok
+test_participant_golden_path (app.tests.test_integration.TestParticipantEndToEndFlow.test_participant_golden_path)
+Full flow: participant registers, creates team, submits, gets evaluated. ... ok
+test_registration_end_in_past (app.tests.test_integration.TestRegistrationWindow.test_registration_end_in_past)
+Team creation blocked when registration_end is in the past. ... ok
+test_registration_start_in_future (app.tests.test_integration.TestRegistrationWindow.test_registration_start_in_future)
+Team creation blocked when registration_start is in the future. ... ok
+test_assign_jury_to_teams_logic (app.tests.test_jury_assignment.JuryAssignmentTest.test_assign_jury_to_teams_logic) ... ok
+test_assign_jury_view (app.tests.test_jury_assignment.JuryAssignmentTest.test_assign_jury_view) ... ok
+test_jury_evaluation_access_denied_without_assignment (app.tests.test_jury_assignment.JuryAssignmentTest.test_jury_evaluation_access_denied_without_assignment) ... ok
+test_round_submissions_list_filtering (app.tests.test_jury_assignment.JuryAssignmentTest.test_round_submissions_list_filtering) ... ok
+test_compute_leaderboard_empty_contest_returns_empty_list (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_compute_leaderboard_empty_contest_returns_empty_list)
+Test leaderboard computation for contest with no teams ... ok
+test_compute_leaderboard_handles_ties_correctly (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_compute_leaderboard_handles_ties_correctly)
+Test that tied teams get the same rank and is_tied flag ... ok
+test_compute_leaderboard_orders_teams_by_weighted_score (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_compute_leaderboard_orders_teams_by_weighted_score) ... ok
+test_compute_leaderboard_single_jury_single_criterion (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_compute_leaderboard_single_jury_single_criterion)
+Test leaderboard with minimal scoring setup ... ok
+test_compute_leaderboard_with_missing_scores_shows_partial_results (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_compute_leaderboard_with_missing_scores_shows_partial_results)
+Test leaderboard computation when some scores are missing ... ok
+test_compute_leaderboard_with_sum_aggregation (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_compute_leaderboard_with_sum_aggregation)
+Test leaderboard with SUM aggregation type ... ok
+test_compute_leaderboard_with_zero_weights (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_compute_leaderboard_with_zero_weights)
+Test leaderboard calculation with zero weight criteria ... ok
+test_export_csv_returns_ranked_rows (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_export_csv_returns_ranked_rows) ... ok
+test_export_csv_with_ties_shows_correct_ranks (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_export_csv_with_ties_shows_correct_ranks)
+Test CSV export handles tied ranks correctly ... ok
+test_get_missing_scores_reports_unscored_slots (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_get_missing_scores_reports_unscored_slots) ... ok
+test_get_missing_scores_with_partial_scoring (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_get_missing_scores_with_partial_scoring)
+Test missing scores detection with some criteria scored ... ok
+test_save_leaderboard_persists_entries_and_marks_phase_complete (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_save_leaderboard_persists_entries_and_marks_phase_complete) ... ok
+test_save_leaderboard_with_incomplete_scores_marks_incomplete (app.tests.test_leaderboard.LeaderboardHelperFunctionsTest.test_save_leaderboard_with_incomplete_scores_marks_incomplete)
+Test that saving leaderboard with missing scores marks entries as incomplete ... ok
+test_contest_leaderboard_not_available_before_completion (app.tests.test_leaderboard.LeaderboardLogicTest.test_contest_leaderboard_not_available_before_completion) ... ok
+test_finish_evaluation_creates_leaderboard_with_missing_scores (app.tests.test_leaderboard.LeaderboardLogicTest.test_finish_evaluation_creates_leaderboard_with_missing_scores) ... ok
+test_activate_draft_round (app.tests.test_round.RoundLogicTest.test_activate_draft_round)
+Test that a DRAFT round can be activated to ACTIVE ... ok
+test_cannot_activate_non_draft (app.tests.test_round.RoundLogicTest.test_cannot_activate_non_draft)
+Test that non-DRAFT rounds cannot be activated ... ok
+test_close_submissions_active_round (app.tests.test_round.RoundLogicTest.test_close_submissions_active_round)
+Test that ACTIVE round can be closed (manual closure) ... ok
+test_create_round_empty_must_have (app.tests.test_round.RoundLogicTest.test_create_round_empty_must_have)
+Test that round creation fails if must_have is empty ... ok
+test_create_round_invalid_deadline (app.tests.test_round.RoundLogicTest.test_create_round_invalid_deadline)
+Test that round creation fails if deadline <= start_time ... ok
+test_create_round_valid (app.tests.test_round.RoundLogicTest.test_create_round_valid)
+Test creating a valid round with all required fields ... ok
+test_create_round_with_duplicate_order_fails (app.tests.test_round.RoundLogicTest.test_create_round_with_duplicate_order_fails)
+Test that creating round with duplicate order fails ... ok
+test_extend_deadline_active_round (app.tests.test_round.RoundLogicTest.test_extend_deadline_active_round)
+Test extending deadline of an ACTIVE round ... ok
+test_extend_deadline_future_only (app.tests.test_round.RoundLogicTest.test_extend_deadline_future_only)
+Test that deadline can only be extended to future times ... ok
+test_organizer_can_only_edit_draft_rounds (app.tests.test_round.RoundLogicTest.test_organizer_can_only_edit_draft_rounds)
+Test that organizers can only edit DRAFT rounds ... ok
+test_round_deadline_before_start_validation (app.tests.test_round.RoundLogicTest.test_round_deadline_before_start_validation)
+Test that deadline before start_time is rejected in views ... ok
+test_round_is_active_method_edge_cases (app.tests.test_round.RoundLogicTest.test_round_is_active_method_edge_cases)
+Test edge cases for is_active method ... ok
+test_round_is_open_property (app.tests.test_round.RoundLogicTest.test_round_is_open_property)
+Test the is_open property correctly identifies open rounds ... ok
+test_round_must_have_validation (app.tests.test_round.RoundLogicTest.test_round_must_have_validation)
+Test that must_have field is properly validated in views ... ok
+test_round_status_transitions (app.tests.test_round.RoundLogicTest.test_round_status_transitions)
+Test valid and invalid round status transitions in views ... ok
+test_round_time_remaining_edge_cases (app.tests.test_round.RoundLogicTest.test_round_time_remaining_edge_cases)
+Test edge cases for time_remaining method ... ok
+test_team_cannot_see_draft_round (app.tests.test_round.RoundLogicTest.test_team_cannot_see_draft_round)
+Test that participant teams cannot see DRAFT rounds ... ok
+test_team_sees_active_round (app.tests.test_round.RoundLogicTest.test_team_sees_active_round)
+Test that participants see ACTIVE rounds with countdown ... ok
+test_team_sees_closed_message (app.tests.test_round.RoundLogicTest.test_team_sees_closed_message)
+Test that SUBMISSION_CLOSED rounds show read-only message ... ok
+test_seed_data_command (app.tests.test_seed.SeedDataTest.test_seed_data_command)
+Test that seed_data command populates the database correctly. ... ok
+test_cascade_delete_round (app.tests.test_submission.SubmissionModelTest.test_cascade_delete_round)
+Deleting a Round cascades to its Submissions. ... ok
+test_cascade_delete_team (app.tests.test_submission.SubmissionModelTest.test_cascade_delete_team)
+Deleting a Team cascades to its Submissions. ... ok
+test_create_submission_with_valid_data (app.tests.test_submission.SubmissionModelTest.test_create_submission_with_valid_data)
+Test that a submission can be created with all required fields. ... ok
+test_different_teams_same_round_allowed (app.tests.test_submission.SubmissionModelTest.test_different_teams_same_round_allowed)
+Test that different teams can submit to the same round ... ok
+test_is_editable_false_when_deadline_passed (app.tests.test_submission.SubmissionModelTest.test_is_editable_false_when_deadline_passed)
+Submission is not editable when the deadline has passed (even if still ACTIVE). ... ok
+test_is_editable_false_when_round_closed (app.tests.test_submission.SubmissionModelTest.test_is_editable_false_when_round_closed)
+Submission is not editable when round status is SUBMISSION_CLOSED. ... ok
+test_is_editable_true_when_round_open (app.tests.test_submission.SubmissionModelTest.test_is_editable_true_when_round_open)
+Submission is editable when round is ACTIVE and before deadline. ... ok
+test_multiple_submissions_different_rounds_allowed (app.tests.test_submission.SubmissionModelTest.test_multiple_submissions_different_rounds_allowed)
+Test that same team can submit to different rounds ... ok
+test_optional_fields_can_be_blank (app.tests.test_submission.SubmissionModelTest.test_optional_fields_can_be_blank)
+live_demo_url and description are optional. ... ok
+test_submission_description_truncation_display (app.tests.test_submission.SubmissionModelTest.test_submission_description_truncation_display)
+Test that long descriptions are handled properly in display ... ok
+test_submission_is_editable_edge_cases (app.tests.test_submission.SubmissionModelTest.test_submission_is_editable_edge_cases)
+Test edge cases for is_editable method ... ok
+test_submission_str_method (app.tests.test_submission.SubmissionModelTest.test_submission_str_method)
+Test the string representation of submissions ... ok
+test_submission_update_timestamps (app.tests.test_submission.SubmissionModelTest.test_submission_update_timestamps)
+Test that updating a submission changes updated_at but not submitted_at ... ok
+test_submission_url_validation (app.tests.test_submission.SubmissionModelTest.test_submission_url_validation)
+Test that submission URLs are properly validated ... ok
+test_submission_urls_with_special_characters (app.tests.test_submission.SubmissionModelTest.test_submission_urls_with_special_characters)
+Test submission URLs with special characters and encoding ... ok
+test_submission_with_long_description (app.tests.test_submission.SubmissionModelTest.test_submission_with_long_description)
+Test submission with maximum length description ... ok
+test_submission_with_minimal_data (app.tests.test_submission.SubmissionModelTest.test_submission_with_minimal_data)
+Test submission creation with only required fields ... ok
+test_unique_together_round_team (app.tests.test_submission.SubmissionModelTest.test_unique_together_round_team)
+Test that a team cannot submit twice to the same round. ... ok
+test_round_submissions_list_permissions (app.tests.test_submission.SubmissionUITest.test_round_submissions_list_permissions) ... ok
+test_submission_creation_denied_after_deadline (app.tests.test_submission.SubmissionUITest.test_submission_creation_denied_after_deadline) ... ok
+test_submission_creation_success (app.tests.test_submission.SubmissionUITest.test_submission_creation_success) ... ok
+test_submission_detail_visibility (app.tests.test_submission.SubmissionUITest.test_submission_detail_visibility) ... ok
+test_submission_edit_success (app.tests.test_submission.SubmissionUITest.test_submission_edit_success) ... ok
+test_submission_form_access_denied_for_non_team_members (app.tests.test_submission.SubmissionUITest.test_submission_form_access_denied_for_non_team_members) ... ok
+test_home_invalid_status_filter_falls_back_to_all (app.tests.test_views.HomeViewTaskTest.test_home_invalid_status_filter_falls_back_to_all) ... ok
+test_home_quick_access_appears_for_participant_with_active_contest (app.tests.test_views.HomeViewTaskTest.test_home_quick_access_appears_for_participant_with_active_contest) ... ok
+test_home_quick_access_hidden_when_participant_has_no_team (app.tests.test_views.HomeViewTaskTest.test_home_quick_access_hidden_when_participant_has_no_team) ... ok
+test_home_shows_all_non_draft_contests (app.tests.test_views.HomeViewTaskTest.test_home_shows_all_non_draft_contests) ... ok
+test_home_status_filter_limits_contests (app.tests.test_views.HomeViewTaskTest.test_home_status_filter_limits_contests) ... ok
+test_apply_as_wrong_role_fails (app.tests.test_views.ProfileViewTaskTest.test_apply_as_wrong_role_fails)
+Test that participants cannot apply as jury and vice versa ... ERROR
+test_apply_to_nonexistent_contest_returns_404 (app.tests.test_views.ProfileViewTaskTest.test_apply_to_nonexistent_contest_returns_404)
+Test applying to a contest that doesn't exist ... ok
+test_contest_detail_draft_contest_hidden_from_participants (app.tests.test_views.ProfileViewTaskTest.test_contest_detail_draft_contest_hidden_from_participants)
+Test that draft contests are not accessible to participants ... ok
+test_contest_detail_organizer_can_see_draft (app.tests.test_views.ProfileViewTaskTest.test_contest_detail_organizer_can_see_draft)
+Test that organizers can see their own draft contests ... ok
+test_contest_status_filter_edge_cases (app.tests.test_views.ProfileViewTaskTest.test_contest_status_filter_edge_cases)
+Test contest status filtering with edge cases ... ok
+test_empty_team_profile_view (app.tests.test_views.ProfileViewTaskTest.test_empty_team_profile_view)
+Test profile view for user with no teams ... ok
+test_home_page_pagination_with_many_contests (app.tests.test_views.ProfileViewTaskTest.test_home_page_pagination_with_many_contests)
+Test home page handles many contests properly ... ok
+test_home_page_with_no_contests (app.tests.test_views.ProfileViewTaskTest.test_home_page_with_no_contests)
+Test home page when no contests exist ... ok
+test_home_quick_access_with_multiple_active_contests (app.tests.test_views.ProfileViewTaskTest.test_home_quick_access_with_multiple_active_contests)
+Test quick access when participant has multiple active contests ... ok
+test_invalid_form_data_handling (app.tests.test_views.ProfileViewTaskTest.test_invalid_form_data_handling)
+Test that invalid form data is handled gracefully ... ok
+test_leaderboard_view_before_evaluation_complete (app.tests.test_views.ProfileViewTaskTest.test_leaderboard_view_before_evaluation_complete)
+Test leaderboard view shows appropriate message before evaluation ... ok
+test_permission_denied_redirects_appropriately (app.tests.test_views.ProfileViewTaskTest.test_permission_denied_redirects_appropriately)
+Test that permission denied responses redirect or show appropriate messages ... ok
+test_profile_empty_states_render_for_user_without_related_data (app.tests.test_views.ProfileViewTaskTest.test_profile_empty_states_render_for_user_without_related_data) ... ok
+test_profile_for_jury_shows_pending_and_completed_reviews (app.tests.test_views.ProfileViewTaskTest.test_profile_for_jury_shows_pending_and_completed_reviews) ... ok
+test_profile_for_organizer_shows_managed_contests (app.tests.test_views.ProfileViewTaskTest.test_profile_for_organizer_shows_managed_contests) ... ok
+test_profile_for_participant_shows_teams_and_leaderboard_history (app.tests.test_views.ProfileViewTaskTest.test_profile_for_participant_shows_teams_and_leaderboard_history) ... ok
+test_profile_view_for_organizer_shows_organized_contests (app.tests.test_views.ProfileViewTaskTest.test_profile_view_for_organizer_shows_organized_contests)
+Test that organizers see their organized contests in profile ... ok
+test_round_creation_requires_organizer_permission (app.tests.test_views.ProfileViewTaskTest.test_round_creation_requires_organizer_permission)
+Test that only organizers can create rounds ... ok
+test_submission_creation_requires_team_membership (app.tests.test_views.ProfileViewTaskTest.test_submission_creation_requires_team_membership)
+Test that only team members can create submissions ... FAIL
+test_team_creation_requires_captain (app.tests.test_views.ProfileViewTaskTest.test_team_creation_requires_captain)
+Test that team creation fails without a captain ... ok
+test_contest_creation_and_publish_flow (app.tests.tests_integration.ContestKeeperIntegrationTest.test_contest_creation_and_publish_flow)
+Test creating and publishing contests through the form. ... ok
+test_draft_contest_visibility_restriction (app.tests.tests_integration.ContestKeeperIntegrationTest.test_draft_contest_visibility_restriction) ... ok
+test_leaderboard_access_for_participant (app.tests.tests_integration.ContestKeeperIntegrationTest.test_leaderboard_access_for_participant) ... ok
+test_leaderboard_pagination_rendering (app.tests.tests_integration.ContestKeeperIntegrationTest.test_leaderboard_pagination_rendering) ... ok
+test_round_creation_permission (app.tests.tests_integration.ContestKeeperIntegrationTest.test_round_creation_permission) ... ok
+test_scoring_criterion_creation (app.tests.tests_integration.ContestKeeperIntegrationTest.test_scoring_criterion_creation)
+Test creating scoring criteria directly. ... ok
+test_team_creation_and_join (app.tests.tests_integration.ContestKeeperIntegrationTest.test_team_creation_and_join) ... ok
+
+======================================================================
+ERROR: test_apply_as_jury_when_already_participant_fails (app.tests.test_application.ApplicationLogicTest.test_apply_as_jury_when_already_participant_fails)
+Test that participant applications are disabled but jury applications work
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/app/tests/test_application.py", line 134, in test_apply_as_jury_when_already_participant_fails
+    response = self.client.post(url)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 1156, in post
+    response = super().post(
+        path,
+    ...<5 lines>...
+        **extra,
+    )
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 499, in post
+    return self.generic(
+           ~~~~~~~~~~~~^
+        "POST",
+        ^^^^^^^
+    ...<6 lines>...
+        **extra,
+        ^^^^^^^^
+    )
+    ^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 671, in generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 1090, in request
+    self.check_exception(response)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 805, in check_exception
+    raise exc_value
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/views/generic/base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/views/generic/base.py", line 145, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/app/views/views_application.py", line 100, in post
+    if request.user.role == User.Role.PARTICIPANT:
+                            ^^^^
+NameError: name 'User' is not defined
+
+======================================================================
+ERROR: test_apply_jury_twice_fails (app.tests.test_application.ApplicationLogicTest.test_apply_jury_twice_fails)
+Test that applying as jury twice gets the existing application
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/app/tests/test_application.py", line 96, in test_apply_jury_twice_fails
+    response = self.client.post(url)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 1156, in post
+    response = super().post(
+        path,
+    ...<5 lines>...
+        **extra,
+    )
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 499, in post
+    return self.generic(
+           ~~~~~~~~~~~~^
+        "POST",
+        ^^^^^^^
+    ...<6 lines>...
+        **extra,
+        ^^^^^^^^
+    )
+    ^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 671, in generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 1090, in request
+    self.check_exception(response)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 805, in check_exception
+    raise exc_value
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/views/generic/base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/views/generic/base.py", line 145, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/app/views/views_application.py", line 100, in post
+    if request.user.role == User.Role.PARTICIPANT:
+                            ^^^^
+NameError: name 'User' is not defined
+
+======================================================================
+ERROR: test_apply_as_wrong_role_fails (app.tests.test_views.ProfileViewTaskTest.test_apply_as_wrong_role_fails)
+Test that participants cannot apply as jury and vice versa
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/app/tests/test_views.py", line 277, in test_apply_as_wrong_role_fails
+    response = self.client.post(reverse('apply_to_contest', kwargs={'pk': self.contest.pk, 'app_type': 'jury'}))
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 1156, in post
+    response = super().post(
+        path,
+    ...<5 lines>...
+        **extra,
+    )
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 499, in post
+    return self.generic(
+           ~~~~~~~~~~~~^
+        "POST",
+        ^^^^^^^
+    ...<6 lines>...
+        **extra,
+        ^^^^^^^^
+    )
+    ^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 671, in generic
+    return self.request(**r)
+           ~~~~~~~~~~~~^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 1090, in request
+    self.check_exception(response)
+    ~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/test/client.py", line 805, in check_exception
+    raise exc_value
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/core/handlers/exception.py", line 55, in inner
+    response = get_response(request)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/core/handlers/base.py", line 198, in _get_response
+    response = wrapped_callback(request, *callback_args, **callback_kwargs)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/views/generic/base.py", line 106, in view
+    return self.dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/contrib/auth/mixins.py", line 74, in dispatch
+    return super().dispatch(request, *args, **kwargs)
+           ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/.lvenv/lib/python3.13/site-packages/django/views/generic/base.py", line 145, in dispatch
+    return handler(request, *args, **kwargs)
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/app/views/views_application.py", line 100, in post
+    if request.user.role == User.Role.PARTICIPANT:
+                            ^^^^
+NameError: name 'User' is not defined
+
+======================================================================
+FAIL: test_submission_creation_requires_team_membership (app.tests.test_views.ProfileViewTaskTest.test_submission_creation_requires_team_membership)
+Test that only team members can create submissions
+----------------------------------------------------------------------
+Traceback (most recent call last):
+  File "/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper/app/tests/test_views.py", line 347, in test_submission_creation_requires_team_membership
+    self.assertEqual(response.status_code, 403)
+    ~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^
+AssertionError: 404 != 403
+
+----------------------------------------------------------------------
+Ran 133 tests in 106.661s
+
+FAILED (failures=1, errors=3)
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+(.lvenv) yourbrolol@yourbrolol:/mnt/data/Documents/Projects/StarForLife/team404NotFound/ContestKeeper$ 

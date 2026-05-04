@@ -5,7 +5,7 @@ from django.urls import reverse
 from django.views import View
 from django.views.generic import ListView
 
-from app.models import Application, Contest, Notification
+from app.models import Application, Contest, Notification, User
 from app.services import notify_user
 from app.views.views_base import RedirectToRegisterMixin, OrganizerRequiredMixin
 
@@ -93,8 +93,12 @@ class ApplyToContestView(RedirectToRegisterMixin, View):
             return HttpResponseForbidden("Cannot apply to a draft contest.")
 
         if app_type == "participant":
+            if request.user.role == Application.Type.JURY:
+                 return HttpResponseForbidden("Jury members cannot apply as participants.")
             return HttpResponseForbidden("Individual registration is disabled. Please create or join a team.")
         elif app_type == "jury":
+            if request.user.role == User.Role.PARTICIPANT:
+                return HttpResponseForbidden("Participants cannot apply as Jury members.")
             role_type = Application.Type.JURY
             # Jury applications are not bound by the participant registration window;
             # they can apply any time the contest has not finished.

@@ -287,7 +287,7 @@ class ProfileViewTaskTest(TestCase):
     def test_team_creation_requires_captain(self):
         """Test that team creation fails without a captain"""
         self.client.force_login(self.participant)
-        response = self.client.post(reverse('team_create'), {
+        response = self.client.post(reverse('team_create', kwargs={'pk': self.contest.pk}), {
             'name': 'Captainless Team',
             'description': 'This should fail',
         })
@@ -321,9 +321,22 @@ class ProfileViewTaskTest(TestCase):
         """Test that only team members can create submissions"""
         other_participant = User.objects.create_user(username='other_part', password='password', role=User.Role.PARTICIPANT)
         
+        # Create a round first
+        round_obj = Round.objects.create(
+            contest=self.contest,
+            title="Round 1",
+            description="Round 1 description",
+            tech_requirements="Python",
+            start_time=timezone.now() - timedelta(hours=1),
+            deadline=timezone.now() + timedelta(hours=5),
+            status=Round.Status.ACTIVE,
+            order=1,
+            created_by=self.organizer,
+        )
+        
         self.client.force_login(other_participant)
         response = self.client.post(
-            reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': 1}),
+            reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': round_obj.id}),
             {
                 'github_url': 'https://github.com/example/repo',
                 'video_url': 'https://youtube.com/watch?v=abc',
@@ -347,7 +360,7 @@ class ProfileViewTaskTest(TestCase):
         response = self.client.get(reverse('profile'))
         
         self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'Organized Contests')
+        self.assertContains(response, 'My Contests')
         self.assertContains(response, 'Profile Contest')
 
     def test_contest_status_filter_edge_cases(self):

@@ -14,7 +14,7 @@ class HomeView(RedirectToRegisterMixin, TemplateView):
 
     def get_context_data(self, **kwargs):
         contests = Contest.objects.exclude(status=Contest.Status.DRAFT)
-        status_filter = self.request.GET.get("status", "")
+        status_filter = self.request.GET.get("status", "").upper()
         valid_statuses = {choice for choice, _ in Contest.Status.choices if choice != Contest.Status.DRAFT}
         if status_filter in valid_statuses:
             contests = contests.filter(status=status_filter)

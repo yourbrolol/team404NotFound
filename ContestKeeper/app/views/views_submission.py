@@ -23,7 +23,7 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
     def get(self, request, pk, round_id):
         contest, round_obj, team = self.get_round_and_team(request, pk, round_id)
         if not team:
-            raise Http404("You are not part of any team in this contest.")
+            return HttpResponseForbidden("You are not part of any team in this contest.")
             
         if not round_obj.is_open():
             return HttpResponseForbidden("This round is not currently open for submissions.")
@@ -40,7 +40,7 @@ class SubmissionCreateEditView(RedirectToRegisterMixin, View):
     def post(self, request, pk, round_id):
         contest, round_obj, team = self.get_round_and_team(request, pk, round_id)
         if not team:
-            raise Http404("You are not part of any team in this contest.")
+            return HttpResponseForbidden("You are not part of any team in this contest.")
             
         if not round_obj.is_open():
             return HttpResponseForbidden("This round is not currently open for submissions.")

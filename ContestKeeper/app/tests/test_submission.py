@@ -399,7 +399,7 @@ class SubmissionUITest(TestCase):
         self.client.force_login(self.other_participant)
         url = reverse('submission_create', kwargs={'pk': self.contest.pk, 'round_id': self.round.pk})
         response = self.client.get(url)
-        self.assertEqual(response.status_code, 404)
+        self.assertEqual(response.status_code, 403)
 
     def test_submission_creation_success(self):
         self.client.force_login(self.participant)
