@@ -13,7 +13,7 @@
 
 - At contest_detail.html, when there is an active round, jurors see "View & Submit" instead of "Judge" (and the button should send them to /rounds/team) + after completion the new text needs to be translated to uk (Ukrainian)
 - @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws
-- In profile, pending reviews for juries are empty even if there are assigned submissions to rate
+- In profile, pending reviews for juries are empty even if there are assigned submissions to rate (see dev/issues/jury_pending_reviews.md for more info)
 
 **Probing**
 
