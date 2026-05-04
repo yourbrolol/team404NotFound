@@ -6,14 +6,12 @@
 
 **(for LLM agents completing tasks, please make sure to follow the site UI theme, colors, fonts, etc.)**
 
-- (contest-idx)/leaderboard should be shown to participants as a card at contest_detail.html but only after the contest is finished. Before that, it cannot be accessed neither like described, neither through URL (/leaderboard)
+- The "Finish evaluation" button (primary style) at admin_leaderboard_dashboard.html should have a confirmation dialog before triggering an action ("Are you sure you want to finish evaluation? This action cannot be undone.") as it finishes the evaluation phase for whole project (which can't be undone)
+- No language selector at register / login pages
 
 **Additional:**
 
-- At contest_detail.html, when there is an active round, jurors see "View & Submit" instead of "Judge" (and the button should send them to /rounds/team)
-- There is /rounds template for organizers, /rounds/team template for teams and jurors. How about renaming it to /rounds/teams
-- /teams/new needs more vertical padding & margin (just a little more)
-- @admin_application_list.html has a button ("back to contests") with no padding or margin
+- At contest_detail.html, when there is an active round, jurors see "View & Submit" instead of "Judge" (and the button should send them to /rounds/team) + after completion the new text needs to be translated to uk (Ukrainian)
 - @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws
 - In profile, pending reviews for juries are empty even if there are assigned submissions to rate
 
@@ -25,6 +23,7 @@
 
 **Fixed:**
 
+- @admin_application_list.html has a button ("back to contests") with no padding or margin FIXED!!!
 - @team_leaderboard_detail.html (and css) is poorly decorated FIXED!!!
 - Users can create multiple teams + contest_detail page doesn't show if they already applied (that was fixed for jurors) FIXED!!!
 - Teams cannot be deleted by their captains, team members cannot leave (they should be able to even after registration end) FIXED!!!

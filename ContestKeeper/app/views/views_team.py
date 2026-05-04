@@ -172,6 +172,12 @@ class JuryKickView(OrganizerOnlyMixin, View):
 class LeaderboardAccessMixin(RedirectToRegisterMixin):
     def dispatch(self, request, *args, **kwargs):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
+        
+        # Check if contest is finished or user is staff/organizer
+        if self.contest.status != Contest.Status.FINISHED:
+            if not (request.user.is_authenticated and (request.user.is_staff or request.user == self.contest.organizer)):
+                return HttpResponseForbidden("Leaderboard is only available after the contest has finished.")
+                
         return super().dispatch(request, *args, **kwargs)
 
 
