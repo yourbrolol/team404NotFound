@@ -11,23 +11,45 @@
 
 {% block content %}
 <div class="error-container">
-  <div class="error-card">
-    <div class="error-kicker">{% trans "ContestKeeper" %}</div>
+  <section class="error-shell" aria-labelledby="error-title">
+    <div class="error-main">
+      <div class="error-kicker">
+        <span class="error-kicker-dot" aria-hidden="true"></span>
+        {% trans "ContestKeeper" %}
+      </div>
 
-    <h1 class="error-code">{% if status_code %}{{ status_code }}{% else %}500{% endif %}</h1>
+      <div class="error-code-wrap" aria-hidden="true">
+        <span class="error-code-shadow">{% if status_code %}{{ status_code }}{% else %}500{% endif %}</span>
+      </div>
 
-    <h2 class="error-title">
-      {% if error_title %}{{ error_title }}{% else %}{% trans "Something went wrong" %}{% endif %}
-    </h2>
+      <h1 id="error-title" class="error-title">
+        {% if error_title %}{{ error_title }}{% else %}{% trans "Something went wrong" %}{% endif %}
+      </h1>
 
-    <p class="error-message">
-      {% if error_message %}{{ error_message }}{% else %}{% trans "An unexpected error occurred." %}{% endif %}
-    </p>
+      <p class="error-message">
+        {% if error_message %}{{ error_message }}{% else %}{% trans "An unexpected error occurred." %}{% endif %}
+      </p>
 
-    <div class="error-actions">
-      <a class="btn btn-primary" href="{{ back_url }}">{% trans "Go back" %}</a>
-      <a class="btn btn-secondary" href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+      <div class="error-actions">
+        <a class="btn btn-primary" href="{{ back_url }}">{% trans "Go back" %}</a>
+        <a class="btn btn-secondary" href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+      </div>
     </div>
-  </div>
+
+    <aside class="error-side" aria-label="{% trans 'Error details' %}">
+      <div class="error-status-card">
+        <span class="error-status-label">{% trans "Status" %}</span>
+        <strong>{% if status_code %}{{ status_code }}{% else %}500{% endif %}</strong>
+      </div>
+
+      <div class="error-info-card">
+        <span class="error-info-icon" aria-hidden="true">!</span>
+        <div>
+          <h2>{% trans "What can you do?" %}</h2>
+          <p>{% trans "Return to the previous page and try again, or open the dashboard to continue working." %}</p>
+        </div>
+      </div>
+    </aside>
+  </section>
 </div>
 {% endblock %}

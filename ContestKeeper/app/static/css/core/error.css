@@ -1,45 +1,62 @@
 .error-container {
-  display: flex;
-  align-items: center;
-  justify-content: center;
   min-height: calc(100vh - 4rem);
-  padding: 4rem 1.5rem;
+  display: grid;
+  place-items: center;
+  padding: 3rem 1.5rem;
 }
 
-.error-card {
+.error-shell {
   position: relative;
   overflow: hidden;
-  max-width: 46rem;
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(16rem, 0.65fr);
+  gap: 1.25rem;
+  max-width: 62rem;
   width: 100%;
   background: var(--bg-card);
   color: var(--text-main);
   border: 1px solid var(--border);
-  border-radius: 0.75rem;
-  padding: 3rem;
+  border-radius: 1.25rem;
+  padding: 1rem;
   box-shadow: var(--shadow-lg);
-  text-align: center;
   backdrop-filter: blur(14px);
 }
 
-.error-card::before {
+.error-shell::before {
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
   background:
-    linear-gradient(135deg, rgba(var(--primary-rgb), 0.18), transparent 42%),
-    linear-gradient(315deg, rgba(var(--error-rgb), 0.12), transparent 38%);
+    linear-gradient(135deg, rgba(var(--primary-rgb), 0.2), transparent 38%),
+    linear-gradient(315deg, rgba(var(--error-rgb), 0.14), transparent 34%);
 }
 
-.error-card > * {
+.error-shell > * {
   position: relative;
+}
+
+.error-main,
+.error-side {
+  display: flex;
+  flex-direction: column;
+}
+
+.error-main {
+  justify-content: center;
+  min-height: 26rem;
+  padding: clamp(2rem, 5vw, 4rem);
+}
+
+.error-side {
+  gap: 1rem;
 }
 
 .error-kicker {
   display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 1rem;
+  width: fit-content;
+  margin-bottom: 1.5rem;
   padding: 0.35rem 0.75rem;
   background: var(--bg-primary-tint);
   color: var(--primary);
@@ -51,24 +68,42 @@
   letter-spacing: 0.05em;
 }
 
-.error-code {
-  margin: 0 0 0.5rem;
-  color: var(--text-main);
-  font-size: 5rem;
+.error-kicker-dot {
+  width: 0.55rem;
+  height: 0.55rem;
+  margin-right: 0.5rem;
+  background: var(--primary);
+  border-radius: 999px;
+  box-shadow: 0 0 0 0.25rem var(--bg-primary-tint);
+}
+
+.error-code-wrap {
+  min-height: 6rem;
+}
+
+.error-code-shadow {
+  display: block;
+  color: transparent;
+  font-size: clamp(5rem, 4rem + 6vw, 9rem);
   font-weight: 800;
   line-height: 1;
+  background: linear-gradient(135deg, var(--text-main), var(--text-muted));
+  -webkit-background-clip: text;
+  background-clip: text;
+  opacity: 0.18;
 }
 
 .error-title {
-  margin: 0 0 0.75rem;
-  font-size: 1.55rem;
-  font-weight: 700;
+  max-width: 34rem;
+  margin: -2.2rem 0 0.75rem;
+  font-size: clamp(2rem, 1.6rem + 1.6vw, 3.25rem);
+  font-weight: 800;
   line-height: 1.2;
 }
 
 .error-message {
   max-width: 34rem;
-  margin: 0 auto 1.75rem;
+  margin: 0 0 1.75rem;
   color: var(--text-muted);
 }
 
@@ -76,20 +111,83 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.75rem;
-  justify-content: center;
 }
 
-@media (max-width: 520px) {
-  .error-card {
+.error-status-card,
+.error-info-card {
+  background: var(--bg-navy-soft);
+  border: 1px solid var(--border);
+  border-radius: 1rem;
+  backdrop-filter: blur(10px);
+}
+
+.error-status-card {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  min-height: 10rem;
+  padding: 1.25rem;
+}
+
+.error-status-card strong {
+  color: var(--error);
+  font-size: 2.5rem;
+  line-height: 1;
+}
+
+.error-status-label {
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.error-info-card {
+  display: flex;
+  gap: 1rem;
+  padding: 1.25rem;
+}
+
+.error-info-icon {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  background: var(--bg-warning-tint);
+  color: var(--warning);
+  border: 1px solid rgba(var(--warning-rgb), 0.25);
+  border-radius: 999px;
+  font-weight: 800;
+}
+
+.error-info-card h2 {
+  margin: 0 0 0.35rem;
+  font-size: 1rem;
+}
+
+.error-info-card p {
+  margin: 0;
+  color: var(--text-muted);
+  font-size: 0.92rem;
+}
+
+@media (max-width: 820px) {
+  .error-shell {
+    grid-template-columns: 1fr;
+    padding: 0.75rem;
+  }
+
+  .error-main {
+    min-height: auto;
     padding: 2rem 1.25rem;
   }
 
-  .error-code {
-    font-size: 3.5rem;
-  }
-
   .error-title {
-    font-size: 1.25rem;
+    margin-top: -1.5rem;
   }
 
   .error-actions {
@@ -98,5 +196,9 @@
 
   .error-actions .btn {
     width: 100%;
+  }
+
+  .error-status-card {
+    min-height: auto;
   }
 }
