@@ -1,0 +1,33 @@
+{% extends 'app/core/base.html' %}
+{% load static i18n %}
+
+{% block title %}
+  {% trans "Error" %}{% if status_code %} - {{ status_code }}{% endif %}
+{% endblock %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/core/error.css' %}" />
+{% endblock %}
+
+{% block content %}
+<div class="error-container">
+  <div class="error-card">
+    <div class="error-kicker">{% trans "ContestKeeper" %}</div>
+
+    <h1 class="error-code">{% if status_code %}{{ status_code }}{% else %}500{% endif %}</h1>
+
+    <h2 class="error-title">
+      {% if error_title %}{{ error_title }}{% else %}{% trans "Something went wrong" %}{% endif %}
+    </h2>
+
+    <p class="error-message">
+      {% if error_message %}{{ error_message }}{% else %}{% trans "An unexpected error occurred." %}{% endif %}
+    </p>
+
+    <div class="error-actions">
+      <a class="btn btn-primary" href="{{ back_url }}">{% trans "Go back" %}</a>
+      <a class="btn btn-secondary" href="{% url 'dashboard' %}">{% trans "Dashboard" %}</a>
+    </div>
+  </div>
+</div>
+{% endblock %}
