@@ -11,9 +11,15 @@ ContestKeeper is a web platform for organizing programming tournaments with team
 
 ## Installation & Startup
 
-**Clone the repository and enter the project root:**
+1. **Enter the project root:**
    ```bash
    cd team404NotFound
+   ```
+
+2. **Set up environment variables:**
+   Copy `.env.example` to `.env` and adjust settings.
+   ```bash
+   cp ContestKeeper/.env.example ContestKeeper/.env
    ```
 
 **There are 3 ways to run the app:**
@@ -39,22 +45,16 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    pip install -r ContestKeeper/requirements.txt
    ```
 
-3. **Set up environment variables:**
-   Copy `.env.example` to `.env` and adjust settings.
-   ```bash
-   cp ContestKeeper/.env.example ContestKeeper/.env
-   ```
-
-4. **Run migrations:**
+3. **Run migrations:**
    ```bash
    cd ContestKeeper
    python manage.py makemigrations
    python manage.py migrate
    ```
 
-5. **Start the server:**
+4. **Start the server:**
    ```bash
-   python manage.py runserver
+   python manage.py runserver # or daphne -b [IP_ADDRESS] -p 8000 app.asgi:application production server
    ```
 
 **Docker Compose way:**
