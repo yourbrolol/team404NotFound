@@ -34,3 +34,7 @@ ContestKeeper/db.sqlite3
 
 # Local dev plans
 **/localdev/
+
+# ETC
+
+**/.fuse_hidden*
