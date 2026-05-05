@@ -4,6 +4,7 @@ from django.core.exceptions import ValidationError
 from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
+from django.utils.translation import override
 from datetime import timedelta
 from app.leaderboard import compute_leaderboard, export_csv, get_missing_scores, save_leaderboard
 from app.models import (
@@ -311,6 +312,58 @@ class ProfileViewTaskTest(TestCase):
 
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse('contest_leaderboard', kwargs={'pk': self.contest.pk}))
+
+    def test_contest_detail_active_round_uses_judge_button_for_jury(self):
+        self.contest.jurys.add(self.jury)
+        Round.objects.create(
+            contest=self.contest,
+            title="Active Jury Round",
+            description="Round description",
+            tech_requirements="Python",
+            must_have=["Submit project"],
+            start_time=timezone.now() - timedelta(hours=1),
+            deadline=timezone.now() + timedelta(hours=2),
+            status=Round.Status.ACTIVE,
+            order=1,
+            created_by=self.organizer,
+        )
+
+        self.client.force_login(self.jury)
+        response = self.client.get(reverse('contest_detail', kwargs={'pk': self.contest.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "Judge")
+        self.assertContains(response, reverse('contest_rounds_team', kwargs={'pk': self.contest.pk}))
+        self.assertNotContains(response, "View &amp; Submit")
+
+        with override("uk"):
+            response = self.client.get(reverse('contest_detail', kwargs={'pk': self.contest.pk}))
+
+        self.assertContains(response, "Оцінити")
+
+    def test_contest_detail_active_round_keeps_submit_button_for_participant(self):
+        active_round = Round.objects.create(
+            contest=self.contest,
+            title="Active Participant Round",
+            description="Round description",
+            tech_requirements="Python",
+            must_have=["Submit project"],
+            start_time=timezone.now() - timedelta(hours=1),
+            deadline=timezone.now() + timedelta(hours=2),
+            status=Round.Status.ACTIVE,
+            order=1,
+            created_by=self.organizer,
+        )
+
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse('contest_detail', kwargs={'pk': self.contest.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, "View & Submit")
+        self.assertContains(
+            response,
+            reverse('round_detail_team', kwargs={'pk': self.contest.pk, 'round_id': active_round.pk}),
+        )
 
     def test_apply_to_nonexistent_contest_returns_404(self):
         """Test applying to a contest that doesn't exist"""

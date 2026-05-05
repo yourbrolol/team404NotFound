@@ -723,6 +723,10 @@ msgid "Manage Round"
 msgstr "Керувати конкурсом"
 
 #: app/templates/app/contests/contest_detail.html:62
+msgid "Judge"
+msgstr "Оцінити"
+
+#: app/templates/app/contests/contest_detail.html:62
 msgid "View & Submit"
 msgstr "Перегляньте свою заявку"
 
