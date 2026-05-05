@@ -289,6 +289,29 @@ class ProfileViewTaskTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, 'My Draft')
 
+    def test_contest_detail_hides_public_leaderboard_card_for_organizer(self):
+        """Organizers use the admin leaderboard dashboard instead of the public card."""
+        self.contest.end_date = timezone.now() - timedelta(minutes=1)
+        self.contest.save()
+
+        self.client.force_login(self.organizer)
+        response = self.client.get(reverse('contest_detail', kwargs={'pk': self.contest.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, reverse('admin_leaderboard_dashboard', kwargs={'pk': self.contest.pk}))
+        self.assertNotContains(response, reverse('contest_leaderboard', kwargs={'pk': self.contest.pk}))
+
+    def test_contest_detail_shows_public_leaderboard_card_for_participant_after_finish(self):
+        """Participants still get the public leaderboard card after the contest finishes."""
+        self.contest.end_date = timezone.now() - timedelta(minutes=1)
+        self.contest.save()
+
+        self.client.force_login(self.participant)
+        response = self.client.get(reverse('contest_detail', kwargs={'pk': self.contest.pk}))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, reverse('contest_leaderboard', kwargs={'pk': self.contest.pk}))
+
     def test_apply_to_nonexistent_contest_returns_404(self):
         """Test applying to a contest that doesn't exist"""
         self.client.force_login(self.participant)
