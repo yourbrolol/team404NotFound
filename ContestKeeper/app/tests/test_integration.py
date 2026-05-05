@@ -161,6 +161,9 @@ class TestParticipantEndToEndFlow(TestCase):
         phase, _ = ContestEvaluationPhase.objects.get_or_create(contest=contest)
         phase.status = ContestEvaluationPhase.Status.COMPLETED
         phase.save()
+        contest.start_date = timezone.now() - timedelta(days=2)
+        contest.end_date = timezone.now() - timedelta(minutes=1)
+        contest.save()
         
         # 12. Create leaderboard entry
         LeaderboardEntry.objects.create(

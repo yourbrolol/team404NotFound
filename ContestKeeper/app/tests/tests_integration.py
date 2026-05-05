@@ -141,8 +141,8 @@ class ContestKeeperIntegrationTest(TestCase):
         contest = Contest.objects.create(
             name='Leaderboard Access Contest',
             description='Test leaderboard',
-            start_date=timezone.now() + timedelta(days=1),
-            end_date=timezone.now() + timedelta(days=30),
+            start_date=timezone.now() - timedelta(days=30),
+            end_date=timezone.now() - timedelta(days=1),
             organizer=self.organizer,
             is_draft=False,
         )
@@ -199,8 +199,8 @@ class ContestKeeperIntegrationTest(TestCase):
         contest = Contest.objects.create(
             name='Pagination Contest',
             description='Test pagination',
-            start_date=timezone.now() + timedelta(days=1),
-            end_date=timezone.now() + timedelta(days=30),
+            start_date=timezone.now() - timedelta(days=30),
+            end_date=timezone.now() - timedelta(days=1),
             organizer=self.organizer,
             is_draft=False,
         )

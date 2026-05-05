@@ -172,6 +172,9 @@ class FullWorkflowIntegrationTest(TestCase):
         # Leaderboard computer usually runs on Recalculate or Finish
         # Let's hit finish to be sure it's public
         self.org_client.post(reverse('admin_finish_evaluation', kwargs={'pk': contest.pk}))
+        contest.start_date = timezone.now() - timedelta(days=2)
+        contest.end_date = timezone.now() - timedelta(minutes=1)
+        contest.save()
         
         # 15. Verify leaderboard content
         response = self.p1_client.get(reverse('contest_leaderboard', kwargs={'pk': contest.pk}))

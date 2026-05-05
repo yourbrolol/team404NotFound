@@ -449,12 +449,11 @@ class ProfileViewTaskTest(TestCase):
         self.assertEqual(response.status_code, 403)
 
     def test_leaderboard_view_before_evaluation_complete(self):
-        """Test leaderboard view shows appropriate message before evaluation"""
+        """Test participants cannot access the leaderboard before the contest finishes."""
         self.client.force_login(self.participant)
         response = self.client.get(reverse('contest_leaderboard', kwargs={'pk': self.contest.pk}))
         
-        self.assertEqual(response.status_code, 200)
-        self.assertContains(response, 'not yet available')
+        self.assertEqual(response.status_code, 403)
 
     def test_profile_view_for_organizer_shows_organized_contests(self):
         """Test that organizers see their organized contests in profile"""
