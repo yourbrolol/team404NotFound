@@ -1,11 +1,10 @@
-{% load i18n %}
-{% load static %}
+{% load static i18n %}
 <!DOCTYPE html>
-<html lang="en" data-theme="dark">
+<html lang="{{ LANGUAGE_CODE }}" data-theme="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{% trans 'Welcome Back – ContestKeeper' %}</title>
+    <title>{% trans "Welcome Back" %} - ContestKeeper</title>
     <link rel="stylesheet" href="{% static 'fonts/origin.css' %}">
     <link rel="stylesheet" href="{% static 'css/core/common.css' %}">
     <link rel="stylesheet" href="{% static 'css/core/register.css' %}">
@@ -19,18 +18,18 @@
     <main class="auth-card">
         <!-- Left Column: Branding -->
         <section class="auth-info">
-            <div class="auth-logo">{% trans 'ContestKeeper' %}</div>
-            <h2>{% trans 'Welcome Back.' %}</h2>
-            <p>{% trans 'Ready to tackle the next challenge? Sign in to access your dashboard, teams, and active competitions.' %}</p>
+            <div class="auth-logo">ContestKeeper</div>
+            <h2>{% trans "Welcome Back." %}</h2>
+            <p>{% trans "Ready to tackle the next challenge? Sign in to access your dashboard, teams, and active competitions." %}</p>
         </section>
 
         <!-- Right Column: Form -->
         <section class="auth-form-container">
-            <h1>{% trans 'Log In' %}</h1>
+            <h1>{% trans "Log In" %}</h1>
             
             {% if form.errors %}
             <div class="auth-error-msg">
-                {% trans 'Invalid username or password. Please try again.' %}
+                {% trans "Invalid username or password. Please try again." %}
             </div>
             {% endif %}
 
@@ -38,24 +37,24 @@
                 {% csrf_token %}
                 
                 <div class="form-group">
-                    <label for="id_username" class="form-label">{% trans 'Username' %}</label>
+                    <label for="id_username" class="form-label">{% trans "Username" %}</label>
                     <input type="text" name="username" id="id_username" class="auth-input" 
                            placeholder="{% trans 'Enter your username' %}" required autofocus>
                 </div>
 
                 <div class="form-group">
-                    <label for="id_password" class="form-label">{% trans 'Password' %}</label>
+                    <label for="id_password" class="form-label">{% trans "Password" %}</label>
                     <input type="password" name="password" id="id_password" class="auth-input" 
                            placeholder="{% trans 'Enter your password' %}" required>
                 </div>
 
                 <input type="hidden" name="next" value="{{ next }}">
                 
-                <button type="submit" class="btn-auth">{% trans 'Sign In' %}</button>
+                <button type="submit" class="btn-auth">{% trans "Sign In" %}</button>
             </form>
 
             <p class="auth-footer">
-                {% trans 'Don\'t have an account yet?' %} <a href="{% url 'register' %}">{% trans 'Create one today' %}</a>
+                {% trans "Don't have an account yet?" %} <a href="{% url 'register' %}">{% trans "Create one today" %}</a>
             </p>
         </section>
     </main>

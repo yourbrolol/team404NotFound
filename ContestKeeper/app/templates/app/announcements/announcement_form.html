@@ -1,17 +1,16 @@
 {% extends 'app/core/base.html' %}
-{% load i18n %}
-{% load static %}
+{% load static i18n %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/announcements/announcement_form.css' %}">
 {% endblock %}
 
 
-{% block title %}{% blocktrans with name=contest.name %}Post Announcement - {{ name }}{% endblocktrans %}{% endblock %}
+{% block title %}{% trans "Post Announcement" %} - {{ contest.name }}{% endblock %}
 
 {% block content %}
 <div class="form-card">
-    <h2 class="h2-001">{% trans 'Post New Announcement' %}</h2>
+    <h2 class="h2-001">{% trans "Post New Announcement" %}</h2>
     <form method="post">
         {% csrf_token %}
         {% for field in form %}
@@ -27,8 +26,8 @@
         </div>
         {% endfor %}
         <div class="div-001">
-            <button type="submit" class="btn btn-primary button-001">{% trans 'Publish Announcement' %}</button>
-            <a href="{% url 'announcement_list' contest.pk %}" class="btn btn-secondary">{% trans 'Cancel' %}</a>
+            <button type="submit" class="btn btn-primary button-001">{% trans "Publish Announcement" %}</button>
+            <a href="{% url 'announcement_list' contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
         </div>
     </form>
 </div>

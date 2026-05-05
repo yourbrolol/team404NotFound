@@ -21,10 +21,6 @@ from app.models import (
 )
 
 
-
-from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
-from django.urls import reverse
 class EvaluationModelsTest(TestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username="organizer", password="password", role=User.Role.ORGANIZER)

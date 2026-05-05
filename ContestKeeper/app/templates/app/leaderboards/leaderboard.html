@@ -1,8 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load i18n %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}{% blocktrans with name=contest.name %}{{ name }} Leaderboard{% endblocktrans %}{% endblock %}
+{% block title %}{{ contest.name }} {% trans "Leaderboard" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/leaderboards/leaderboard.css' %}">
@@ -13,17 +12,17 @@
         <div class="glass-panel leaderboard-card">
             <div class="leaderboard-header">
                 <div>
-                    <h1 id="h1">{% blocktrans with name=contest.name %}{{ name }} Leaderboard{% endblocktrans %}</h1>
-                    <p class="leaderboard-subtitle">{% trans 'Final ranking table for contest participants.' %}</p>
+                    <h1 id="h1">{{ contest.name }} {% trans "Leaderboard" %}</h1>
+                    <p class="leaderboard-subtitle">{% trans "Final ranking table for contest participants." %}</p>
                 </div>
                 {% if can_view_missing %}
-                <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">{% trans 'Evaluation Dashboard' %}</a>
+                <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">{% trans "Evaluation Dashboard" %}</a>
                 {% endif %}
             </div>
 
             {% if not leaderboard_available %}
                 <div class="empty-leaderboard">
-                    <h2>{% trans 'Leaderboard is not yet available.' %}</h2>
+                    <h2>{% trans "Leaderboard is not yet available." %}</h2>
                     <p class="leaderboard-subtitle">{{ not_available_message }}</p>
                 </div>
             {% else %}
@@ -31,9 +30,9 @@
                     <table class="leaderboard-table">
                         <thead>
                             <tr>
-                                <th>{% trans 'Rank' %}</th>
-                                <th>{% trans 'Team' %}</th>
-                                <th>{% trans 'Total Score' %}</th>
+                                <th>{% trans "Rank" %}</th>
+                                <th>{% trans "Team" %}</th>
+                                <th>{% trans "Total Score" %}</th>
                                 {% for criterion in criteria %}
                                     <th>{{ criterion.name }}</th>
                                 {% endfor %}
@@ -42,7 +41,7 @@
                         <tbody>
                             {% for item in entries %}
                             <tr{% if item.entry.is_tied %} class="highlight"{% endif %}>
-                                <td>{{ item.entry.rank }}{% if item.entry.is_tied %} ({% trans 'tied' %}){% endif %}</td>
+                                <td>{{ item.entry.rank }}{% if item.entry.is_tied %} ({% trans "tied" %}){% endif %}</td>
                                 <td><strong><a href="{% url 'team_leaderboard_detail' contest.pk item.entry.team.pk %}" style="text-decoration: none; color: inherit;">{{ item.entry.team.name }}</a></strong></td>
                                 <td><strong>{{ item.entry.total_score }}</strong></td>
                                 {% for score in item.category_values %}
@@ -57,8 +56,8 @@
                 {% if entries.has_other_pages %}
                 <div class="pagination-group">
                     {% if entries.has_previous %}
-                        <a href="?page=1" class="btn btn-secondary btn-sm">{% trans 'First' %}</a>
-                        <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans 'Previous' %}</a>
+                        <a href="?page=1" class="btn btn-secondary btn-sm">{% trans "First" %}</a>
+                        <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans "Previous" %}</a>
                     {% endif %}
                     
                     {% for num in entries.paginator.page_range %}
@@ -70,8 +69,8 @@
                     {% endfor %}
                     
                     {% if entries.has_next %}
-                        <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">{% trans 'Next' %}</a>
-                        <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">{% trans 'Last' %}</a>
+                        <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">{% trans "Next" %}</a>
+                        <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">{% trans "Last" %}</a>
                     {% endif %}
                 </div>
                 {% endif %}
@@ -79,12 +78,12 @@
                 {% if can_view_missing %}
                     <div class="leaderboard-stats">
                         <div class="stat-box">
-                            <h4>{% trans 'Missing Scores' %}</h4>
-                            <p>{% blocktrans with count=overall_missing|length %}{{ count }} unresolved entries{% endblocktrans %}</p>
+                            <h4>{% trans "Missing Scores" %}</h4>
+                            <p>{% blocktrans count unresolved=overall_missing|length %}{{ unresolved }} unresolved entry{% plural %}{{ unresolved }} unresolved entries{% endblocktrans %}</p>
                         </div>
                         <div class="stat-box">
-                            <h4>{% trans 'Computation Status' %}</h4>
-                            <p>{% if entries and entries.0.entry.computation_complete %}{% trans 'Complete' %}{% else %}{% trans 'Incomplete' %}{% endif %}</p>
+                            <h4>{% trans "Computation Status" %}</h4>
+                            <p>{% if entries and entries.0.entry.computation_complete %}{% trans "Complete" %}{% else %}{% trans "Incomplete" %}{% endif %}</p>
                         </div>
                     </div>
                 {% endif %}

@@ -1,21 +1,20 @@
 {% extends 'app/core/base.html' %}
-{% load i18n %}
-{% load static %}
+{% load static i18n %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/schedule/schedule_event_confirm_delete.css' %}">
 {% endblock %}
 
-{% block title %}Delete Schedule Event{% endblock %}
+{% block title %}{% trans "Delete Schedule Event" %}{% endblock %}
 {% block content %}
 <div class="form-card">
-    <h2>{% trans 'Confirm Deletion' %}</h2>
-    <p>{% trans 'Are you sure you want to delete the event: "' %}<strong>{{ object.title }}</strong>"?</p>
+    <h2>{% trans "Confirm Deletion" %}</h2>
+    <p>{% blocktrans with title=object.title %}Are you sure you want to delete the event: "<strong>{{ title }}</strong>"?{% endblocktrans %}</p>
     <form method="post">
         {% csrf_token %}
         <div class="div-001">
-            <button type="submit" class="btn btn-primary button-001">{% trans 'Yes, delete it' %}</button>
-            <a href="{% url 'schedule' contest.pk %}" class="btn btn-secondary">{% trans 'Cancel' %}</a>
+            <button type="submit" class="btn btn-primary button-001">{% trans "Yes, delete it" %}</button>
+            <a href="{% url 'schedule' contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
         </div>
     </form>
 </div>

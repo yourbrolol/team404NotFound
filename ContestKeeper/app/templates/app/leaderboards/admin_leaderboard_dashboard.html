@@ -1,8 +1,7 @@
 {% extends 'app/core/base.html' %}
-{% load i18n %}
-{% load static %}
+{% load static i18n %}
 
-{% block title %}{{ contest.name }} - {% trans 'Admin Leaderboard Dashboard' %}{% endblock %}
+{% block title %}{{ contest.name }} - {% trans "Admin Leaderboard Dashboard" %}{% endblock %}
 
 {% block extra_css %}
 <link rel="stylesheet" href="{% static 'css/leaderboards/admin_leaderboard_dashboard.css' %}">
@@ -10,63 +9,65 @@
 {% endblock %}
 
 {% block content %}
+            {% trans "Yes,No" as yes_no_labels %}
+            {% trans "Visible,Hidden" as visible_hidden_labels %}
             <div class="glass-panel admin-dashboard-card">
                 <div class="dashboard-header-section">
                     <div>
-                        <h1 id="h1">{% blocktrans with name=contest.name %}{{ name }} Evaluation Dashboard{% endblocktrans %}</h1>
-                        <p class="dashboard-subtitle">{% trans 'Admin controls and leaderboard preview.' %}</p>
+                        <h1 id="h1">{{ contest.name }} {% trans "Evaluation Dashboard" %}</h1>
+                        <p class="dashboard-subtitle">{% trans "Admin controls and leaderboard preview." %}</p>
                     </div>
                     <div class="header-actions">
-                        <a href="{% url 'organizer_analytics' contest.pk %}" class="btn btn-secondary">{% trans 'Detailed Analytics' %}</a>
-                        <a href="{% url 'criterion_create' contest.pk %}" class="btn btn-tinted btn-primary">{% trans 'Add Scoring Criterion' %}</a>
-                        <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">{% trans 'View Public Leaderboard' %}</a>
+                        <a href="{% url 'organizer_analytics' contest.pk %}" class="btn btn-secondary">{% trans "Detailed Analytics" %}</a>
+                        <a href="{% url 'criterion_create' contest.pk %}" class="btn btn-tinted btn-primary">{% trans "Add Scoring Criterion" %}</a>
+                        <a href="{% url 'contest_leaderboard' contest.pk %}" class="btn btn-secondary">{% trans "View Public Leaderboard" %}</a>
                     </div>
                 </div>
 
                 <div class="status-grid">
                     <div class="status-card">
-                        <h4>{% trans 'Evaluation Status' %}</h4>
+                        <h4>{% trans "Evaluation Status" %}</h4>
                         <p>{{ phase.get_status_display }}</p>
                     </div>
                     <div class="status-card">
-                        <h4>{% trans 'Trigger Type' %}</h4>
+                        <h4>{% trans "Trigger Type" %}</h4>
                         <p>{{ phase.get_trigger_type_display }}</p>
                     </div>
                     <div class="status-card">
-                        <h4>{% trans 'All Scores Complete' %}</h4>
-                        <p>{{ phase.all_scores_complete|yesno:_("Yes,No") }}</p>
+                        <h4>{% trans "All Scores Complete" %}</h4>
+                        <p>{{ phase.all_scores_complete|yesno:yes_no_labels }}</p>
                     </div>
                     <div class="status-card">
-                        <h4>{% trans 'Participant Breakdown' %}</h4>
-                        <p>{{ phase.show_jury_breakdown_to_participants|yesno:_("Visible,Hidden") }}</p>
+                        <h4>{% trans "Participant Breakdown" %}</h4>
+                        <p>{{ phase.show_jury_breakdown_to_participants|yesno:visible_hidden_labels }}</p>
                     </div>
                     <div class="status-card">
-                        <h4>{% trans 'Completed At' %}</h4>
+                        <h4>{% trans "Completed At" %}</h4>
                         <p>{{ phase.completed_at|date:"M d, Y H:i"|default:_('In Progress') }}</p>
                     </div>
                 </div>
 
                 <section class="progress-section">
                     <div class="progress-header">
-                        <h4>{% trans 'Score Submission Progress' %}</h4>
+                        <h4>{% trans "Score Submission Progress" %}</h4>
                         <span>{{ progress_percent }}%</span>
                     </div>
                     <div class="progress-bar-container">
                         <div class="progress-bar" style="width: {{ progress_percent }}%;"></div>
                     </div>
-                    <p class="dashboard-subtitle">{% blocktrans %}{{ submitted }} of {{ expected }} expected jury scores submitted.{% endblocktrans %}</p>
+                    <p class="dashboard-subtitle">{% blocktrans with submitted_count=submitted expected_count=expected %}{{ submitted_count }} of {{ expected_count }} expected jury scores submitted.{% endblocktrans %}</p>
                 </section>
 
                 <section class="content-section">
-                    <h4>{% trans 'Missing scores' %}</h4>
+                    <h4>{% trans "Missing scores" %}</h4>
                     {% if missing_scores %}
                         <div class="table-wrapper">
                             <table class="admin-table">
                                 <thead>
                                     <tr>
-                                        <th>{% trans 'Team' %}</th>
-                                        <th>{% trans 'Criterion' %}</th>
-                                        <th>{% trans 'Jury member' %}</th>
+                                        <th>{% trans "Team" %}</th>
+                                        <th>{% trans "Criterion" %}</th>
+                                        <th>{% trans "Jury member" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -81,7 +82,7 @@
                             </table>
                         </div>
                     {% else %}
-                        <p class="dashboard-subtitle">{% trans 'No missing scores detected.' %}</p>
+                        <p class="dashboard-subtitle">{% trans "No missing scores detected." %}</p>
                     {% endif %}
                 </section>
 
@@ -89,55 +90,55 @@
                     <div class="action-buttons-group">
                         <form method="post" action="{% url 'admin_finish_evaluation' contest.pk %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-primary">{% trans 'Finish Evaluation' %}</button>
+                            <button type="submit" class="btn btn-primary">{% trans "Finish Evaluation" %}</button>
                         </form>
                         <form method="post" action="{% url 'admin_recalculate_leaderboard' contest.pk %}">
                             {% csrf_token %}
-                            <button type="submit" class="btn btn-secondary">{% trans 'Recalculate Leaderboard' %}</button>
+                            <button type="submit" class="btn btn-secondary">{% trans "Recalculate Leaderboard" %}</button>
                         </form>
                         <form method="post" action="{% url 'admin_toggle_jury_breakdown' contest.pk %}">
                             {% csrf_token %}
                             <input type="hidden" name="action" value="{% if phase.show_jury_breakdown_to_participants %}hide{% else %}show{% endif %}">
-                            <button type="submit" class="btn btn-tinted btn-primary">{% if phase.show_jury_breakdown_to_participants %}{% trans 'Hide' %}{% else %}{% trans 'Show' %}{% endif %} {% trans 'jury breakdown to participants' %}</button>
+                            <button type="submit" class="btn btn-tinted btn-primary">{% if phase.show_jury_breakdown_to_participants %}{% trans "Hide" %}{% else %}{% trans "Show" %}{% endif %} {% trans "jury breakdown to participants" %}</button>
                         </form>
-                        <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=json" class="btn btn-secondary">{% trans 'Export JSON' %}</a>
-                        <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=csv" class="btn btn-secondary">{% trans 'Export CSV' %}</a>
-                        <a href="{% url 'export_evaluations_csv' contest.pk %}" class="btn btn-secondary">{% trans 'Export Evaluations' %}</a>
+                        <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=json" class="btn btn-secondary">{% trans "Export JSON" %}</a>
+                        <a href="{% url 'admin_export_leaderboard' contest.pk %}?format=csv" class="btn btn-secondary">{% trans "Export CSV" %}</a>
+                        <a href="{% url 'export_evaluations_csv' contest.pk %}" class="btn btn-secondary">{% trans "Export Evaluations" %}</a>
                     </div>
                 </section>
 
                 <section class="content-section">
-                    <h4>{% trans 'Current Leaderboard Preview' %}</h4>
+                    <h4>{% trans "Current Leaderboard Preview" %}</h4>
                     {% if entries %}
                         <div class="table-wrapper">
                             <table class="admin-table">
                                 <thead>
                                     <tr>
-                                        <th>{% trans 'Rank' %}</th>
-                                        <th>{% trans 'Team' %}</th>
-                                        <th>{% trans 'Total Score' %}</th>
+                                        <th>{% trans "Rank" %}</th>
+                                        <th>{% trans "Team" %}</th>
+                                        <th>{% trans "Total Score" %}</th>
                                         {% for criterion in criteria %}
                                             <th>
                                                 {{ criterion.name }}
                                                 <div class="criterion-actions">
-                                                    <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" class="action-edit">{% trans 'Edit' %}</a> |
-                                                    <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" class="action-delete">{% trans 'Delete' %}</a>
+                                                    <a href="{% url 'criterion_edit' contest.pk criterion.pk %}" class="action-edit">{% trans "Edit" %}</a> |
+                                                    <a href="{% url 'criterion_delete' contest.pk criterion.pk %}" class="action-delete">{% trans "Del" %}</a>
                                                 </div>
                                             </th>
                                         {% endfor %}
-                                        <th>{% trans 'Complete' %}</th>
+                                        <th>{% trans "Complete" %}</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for item in entries %}
                                     <tr>
-                                        <td>{{ item.entry.rank }}{% if item.entry.is_tied %} ({% trans 'tied' %}){% endif %}</td>
+                                        <td>{{ item.entry.rank }}{% if item.entry.is_tied %} ({% trans "tied" %}){% endif %}</td>
                                         <td>{{ item.entry.team.name }}</td>
                                         <td><strong>{{ item.entry.total_score }}</strong></td>
                                         {% for score in item.category_values %}
                                             <td>{{ score }}</td>
                                         {% endfor %}
-                                        <td>{{ item.entry.computation_complete|yesno:_("Yes,No") }}</td>
+                                        <td>{{ item.entry.computation_complete|yesno:yes_no_labels }}</td>
                                     </tr>
                                     {% endfor %}
                                 </tbody>
@@ -147,8 +148,8 @@
                         {% if entries.has_other_pages %}
                         <div class="pagination-container">
                             {% if entries.has_previous %}
-                                <a href="?page=1" class="btn btn-secondary btn-sm">{% trans 'First' %}</a>
-                                <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans 'Previous' %}</a>
+                                <a href="?page=1" class="btn btn-secondary btn-sm">{% trans "First" %}</a>
+                                <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans "Previous" %}</a>
                             {% endif %}
                             
                             {% for num in entries.paginator.page_range %}
@@ -160,14 +161,14 @@
                             {% endfor %}
                             
                             {% if entries.has_next %}
-                                <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">{% trans 'Next' %}</a>
-                                <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">{% trans 'Last' %}</a>
+                                <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">{% trans "Next" %}</a>
+                                <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">{% trans "Last" %}</a>
                             {% endif %}
                         </div>
                         {% endif %}
 
                     {% else %}
-                        <p class="dashboard-subtitle">{% trans 'No leaderboard entries available yet.' %}</p>
+                        <p class="dashboard-subtitle">{% trans "No leaderboard entries available yet." %}</p>
                     {% endif %}
                 </section>
             </div>

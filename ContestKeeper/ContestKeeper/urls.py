@@ -27,3 +27,9 @@ urlpatterns += i18n_patterns(
     path('accounts/', include('django.contrib.auth.urls')),
     path('', include('app.urls.urls')),
 )
+
+# Custom error handlers
+handler400 = 'app.views.views_general.error_400_view'
+handler403 = 'app.views.views_general.error_403_view'
+handler404 = 'app.views.views_general.error_404_view'
+handler500 = 'app.views.views_general.error_500_view'

@@ -1,5 +1,6 @@
 from django.db.models import Q
 from django.shortcuts import redirect, render
+from django.urls import reverse
 
 from django.views import View
 from django.views.generic import TemplateView
@@ -7,6 +8,62 @@ from django.views.generic import TemplateView
 from app.forms import ProfileBioForm, UserSettingsForm
 from app.models import Contest, LeaderboardEntry, JuryScore, Round, Team, JuryAssignment
 from app.views.views_base import RedirectToRegisterMixin
+from django.utils.translation import gettext as _
+
+
+def _error_context(request, status_code, error_title, error_message):
+    return {
+        'status_code': status_code,
+        'error_title': error_title,
+        'error_message': error_message,
+        'back_url': request.META.get('HTTP_REFERER') or reverse('dashboard'),
+    }
+
+
+def error_400_view(request, exception):
+    return render(
+        request,
+        'app/errors/error.html',
+        _error_context(request, 400, _('Bad request'), str(exception)),
+        status=400,
+    )
+
+
+def error_403_view(request, exception):
+    return render(
+        request,
+        'app/errors/error.html',
+        _error_context(request, 403, _('Forbidden'), str(exception)),
+        status=403,
+    )
+
+
+def error_404_view(request, exception):
+    return render(
+        request,
+        'app/errors/error.html',
+        _error_context(
+            request,
+            404,
+            _('Page not found'),
+            _('The page you were looking for does not exist.'),
+        ),
+        status=404,
+    )
+
+
+def error_500_view(request):
+    return render(
+        request,
+        'app/errors/error.html',
+        _error_context(
+            request,
+            500,
+            _('Server error'),
+            _('An internal server error occurred.'),
+        ),
+        status=500,
+    )
 
 
 class HomeView(RedirectToRegisterMixin, TemplateView):
