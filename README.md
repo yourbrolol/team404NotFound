@@ -22,6 +22,11 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    cp ContestKeeper/.env.example ContestKeeper/.env
    ```
 
+3. **(If DEBUG=False in .env) Collect static files:**
+   ```bash
+   python manage.py collectstatic
+   ```
+
 **There are 3 ways to run the app:**
 
 1. **Manual way**
