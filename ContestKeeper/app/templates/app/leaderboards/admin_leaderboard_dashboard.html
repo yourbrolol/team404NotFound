@@ -11,6 +11,7 @@
 {% block content %}
             {% trans "Yes,No" as yes_no_labels %}
             {% trans "Visible,Hidden" as visible_hidden_labels %}
+            {% trans "Are you sure you want to finish evaluation? This action cannot be undone." as finish_evaluation_confirmation %}
             <div class="glass-panel admin-dashboard-card">
                 <div class="dashboard-header-section">
                     <div>
@@ -88,7 +89,7 @@
 
                 <section class="content-section">
                     <div class="action-buttons-group">
-                        <form method="post" action="{% url 'admin_finish_evaluation' contest.pk %}">
+                        <form method="post" action="{% url 'admin_finish_evaluation' contest.pk %}" data-confirm-message="{{ finish_evaluation_confirmation }}" onsubmit="return confirm(this.getAttribute('data-confirm-message'));">
                             {% csrf_token %}
                             <button type="submit" class="btn btn-primary">{% trans "Finish Evaluation" %}</button>
                         </form>

@@ -66,6 +66,20 @@ class ScoringCriteriaTask08Test(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse('criterion_create', kwargs={'pk': self.contest.pk}))
 
+    def test_finish_evaluation_requires_browser_confirmation(self):
+        self.client.force_login(self.organizer)
+        url = reverse('admin_leaderboard_dashboard', kwargs={'pk': self.contest.pk})
+        finish_url = reverse('admin_finish_evaluation', kwargs={'pk': self.contest.pk})
+        response = self.client.get(url)
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'action="{finish_url}"')
+        self.assertContains(
+            response,
+            'data-confirm-message="Are you sure you want to finish evaluation? This action cannot be undone."',
+        )
+        self.assertContains(response, "onsubmit=\"return confirm(this.getAttribute('data-confirm-message'));\"")
+
     def test_criterion_access_denied_role(self):
         self.client.force_login(self.other_user)
         url = reverse('criterion_create', kwargs={'pk': self.contest.pk})
