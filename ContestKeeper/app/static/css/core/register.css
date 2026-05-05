@@ -18,6 +18,48 @@ body.auth-body {
   padding: 1rem 0;
 }
 
+.auth-language-switcher {
+  position: fixed;
+  top: 1rem;
+  right: 1rem;
+  z-index: 10;
+}
+
+.auth-language-form {
+  margin: 0;
+}
+
+.auth-language-select {
+  min-width: 10rem;
+  max-width: min(16rem, calc(100vw - 2rem));
+  background: var(--auth-glass);
+  border: 1px solid var(--auth-glass-border);
+  border-radius: 0.75rem;
+  color: var(--text-main);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  padding: 0.65rem 0.85rem;
+  box-shadow: 0 12px 28px rgba(var(--black-rgb), 0.22);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.auth-language-select:hover,
+.auth-language-select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 4px rgba(var(--primary-rgb), 0.15);
+  outline: none;
+  transform: translateY(-1px);
+}
+
+.auth-language-select option {
+  background: var(--bg-dark);
+  color: var(--text-main);
+}
+
 /* Background shapes for depth */
 .auth-bg-blobs {
   position: fixed;
@@ -589,6 +631,15 @@ body.auth-login .btn-auth {
 }
 
 @media (max-width: 500px) {
+  .auth-language-switcher {
+    left: 1rem;
+    right: 1rem;
+  }
+
+  .auth-language-select {
+    width: 100%;
+  }
+
   .auth-form-grid {
     grid-template-columns: 1fr;
   }

@@ -122,6 +122,32 @@ class HomeViewTaskTest(TestCase):
         self.assertNotContains(response, "Your current contest")
 
 
+class AuthLanguageSelectorTest(TestCase):
+    def test_login_page_has_language_selector(self):
+        response = self.client.get(reverse("login"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'action="{reverse("set_language")}"')
+        self.assertContains(response, 'name="next" type="hidden"')
+        self.assertContains(response, 'name="language"')
+        self.assertContains(response, 'aria-label="Select language"')
+        self.assertContains(response, '<html lang="en"')
+        self.assertContains(response, 'English (en)')
+        self.assertContains(response, 'value="uk"')
+
+    def test_register_page_has_language_selector(self):
+        response = self.client.get(reverse("register"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, f'action="{reverse("set_language")}"')
+        self.assertContains(response, 'name="next" type="hidden"')
+        self.assertContains(response, 'name="language"')
+        self.assertContains(response, 'aria-label="Select language"')
+        self.assertContains(response, '<html lang="en"')
+        self.assertContains(response, 'English (en)')
+        self.assertContains(response, 'value="uk"')
+
+
 class ProfileViewTaskTest(TestCase):
     def setUp(self):
         self.client = Client()

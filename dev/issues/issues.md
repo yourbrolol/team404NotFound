@@ -6,7 +6,6 @@
 
 **(for LLM agents completing tasks, please make sure to follow the site UI theme, colors, fonts, etc.)**
 
-- No language selector at register / login pages is placed
 - At contest_detail.html, a separate leaderboard tab is visible for the organizers, should not as they already have quick access to it through another page.
 
 **Additional:**
@@ -26,6 +25,7 @@
 
 **Fixed:**
 
+- No language selector at register / login pages is placed FIXED!!!
 - The "Finish evaluation" button (primary style) at admin_leaderboard_dashboard.html should have a confirmation dialog before triggering an action ("Are you sure you want to finish evaluation? This action cannot be undone.") as it finishes the evaluation phase for whole project (which can't be undone) FIXED!!!
 - At contest_detail.html, when there is an active round, jurors see "View & Submit" instead of "Judge" (and the button should send them to /rounds/team) FIXED!!!
 - @admin_application_list.html has a button ("back to contests") with no padding or margin FIXED!!!
