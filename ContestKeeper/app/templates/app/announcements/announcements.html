@@ -12,7 +12,7 @@
 <header class="dashboard-header">
     <div class="header-left">
         <h1 id="h1">{% trans "Announcements" %}</h1>
-        <p class="p-001">{% blocktrans with contest_name=contest.name %}Important updates and news for "{{ contest_name }}".{% endblocktrans %}</p>
+        <p class="p-001">{% blocktrans with name=contest.name %}Important updates and news for "{{ name }}".{% endblocktrans %}</p>
     </div>
     {% if user == contest.organizer %}
     <a href="{% url 'announcement_create' contest.pk %}" class="btn btn-primary">{% trans "Post Announcement" %}</a>
@@ -38,7 +38,7 @@
             {% endif %}
         </div>
         <div class="div-001">
-            {% blocktrans with created_at=announcement.created_at|date:"M d, Y H:i" author=announcement.author.username %}Published on {{ created_at }} by {{ author }}{% endblocktrans %}
+            {% blocktrans with date=announcement.created_at|date:"M d, Y H:i" author=announcement.author.username %}Published on {{ date }} by {{ author }}{% endblocktrans %}
         </div>
         <div class="announcement-content div-004">
             {{ announcement.content|linebreaks }}

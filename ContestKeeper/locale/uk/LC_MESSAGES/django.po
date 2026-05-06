@@ -2464,12 +2464,12 @@ msgid "Switched to {tab} tab"
 msgstr "Переключено на вкладку {tab}"
 
 #: app/templates/registration/login.html:8
-msgid "Welcome Back – ContestKeeper"
-msgstr "Ласкаво просимо до ContestKeeper"
+msgid "Welcome Back"
+msgstr "З поверненням"
 
 #: app/templates/registration/login.html:23
 msgid "Welcome Back."
-msgstr "Ласкаво просимо."
+msgstr "З поверненням."
 
 #: app/templates/registration/login.html:24
 msgid ""
@@ -2504,9 +2504,9 @@ msgstr "Введіть свій пароль"
 msgid "Sign In"
 msgstr "Увійти"
 
-#: app/templates/registration/login.html:58
-msgid "Don\\"
-msgstr "Дон\\"
+#: app/templates/registration/login.html:74
+msgid "Don't have an account yet?"
+msgstr "Ще не маєте облікового запису?"
 
 #: app/templates/registration/login.html:58
 msgid "Create one today"
