@@ -12,8 +12,6 @@
 
 **(here lie issues that weren't been proven true / their behaviour wasn't studied yet, do not fix until studied & moved out)**
 
-- /evaluate/(idx)?round_id=(id) shows "Evaluation phase is closed" for jurors who are not assigned to the team, should be "You're not assigned to evaluate this team" (reason: finish evaluation contest button might start this issue to happen)
-
 **Fixed:**
 
 - At contest_detail.html, a separate leaderboard tab is visible for the organizers, should not as they already have quick access to it through another page. FIXED!!!
@@ -47,6 +45,7 @@
 - The "Leaderboard" tab in contest_detail.html is not translated to uk (Ukrainian) FIXED!!!
 - Contest cards in "My contests" at profile/ should be actual cards with background and similar styling to other contest cards across the site FIXED!!!
 - At the registation page, there is no light theme. Only the dark one is available. FIXED!!!
+- /evaluate/(idx)?round_id=(id) shows "Evaluation phase is closed" for jurors who are not assigned to the team, should be "You're not assigned to evaluate this team" (reason: finish evaluation contest button might start this issue to happen) FIXED!!!
 - juries cannot apply to judge a contest FIXED!!!
 - juries cannot judge assigned submissions (they don't see them) FIXED!!!
 - Organizers cannot delete teams or kick juries on their contest FIXED!!!

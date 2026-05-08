@@ -25,6 +25,7 @@ class AssignJuryView(OrganizerRequiredMixin, View):
 
 class JuryEvaluationView(JuryRequiredMixin, View):
     template_name = "app/juries/jury_evaluation.html"
+    not_assigned_message = "You're not assigned to evaluate this team."
 
     def get_context_data(self, **kwargs):
         contest = self.contest
@@ -70,13 +71,13 @@ class JuryEvaluationView(JuryRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         context = self.get_context_data()
         if context is None:
-            return HttpResponseForbidden("You are not assigned to evaluate this team.")
+            return HttpResponseForbidden(self.not_assigned_message)
         return render(request, self.template_name, context)
 
     def post(self, request, *args, **kwargs):
         context = self.get_context_data()
         if context is None:
-            return HttpResponseForbidden("You are not assigned to evaluate this team.")
+            return HttpResponseForbidden(self.not_assigned_message)
             
         contest = self.contest
         team = get_object_or_404(Team, pk=self.kwargs["team_pk"])

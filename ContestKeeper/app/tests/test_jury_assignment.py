@@ -2,7 +2,7 @@ from django.test import TestCase, Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
-from app.models import Contest, Team, User, JuryAssignment, Round, Submission
+from app.models import Contest, ContestEvaluationPhase, Team, User, JuryAssignment, Round, Submission
 from app.services import assign_jury_to_teams
 
 class JuryAssignmentTest(TestCase):
@@ -69,6 +69,30 @@ class JuryAssignmentTest(TestCase):
         url = reverse('jury_evaluate', kwargs={'pk': self.contest.pk, 'team_pk': team1.pk})
         response = self.client.get(url)
         self.assertEqual(response.status_code, 200)
+
+    def test_unassigned_jury_sees_assignment_error_when_evaluation_is_closed(self):
+        team0 = self.contest.teams.get(name='Team 0')
+        team1 = self.contest.teams.get(name='Team 1')
+        JuryAssignment.objects.create(contest=self.contest, team=team1, jury_member=self.jury1)
+        round_obj = Round.objects.create(
+            contest=self.contest,
+            title='Closed Evaluation Round',
+            start_time=timezone.now() - timedelta(hours=2),
+            deadline=timezone.now() - timedelta(hours=1),
+            order=1,
+        )
+        ContestEvaluationPhase.objects.create(
+            contest=self.contest,
+            status=ContestEvaluationPhase.Status.COMPLETED,
+        )
+
+        self.client.force_login(self.jury1)
+        url = reverse('jury_evaluate', kwargs={'pk': self.contest.pk, 'team_pk': team0.pk})
+        response = self.client.get(f'{url}?round_id={round_obj.pk}')
+
+        self.assertEqual(response.status_code, 403)
+        self.assertContains(response, "You're not assigned to evaluate this team.", status_code=403)
+        self.assertNotContains(response, "Evaluation phase is closed", status_code=403)
 
     def test_round_submissions_list_filtering(self):
         # Assign jury1 to Team 0 and Team 1 only
