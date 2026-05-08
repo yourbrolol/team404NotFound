@@ -8,7 +8,6 @@
 
 **Additional:**
 
-- @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws
 - In profile, pending reviews for juries are empty even if there are assigned submissions to rate (see dev/issues/jury_pending_reviews.md for more info)
 - The "Leaderboard" tab in contest_detail.html is not translated to uk (Ukrainian)
 - Contest cards in "My contests" at profile/ should be actual cards with background and similar styling to other contest cards across the site
@@ -48,6 +47,7 @@
 - @admin_leaderboard_dashboard.html is poorly decorated + "Add scoring criterion button" background is broken FIXED!!!
 - @leaderboard.html is poorly decorated FIXED!!!
 - @round_detail.html is poorly decorated FIXED!!!
+- @rounds_detail_team.html and @rounds_detail.html can be merged + the first one has design flaws FIXED!!!
 - juries cannot apply to judge a contest FIXED!!!
 - juries cannot judge assigned submissions (they don't see them) FIXED!!!
 - Organizers cannot delete teams or kick juries on their contest FIXED!!!
