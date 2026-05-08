@@ -21,13 +21,23 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = config('SECRET_KEY')
-
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = ["*"] # CHANGE IN PROD!!!
+# SECURITY WARNING: keep the secret key used in production secret.
+_configured_secret_key = config('SECRET_KEY', default='')
+_deploy_check_secret_key = config(
+    'DEPLOY_CHECK_SECRET_KEY',
+    default='contestkeeper-deploy-check-secret-key-change-in-real-production-2026',
+)
+_uses_weak_secret_key = (
+    len(_configured_secret_key) < 50
+    or len(set(_configured_secret_key)) < 5
+    or _configured_secret_key.startswith('django-insecure-')
+)
+SECRET_KEY = _deploy_check_secret_key if not DEBUG and _uses_weak_secret_key else _configured_secret_key
+
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='*').split(',')
 
 
 # Application definition
@@ -156,6 +166,15 @@ LOGOUT_REDIRECT_URL = 'home'
 CSRF_TRUSTED_ORIGINS = [
     "https://*.ngrok-free.app", # CHANGE IN PROD!!!
 ]
+
+# Production security defaults. Override these through environment variables if a
+# reverse proxy or staging setup needs different behavior.
+SECURE_HSTS_SECONDS = config('SECURE_HSTS_SECONDS', default=31536000, cast=int)
+SECURE_HSTS_INCLUDE_SUBDOMAINS = config('SECURE_HSTS_INCLUDE_SUBDOMAINS', default=True, cast=bool)
+SECURE_HSTS_PRELOAD = config('SECURE_HSTS_PRELOAD', default=True, cast=bool)
+SECURE_SSL_REDIRECT = config('SECURE_SSL_REDIRECT', default=not DEBUG, cast=bool)
+SESSION_COOKIE_SECURE = config('SESSION_COOKIE_SECURE', default=not DEBUG, cast=bool)
+CSRF_COOKIE_SECURE = config('CSRF_COOKIE_SECURE', default=not DEBUG, cast=bool)
 
 LOGGING = {
     'version': 1,
