@@ -749,6 +749,10 @@ msgstr "Заявки на розгляд"
 msgid "Board"
 msgstr "Дошка"
 
+#: app/templates/app/contests/contest_detail.html:117
+msgid "Leaderboard"
+msgstr "Лідерборд"
+
 #: app/templates/app/contests/contest_detail.html:115
 msgid "You registered already!"
 msgstr "Ви вже зареєстровані!"

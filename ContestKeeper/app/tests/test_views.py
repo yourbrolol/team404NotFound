@@ -331,6 +331,11 @@ class ProfileViewTaskTest(TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertContains(response, reverse('contest_leaderboard', kwargs={'pk': self.contest.pk}))
 
+        with override("uk"):
+            response = self.client.get(reverse('contest_detail', kwargs={'pk': self.contest.pk}))
+
+        self.assertContains(response, "Лідерборд")
+
     def test_contest_detail_active_round_uses_judge_button_for_jury(self):
         self.contest.jurys.add(self.jury)
         Round.objects.create(
