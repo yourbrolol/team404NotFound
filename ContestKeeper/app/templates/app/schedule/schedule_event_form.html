@@ -2,7 +2,7 @@
 {% load static i18n %}
 
 {% block extra_css %}
-<link rel="stylesheet" href="{% static 'css/schedule/schedule_event_form.css' %}">
+<link rel="stylesheet" href="{% static 'css/schedule/schedule_event_form.css' %}?v=20260508-2">
 {% endblock %}
 
 
@@ -11,21 +11,200 @@
 {% block content %}
 <div class="form-card">
     <h2 class="h2-001">{% trans "Add Schedule Event" %}</h2>
-    <form method="post">
+    <form method="post" id="schedule-event-form" data-contest-start="{{ contest.start_date|date:'c' }}" data-contest-end="{{ contest.end_date|date:'c' }}">
         {% csrf_token %}
-        {% for field in form %}
         <div class="form-group">
-            <label class="form-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
-            {{ field }}
-            {% if field.errors %}
-            <div class="field-error">{{ field.errors|striptags }}</div>
+            <label class="form-label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+            {{ form.title }}
+            {% if form.title.errors %}
+            <div class="field-error">{{ form.title.errors|striptags }}</div>
             {% endif %}
         </div>
-        {% endfor %}
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.description.id_for_label }}">{{ form.description.label }}</label>
+            {{ form.description }}
+            {% if form.description.errors %}
+            <div class="field-error">{{ form.description.errors|striptags }}</div>
+            {% endif %}
+        </div>
+
+        {{ form.start_time }}
+        <div class="form-group datetime-composer" data-target-id="{{ form.start_time.id_for_label }}" data-required="true">
+            <label class="form-label">Початок події</label>
+            <div class="quick-date-row" aria-label="Швидкий вибір початку">
+                <button type="button" class="quick-date-button" data-preset="today">Сьогодні</button>
+                <button type="button" class="quick-date-button" data-preset="tomorrow">Завтра</button>
+                <button type="button" class="quick-date-button" data-preset="contest-start">Початок конкурсу</button>
+            </div>
+            <div class="datetime-grid">
+                <label class="datetime-field">
+                    <span>Дата</span>
+                    <input class="form-input date-part" type="text" inputmode="numeric" placeholder="дд.мм.рррр" autocomplete="off">
+                </label>
+                <label class="datetime-field">
+                    <span>Час</span>
+                    <input class="form-input time-part" type="time" value="10:00">
+                </label>
+            </div>
+            {% if form.start_time.errors %}
+            <div class="field-error">{{ form.start_time.errors|striptags }}</div>
+            {% endif %}
+        </div>
+
+        {{ form.end_time }}
+        <div class="form-group datetime-composer" data-target-id="{{ form.end_time.id_for_label }}">
+            <label class="form-label">Завершення події</label>
+            <div class="quick-date-row" aria-label="Швидкий вибір завершення">
+                <button type="button" class="quick-date-button" data-duration="30">+30 хв</button>
+                <button type="button" class="quick-date-button" data-duration="60">+1 год</button>
+                <button type="button" class="quick-date-button" data-duration="120">+2 год</button>
+                <button type="button" class="quick-date-button" data-preset="contest-end">Кінець конкурсу</button>
+            </div>
+            <div class="datetime-grid">
+                <label class="datetime-field">
+                    <span>Дата</span>
+                    <input class="form-input date-part" type="text" inputmode="numeric" placeholder="необов'язково" autocomplete="off">
+                </label>
+                <label class="datetime-field">
+                    <span>Час</span>
+                    <input class="form-input time-part" type="time">
+                </label>
+            </div>
+            {% if form.end_time.errors %}
+            <div class="field-error">{{ form.end_time.errors|striptags }}</div>
+            {% endif %}
+        </div>
+
+        <div class="form-group">
+            <label class="form-label" for="{{ form.event_type.id_for_label }}">{{ form.event_type.label }}</label>
+            {{ form.event_type }}
+            {% if form.event_type.errors %}
+            <div class="field-error">{{ form.event_type.errors|striptags }}</div>
+            {% endif %}
+        </div>
+
         <div class="div-001">
             <button type="submit" class="btn btn-primary button-001">{% trans "Add Event" %}</button>
             <a href="{% url 'schedule' contest.pk %}" class="btn btn-secondary">{% trans "Cancel" %}</a>
         </div>
     </form>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    (function () {
+        const form = document.getElementById("schedule-event-form");
+        if (!form) return;
+
+        const pad = (value) => String(value).padStart(2, "0");
+        const formatDate = (date) => `${pad(date.getDate())}.${pad(date.getMonth() + 1)}.${date.getFullYear()}`;
+        const formatTime = (date) => `${pad(date.getHours())}:${pad(date.getMinutes())}`;
+        const toHiddenValue = (date, time) => {
+            const parts = date.match(/^(\d{2})\.(\d{2})\.(\d{4})$/);
+            if (!parts || !time) return "";
+            return `${parts[3]}-${parts[2]}-${parts[1]}T${time}`;
+        };
+
+        const normalizeDateInput = (input) => {
+            const value = input.value.trim();
+            const compact = value.match(/^(\d{2})(\d{2})(\d{4})$/);
+            const dotted = value.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+            const parts = compact || dotted;
+            if (!parts) return;
+
+            input.value = `${pad(parts[1])}.${pad(parts[2])}.${parts[3]}`;
+        };
+
+        const maskDateInput = (input) => {
+            const digits = input.value.replace(/\D/g, "").slice(0, 8);
+            if (digits.length <= 2) {
+                input.value = digits;
+            } else if (digits.length <= 4) {
+                input.value = `${digits.slice(0, 2)}.${digits.slice(2)}`;
+            } else {
+                input.value = `${digits.slice(0, 2)}.${digits.slice(2, 4)}.${digits.slice(4)}`;
+            }
+        };
+
+        const fromHiddenValue = (value) => {
+            if (!value) return null;
+            const date = new Date(value);
+            return Number.isNaN(date.getTime()) ? null : date;
+        };
+
+        const setComposer = (composer, date) => {
+            if (!date) return;
+            composer.querySelector(".date-part").value = formatDate(date);
+            composer.querySelector(".time-part").value = formatTime(date);
+            syncComposer(composer);
+        };
+
+        const syncComposer = (composer) => {
+            const hidden = document.getElementById(composer.dataset.targetId);
+            const dateInput = composer.querySelector(".date-part");
+            const timeInput = composer.querySelector(".time-part");
+            const date = dateInput.value.trim();
+            const time = timeInput.value;
+            hidden.value = date || time ? toHiddenValue(date, time) : "";
+        };
+
+        const composers = Array.from(form.querySelectorAll(".datetime-composer"));
+        composers.forEach((composer) => {
+            const hidden = document.getElementById(composer.dataset.targetId);
+            const initial = fromHiddenValue(hidden.value);
+            if (initial) {
+                setComposer(composer, initial);
+            } else if (composer.dataset.required === "true") {
+                setComposer(composer, new Date());
+            }
+
+            composer.querySelectorAll(".date-part, .time-part").forEach((input) => {
+                input.addEventListener("input", () => {
+                    if (input.classList.contains("date-part")) {
+                        maskDateInput(input);
+                    }
+                    syncComposer(composer);
+                });
+            });
+            composer.querySelector(".date-part").addEventListener("blur", (event) => {
+                normalizeDateInput(event.target);
+                syncComposer(composer);
+            });
+        });
+
+        form.addEventListener("click", (event) => {
+            const button = event.target.closest(".quick-date-button");
+            if (!button) return;
+
+            const composer = button.closest(".datetime-composer");
+            const startComposer = form.querySelector("[data-target-id='id_start_time']");
+            const now = new Date();
+            let date = null;
+
+            if (button.dataset.preset === "today") {
+                date = now;
+            } else if (button.dataset.preset === "tomorrow") {
+                date = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 10, 0);
+            } else if (button.dataset.preset === "contest-start") {
+                date = fromHiddenValue(form.dataset.contestStart);
+            } else if (button.dataset.preset === "contest-end") {
+                date = fromHiddenValue(form.dataset.contestEnd);
+            } else if (button.dataset.duration && startComposer) {
+                syncComposer(startComposer);
+                const start = fromHiddenValue(document.getElementById("id_start_time").value);
+                if (start) {
+                    date = new Date(start.getTime() + Number(button.dataset.duration) * 60000);
+                }
+            }
+
+            setComposer(composer, date);
+        });
+
+        form.addEventListener("submit", () => {
+            composers.forEach(syncComposer);
+        });
+    })();
+</script>
 {% endblock %}

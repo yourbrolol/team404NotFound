@@ -88,8 +88,8 @@ class ScheduleEventForm(forms.ModelForm):
         widgets = {
             "title": forms.TextInput(attrs={"class": "form-input", "placeholder": _("Event title")}),
             "description": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": _("Short description")}),
-            "start_time": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-input"}, format='%Y-%m-%dT%H:%M'),
-            "end_time": forms.DateTimeInput(attrs={"type": "datetime-local", "class": "form-input"}, format='%Y-%m-%dT%H:%M'),
+            "start_time": forms.DateTimeInput(attrs={"type": "hidden"}, format='%Y-%m-%dT%H:%M'),
+            "end_time": forms.DateTimeInput(attrs={"type": "hidden"}, format='%Y-%m-%dT%H:%M'),
             "event_type": forms.Select(attrs={"class": "form-input"}),
         }
 
