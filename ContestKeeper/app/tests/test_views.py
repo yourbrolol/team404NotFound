@@ -217,6 +217,24 @@ class ProfileViewTaskTest(TestCase):
         self.contest.teams.add(second_team)
         # Add JuryAssignment for second_team
         JuryAssignment.objects.create(contest=self.contest, team=second_team, jury_member=self.jury)
+        round_obj = Round.objects.create(
+            contest=self.contest,
+            title="Review Round",
+            description="Round for pending reviews",
+            tech_requirements="Python",
+            must_have=["Submit project"],
+            start_time=timezone.now() - timedelta(hours=1),
+            deadline=timezone.now() + timedelta(hours=2),
+            status=Round.Status.ACTIVE,
+            order=1,
+            created_by=self.organizer,
+        )
+        Submission.objects.create(
+            round=round_obj,
+            team=second_team,
+            github_url="https://github.com/example/challengers",
+            video_url="https://example.com/demo",
+        )
 
         self.client.force_login(self.jury)
         response = self.client.get(reverse("profile"))

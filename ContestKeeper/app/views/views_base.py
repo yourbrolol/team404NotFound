@@ -3,7 +3,7 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404
 from django.utils.translation import gettext as _
 
-from app.models import Contest
+from app.models import Contest, JuryAssignment
 
 
 class RedirectToRegisterMixin(LoginRequiredMixin):
@@ -40,7 +40,9 @@ class JuryRequiredMixin(RedirectToRegisterMixin, ContestContextMixin):
         self.contest = get_object_or_404(Contest, pk=kwargs["pk"])
         if not request.user.is_authenticated:
             return self.handle_no_permission()
-        if not self.contest.jurys.filter(pk=request.user.pk).exists():
+        is_contest_jury = self.contest.jurys.filter(pk=request.user.pk).exists()
+        is_assigned_jury = JuryAssignment.objects.filter(contest=self.contest, jury_member=request.user).exists()
+        if not (is_contest_jury or is_assigned_jury):
             return HttpResponseForbidden("You are not a Jury member for this contest.")
         return super().dispatch(request, *args, **kwargs)
 
@@ -52,7 +54,10 @@ class OrganizerOrJuryMixin(RedirectToRegisterMixin, ContestContextMixin):
         if not request.user.is_authenticated:
             return self.handle_no_permission()
         is_organizer = self.contest.organizer == request.user
-        is_jury = self.contest.jurys.filter(pk=request.user.pk).exists()
+        is_jury = (
+            self.contest.jurys.filter(pk=request.user.pk).exists()
+            or JuryAssignment.objects.filter(contest=self.contest, jury_member=request.user).exists()
+        )
         if not (is_organizer or is_jury or request.user.is_staff):
             return HttpResponseForbidden("You do not have access to this page.")
         return super().dispatch(request, *args, **kwargs)

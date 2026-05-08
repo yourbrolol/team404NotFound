@@ -206,9 +206,6 @@ class JuryScore(models.Model):
         if self.team_id and self.contest_id and not self.contest.teams.filter(pk=self.team_id).exists():
             errors["team"] = "Team must belong to the selected contest."
 
-        if self.jury_member_id and self.contest_id and not self.contest.jurys.filter(pk=self.jury_member_id).exists():
-            errors["jury_member"] = "Jury member must be assigned to the selected contest."
-
         if self.criterion_id and self.score is not None and self.score > Decimal(str(self.criterion.max_score)):
             errors["score"] = f"Score cannot exceed the criterion maximum of {self.criterion.max_score}."
 
@@ -220,6 +217,8 @@ class JuryScore(models.Model):
                 contest=self.contest
             ).exists():
                 errors["jury_member"] = "Jury member is not assigned to this team for this contest."
+        elif self.jury_member_id and self.contest_id and not self.contest.jurys.filter(pk=self.jury_member_id).exists():
+            errors["jury_member"] = "Jury member must be assigned to the selected contest."
 
         if errors:
             raise ValidationError(errors)

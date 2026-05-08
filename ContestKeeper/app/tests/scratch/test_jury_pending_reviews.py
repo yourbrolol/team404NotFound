@@ -68,8 +68,8 @@ class JuryPendingReviewsTest(TestCase):
             order=1
         )
 
-    def test_pending_reviews_not_shown_if_jury_not_in_contest_jurys(self):
-        """Test that pending reviews are NOT shown if the jury member is NOT in the contest.jurys M2M field, even if they have assignments."""
+    def test_pending_reviews_shown_if_jury_has_assignment_without_contest_jurys_membership(self):
+        """Assigned juries should see pending reviews even if contest.jurys was not synced."""
         # Create another jury member NOT in the contest
         outsider_jury = User.objects.create_user(username="outsider", password="password", role=User.Role.JURY)
         
@@ -84,9 +84,27 @@ class JuryPendingReviewsTest(TestCase):
         response = self.client.get(reverse("profile"))
 
         self.assertEqual(response.status_code, 200)
-        # It should NOT contain "Team A" because the contest is not in outsider_jury.judged_contests
-        self.assertNotContains(response, "Team A")
-        self.assertContains(response, "You have no pending reviews right now.")
+        self.assertContains(response, "Pending Reviews")
+        self.assertContains(response, "Team A")
+        self.assertContains(response, "Utility")
+
+        response = self.client.get(reverse("jury_evaluate", kwargs={"pk": self.contest.pk, "team_pk": self.team.pk}))
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post(
+            reverse("jury_evaluate", kwargs={"pk": self.contest.pk, "team_pk": self.team.pk}),
+            {f"criterion_{self.criterion.pk}": "8.00"},
+        )
+        self.assertEqual(response.status_code, 302)
+        self.assertTrue(
+            JuryScore.objects.filter(
+                contest=self.contest,
+                team=self.team,
+                jury_member=outsider_jury,
+                criterion=self.criterion,
+                score=Decimal("8.00"),
+            ).exists()
+        )
 
     def test_pending_reviews_with_assignment(self):
         """Test that pending reviews show up when a JuryAssignment exists."""
@@ -158,8 +176,8 @@ class JuryPendingReviewsTest(TestCase):
         self.assertNotContains(response, "Team A")
         self.assertContains(response, "You have no pending reviews right now.")
 
-    def test_pending_reviews_for_superuser_without_jury_role(self):
-        """Test that pending reviews are empty for a superuser if they don't have the JURY role, even if assigned."""
+    def test_pending_reviews_for_assigned_superuser_without_jury_role(self):
+        """Explicit assignment is enough for profile pending reviews, even for staff users."""
         admin = User.objects.create_superuser(username="admin", password="password", email="admin@example.com")
         # Ensure role is NOT Jury (default is PARTICIPANT)
         admin.role = User.Role.PARTICIPANT
@@ -176,11 +194,11 @@ class JuryPendingReviewsTest(TestCase):
         response = self.client.get(reverse("profile"))
 
         self.assertEqual(response.status_code, 200)
-        # It should NOT show jury section at all, because they are PARTICIPANT
-        self.assertNotContains(response, "Pending Reviews")
+        self.assertContains(response, "Pending Reviews")
+        self.assertContains(response, "Team A")
 
     def test_pending_reviews_for_organizer_who_is_also_jury(self):
-        """Test that an organizer who is also a jury member DOES NOT see pending reviews (potential bug)."""
+        """An organizer who is also assigned as jury should see both organizer and review sections."""
         # User role is ORGANIZER
         # They are in contest.jurys
         self.contest.jurys.add(self.organizer)
@@ -194,6 +212,6 @@ class JuryPendingReviewsTest(TestCase):
         response = self.client.get(reverse("profile"))
 
         self.assertEqual(response.status_code, 200)
-        # It currently SHOWS "My Contests" but NOT "Pending Reviews" because of elif chain
         self.assertContains(response, "My Contests")
-        self.assertNotContains(response, "Pending Reviews")
+        self.assertContains(response, "Pending Reviews")
+        self.assertContains(response, "Team A")

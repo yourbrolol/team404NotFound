@@ -6,7 +6,7 @@ from django.views import View
 from django.views.generic import TemplateView
 
 from app.forms import ProfileBioForm, UserSettingsForm
-from app.models import Contest, LeaderboardEntry, JuryScore, Round, Team, JuryAssignment
+from app.models import Contest, LeaderboardEntry, JuryScore, Round, Team, JuryAssignment, Submission
 from app.views.views_base import RedirectToRegisterMixin
 from django.utils.translation import gettext as _
 
@@ -126,6 +126,85 @@ class HomeView(RedirectToRegisterMixin, TemplateView):
 
 
 class ProfileView(RedirectToRegisterMixin, View):
+    def _build_jury_review_context(self, user):
+        jury_scores = (
+            JuryScore.objects.filter(jury_member=user)
+            .select_related("contest", "team", "criterion")
+            .order_by("-updated_at", "contest__name", "team__name")
+        )
+
+        pending_reviews = []
+        seen_review_slots = set()
+
+        assigned_contest_ids = set(
+            JuryAssignment.objects.filter(jury_member=user).values_list("contest_id", flat=True)
+        )
+        judged_contest_ids = set()
+        if user.is_jury():
+            judged_contest_ids = set(
+                user.judged_contests.exclude(status=Contest.Status.DRAFT).values_list("id", flat=True)
+            )
+
+        contest_ids = assigned_contest_ids | judged_contest_ids
+        contests = (
+            Contest.objects.filter(id__in=contest_ids)
+            .exclude(status=Contest.Status.DRAFT)
+            .prefetch_related("scoring_criteria")
+            .order_by("name")
+        )
+
+        for contest in contests:
+            criteria = list(contest.scoring_criteria.order_by("order", "name"))
+            if not criteria:
+                continue
+
+            existing_pairs = set(
+                JuryScore.objects.filter(contest=contest, jury_member=user).values_list("team_id", "criterion_id")
+            )
+
+            assignments = (
+                JuryAssignment.objects.filter(contest=contest, jury_member=user)
+                .select_related("team")
+                .order_by("team__name")
+            )
+            if assignments.exists():
+                teams_to_evaluate = [assignment.team for assignment in assignments]
+            elif user.is_jury() and not JuryAssignment.objects.filter(contest=contest).exists():
+                teams_to_evaluate = list(
+                    Team.objects.filter(submissions__round__contest=contest).distinct().order_by("name")
+                )
+            else:
+                teams_to_evaluate = []
+
+            for team in teams_to_evaluate:
+                if not Submission.objects.filter(round__contest=contest, team=team).exists():
+                    continue
+
+                slot_key = (contest.id, team.id)
+                if slot_key in seen_review_slots:
+                    continue
+                seen_review_slots.add(slot_key)
+
+                missing = [
+                    criterion
+                    for criterion in criteria
+                    if (team.id, criterion.id) not in existing_pairs
+                ]
+                if missing:
+                    pending_reviews.append(
+                        {
+                            "contest": contest,
+                            "team": team,
+                            "missing_criteria": missing,
+                        }
+                    )
+
+        return {
+            "jury_scores": jury_scores,
+            "pending_reviews": pending_reviews,
+            "show_jury_reviews": user.is_jury() or bool(assigned_contest_ids) or jury_scores.exists(),
+        }
+
     def _build_context(self, request, form, saved=False):
         user = request.user
         context = {
@@ -173,57 +252,16 @@ class ProfileView(RedirectToRegisterMixin, View):
                 leaderboard_entries=leaderboard_entries,
             )
 
-        elif user.is_jury():
-            jury_scores = (
-                JuryScore.objects.filter(jury_member=user)
-                .select_related("contest", "team", "criterion")
-                .order_by("-updated_at", "contest__name", "team__name")
-            )
-            pending_reviews = []
-            judged_contests = user.judged_contests.exclude(status=Contest.Status.DRAFT).prefetch_related("teams", "scoring_criteria")
-            for contest in judged_contests:
-                existing_pairs = set(
-                    JuryScore.objects.filter(contest=contest, jury_member=user).values_list("team_id", "criterion_id")
-                )
-                
-                # Respect assignments if they exist
-                assignments = JuryAssignment.objects.filter(contest=contest, jury_member=user)
-                if assignments.exists():
-                    teams_to_evaluate = [a.team for a in assignments.select_related('team').order_by('team__name')]
-                else:
-                    # If assignments exist for the contest but not for this jury member, they get nothing
-                    if JuryAssignment.objects.filter(contest=contest).exists():
-                        teams_to_evaluate = []
-                    else:
-                        # Get teams that have actually submitted work in this contest's rounds
-                        teams_with_submissions = Team.objects.filter(
-                            submissions__round__contest=contest
-                        ).distinct().order_by("name")
-                        teams_to_evaluate = list(teams_with_submissions)
-                
-                for team in teams_to_evaluate:
-                    missing = [
-                        criterion
-                        for criterion in contest.scoring_criteria.order_by("order", "name")
-                        if (team.id, criterion.id) not in existing_pairs
-                    ]
-                    if missing:
-                        pending_reviews.append(
-                            {
-                                "contest": contest,
-                                "team": team,
-                                "missing_criteria": missing,
-                            }
-                        )
+        context.update(self._build_jury_review_context(user))
 
-            context.update(
-                jury_scores=jury_scores,
-                pending_reviews=pending_reviews,
-            )
-
-        elif user.is_organizer():
+        if user.is_organizer():
             organized_contests = user.organized_contests.order_by("-start_date", "name")
-            context.update(organized_contests=organized_contests)
+            context.update(
+                organized_contests=organized_contests,
+                show_organizer_contests=True,
+            )
+        else:
+            context["show_organizer_contests"] = False
 
         return context
 

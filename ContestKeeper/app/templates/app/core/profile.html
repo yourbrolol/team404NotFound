@@ -239,7 +239,9 @@
                 </div>
                 {% endif %}
             </section>
-            {% elif user.is_jury %}
+            {% endif %}
+
+            {% if show_jury_reviews %}
             <section class="settings-card">
                 <div class="settings-card__header">
                     <div class="settings-card__icon">
@@ -322,7 +324,10 @@
                 </div>
                 {% endif %}
             </section>
-            {% elif user.is_organizer %}
+
+            {% endif %}
+
+            {% if show_organizer_contests %}
             <section class="settings-card">
                 <div class="settings-card__header">
                     <div class="settings-card__icon">
