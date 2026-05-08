@@ -589,6 +589,9 @@ class ProfileViewTaskTest(TestCase):
         self.assertContains(response, "My Contests")
         self.assertContains(response, "Profile Contest")
         self.assertContains(response, "Running")
+        self.assertContains(response, 'class="profile-contest-grid"')
+        self.assertContains(response, 'class="profile-contest-card"')
+        self.assertContains(response, "Details")
 
     def test_profile_empty_states_render_for_user_without_related_data(self):
         empty_participant = User.objects.create_user(username="lonely_user", password="password", role=User.Role.PARTICIPANT)

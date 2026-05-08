@@ -345,16 +345,26 @@
                 </div>
 
                 {% if organized_contests %}
-                <div class="profile-list">
+                <div class="profile-contest-grid">
                     {% for contest in organized_contests %}
-                    <article class="profile-list__item">
-                        <div>
+                    <article class="profile-contest-card">
+                        <div class="profile-contest-card__header">
                             <h3>{{ contest.name }}</h3>
-                            <p>{% blocktrans with start=contest.start_date|date:"M d, Y" end=contest.end_date|date:"M d, Y" %}{{ start }} to {{ end }}{% endblocktrans %}</p>
-                        </div>
-                        <div class="profile-list__actions">
                             <span class="status-indicator status-{{ contest.status|lower }}">{{ contest.get_status_display }}</span>
-                            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">{% trans "Open" %}</a>
+                        </div>
+                        <p class="profile-contest-card__description">{{ contest.description }}</p>
+                        <div class="profile-contest-card__details">
+                            <div class="profile-contest-card__detail">
+                                <span class="label">{% trans "Starts" %}</span>
+                                <span class="value">{{ contest.start_date|date:"M d, Y" }}</span>
+                            </div>
+                            <div class="profile-contest-card__detail">
+                                <span class="label">{% trans "Ends" %}</span>
+                                <span class="value">{{ contest.end_date|date:"M d, Y" }}</span>
+                            </div>
+                        </div>
+                        <div class="profile-contest-card__actions">
+                            <a href="{% url 'contest_detail' contest.pk %}" class="btn btn-secondary">{% trans "Details" %}</a>
                         </div>
                     </article>
                     {% endfor %}
