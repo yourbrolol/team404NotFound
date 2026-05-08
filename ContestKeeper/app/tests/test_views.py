@@ -135,6 +135,8 @@ class AuthLanguageSelectorTest(TestCase):
         self.assertContains(response, '<html lang="en"')
         self.assertContains(response, 'English (en)')
         self.assertContains(response, 'value="uk"')
+        self.assertContains(response, 'id="authThemeToggle"')
+        self.assertContains(response, "localStorage.getItem('theme')")
 
     def test_register_page_has_language_selector(self):
         response = self.client.get(reverse("register"))
@@ -147,6 +149,16 @@ class AuthLanguageSelectorTest(TestCase):
         self.assertContains(response, '<html lang="en"')
         self.assertContains(response, 'English (en)')
         self.assertContains(response, 'value="uk"')
+        self.assertContains(response, 'id="authThemeToggle"')
+        self.assertContains(response, "localStorage.getItem('theme')")
+
+    def test_register_page_honors_light_theme_cookie(self):
+        self.client.cookies["theme"] = "light"
+
+        response = self.client.get(reverse("register"))
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, '<html lang="en" data-theme="light"')
 
 
 class ProfileViewTaskTest(TestCase):

@@ -5,6 +5,13 @@
   --auth-accent: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
 }
 
+[data-theme="light"] {
+  --auth-bg-gradient: linear-gradient(135deg, #eef2ff 0%, #f8fafc 55%, #f3e8ff 100%);
+  --auth-glass: rgba(var(--white-rgb), 0.82);
+  --auth-glass-border: rgba(var(--black-rgb), 0.08);
+  --auth-accent: linear-gradient(135deg, var(--primary) 0%, #7c3aed 100%);
+}
+
 body.auth-body {
   margin: 0;
   min-height: 100vh;
@@ -23,14 +30,19 @@ body.auth-body {
   top: 1rem;
   right: 1rem;
   z-index: 10;
+  display: flex;
+  gap: 0.75rem;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
 }
 
 .auth-language-form {
   margin: 0;
 }
 
+.auth-theme-toggle,
 .auth-language-select {
-  min-width: 10rem;
   max-width: min(16rem, calc(100vw - 2rem));
   background: var(--auth-glass);
   border: 1px solid var(--auth-glass-border);
@@ -47,6 +59,19 @@ body.auth-body {
   transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
 }
 
+.auth-language-select {
+  min-width: 10rem;
+}
+
+.auth-theme-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.45rem;
+}
+
+.auth-theme-toggle:hover,
+.auth-theme-toggle:focus,
 .auth-language-select:hover,
 .auth-language-select:focus {
   border-color: var(--primary);
@@ -58,6 +83,18 @@ body.auth-body {
 .auth-language-select option {
   background: var(--bg-dark);
   color: var(--text-main);
+}
+
+[data-theme="light"] .auth-card {
+  box-shadow: 0 25px 50px -12px rgba(var(--black-rgb), 0.16);
+}
+
+[data-theme="light"] .auth-info {
+  background: rgba(var(--white-rgb), 0.36);
+}
+
+[data-theme="light"] .blob {
+  opacity: 0.18;
 }
 
 /* Background shapes for depth */
@@ -377,7 +414,7 @@ body.auth-login .btn-auth {
   border: 1px solid var(--auth-glass-border);
   border-radius: 1rem;
   padding: 1rem 1.25rem;
-  color: white;
+  color: var(--input-text);
   font-family: inherit;
   font-size: 1rem;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -634,8 +671,10 @@ body.auth-login .btn-auth {
   .auth-language-switcher {
     left: 1rem;
     right: 1rem;
+    align-items: stretch;
   }
 
+  .auth-theme-toggle,
   .auth-language-select {
     width: 100%;
   }
