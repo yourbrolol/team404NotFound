@@ -149,6 +149,36 @@
     background: var(--border);
 }
 
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin: 0 0 1.5rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+}
+
+.filter-input,
+.filter-select {
+    min-height: 2.75rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--border);
+    background: var(--bg-input, var(--bg-main));
+    color: var(--text-main);
+    padding: 0 0.9rem;
+}
+
+.filter-input {
+    flex: 1 1 16rem;
+}
+
+.filter-select {
+    flex: 0 1 12rem;
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Tablet  (≤ 900px)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */
@@ -167,6 +197,16 @@
     .contest-card {
         padding: clamp(1rem, 3vw, 1.5rem);
         gap: 1rem;
+    }
+
+    .filter-bar {
+        align-items: stretch;
+    }
+
+    .filter-input,
+    .filter-select,
+    .filter-bar .btn {
+        flex: 1 1 100%;
     }
 }
 

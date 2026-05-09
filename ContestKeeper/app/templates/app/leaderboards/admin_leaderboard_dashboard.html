@@ -109,7 +109,21 @@
                 </section>
 
                 <section class="content-section">
-                    <h4>{% trans "Current Leaderboard Preview" %}</h4>
+                    <div class="section-header-row">
+                        <h4>{% trans "Current Leaderboard Preview" %}</h4>
+                        <form method="get" class="leaderboard-filter-bar compact">
+                            <input type="search" name="q" value="{{ search_query }}" placeholder="{% trans 'Search teams' %}" class="leaderboard-filter-input">
+                            <select name="complete" class="leaderboard-filter-select" aria-label="{% trans 'Filter by computation status' %}">
+                                <option value="">{% trans "All completion states" %}</option>
+                                <option value="yes"{% if complete_filter == "yes" %} selected{% endif %}>{% trans "Complete" %}</option>
+                                <option value="no"{% if complete_filter == "no" %} selected{% endif %}>{% trans "Incomplete" %}</option>
+                            </select>
+                            <button type="submit" class="btn btn-primary">{% trans "Filter" %}</button>
+                            {% if search_query or complete_filter %}
+                                <a href="{% url 'admin_leaderboard_dashboard' contest.pk %}" class="btn btn-secondary">{% trans "Reset" %}</a>
+                            {% endif %}
+                        </form>
+                    </div>
                     {% if entries %}
                         <div class="table-wrapper">
                             <table class="admin-table">
@@ -149,21 +163,21 @@
                         {% if entries.has_other_pages %}
                         <div class="pagination-container">
                             {% if entries.has_previous %}
-                                <a href="?page=1" class="btn btn-secondary btn-sm">{% trans "First" %}</a>
-                                <a href="?page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans "Previous" %}</a>
+                                <a href="?{{ page_query_prefix }}page=1" class="btn btn-secondary btn-sm">{% trans "First" %}</a>
+                                <a href="?{{ page_query_prefix }}page={{ entries.previous_page_number }}" class="btn btn-secondary btn-sm">{% trans "Previous" %}</a>
                             {% endif %}
                             
                             {% for num in entries.paginator.page_range %}
                                 {% if entries.number == num %}
                                     <span class="btn btn-primary btn-sm">{{ num }}</span>
                                 {% elif num > entries.number|add:-3 and num < entries.number|add:3 %}
-                                    <a href="?page={{ num }}" class="btn btn-secondary btn-sm">{{ num }}</a>
+                                    <a href="?{{ page_query_prefix }}page={{ num }}" class="btn btn-secondary btn-sm">{{ num }}</a>
                                 {% endif %}
                             {% endfor %}
                             
                             {% if entries.has_next %}
-                                <a href="?page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">{% trans "Next" %}</a>
-                                <a href="?page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">{% trans "Last" %}</a>
+                                <a href="?{{ page_query_prefix }}page={{ entries.next_page_number }}" class="btn btn-secondary btn-sm">{% trans "Next" %}</a>
+                                <a href="?{{ page_query_prefix }}page={{ entries.paginator.num_pages }}" class="btn btn-secondary btn-sm">{% trans "Last" %}</a>
                             {% endif %}
                         </div>
                         {% endif %}

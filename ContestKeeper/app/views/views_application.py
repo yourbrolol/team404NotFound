@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse
@@ -70,10 +71,33 @@ class AdminApplicationListView(OrganizerRequiredMixin, ListView):
     context_object_name = "applications"
 
     def get_queryset(self):
-        return Application.objects.filter(
-            contest=self.contest,
-            status=Application.Status.PENDING
-        ).order_by("-created_at")
+        qs = Application.objects.filter(contest=self.contest).select_related("user", "team")
+        query = self.request.GET.get("q", "").strip()
+        status_filter = self.request.GET.get("status", Application.Status.PENDING).upper()
+        type_filter = self.request.GET.get("type", "").upper()
+
+        if query:
+            qs = qs.filter(
+                Q(user__username__icontains=query)
+                | Q(user__first_name__icontains=query)
+                | Q(user__last_name__icontains=query)
+                | Q(team__name__icontains=query)
+            )
+
+        if status_filter in {choice for choice, _ in Application.Status.choices}:
+            qs = qs.filter(status=status_filter)
+        else:
+            status_filter = ""
+
+        if type_filter in {choice for choice, _ in Application.Type.choices}:
+            qs = qs.filter(application_type=type_filter)
+        else:
+            type_filter = ""
+
+        self.search_query = query
+        self.status_filter = status_filter
+        self.type_filter = type_filter
+        return qs.order_by("-created_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -81,6 +105,11 @@ class AdminApplicationListView(OrganizerRequiredMixin, ListView):
         context["team_apps"] = qs.filter(application_type=Application.Type.TEAM)
         context["jury_apps"] = qs.filter(application_type=Application.Type.JURY)
         context["participant_apps"] = qs.filter(application_type=Application.Type.PARTICIPANT)
+        context["search_query"] = getattr(self, "search_query", "")
+        context["status_filter"] = getattr(self, "status_filter", Application.Status.PENDING)
+        context["type_filter"] = getattr(self, "type_filter", "")
+        context["status_choices"] = Application.Status.choices
+        context["type_choices"] = Application.Type.choices
         return context
 
 

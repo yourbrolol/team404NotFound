@@ -71,6 +71,36 @@
     font-size: 0.85rem;
 }
 
+.filter-bar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    align-items: center;
+    margin: -1rem 0 1.5rem;
+    padding: 1rem;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 0.75rem;
+}
+
+.filter-input,
+.filter-select {
+    min-height: 2.75rem;
+    border-radius: 0.6rem;
+    border: 1px solid var(--border);
+    background: var(--bg-input, var(--bg-main));
+    color: var(--text-main);
+    padding: 0 0.9rem;
+}
+
+.filter-input {
+    flex: 1 1 16rem;
+}
+
+.filter-select {
+    flex: 0 1 12rem;
+}
+
 /* --- Extracted from submission_list.html --- */
 .h1-001 {
     font-size: 2.5rem;
@@ -175,4 +205,16 @@
     text-transform: uppercase;
     letter-spacing: 1px;
     font-size: 0.85rem;
+}
+
+@media (max-width: 700px) {
+    .filter-bar {
+        align-items: stretch;
+    }
+
+    .filter-input,
+    .filter-select,
+    .filter-bar .btn {
+        flex: 1 1 100%;
+    }
 }

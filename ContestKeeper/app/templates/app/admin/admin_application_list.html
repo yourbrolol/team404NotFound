@@ -24,6 +24,26 @@
             <a href="#jurors" class="tab-link" onclick="showTab('jurors')">{% trans "Jurors" %} ({{ jury_apps.count }})</a>
         </div>
 
+        <form method="get" class="filter-bar">
+            <input type="search" name="q" value="{{ search_query }}" placeholder="{% trans 'Search by user or team' %}" class="filter-input">
+            <select name="status" class="filter-select" aria-label="{% trans 'Filter by status' %}">
+                <option value="">{% trans "All statuses" %}</option>
+                {% for value, label in status_choices %}
+                    <option value="{{ value }}"{% if status_filter == value %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <select name="type" class="filter-select" aria-label="{% trans 'Filter by application type' %}">
+                <option value="">{% trans "All types" %}</option>
+                {% for value, label in type_choices %}
+                    <option value="{{ value }}"{% if type_filter == value %} selected{% endif %}>{{ label }}</option>
+                {% endfor %}
+            </select>
+            <button type="submit" class="btn btn-primary">{% trans "Filter" %}</button>
+            {% if search_query or type_filter or status_filter != "PENDING" %}
+                <a href="{% url 'admin_application_list' contest.pk %}" class="btn btn-secondary">{% trans "Reset" %}</a>
+            {% endif %}
+        </form>
+
         <!-- Teams Section -->
         <div id="section-teams" class="tab-section">
             {% for app in team_apps %}
@@ -32,10 +52,10 @@
                         <div class="user-avatar">{{ app.team.name|slice:":1" }}</div>
                         <div class="user-details">
                             <h3>{{ app.team.name }}</h3>
-                            <p>{% blocktrans with username=app.user.username applied_at=app.created_at|date:"M d, H:i" %}Captain: {{ username }} • Applied: {{ applied_at }}{% endblocktrans %}</p>
+                            <p>{% blocktrans with username=app.user.username applied_at=app.created_at|date:"M d, H:i" status=app.get_status_display %}Captain: {{ username }} • Applied: {{ applied_at }} • {{ status }}{% endblocktrans %}</p>
                         </div>
                     </div>
-                    <div class="actions-group">
+                    {% if app.status == "PENDING" %}<div class="actions-group">
                         <form action="{% url 'approve_application' app.pk %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn-action btn-approve">{% trans "Approve Team" %}</button>
@@ -44,10 +64,10 @@
                             {% csrf_token %}
                             <button type="submit" class="btn-action btn-reject">{% trans "Reject" %}</button>
                         </form>
-                    </div>
+                    </div>{% endif %}
                 </div>
             {% empty %}
-                <div class="empty-state">{% trans "No pending team applications." %}</div>
+                <div class="empty-state">{% trans "No team applications match your filters." %}</div>
             {% endfor %}
         </div>
 
@@ -59,10 +79,10 @@
                         <div class="user-avatar">{{ app.user.username|slice:":1" }}</div>
                         <div class="user-details">
                             <h3>{{ app.user.username }}</h3>
-                            <p>{% if app.team %}{% blocktrans with team_name=app.team.name %}Wants to join <strong>{{ team_name }}</strong>{% endblocktrans %}{% else %}{% trans "Individual Participant" %}{% endif %} • {% blocktrans with applied_at=app.created_at|date:"M d, H:i" %}Applied: {{ applied_at }}{% endblocktrans %}</p>
+                            <p>{% if app.team %}{% blocktrans with team_name=app.team.name %}Wants to join <strong>{{ team_name }}</strong>{% endblocktrans %}{% else %}{% trans "Individual Participant" %}{% endif %} • {% blocktrans with applied_at=app.created_at|date:"M d, H:i" status=app.get_status_display %}Applied: {{ applied_at }} • {{ status }}{% endblocktrans %}</p>
                         </div>
                     </div>
-                    <div class="actions-group">
+                    {% if app.status == "PENDING" %}<div class="actions-group">
                         <form action="{% url 'approve_application' app.pk %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn-action btn-approve">{% trans "Approve" %}</button>
@@ -71,10 +91,10 @@
                             {% csrf_token %}
                             <button type="submit" class="btn-action btn-reject">{% trans "Reject" %}</button>
                         </form>
-                    </div>
+                    </div>{% endif %}
                 </div>
             {% empty %}
-                <div class="empty-state">{% trans "No pending join requests." %}</div>
+                <div class="empty-state">{% trans "No join requests match your filters." %}</div>
             {% endfor %}
         </div>
 
@@ -86,10 +106,10 @@
                         <div class="user-avatar">{{ app.user.username|slice:":1" }}</div>
                         <div class="user-details">
                             <h3>{{ app.user.username }}</h3>
-                            <p>{% blocktrans with applied_at=app.created_at|date:"M d, H:i" %}Jury Member • Applied: {{ applied_at }}{% endblocktrans %}</p>
+                            <p>{% blocktrans with applied_at=app.created_at|date:"M d, H:i" status=app.get_status_display %}Jury Member • Applied: {{ applied_at }} • {{ status }}{% endblocktrans %}</p>
                         </div>
                     </div>
-                    <div class="actions-group">
+                    {% if app.status == "PENDING" %}<div class="actions-group">
                         <form action="{% url 'approve_application' app.pk %}" method="post">
                             {% csrf_token %}
                             <button type="submit" class="btn-action btn-approve">{% trans "Approve Jury" %}</button>
@@ -98,10 +118,10 @@
                             {% csrf_token %}
                             <button type="submit" class="btn-action btn-reject">{% trans "Reject" %}</button>
                         </form>
-                    </div>
+                    </div>{% endif %}
                 </div>
             {% empty %}
-                <div class="empty-state">{% trans "No pending jury applications." %}</div>
+                <div class="empty-state">{% trans "No jury applications match your filters." %}</div>
             {% endfor %}
         </div>
     </div>

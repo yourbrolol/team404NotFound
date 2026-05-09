@@ -19,6 +19,24 @@
         <a href="{% url 'round_detail' contest.pk round.pk %}" class="btn btn-secondary a-002">{% trans "← Back to Round" %}</a>
     </div>
 
+    <form method="get" class="filter-bar">
+        <input type="search" name="q" value="{{ search_query }}" placeholder="{% trans 'Search team, links, or notes' %}" class="filter-input">
+        <select name="demo" class="filter-select" aria-label="{% trans 'Filter by live demo' %}">
+            <option value="">{% trans "All demos" %}</option>
+            <option value="yes"{% if demo_filter == "yes" %} selected{% endif %}>{% trans "Has live demo" %}</option>
+            <option value="no"{% if demo_filter == "no" %} selected{% endif %}>{% trans "No live demo" %}</option>
+        </select>
+        <select name="evaluated" class="filter-select" aria-label="{% trans 'Filter by evaluation status' %}">
+            <option value="">{% trans "All evaluations" %}</option>
+            <option value="yes"{% if evaluated_filter == "yes" %} selected{% endif %}>{% trans "Evaluated" %}</option>
+            <option value="no"{% if evaluated_filter == "no" %} selected{% endif %}>{% trans "Not evaluated" %}</option>
+        </select>
+        <button type="submit" class="btn btn-primary">{% trans "Filter" %}</button>
+        {% if search_query or demo_filter or evaluated_filter %}
+            <a href="{% url 'round_submissions' contest.pk round.pk %}" class="btn btn-secondary">{% trans "Reset" %}</a>
+        {% endif %}
+    </form>
+
     <div class="glass-card div-005">
         {% for submission in submissions %}
         <div class="submission-row">

@@ -1,4 +1,5 @@
 import csv
+from urllib.parse import urlencode
 
 from django.core.paginator import Paginator
 from django.http import HttpResponse, JsonResponse
@@ -42,7 +43,21 @@ class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
                 not_available_message="Leaderboard is not yet available. Evaluation is still in progress.",
             )
 
-        raw_entries = LeaderboardEntry.objects.filter(contest=self.contest).select_related("team").order_by("rank", "team__name")
+        can_view_missing = self.request.user.is_staff or self.request.user == self.contest.organizer
+        query = self.request.GET.get("q", "").strip()
+        complete_filter = self.request.GET.get("complete", "")
+        raw_entries = LeaderboardEntry.objects.filter(contest=self.contest).select_related("team")
+        if query:
+            raw_entries = raw_entries.filter(team__name__icontains=query)
+        if not can_view_missing:
+            complete_filter = ""
+        elif complete_filter == "yes":
+            raw_entries = raw_entries.filter(computation_complete=True)
+        elif complete_filter == "no":
+            raw_entries = raw_entries.filter(computation_complete=False)
+        else:
+            complete_filter = ""
+        raw_entries = raw_entries.order_by("rank", "team__name")
         criteria = ScoringCriterion.objects.filter(contest=self.contest).order_by("order")
         entries = [
             {
@@ -56,8 +71,10 @@ class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
         paginator = Paginator(entries, 50)
         page_number = self.request.GET.get('page', 1)
         page_obj = paginator.get_page(page_number)
+        page_query = urlencode(
+            {key: value for key, value in {"q": query, "complete": complete_filter}.items() if value}
+        )
         
-        can_view_missing = self.request.user.is_staff or self.request.user == self.contest.organizer
         show_jury_breakdown = (
             self.request.user.is_staff
             or self.request.user == self.contest.organizer
@@ -74,6 +91,9 @@ class ContestLeaderboardView(LeaderboardAccessMixin, TemplateView):
             show_jury_breakdown=show_jury_breakdown,
             can_view_missing=can_view_missing,
             overall_missing=LeaderboardComputer.get_missing_scores(self.contest),
+            search_query=query,
+            complete_filter=complete_filter,
+            page_query_prefix=f"{page_query}&" if page_query else "",
         )
 
 
@@ -210,7 +230,18 @@ class AdminLeaderboardDashboardView(AdminPermissionMixin, TemplateView):
         submitted = JuryScore.objects.filter(contest=self.contest).count()
         progress_percent = 0 if total_expected == 0 else min(100, round(submitted * 100.0 / total_expected, 2))
         missing_scores = LeaderboardComputer.get_missing_scores(self.contest)
-        raw_entries = LeaderboardEntry.objects.filter(contest=self.contest).select_related("team").order_by("rank", "team__name")
+        query = self.request.GET.get("q", "").strip()
+        complete_filter = self.request.GET.get("complete", "")
+        raw_entries = LeaderboardEntry.objects.filter(contest=self.contest).select_related("team")
+        if query:
+            raw_entries = raw_entries.filter(team__name__icontains=query)
+        if complete_filter == "yes":
+            raw_entries = raw_entries.filter(computation_complete=True)
+        elif complete_filter == "no":
+            raw_entries = raw_entries.filter(computation_complete=False)
+        else:
+            complete_filter = ""
+        raw_entries = raw_entries.order_by("rank", "team__name")
         entries_data = [
             {
                 "entry": entry,
@@ -223,6 +254,9 @@ class AdminLeaderboardDashboardView(AdminPermissionMixin, TemplateView):
         paginator = Paginator(entries_data, 25)
         page_number = self.request.GET.get('page', 1)
         page_obj = paginator.get_page(page_number)
+        page_query = urlencode(
+            {key: value for key, value in {"q": query, "complete": complete_filter}.items() if value}
+        )
 
         return super().get_context_data(
             contest=self.contest,
@@ -234,6 +268,9 @@ class AdminLeaderboardDashboardView(AdminPermissionMixin, TemplateView):
             missing_scores=missing_scores,
             entries=page_obj,
             show_jury_breakdown_to_participants=phase.show_jury_breakdown_to_participants,
+            search_query=query,
+            complete_filter=complete_filter,
+            page_query_prefix=f"{page_query}&" if page_query else "",
         )
 
 

@@ -300,7 +300,33 @@ class DashboardView(RedirectToRegisterMixin, TemplateView):
             ).exclude(status=Contest.Status.DRAFT).distinct()
         else:
             contests = Contest.objects.none()
-        return super().get_context_data(contests=contests, **kwargs)
+
+        query = self.request.GET.get("q", "").strip()
+        status_filter = self.request.GET.get("status", "").upper()
+        valid_statuses = {choice for choice, _ in Contest.Status.choices}
+
+        if query:
+            contests = contests.filter(
+                Q(name__icontains=query)
+                | Q(description__icontains=query)
+                | Q(format__icontains=query)
+                | Q(organizer__username__icontains=query)
+            )
+
+        if status_filter in valid_statuses:
+            contests = contests.filter(status=status_filter)
+        else:
+            status_filter = ""
+
+        contests = contests.order_by("-start_date", "name")
+
+        return super().get_context_data(
+            contests=contests,
+            search_query=query,
+            status_filter=status_filter,
+            status_choices=Contest.Status.choices,
+            **kwargs,
+        )
 
 
 class SettingsView(RedirectToRegisterMixin, View):

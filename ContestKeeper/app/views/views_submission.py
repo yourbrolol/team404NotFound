@@ -1,4 +1,5 @@
 from django.contrib import messages
+from django.db.models import Count, Q
 from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -177,11 +178,49 @@ class RoundSubmissionsListView(OrganizerOrJuryMixin, ListView):
                 if assignments.exists():
                     assigned_teams = assignments.values_list('team_id', flat=True)
                     qs = qs.filter(team_id__in=assigned_teams)
-                    
-        return qs.order_by("-submitted_at")
+
+        query = self.request.GET.get("q", "").strip()
+        demo_filter = self.request.GET.get("demo", "")
+        evaluated_filter = self.request.GET.get("evaluated", "")
+
+        if query:
+            qs = qs.filter(
+                Q(team__name__icontains=query)
+                | Q(description__icontains=query)
+                | Q(github_url__icontains=query)
+                | Q(video_url__icontains=query)
+                | Q(live_demo_url__icontains=query)
+            )
+
+        if demo_filter == "yes":
+            qs = qs.exclude(live_demo_url="")
+        elif demo_filter == "no":
+            qs = qs.filter(live_demo_url="")
+        else:
+            demo_filter = ""
+
+        score_filter = Q(team__jury_scores__contest=self.contest)
+        if self.contest.jurys.filter(pk=user.pk).exists() and not (user.is_staff or is_organizer):
+            score_filter &= Q(team__jury_scores__jury_member=user)
+
+        qs = qs.annotate(score_count=Count("team__jury_scores", filter=score_filter, distinct=True))
+        if evaluated_filter == "yes":
+            qs = qs.filter(score_count__gt=0)
+        elif evaluated_filter == "no":
+            qs = qs.filter(score_count=0)
+        else:
+            evaluated_filter = ""
+
+        self.search_query = query
+        self.demo_filter = demo_filter
+        self.evaluated_filter = evaluated_filter
+        return qs.select_related("team").order_by("-submitted_at")
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context["contest"] = self.contest
         context["round"] = self.round
+        context["search_query"] = getattr(self, "search_query", "")
+        context["demo_filter"] = getattr(self, "demo_filter", "")
+        context["evaluated_filter"] = getattr(self, "evaluated_filter", "")
         return context
