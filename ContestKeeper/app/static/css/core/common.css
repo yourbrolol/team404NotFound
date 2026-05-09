@@ -494,6 +494,44 @@ select:focus {
   font-weight: 500;
 }
 
+.autosave-status {
+  display: inline-flex;
+  align-items: center;
+  align-self: flex-start;
+  gap: 0.45rem;
+  min-height: 2rem;
+  margin: 0.25rem 0 1rem;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--bg-slate-tint);
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+.autosave-status::before {
+  content: "";
+  width: 0.45rem;
+  height: 0.45rem;
+  border-radius: 999px;
+  background: currentColor;
+}
+
+.autosave-status[data-state="saved"],
+.autosave-status[data-state="restored"] {
+  background: var(--bg-success-tint);
+  border-color: rgba(var(--success-rgb), 0.3);
+  color: var(--success);
+}
+
+.autosave-status[data-state="dirty"],
+.autosave-status[data-state="warning"] {
+  background: var(--bg-warning-tint);
+  border-color: rgba(var(--warning-rgb), 0.3);
+  color: var(--warning);
+}
+
 /* ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
    Tablet  (≤ 900px)
    ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━ */

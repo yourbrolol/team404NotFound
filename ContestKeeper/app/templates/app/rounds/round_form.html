@@ -26,8 +26,15 @@
                 </div>
             {% endif %}
 
-            <form method="post" class="form-001">
+            <form method="post" class="form-001"
+                  data-autosave="true"
+                  data-autosave-key="round:{{ request.path }}"
+                  data-autosave-saved="{% trans 'Draft saved' %}"
+                  data-autosave-restored="{% trans 'Draft restored' %}"
+                  data-autosave-dirty="{% trans 'Unsaved changes' %}"
+                  data-autosave-unavailable="{% trans 'Autosave unavailable' %}">
                 {% csrf_token %}
+                <div class="autosave-status" data-autosave-status aria-live="polite" hidden></div>
 
                 <div>
                     <label for="title">{% trans "Title *" %}</label>
@@ -99,6 +106,7 @@
 {% endblock %}
 
 {% block extra_js %}
+<script src="{% static 'js/form_autosave.js' %}"></script>
 <script>
         // Parse must_have from textarea and convert to JSON array
         document.querySelector('form').addEventListener('submit', function(e) {

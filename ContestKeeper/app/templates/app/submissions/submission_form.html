@@ -25,8 +25,15 @@
                 <p class="p-001">{% trans "Fill in the details below. You can update your submission anytime before the deadline." %}</p>
             </div>
 
-            <form method="post">
+            <form method="post"
+                  data-autosave="true"
+                  data-autosave-key="submission:{{ request.path }}"
+                  data-autosave-saved="{% trans 'Draft saved' %}"
+                  data-autosave-restored="{% trans 'Draft restored' %}"
+                  data-autosave-dirty="{% trans 'Unsaved changes' %}"
+                  data-autosave-unavailable="{% trans 'Autosave unavailable' %}">
                 {% csrf_token %}
+                <div class="autosave-status" data-autosave-status aria-live="polite" hidden></div>
                 
                 {% if form.non_field_errors %}
                     <div class="alert alert-danger mb-4">
@@ -92,4 +99,8 @@
         </div>
     </div>
 </div>
+{% endblock %}
+
+{% block extra_js %}
+<script src="{% static 'js/form_autosave.js' %}"></script>
 {% endblock %}

@@ -2682,6 +2682,30 @@ msgstr "Фільтрувати за статусом обчислення"
 msgid "All completion states"
 msgstr "Усі стани завершення"
 
+#: app/templates/app/contests/contest_form.html:20
+#: app/templates/app/rounds/round_form.html:31
+#: app/templates/app/submissions/submission_form.html:35
+msgid "Draft saved"
+msgstr "Чернетку збережено"
+
+#: app/templates/app/contests/contest_form.html:21
+#: app/templates/app/rounds/round_form.html:32
+#: app/templates/app/submissions/submission_form.html:36
+msgid "Draft restored"
+msgstr "Чернетку відновлено"
+
+#: app/templates/app/contests/contest_form.html:22
+#: app/templates/app/rounds/round_form.html:33
+#: app/templates/app/submissions/submission_form.html:37
+msgid "Unsaved changes"
+msgstr "Незбережені зміни"
+
+#: app/templates/app/contests/contest_form.html:23
+#: app/templates/app/rounds/round_form.html:34
+#: app/templates/app/submissions/submission_form.html:38
+msgid "Autosave unavailable"
+msgstr "Автозбереження недоступне"
+
 #~ msgid "Del"
 #~ msgstr "Подробиці"
 
