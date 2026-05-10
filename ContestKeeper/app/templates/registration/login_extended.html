@@ -22,36 +22,6 @@
         <div class="blob blob-2"></div>
     </div>
 
-    <div class="auth-language-switcher">
-        <button type="button" class="auth-theme-toggle" id="authThemeToggle" aria-label="{% trans 'Toggle theme' %}">
-            <svg id="authThemeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="12" cy="12" r="5"></circle>
-                <line x1="12" y1="1" x2="12" y2="3"></line>
-                <line x1="12" y1="21" x2="12" y2="23"></line>
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
-                <line x1="1" y1="12" x2="3" y2="12"></line>
-                <line x1="21" y1="12" x2="23" y2="12"></line>
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
-            </svg>
-            <span id="authThemeText">{% trans "Light Mode" %}</span>
-        </button>
-        <form action="{% url 'set_language' %}" method="post" class="auth-language-form">
-            {% csrf_token %}
-            <input name="next" type="hidden" value="{{ request.get_full_path }}">
-            <select name="language" onchange="this.form.submit()" class="auth-language-select" aria-label="{% trans 'Select language' %}">
-                {% get_available_languages as LANGUAGES %}
-                {% get_language_info_list for LANGUAGES as languages %}
-                {% for language in languages %}
-                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
-                        {{ language.name_local }} ({{ language.code }})
-                    </option>
-                {% endfor %}
-            </select>
-        </form>
-    </div>
 
     <main class="auth-card">
         <!-- Left Column: Branding -->
@@ -145,6 +115,37 @@
             <p class="auth-footer">
                 {% trans "Want to register as a Participant?" %} <a href="{% url 'register' %}">{% trans "Click here" %}</a>
             </p>
+
+            <div class="auth-language-switcher">
+                <button type="button" class="auth-theme-toggle" id="authThemeToggle" aria-label="{% trans 'Toggle theme' %}">
+                    <svg id="authThemeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                         stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <span id="authThemeText">{% trans "Light Mode" %}</span>
+                </button>
+                <form action="{% url 'set_language' %}" method="post" class="auth-language-form">
+                    {% csrf_token %}
+                    <input name="next" type="hidden" value="{{ request.get_full_path }}">
+                    <select name="language" onchange="this.form.submit()" class="auth-language-select" aria-label="{% trans 'Select language' %}">
+                        {% get_available_languages as LANGUAGES %}
+                        {% get_language_info_list for LANGUAGES as languages %}
+                        {% for language in languages %}
+                            <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                                {{ language.name_local }} ({{ language.code }})
+                            </option>
+                        {% endfor %}
+                    </select>
+                </form>
+            </div>
         </section>
     </main>
     <script>
