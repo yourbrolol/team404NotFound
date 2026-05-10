@@ -1,3 +1,4 @@
+from django.core.paginator import Paginator
 from django.db.models import Q
 from django.shortcuts import redirect, render
 from django.urls import reverse
@@ -68,15 +69,32 @@ def error_500_view(request):
 
 class HomeView(RedirectToRegisterMixin, TemplateView):
     template_name = "app/core/index.html"
+    paginate_by = 4
 
     def get_context_data(self, **kwargs):
         contests = Contest.objects.exclude(status=Contest.Status.DRAFT)
+        
+        query = self.request.GET.get("q", "").strip()
         status_filter = self.request.GET.get("status", "").upper()
         valid_statuses = {choice for choice, _ in Contest.Status.choices if choice != Contest.Status.DRAFT}
+        
+        if query:
+            contests = contests.filter(
+                Q(name__icontains=query) |
+                Q(description__icontains=query)
+            )
+
         if status_filter in valid_statuses:
             contests = contests.filter(status=status_filter)
         else:
             status_filter = ""
+
+        contests = contests.order_by("start_date", "name")
+        
+        # Pagination
+        page_number = self.request.GET.get("page")
+        paginator = Paginator(contests, self.paginate_by)
+        page_obj = paginator.get_page(page_number)
 
         user_contest = None
         user_team = None
@@ -115,7 +133,9 @@ class HomeView(RedirectToRegisterMixin, TemplateView):
                 )
 
         return super().get_context_data(
-            contests=contests.order_by("start_date", "name"),
+            contests=page_obj,
+            page_obj=page_obj,
+            search_query=query,
             status_filter=status_filter,
             status_choices=[choice for choice in Contest.Status.choices if choice[0] != Contest.Status.DRAFT],
             user_contest=user_contest,

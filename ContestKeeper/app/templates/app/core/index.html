@@ -60,12 +60,30 @@
 <section class="home-contests-section">
     <div class="home-section-header">
         <h2 class="section-title">{% trans "All Contests" %}</h2>
-        <div class="filter-bar">
-            <a href="{% url 'home' %}" class="filter-btn {% if not status_filter %}active{% endif %}">{% trans "All" %}</a>
-            {% for value, label in status_choices %}
-            <a href="{% url 'home' %}?status={{ value }}"
-                class="filter-btn {% if status_filter == value %}active{% endif %}">{{ label }}</a>
-            {% endfor %}
+        <div class="header-controls">
+            <form method="get" action="{% url 'home' %}" class="search-form">
+                <div class="search-input-wrapper">
+                    <input type="text" name="q" value="{{ search_query }}" placeholder="{% trans 'Search contests...' %}" class="search-input">
+                    {% if search_query %}
+                    <a href="{% url 'home' %}?status={{ status_filter }}" class="clear-search">
+                        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+                    </a>
+                    {% endif %}
+                    <button type="submit" class="search-btn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+                    </button>
+                </div>
+                {% if status_filter %}
+                <input type="hidden" name="status" value="{{ status_filter }}">
+                {% endif %}
+            </form>
+            <div class="filter-bar">
+                <a href="{% url 'home' %}{% if search_query %}?q={{ search_query }}{% endif %}" class="filter-btn {% if not status_filter %}active{% endif %}">{% trans "All" %}</a>
+                {% for value, label in status_choices %}
+                <a href="{% url 'home' %}?status={{ value }}{% if search_query %}&q={{ search_query }}{% endif %}"
+                    class="filter-btn {% if status_filter == value %}active{% endif %}">{{ label }}</a>
+                {% endfor %}
+            </div>
         </div>
     </div>
     <div class="contest-grid">
@@ -100,9 +118,43 @@
                     <line x1="9" y1="15" x2="15" y2="15"></line>
                 </svg>
             </div>
-            <p>{% if status_filter %}{% trans "No contests match this filter yet." %}{% else %}{% trans "No contests available yet." %}{% endif %}</p>
+            <p>{% if search_query or status_filter %}{% trans "No contests match your search." %}{% else %}{% trans "No contests available yet." %}{% endif %}</p>
         </div>
         {% endfor %}
     </div>
+
+    {% if page_obj.has_other_pages %}
+    <nav class="pagination">
+        {% if page_obj.has_previous %}
+        <a href="?page={{ page_obj.previous_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </a>
+        {% else %}
+        <span class="pagination-btn disabled">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+        </span>
+        {% endif %}
+
+        <div class="pagination-pages">
+            {% for i in page_obj.paginator.page_range %}
+                {% if page_obj.number == i %}
+                <span class="pagination-page active">{{ i }}</span>
+                {% elif i > page_obj.number|add:'-3' and i < page_obj.number|add:'3' %}
+                <a href="?page={{ i }}{% if search_query %}&q={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-page">{{ i }}</a>
+                {% endif %}
+            {% endfor %}
+        </div>
+
+        {% if page_obj.has_next %}
+        <a href="?page={{ page_obj.next_page_number }}{% if search_query %}&q={{ search_query }}{% endif %}{% if status_filter %}&status={{ status_filter }}{% endif %}" class="pagination-btn">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </a>
+        {% else %}
+        <span class="pagination-btn disabled">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+        </span>
+        {% endif %}
+    </nav>
+    {% endif %}
 </section>
 {% endblock %}
