@@ -9,6 +9,7 @@ urlpatterns = [
     path("apply-role/success/", views.RoleApplicationSuccessView.as_view(), name="role_application_success"),
     path("profile/", views.ProfileView.as_view(), name="profile"),
     path("settings/", views.SettingsView.as_view(), name="settings"),
+    path("change-password/", views.CustomPasswordChangeView.as_view(), name="change_password"),
     path("contests/", include("app.urls.contest_urls")),
     path("applications/", include("app.urls.application_urls")),
     path("notifications/", views.NotificationListView.as_view(), name="notification_list"),

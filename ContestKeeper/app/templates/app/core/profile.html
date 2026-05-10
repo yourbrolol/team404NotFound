@@ -107,6 +107,33 @@
                 </div>
             </section>
 
+            <!-- Security Section -->
+            <section class="settings-card">
+                <div class="settings-card__header">
+                    <div class="settings-card__icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                            <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+                        </svg>
+                    </div>
+                    <div>
+                        <h2 class="settings-card__title">{% trans "Security" %}</h2>
+                        <p class="settings-card__subtitle">{% trans "Manage your account protection" %}</p>
+                    </div>
+                </div>
+
+                <div class="settings-fields">
+                    <div class="form-group">
+                        <label class="form-label">{% trans "Password" %}</label>
+                        <div class="inline-value-row">
+                            <div class="form-input div-005">••••••••••••</div>
+                            <a href="{% url 'change_password' %}" class="btn btn-secondary">{% trans "Change Password" %}</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
             <!-- Account Info Section -->
             <section class="settings-card">
                 <div class="settings-card__header">

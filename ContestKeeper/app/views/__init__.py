@@ -15,7 +15,7 @@ from .views_analytics import (
     ScheduleEventDeleteView,
     ScheduleView,
 )
-from .views_auth import RegisterView, RoleApplicationView, RoleApplicationSuccessView
+from .views_auth import RegisterView, RoleApplicationView, RoleApplicationSuccessView, CustomPasswordChangeView
 from .views_leaderboard import (
     AdminExportLeaderboardView,
     AdminFinishEvaluationView,
