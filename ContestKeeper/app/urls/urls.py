@@ -5,6 +5,8 @@ urlpatterns = [
     path("", views.HomeView.as_view(), name="home"),
     path("dashboard/", views.DashboardView.as_view(), name="dashboard"),
     path("register/", views.RegisterView.as_view(), name="register"),
+    path("apply-role/", views.RoleApplicationView.as_view(), name="role_application"),
+    path("apply-role/success/", views.RoleApplicationSuccessView.as_view(), name="role_application_success"),
     path("profile/", views.ProfileView.as_view(), name="profile"),
     path("settings/", views.SettingsView.as_view(), name="settings"),
     path("contests/", include("app.urls.contest_urls")),

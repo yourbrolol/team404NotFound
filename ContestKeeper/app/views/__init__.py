@@ -15,7 +15,7 @@ from .views_analytics import (
     ScheduleEventDeleteView,
     ScheduleView,
 )
-from .views_auth import RegisterView
+from .views_auth import RegisterView, RoleApplicationView, RoleApplicationSuccessView
 from .views_leaderboard import (
     AdminExportLeaderboardView,
     AdminFinishEvaluationView,
@@ -127,6 +127,8 @@ __all__ = [
     "JuryEvaluationView",
     "AssignJuryView",
     "RegisterView",
+    "RoleApplicationView",
+    "RoleApplicationSuccessView",
     "NotificationListView",
     "MarkNotificationReadView",
     "MarkAllReadView",

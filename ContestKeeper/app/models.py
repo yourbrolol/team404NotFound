@@ -129,6 +129,31 @@ class Application(models.Model):
         return f"{self.user.username} - {self.contest.name} ({self.application_type})"
 
 
+class RoleApplication(models.Model):
+    class Status(models.TextChoices):
+        PENDING = "PENDING", _("Pending")
+        APPROVED = "APPROVED", _("Approved")
+        REJECTED = "REJECTED", _("Rejected")
+
+    username = models.CharField(_("Username"), max_length=20, unique=True)
+    email = models.EmailField(_("Email"))
+    first_name = models.CharField(_("First Name"), max_length=100)
+    last_name = models.CharField(_("Last Name"), max_length=100)
+    password = models.CharField(_("Password"), max_length=128)
+    desired_role = models.CharField(
+        _("Desired Role"),
+        max_length=20,
+        choices=[(User.Role.ORGANIZER, _("Organizer")), (User.Role.JURY, _("Jury"))]
+    )
+    reason = models.TextField(_("Why do you want to join?"))
+    experience = models.TextField(_("Relevant experience"))
+    status = models.CharField(_("Status"), max_length=20, choices=Status.choices, default=Status.PENDING)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.username} - {self.desired_role} ({self.status})"
+
+
 class ScoringCriterion(models.Model):
     class AggregationType(models.TextChoices):
         SUM = "SUM", _("Sum")

@@ -1,0 +1,59 @@
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ request.COOKIES.theme|default:'dark' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Application Submitted" %} - ContestKeeper</title>
+    <script>
+        (function() {
+            const saved = localStorage.getItem('theme') || document.documentElement.getAttribute('data-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+        })();
+    </script>
+    <link rel="stylesheet" href="{% static 'fonts/origin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core/register.css' %}">
+    <style>
+        .success-content {
+            text-align: center;
+            padding: 2rem;
+        }
+        .success-icon {
+            font-size: 4rem;
+            color: var(--color-success, #10b981);
+            margin-bottom: 1.5rem;
+        }
+        .success-title {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+            color: var(--text-primary);
+        }
+        .success-description {
+            color: var(--text-secondary);
+            margin-bottom: 2rem;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body class="auth-body">
+    <div class="auth-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <main class="auth-card" style="max-width: 600px; margin: 100px auto;">
+        <section class="success-content">
+            <div class="success-icon">✓</div>
+            <h1 class="success-title">{% trans "Application Submitted!" %}</h1>
+            <p class="success-description">
+                {% trans "Thank you for your interest in joining ContestKeeper as a specialized member. Your application has been received and is currently in the review queue." %}
+                <br><br>
+                {% trans "Our administrators will review your profile and get back to you via email once a decision is made. This usually takes 1-3 business days." %}
+            </p>
+            <a href="{% url 'login' %}" class="btn-auth" style="display: inline-block; text-decoration: none;">{% trans "Back to Login" %}</a>
+        </section>
+    </main>
+</body>
+</html>

@@ -92,7 +92,8 @@
             </form>
 
             <p class="auth-footer">
-                {% trans "Don't have an account yet?" %} <a href="{% url 'register' %}">{% trans "Create one today" %}</a>
+                {% trans "Don't have an account yet?" %} <a href="{% url 'register' %}">{% trans "Create one today" %}</a><br>
+                {% trans "Applying as Jury or Organizer?" %} <a href="{% url 'role_application' %}">{% trans "Use specialized registration" %}</a>
             </p>
         </section>
     </main>

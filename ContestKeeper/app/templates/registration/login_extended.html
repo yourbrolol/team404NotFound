@@ -1,0 +1,172 @@
+{% load static i18n %}
+{% get_current_language as LANGUAGE_CODE %}
+<!DOCTYPE html>
+<html lang="{{ LANGUAGE_CODE }}" data-theme="{{ request.COOKIES.theme|default:'dark' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% trans "Role Application" %} - ContestKeeper</title>
+    <script>
+        (function() {
+            const saved = localStorage.getItem('theme') || document.documentElement.getAttribute('data-theme') || 'dark';
+            document.documentElement.setAttribute('data-theme', saved);
+        })();
+    </script>
+    <link rel="stylesheet" href="{% static 'fonts/origin.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core/common.css' %}">
+    <link rel="stylesheet" href="{% static 'css/core/register.css' %}">
+</head>
+<body class="auth-body">
+    <div class="auth-bg-blobs">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+    </div>
+
+    <div class="auth-language-switcher">
+        <button type="button" class="auth-theme-toggle" id="authThemeToggle" aria-label="{% trans 'Toggle theme' %}">
+            <svg id="authThemeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                 stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="12" cy="12" r="5"></circle>
+                <line x1="12" y1="1" x2="12" y2="3"></line>
+                <line x1="12" y1="21" x2="12" y2="23"></line>
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                <line x1="1" y1="12" x2="3" y2="12"></line>
+                <line x1="21" y1="12" x2="23" y2="12"></line>
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+            </svg>
+            <span id="authThemeText">{% trans "Light Mode" %}</span>
+        </button>
+        <form action="{% url 'set_language' %}" method="post" class="auth-language-form">
+            {% csrf_token %}
+            <input name="next" type="hidden" value="{{ request.get_full_path }}">
+            <select name="language" onchange="this.form.submit()" class="auth-language-select" aria-label="{% trans 'Select language' %}">
+                {% get_available_languages as LANGUAGES %}
+                {% get_language_info_list for LANGUAGES as languages %}
+                {% for language in languages %}
+                    <option value="{{ language.code }}"{% if language.code == LANGUAGE_CODE %} selected{% endif %}>
+                        {{ language.name_local }} ({{ language.code }})
+                    </option>
+                {% endfor %}
+            </select>
+        </form>
+    </div>
+
+    <main class="auth-card">
+        <!-- Left Column: Branding -->
+        <section class="auth-info">
+            <div class="auth-logo">ContestKeeper</div>
+            <h2>{% trans "Apply for a specialized role." %}</h2>
+            <p>{% trans "Are you an expert looking to judge or an organization ready to host? Apply here for JURY or ORGANIZER roles. Your application will be reviewed by our staff." %}</p>
+        </section>
+
+        <!-- Right Column: Form -->
+        <section class="auth-form-container">
+            <h1>{% trans "Specialized Registration" %}</h1>
+            
+            {% if form.errors and not form.non_field_errors %}
+            <div class="auth-error-msg">
+                {% trans "Please correct the details below to continue." %}
+            </div>
+            {% endif %}
+
+            {% if form.non_field_errors %}
+            <div class="auth-error-msg">
+                {% for error in form.non_field_errors %}
+                {{ error }}
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <form method="post" action="{% url 'role_application' %}" class="auth-form">
+                {% csrf_token %}
+                
+                <div class="auth-form-grid">
+                    <div class="form-group">
+                        <label for="{{ form.username.id_for_label }}" class="form-label">{% trans "Username" %}</label>
+                        {{ form.username }}
+                        {% if form.username.errors %}<span class="field-error">{{ form.username.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.email.id_for_label }}" class="form-label">{% trans "Email Address" %}</label>
+                        {{ form.email }}
+                        {% if form.email.errors %}<span class="field-error">{{ form.email.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="auth-form-grid">
+                    <div class="form-group">
+                        <label for="{{ form.first_name.id_for_label }}" class="form-label">{% trans "First Name" %}</label>
+                        {{ form.first_name }}
+                        {% if form.first_name.errors %}<span class="field-error">{{ form.first_name.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.last_name.id_for_label }}" class="form-label">{% trans "Last Name" %}</label>
+                        {{ form.last_name }}
+                        {% if form.last_name.errors %}<span class="field-error">{{ form.last_name.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="auth-form-grid">
+                    <div class="form-group">
+                        <label for="{{ form.password.id_for_label }}" class="form-label">{% trans "Password" %}</label>
+                        {{ form.password }}
+                        {% if form.password.errors %}<span class="field-error">{{ form.password.errors.0 }}</span>{% endif %}
+                    </div>
+                    <div class="form-group">
+                        <label for="{{ form.confirm_password.id_for_label }}" class="form-label">{% trans "Confirm Password" %}</label>
+                        {{ form.confirm_password }}
+                        {% if form.confirm_password.errors %}<span class="field-error">{{ form.confirm_password.errors.0 }}</span>{% endif %}
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.desired_role.id_for_label }}" class="form-label">{% trans "Desired Role" %}</label>
+                    {{ form.desired_role }}
+                    {% if form.desired_role.errors %}<span class="field-error">{{ form.desired_role.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.reason.id_for_label }}" class="form-label">{% trans "Why do you want to join?" %}</label>
+                    {{ form.reason }}
+                    {% if form.reason.errors %}<span class="field-error">{{ form.reason.errors.0 }}</span>{% endif %}
+                </div>
+
+                <div class="form-group">
+                    <label for="{{ form.experience.id_for_label }}" class="form-label">{% trans "Relevant experience" %}</label>
+                    {{ form.experience }}
+                    {% if form.experience.errors %}<span class="field-error">{{ form.experience.errors.0 }}</span>{% endif %}
+                </div>
+
+                <button type="submit" class="btn-auth">{% trans "Submit Application" %}</button>
+            </form>
+
+            <p class="auth-footer">
+                {% trans "Want to register as a Participant?" %} <a href="{% url 'register' %}">{% trans "Click here" %}</a>
+            </p>
+        </section>
+    </main>
+    <script>
+        (function() {
+            const toggle = document.getElementById('authThemeToggle');
+            const text = document.getElementById('authThemeText');
+            const root = document.documentElement;
+
+            function updateThemeLabel(theme) {
+                text.textContent = theme === 'light' ? "{% trans 'Dark Mode' %}" : "{% trans 'Light Mode' %}";
+            }
+
+            updateThemeLabel(root.getAttribute('data-theme') || 'dark');
+
+            toggle.addEventListener('click', function() {
+                const next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                root.setAttribute('data-theme', next);
+                localStorage.setItem('theme', next);
+                document.cookie = "theme=" + next + "; path=/; max-age=31536000";
+                updateThemeLabel(next);
+            });
+        })();
+    </script>
+</body>
+</html>

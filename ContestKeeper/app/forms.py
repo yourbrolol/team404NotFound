@@ -3,7 +3,7 @@ from django.contrib.auth import get_user_model
 from django.contrib.auth.forms import UserCreationForm
 from django.utils import timezone
 from django.utils.translation import gettext_lazy as _
-from app.models import Contest, User, Announcement, ScheduleEvent, Submission, Team, ScoringCriterion
+from app.models import Contest, User, Announcement, ScheduleEvent, Submission, Team, ScoringCriterion, RoleApplication
 
 class UserRegistrationForm(UserCreationForm):
     class Meta:
@@ -153,3 +153,35 @@ class JuryEvaluationForm(forms.Form):
                     'weight': criterion.weight
                 }
             )
+
+
+class RoleApplicationForm(forms.ModelForm):
+    password = forms.CharField(
+        label=_("Password"),
+        widget=forms.PasswordInput(attrs={"class": "form-input", "placeholder": _("Your password")})
+    )
+    confirm_password = forms.CharField(
+        label=_("Confirm Password"),
+        widget=forms.PasswordInput(attrs={"class": "form-input", "placeholder": _("Confirm password")})
+    )
+
+    class Meta:
+        model = RoleApplication
+        fields = ("username", "email", "first_name", "last_name", "desired_role", "reason", "experience")
+        widgets = {
+            "username": forms.TextInput(attrs={"class": "form-input", "placeholder": _("Username")}),
+            "email": forms.EmailInput(attrs={"class": "form-input", "placeholder": _("Email")}),
+            "first_name": forms.TextInput(attrs={"class": "form-input", "placeholder": _("First Name")}),
+            "last_name": forms.TextInput(attrs={"class": "form-input", "placeholder": _("Last Name")}),
+            "desired_role": forms.Select(attrs={"class": "form-input"}),
+            "reason": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": _("Why do you want to join?")}),
+            "experience": forms.Textarea(attrs={"class": "form-input", "rows": 3, "placeholder": _("Relevant experience")}),
+        }
+
+    def clean(self):
+        cleaned_data = super().clean()
+        password = cleaned_data.get("password")
+        confirm_password = cleaned_data.get("confirm_password")
+        if password and confirm_password and password != confirm_password:
+            self.add_error("confirm_password", _("Passwords do not match."))
+        return cleaned_data

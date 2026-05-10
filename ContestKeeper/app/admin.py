@@ -19,6 +19,7 @@ from app.models import (
     Submission,
     Team,
     User,
+    RoleApplication,
 )
 
 @admin.register(User)
@@ -121,3 +122,37 @@ class SubmissionAdmin(admin.ModelAdmin):
     list_filter = ["round__contest", "round"]
     search_fields = ["team__name", "round__title"]
     readonly_fields = ["submitted_at", "updated_at"]
+
+
+@admin.register(RoleApplication)
+class RoleApplicationAdmin(admin.ModelAdmin):
+    list_display = ["username", "email", "desired_role", "status", "created_at"]
+    list_filter = ["status", "desired_role", "created_at"]
+    search_fields = ["username", "email", "first_name", "last_name"]
+    actions = ["approve_applications", "reject_applications"]
+
+    def approve_applications(self, request, queryset):
+        approved_count = 0
+        for app in queryset.filter(status=RoleApplication.Status.PENDING):
+            # Create user
+            # Note: password was already hashed in the view using make_password
+            User.objects.create(
+                username=app.username,
+                email=app.email,
+                first_name=app.first_name,
+                last_name=app.last_name,
+                password=app.password,
+                role=app.desired_role,
+                is_active=True
+            )
+            app.status = RoleApplication.Status.APPROVED
+            app.save()
+            approved_count += 1
+        
+        self.message_user(request, f"{approved_count} applications approved and users created.")
+    approve_applications.short_description = "Approve selected applications"
+
+    def reject_applications(self, request, queryset):
+        updated = queryset.filter(status=RoleApplication.Status.PENDING).update(status=RoleApplication.Status.REJECTED)
+        self.message_user(request, f"{updated} applications rejected.")
+    reject_applications.short_description = "Reject selected applications"
