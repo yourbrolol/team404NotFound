@@ -108,6 +108,9 @@ This document outlines the structured test data for the **ContestKeeper** projec
 | :--- | :--- | :--- | :--- |
 | **OldSchool** | `bold-eagle`, `fast_tiger` | Posted & Rated | 85/100 |
 | **PixelPioneers** | `silent-fox`, `clever_owl` | Posted & Rated | 92/100 |
+| **VGA_Warriors** | `brave-wolf`, `lazy_bear` | Posted & Rated | 78/100 |
+| **C64_Legends** | `mighty-lion`, `quick_hawk` | Posted & Rated | 81/100 |
+| **Terminal_Turtles** | `fierce-shark`, `gentle_deer` | Posted & Rated | 74/100 |
 
 ### 4.2 Running Contest: The AI Edge
 | Team Name | Members | Submission Status |
@@ -124,7 +127,60 @@ This document outlines the structured test data for the **ContestKeeper** projec
 
 ---
 
-## 5. Realistic Interaction Scenarios
+## 5. System Configuration & Engagement
+
+### 5.1 Scoring Criteria (Examples)
+| Contest | Criteria | Max Score | Weight |
+| :--- | :--- | :--- | :--- |
+| Retro Web Revival | Visual Aesthetics, Code Cleanliness, Historical Accuracy | 100 | 1.0 |
+| The AI Edge | Innovation, Model Accuracy, Technical Complexity | 100 | 1.0 |
+| Decentralized Future | Security, Smart Contract Logic, UI/UX | 100 | 1.0 |
+
+### 5.2 Announcements (By Contest)
+- **Retro Web Revival:**
+    - "Winners Announced!" - Final leaderboard update.
+    - "Final Review in Progress" - Status update during judging.
+- **Python Efficiency Sprint:**
+    - "Leaderboard Finalized" - Final scores posted.
+    - "Check your feedback" - Instructions for viewing jury notes.
+- **The AI Edge:**
+    - "Halfway Point Reached!" - Pinned motivation.
+    - "New Dataset Released" - Technical update.
+    - "Server Maintenance" - Operational notification.
+- **Decentralized Future:**
+    - "Security First!" - Best practices reminder.
+    - "Round 1 Checklist" - Requirement validation.
+- **Global Green Tech:**
+    - "Registration Open!" - Call for participants.
+    - "Mentorship Program" - Special initiative announcement.
+
+### 5.3 Detailed Contest Schedules
+| Contest | Event | Type | Timing (Offset) |
+| :--- | :--- | :--- | :--- |
+| **Retro Web Revival** | Opening Ceremony | OTHER | Start + 0h |
+| | Code Jam Phase | ROUND | Start + 2h |
+| | Submission Deadline | DEADLINE | Start + 160h |
+| | Award Ceremony | OTHER | Start + 180h |
+| **Python Efficiency** | Kickoff Webinar | WORKSHOP | Start + 0h |
+| | Coding Phase | ROUND | Start + 1h |
+| | Final Push (24h) | DEADLINE | Start + 96h |
+| **The AI Edge** | ML Workshop | WORKSHOP | Start + 24h |
+| | Data Science Q&A | OTHER | Start + 48h |
+| **Decentralized Future**| Smart Contract Audit | WORKSHOP | Start + 12h |
+| | Web3 Networking | OTHER | Start + 36h |
+| **Global Green Tech** | Launch Event | OTHER | Start + 0h |
+| | Sustainability Webinar| WORKSHOP | Start + 48h |
+
+### 5.4 Administrative Applications
+- **Role Applications:** 
+    - `new_judge_alex` (JURY): **PENDING**. Reason: "I have judge 5 hackathons before."
+    - `bad_actor` (ORGANIZER): **REJECTED**. Reason: "I want to mess things up."
+- **Contest Applications:**
+    - `lazy_bear` applying for "Global Green Tech": **PENDING**.
+
+---
+
+## 6. Realistic Interaction Scenarios
 
 1.  **Cross-Contest Participation:** 
     - `bold-eagle` finished "Retro Web Revival" in mid-April and is now waiting for "Global Green Tech" registration to end.
