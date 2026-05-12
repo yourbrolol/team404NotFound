@@ -1,0 +1,70 @@
+.success-content {
+    text-align: center;
+    /* padding: 2rem; */
+    padding: 4rem 2rem;
+    animation: fade-up 0.8s ease-out forwards;
+}
+
+.success-icon {
+    font-size: 5rem;
+    color: var(--success);
+    margin-bottom: 1.5rem;
+    display: inline-block;
+    animation: scale-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.success-title {
+    font-size: 2.25rem;
+    margin-bottom: 1.25rem;
+    color: var(--text-main);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+}
+
+.success-description {
+    color: var(--text-muted);
+    margin-bottom: 2.5rem;
+    line-height: 1.8;
+    font-size: 1.1rem;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.auth-card {
+    max-width: 600px;
+    display: block;
+    min-height: auto;
+}
+
+.btn-auth {
+    display: inline-block;
+    text-decoration: none;
+    width: auto;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes scale-in {
+    from {
+        opacity: 0;
+        transform: scale(0.5);
+    }
+
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
