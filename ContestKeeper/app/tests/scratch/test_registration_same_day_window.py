@@ -1,13 +1,14 @@
 from datetime import timedelta
 
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 
 from app.models import Contest, Team, User
 
 
-class SameDayRegistrationWindowTest(TestCase):
+class SameDayRegistrationWindowTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(
             username='organizer_same_day',
@@ -32,7 +33,7 @@ class SameDayRegistrationWindowTest(TestCase):
             organizer=self.organizer,
             is_draft=False,
         )
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_same_day_registration_window_is_open(self):
         self.assertTrue(self.contest.is_registration_open)

@@ -1,7 +1,8 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -22,9 +23,10 @@ from app.models import (
 
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
-class BugfixRegressionTest(TestCase):
+class BugfixRegressionTest(BaseSecureTestCase):
     """TASK-01: Regression tests proving each critical bug is fixed."""
 
     def setUp(self):
@@ -53,7 +55,7 @@ class BugfixRegressionTest(TestCase):
         )
         self.team.participants.add(self.captain, self.member)
         self.contest.teams.add(self.team)
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     # ── Bug 1: OrganizerRequiredMixin — permission checked BEFORE view runs ──
 
@@ -296,5 +298,6 @@ class BugfixRegressionTest(TestCase):
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse

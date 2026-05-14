@@ -2,7 +2,8 @@
 Integration tests for ContestKeeper main user scenarios.
 """
 from datetime import timedelta
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -12,11 +13,11 @@ from app.models import Contest, Team, ScoringCriterion, LeaderboardEntry, Round,
 User = get_user_model()
 
 
-class ContestKeeperIntegrationTest(TestCase):
+class ContestKeeperIntegrationTest(BaseSecureTestCase):
     """TASK-33: Integration tests for core contest workflows."""
 
     def setUp(self):
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
         self.organizer = User.objects.create_user(
             username='organizer1',
             email='organizer1@test.com',

@@ -1,13 +1,13 @@
 from datetime import timedelta
 
-from django.test import TestCase
+from app.tests.base import BaseSecureTestCase
 from django.urls import reverse
 from django.utils import timezone
 
 from app.models import Contest, Round, Team, User
 
 
-class RoundDetailTemplateTest(TestCase):
+class RoundDetailTemplateTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(
             username="round_template_org",

@@ -1,5 +1,6 @@
 from datetime import timedelta
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -13,7 +14,7 @@ from app.models import (
 
 User = get_user_model()
 
-class FullWorkflowIntegrationTest(TestCase):
+class FullWorkflowIntegrationTest(BaseSecureTestCase):
     """
     End-to-end integration test (TASK-33) using views and simulated user actions.
     This test follows the "Golden Path" of a contest lifecycle.
@@ -38,11 +39,11 @@ class FullWorkflowIntegrationTest(TestCase):
         )
 
         # Clients for each user
-        self.org_client = Client()
-        self.jury_client = Client()
-        self.p1_client = Client()
-        self.p2_client = Client()
-        self.p3_client = Client()
+        self.org_client = self.client_class()
+        self.jury_client = self.client_class()
+        self.p1_client = self.client_class()
+        self.p2_client = self.client_class()
+        self.p3_client = self.client_class()
 
         self.org_client.login(username='org_admin', password='password')
         self.jury_client.login(username='jury_member', password='password')

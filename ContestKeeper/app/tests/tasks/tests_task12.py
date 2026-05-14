@@ -1,11 +1,12 @@
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone, translation
 from datetime import timedelta
 from decimal import Decimal
 from app.models import Contest, Round, Team, Submission, User, ScoringCriterion, JuryScore, JuryAssignment
 
-class JuryEvaluationTask12Test(TestCase):
+class JuryEvaluationTask12Test(BaseSecureTestCase):
     def setUp(self):
         translation.activate('en')
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
@@ -52,7 +53,7 @@ class JuryEvaluationTask12Test(TestCase):
             description='Test submission'
         )
         
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_jury_can_access_evaluation(self):
         self.client.force_login(self.jury)

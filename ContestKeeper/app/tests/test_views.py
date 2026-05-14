@@ -1,7 +1,8 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from django.utils.translation import override
@@ -23,11 +24,12 @@ from app.models import (
 
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
-class HomeViewTaskTest(TestCase):
+class HomeViewTaskTest(BaseSecureTestCase):
     def setUp(self):
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
         self.organizer = User.objects.create_user(username="home_org", password="password", role=User.Role.ORGANIZER)
         self.participant = User.objects.create_user(username="home_participant", password="password", role=User.Role.PARTICIPANT)
         now = timezone.now()
@@ -123,7 +125,7 @@ class HomeViewTaskTest(TestCase):
         self.assertNotContains(response, "Your current contest")
 
 
-class AuthLanguageSelectorTest(TestCase):
+class AuthLanguageSelectorTest(BaseSecureTestCase):
     def test_login_page_has_language_selector(self):
         response = self.client.get(reverse("login"))
 
@@ -161,9 +163,9 @@ class AuthLanguageSelectorTest(TestCase):
         self.assertContains(response, '<html lang="en" data-theme="light"')
 
 
-class ProfileViewTaskTest(TestCase):
+class ProfileViewTaskTest(BaseSecureTestCase):
     def setUp(self):
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
         self.organizer = User.objects.create_user(username="profile_org", password="password", role=User.Role.ORGANIZER)
         self.jury = User.objects.create_user(username="profile_jury", password="password", role=User.Role.JURY)
         self.participant = User.objects.create_user(username="profile_participant", password="password", role=User.Role.PARTICIPANT)

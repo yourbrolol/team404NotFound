@@ -1,5 +1,6 @@
 from decimal import Decimal
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -14,9 +15,9 @@ from app.models import (
     User,
 )
 
-class JuryPendingReviewsTest(TestCase):
+class JuryPendingReviewsTest(BaseSecureTestCase):
     def setUp(self):
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
         self.organizer = User.objects.create_user(username="org", password="password", role=User.Role.ORGANIZER)
         self.jury = User.objects.create_user(username="jury", password="password", role=User.Role.JURY)
         self.participant = User.objects.create_user(username="part", password="password", role=User.Role.PARTICIPANT)

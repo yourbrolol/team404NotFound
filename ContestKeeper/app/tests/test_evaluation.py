@@ -1,7 +1,8 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -21,7 +22,7 @@ from app.models import (
 )
 
 
-class EvaluationModelsTest(TestCase):
+class EvaluationModelsTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username="organizer", password="password", role=User.Role.ORGANIZER)
         self.jury_one = User.objects.create_user(username="jury1", password="password", role=User.Role.JURY)

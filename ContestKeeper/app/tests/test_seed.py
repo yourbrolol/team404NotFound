@@ -1,11 +1,11 @@
 from django.core.management import call_command
-from django.test import TestCase
+from app.tests.base import BaseSecureTestCase
 from django.contrib.auth import get_user_model
 from app.models import Contest, Team, Round, Submission, JuryAssignment, JuryScore, ScoringCriterion
 
 User = get_user_model()
 
-class SeedDataTest(TestCase):
+class SeedDataTest(BaseSecureTestCase):
     def test_seed_data_command(self):
         """Test that seed_data command populates the database correctly."""
         # Run the command

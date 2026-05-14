@@ -1,10 +1,11 @@
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone, translation
 from datetime import timedelta
 from app.models import Contest, Round, Team, Submission, User
 
-class SubmissionTask11Test(TestCase):
+class SubmissionTask11Test(BaseSecureTestCase):
     def setUp(self):
         translation.activate('en')
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
@@ -34,7 +35,7 @@ class SubmissionTask11Test(TestCase):
         self.contest.teams.add(self.team)
         self.contest.participants.add(self.captain)
         
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_submission_create_flow(self):
         self.client.force_login(self.captain)

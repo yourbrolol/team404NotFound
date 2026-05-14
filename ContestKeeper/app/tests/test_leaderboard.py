@@ -1,7 +1,8 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -23,9 +24,10 @@ from app.models import (
 
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
-class LeaderboardLogicTest(TestCase):
+class LeaderboardLogicTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
         self.jury = User.objects.create_user(username='jury', password='password', role=User.Role.JURY)
@@ -50,7 +52,7 @@ class LeaderboardLogicTest(TestCase):
             aggregation_type=ScoringCriterion.AggregationType.SUM,
             order=1,
         )
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_contest_leaderboard_not_available_before_completion(self):
         self.client.force_login(self.organizer)
@@ -74,7 +76,7 @@ class LeaderboardLogicTest(TestCase):
         self.assertEqual(entry.missing_scores[0]['jury_username'], self.jury.username)
 
 
-class LeaderboardHelperFunctionsTest(TestCase):
+class LeaderboardHelperFunctionsTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username="org_lb", password="password", role=User.Role.ORGANIZER)
         self.jury_one = User.objects.create_user(username="judge_a", password="password", role=User.Role.JURY)

@@ -1,10 +1,11 @@
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from app.models import Contest, User, Team
 from datetime import timedelta
 
-class LeaderboardAccessTest(TestCase):
+class LeaderboardAccessTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
         self.participant = User.objects.create_user(username='parti', password='password', role=User.Role.PARTICIPANT)
@@ -20,7 +21,7 @@ class LeaderboardAccessTest(TestCase):
         # Ensure status is updated (it updates on save)
         self.contest.save()
         
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_leaderboard_url_access_before_finished(self):
         """Leaderboard URL should NOT be accessible before the contest is finished."""

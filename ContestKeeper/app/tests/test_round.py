@@ -1,7 +1,8 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -22,9 +23,10 @@ from app.models import (
 
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
-class RoundLogicTest(TestCase):
+class RoundLogicTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
         self.participant = User.objects.create_user(username='parti', password='password', role=User.Role.PARTICIPANT)
@@ -39,7 +41,7 @@ class RoundLogicTest(TestCase):
         self.team = Team.objects.create(name='Team A', captain=self.participant)
         self.contest.teams.add(self.team)
         self.contest.participants.add(self.participant)
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_create_round_valid(self):
         """Test creating a valid round with all required fields"""

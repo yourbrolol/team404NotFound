@@ -1,10 +1,11 @@
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
 from app.models import Contest, Round, ScheduleEvent, User
 
-class ScheduleTask13Test(TestCase):
+class ScheduleTask13Test(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='org', role=User.Role.ORGANIZER)
         self.contest = Contest.objects.create(
@@ -22,7 +23,7 @@ class ScheduleTask13Test(TestCase):
             deadline=timezone.now() + timedelta(hours=3),
             status=Round.Status.ACTIVE
         )
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_schedule_regeneration(self):
         self.client.force_login(self.organizer)

@@ -1,7 +1,8 @@
 from decimal import Decimal
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
@@ -22,9 +23,10 @@ from app.models import (
 
 
 from django.core.exceptions import ValidationError
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
-class SubmissionModelTest(TestCase):
+class SubmissionModelTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(
             username='sub_org', password='password', role=User.Role.ORGANIZER
@@ -361,7 +363,7 @@ class SubmissionModelTest(TestCase):
         self.assertEqual(sub.description, '')
 
 
-class SubmissionUITest(TestCase):
+class SubmissionUITest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='sub_org', password='password', role=User.Role.ORGANIZER)
         self.participant = User.objects.create_user(username='sub_parti', password='password', role=User.Role.PARTICIPANT)
@@ -393,7 +395,7 @@ class SubmissionUITest(TestCase):
             created_by=self.organizer,
             order=1
         )
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_submission_form_access_denied_for_non_team_members(self):
         self.client.force_login(self.other_participant)

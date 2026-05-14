@@ -1,10 +1,10 @@
-from django.test import TestCase
+from app.tests.base import BaseSecureTestCase
 from django.urls import reverse
 from django.contrib.auth import get_user_model
 
 User = get_user_model()
 
-class RegistrationTest(TestCase):
+class RegistrationTest(BaseSecureTestCase):
     def setUp(self):
         self.register_url = reverse('register')
         self.username = 'testuser'

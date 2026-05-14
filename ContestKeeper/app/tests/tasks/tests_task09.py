@@ -1,10 +1,11 @@
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
 from app.models import Contest, Round, Team, User
 
-class RoundTask09Test(TestCase):
+class RoundTask09Test(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
         self.participant = User.objects.create_user(username='parti', password='password', role=User.Role.PARTICIPANT)
@@ -37,7 +38,7 @@ class RoundTask09Test(TestCase):
             status=Round.Status.ACTIVE,
             order=1
         )
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_round_detail_access_organizer(self):
         self.client.force_login(self.organizer)

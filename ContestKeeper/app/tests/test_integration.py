@@ -10,7 +10,8 @@ This module covers end-to-end workflows across multiple views:
 6. NotificationPipeline - notification delivery
 """
 from datetime import timedelta
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from django.contrib.auth import get_user_model
@@ -24,7 +25,7 @@ from app.models import (
 User = get_user_model()
 
 
-class TestParticipantEndToEndFlow(TestCase):
+class TestParticipantEndToEndFlow(BaseSecureTestCase):
     """End-to-end flow: registration → team creation → submission → evaluation → leaderboard."""
 
     def setUp(self):
@@ -37,10 +38,10 @@ class TestParticipantEndToEndFlow(TestCase):
         self.jury2 = User.objects.create_user(
             username='jury2', password='password', role=User.Role.JURY
         )
-        self.participant1_client = Client()
-        self.participant2_client = Client()
-        self.organizer_client = Client()
-        self.jury_client = Client()
+        self.participant1_client = self.client_class()
+        self.participant2_client = self.client_class()
+        self.organizer_client = self.client_class()
+        self.jury_client = self.client_class()
 
     def test_participant_golden_path(self):
         """Full flow: participant registers, creates team, submits, gets evaluated."""
@@ -178,7 +179,7 @@ class TestParticipantEndToEndFlow(TestCase):
         self.assertIn(b'Team Alpha', response.content)
 
 
-class TestOrganizerContestLifecycle(TestCase):
+class TestOrganizerContestLifecycle(BaseSecureTestCase):
     """Organizer workflow: create, edit, publish, add criteria, announcements, schedule."""
 
     def setUp(self):
@@ -188,8 +189,8 @@ class TestOrganizerContestLifecycle(TestCase):
         self.participant = User.objects.create_user(
             username='participant', password='password', role=User.Role.PARTICIPANT
         )
-        self.organizer_client = Client()
-        self.participant_client = Client()
+        self.organizer_client = self.client_class()
+        self.participant_client = self.client_class()
 
     def test_contest_lifecycle(self):
         """Create draft → edit → publish → move through statuses → add criteria."""
@@ -259,7 +260,7 @@ class TestOrganizerContestLifecycle(TestCase):
         self.assertEqual(ScheduleEvent.objects.filter(contest=contest).count(), 2)
 
 
-class TestJuryEvaluationFlow(TestCase):
+class TestJuryEvaluationFlow(BaseSecureTestCase):
     """Jury workflow: login, view pending reviews, score, see readonly after finalization."""
 
     def setUp(self):
@@ -272,7 +273,7 @@ class TestJuryEvaluationFlow(TestCase):
         self.participant = User.objects.create_user(
             username='participant', password='password', role=User.Role.PARTICIPANT
         )
-        self.jury_client = Client()
+        self.jury_client = self.client_class()
 
     def test_jury_evaluation_workflow(self):
         """Jury logs in, evaluates team, submits scores."""
@@ -327,7 +328,7 @@ class TestJuryEvaluationFlow(TestCase):
         self.assertIn(response.status_code, [200, 403])
 
 
-class TestAccessControl(TestCase):
+class TestAccessControl(BaseSecureTestCase):
     """Permission checks: non-captain cannot kick, non-organizer cannot activate round, etc."""
 
     def setUp(self):
@@ -357,7 +358,7 @@ class TestAccessControl(TestCase):
         team.participants.add(self.participant1, self.participant2)
         contest.teams.add(team)
         
-        client = Client()
+        client = self.client_class()
         client.login(username='participant2', password='password')
         
         response = client.post(
@@ -382,7 +383,7 @@ class TestAccessControl(TestCase):
             order=1, created_by=self.organizer
         )
         
-        client = Client()
+        client = self.client_class()
         client.login(username='participant1', password='password')
         
         response = client.post(
@@ -403,7 +404,7 @@ class TestAccessControl(TestCase):
         team = Team.objects.create(name='Team', captain=self.participant1)
         contest.teams.add(team)
         
-        client = Client()
+        client = self.client_class()
         client.login(username='participant1', password='password')
         
         response = client.get(
@@ -423,7 +424,7 @@ class TestAccessControl(TestCase):
         team = Team.objects.create(name='Team', captain=self.participant1)
         contest.teams.add(team)
         
-        client = Client()
+        client = self.client_class()
         initial_count = Team.objects.count()
         
         response = client.post(
@@ -435,7 +436,7 @@ class TestAccessControl(TestCase):
         self.assertEqual(Team.objects.count(), initial_count)
 
 
-class TestRegistrationWindow(TestCase):
+class TestRegistrationWindow(BaseSecureTestCase):
     """Registration window enforcement."""
 
     def setUp(self):
@@ -459,7 +460,7 @@ class TestRegistrationWindow(TestCase):
             is_draft=False,
         )
         
-        client = Client()
+        client = self.client_class()
         client.login(username='participant', password='password')
         
         response = client.post(
@@ -484,7 +485,7 @@ class TestRegistrationWindow(TestCase):
             is_draft=False,
         )
         
-        client = Client()
+        client = self.client_class()
         client.login(username='participant', password='password')
         
         response = client.post(
@@ -496,7 +497,7 @@ class TestRegistrationWindow(TestCase):
         self.assertFalse(Team.objects.filter(name='Early Team').exists())
 
 
-class TestNotificationPipeline(TestCase):
+class TestNotificationPipeline(BaseSecureTestCase):
     """Notification delivery: round start, application updates, deadline reminders."""
 
     def setUp(self):

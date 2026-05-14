@@ -1,11 +1,12 @@
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from django.utils import timezone
 from datetime import timedelta
 from app.models import Contest, ContestEvaluationPhase, Team, User, JuryAssignment, Round, Submission
 from app.services import assign_jury_to_teams
 
-class JuryAssignmentTest(TestCase):
+class JuryAssignmentTest(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
         self.jury1 = User.objects.create_user(username='jury1', password='password', role=User.Role.JURY)
@@ -25,7 +26,7 @@ class JuryAssignmentTest(TestCase):
             team = Team.objects.create(name=f'Team {i}', status=Team.Status.ACTIVE)
             self.contest.teams.add(team)
             
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_assign_jury_to_teams_logic(self):
         num_assignments = assign_jury_to_teams(self.contest, min_reviews_per_team=2)

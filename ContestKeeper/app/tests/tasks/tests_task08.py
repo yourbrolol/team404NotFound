@@ -1,8 +1,9 @@
-from django.test import TestCase, Client
+from app.tests.base import BaseSecureTestCase
+from django.test import Client
 from django.urls import reverse
 from app.models import Contest, ScoringCriterion, User
 
-class ScoringCriteriaTask08Test(TestCase):
+class ScoringCriteriaTask08Test(BaseSecureTestCase):
     def setUp(self):
         self.organizer = User.objects.create_user(username='org', password='password', role=User.Role.ORGANIZER)
         self.other_user = User.objects.create_user(username='other', password='password', role=User.Role.PARTICIPANT)
@@ -16,7 +17,7 @@ class ScoringCriteriaTask08Test(TestCase):
             organizer=self.organizer,
             is_draft=False
         )
-        self.client = Client()
+        # self.client = self.client_class()  # Removed redundant insecure client
 
     def test_criterion_create_organizer(self):
         self.client.force_login(self.organizer)
