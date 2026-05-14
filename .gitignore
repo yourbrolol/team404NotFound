@@ -39,3 +39,4 @@ ContestKeeper/db.sqlite3
 # ETC
 
 **/.fuse_hidden*
+**/*.pem

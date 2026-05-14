@@ -22,10 +22,9 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    cp ContestKeeper/.env.example ContestKeeper/.env
    ```
 
-3. **(If DEBUG=False in .env) Collect static files:**
+3. **(Optional but recommended) Copy makeshift data:**
    ```bash
-   python manage.py collectstatic
-   ```
+   cp ContestKeeper/test_db.sqlite3 ContestKeeper/db.sqlite3
 
 **There are 3 ways to run the app:**
 
@@ -71,7 +70,7 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    docker compose up --build
    ```
 
-**Docker way (may not work)**
+**Docker way (may not work):**
 
 **You need to install Docker first**
 
@@ -84,6 +83,29 @@ ContestKeeper is a web platform for organizing programming tournaments with team
    ```bash
    sudo docker run -p 8000:8000 contestkeeper # change "contestkeeper" to container name; change the first 8000 to the needed port
    ```
+
+## Notice for running with DEBUG=False
+
+**To run the app with DEBUG=False, you'll need to create SSL key and certificate first, and notice that they will not be trusted by other users as your device is not a trusted authority.**
+
+**Make sure you are in /ContestKeeper folder when doing these steps (run cd ContestKeeper)**
+
+1. **Create key and certificate:**
+   ```bash
+   openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -days 365 -nodes -subj "/CN=localhost"
+   ```
+
+2. **Collect static files (repeat every time static files change):**
+   ```bash
+   python manage.py collectstatic
+   ```
+
+**IMPORTANT: you'll now need to run your server via daphne, not normal django dev server command. If you're using Docker / Compose, you'll need to change your Dockerfile / docker-compose.yml and rebuild your container**
+
+```bash
+# Run Daphne with both HTTP (8000) and HTTPS (8443)
+daphne -p 8000 -e ssl:8443:privateKey=key.pem:certKey=cert.pem ContestKeeper.asgi:application
+```
 
 ## User Roles & Credentials
 All default accounts use the password: `password321`
